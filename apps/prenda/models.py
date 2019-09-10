@@ -15,8 +15,8 @@ class Tipo_prenda (models.Model):
 
 class Componente (models.Model):
     id_componente = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100, blank = False, null = False)
 
-class ingrediente (models.Model):
+class Ingrediente (models.Model):
     id_ingrediente = models.AutoField(primary_key=True)
     cantidad = models.IntegerField()
-    
