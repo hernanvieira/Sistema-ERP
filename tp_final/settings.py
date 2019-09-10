@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'apps.pedido',
     'apps.prenda',
     'apps.estado',
+    'apps.material',
 ]
 
 MIDDLEWARE = [
