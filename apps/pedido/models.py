@@ -7,9 +7,9 @@ class Pedido (models.Model):
     id_pedido = models.AutoField(primary_key=True)
     fecha_pedido = models.DateField()
     fecha_entrega = models.DateField()
-    precio_total = models.DecimalField()
-    entrega = models.DecimalField()
-    seña = models.DecimalField()
+    precio_total = models.DecimalField(max_digits=10, decimal_places=3)
+    entrega = models.DecimalField(max_digits=10, decimal_places=3)
+    seña = models.DecimalField(max_digits=10, decimal_places=3)
     estado = models.CharField(max_length=100)
     prioridad_entrega = models.CharField(max_length=50)
     activo = models.BooleanField()
@@ -22,4 +22,3 @@ class Detalle (models.Model):
 
 class Estado_pedido (models.Model):
     fecha = models.DateField()
-    
