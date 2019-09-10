@@ -13,5 +13,10 @@ class Tipo_prenda (models.Model):
     id_tipo_prenda = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
 
-class componente (models.Model):
-    id_componente = models.AutoField(primary_key=UserAttributeSimilarityValidator)    
+class Componente (models.Model):
+    id_componente = models.AutoField(primary_key=True)
+
+class ingrediente (models.Model):
+    id_ingrediente = models.AutoField(primary_key=True)
+    cantidad = models.IntegerField()
+    
