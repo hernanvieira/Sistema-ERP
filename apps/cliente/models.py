@@ -1,5 +1,4 @@
 from django.db import models
-
 # Create your models here.
 #Se crean las clases de acuerdo con el diagrama de clases
 class Cliente(models.Model):
