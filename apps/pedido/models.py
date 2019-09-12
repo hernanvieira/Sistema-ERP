@@ -6,7 +6,7 @@ from apps.prenda.models import Prenda
 
 class Pedido (models.Model):
     id_pedido = models.AutoField(primary_key=True)
-    fecha_pedido = models.DateField()
+    fecha_pedido = models.DateField(auto_now=True)
     fecha_entrega = models.DateField()
     precio_total = models.DecimalField(max_digits=10, decimal_places=3)
     entrega = models.DecimalField(max_digits=10, decimal_places=3)
