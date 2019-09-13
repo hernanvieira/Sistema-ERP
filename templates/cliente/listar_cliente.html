@@ -1,0 +1,42 @@
+{% extends 'index.html'%}
+
+{% block titulo %}
+Listado de Clientes
+{% endblock titulo %}
+
+{% block body %}
+
+  {% if clientes %}
+    <table>
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>Telefono</th>
+          <th>Correo</th>
+          <th>domicilio</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in clientes %}
+          <tr>
+            <td>{{cliente.dni}}</td>
+            <td>{{cliente.apellido}}</td>
+            <td>{{cliente.nombre}}</td>
+            <td>{{cliente.telefono}}</td>
+            <td>{{cliente.correo}}</td>
+            <td>{{cliente.domicilio}}</td>
+            <td>
+              <a href="{% url 'cliente:editar_cliente' cliente.dni %}">Editar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <h1>No existen clientes registrados</h1>
+  {% endif %}
+
+{% endblock body %}
