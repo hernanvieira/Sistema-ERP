@@ -30,6 +30,7 @@ Listado de Clientes
             <td>{{cliente.domicilio}}</td>
             <td>
               <a href="{% url 'cliente:editar_cliente' cliente.dni %}">Editar</a>
+              <a href="{% url 'cliente:eliminar_cliente' cliente.dni %}">Eliminar</a>
             </td>
           </tr>
         {% endfor %}

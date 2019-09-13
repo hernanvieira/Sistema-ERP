@@ -38,3 +38,10 @@ def EditarCliente (request,dni):
     except ObjectDoesNotExist as e:
         error = e
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form, 'error':error})
+
+def EliminarCliente (request,dni):
+    cliente = Cliente.objects.get(dni = dni)
+    if request.method=='POST':
+        cliente.delete()
+        return redirect('cliente:listar_cliente')
+    return render(request,'cliente/eliminar_cliente.html',{'cliente':cliente})
