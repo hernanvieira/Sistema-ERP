@@ -8,7 +8,6 @@ class Cliente(models.Model):
     telefono = models.CharField('Telefonos',max_length=50)
     correo = models.EmailField('Correos')
     domicilio = models.TextField('Domicilios',blank = True, null = True)
-    activo = models.BooleanField('Activo')
 
     class Meta:
         verbose_name = 'Cliente'

@@ -48,7 +48,7 @@ class CompraForm (forms.ModelForm):
 class PedidoForm (forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['fecha_pedido', 'fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega']
+        fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega']
 
 class DetalleForm (forms.ModelForm):
     class Meta:
