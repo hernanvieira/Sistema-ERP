@@ -13,17 +13,17 @@ class ClienteForm (forms.ModelForm):
 class EstadoForm (forms.ModelForm):
     class Meta:
         model = Estado
-        fields = ['nombre','descripcion','tipo']
+        fields = ['nombre','descripcion','tipo' ]
 
 class Estado_pedidoForm (forms.ModelForm):
     class Meta:
         model = Estado_pedido
-        fields = ['fecha']
+        fields = ['fecha','pedido','estado']
 
 class Estado_loteForm (forms.ModelForm):
     class Meta:
         model = Estado_lote
-        fields = ['fecha']
+        fields = ['fecha','pedido','detalle']
 
 class Unidad_medidaForm (forms.ModelForm):
     class Meta:
@@ -33,27 +33,27 @@ class Unidad_medidaForm (forms.ModelForm):
 class Tipo_materialForm (forms.ModelForm):
     class Meta:
         model = Tipo_material
-        fields = ['nombre']
+        fields = ['nombre','unidad_medida']
 
 class MaterialForm (forms.ModelForm):
     class Meta:
         model = Material
-        fields = ['nombre','color']
+        fields = ['nombre','color','tipo_material']
 
 class CompraForm (forms.ModelForm):
     class Meta:
         model = Compra
-        fields = ['fecha']
+        fields = ['fecha','material']
 
 class PedidoForm (forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega']
+        fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
 
 class DetalleForm (forms.ModelForm):
     class Meta:
         model = Detalle
-        fields = ['cantidad', 'tiempo_prod_lote']
+        fields = ['cantidad', 'tiempo_prod_lote', 'pedido','prenda']
 
 class ComponenteForm (forms.ModelForm):
     class Meta:
@@ -63,12 +63,12 @@ class ComponenteForm (forms.ModelForm):
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda
-        fields = ['nombre']
+        fields = ['nombre','componente']
 
 class PrendaForm (forms.ModelForm):
     class Meta:
         model = Prenda
-        fields = ['talle', 'tiempo_prod_prenda']
+        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda']
 
 class Ingrediente (forms.ModelForm):
     class Meta:
