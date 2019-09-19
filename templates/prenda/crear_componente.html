@@ -1,0 +1,19 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Crear componente
+{% endblock titulo%}
+{% block body%}
+  <form method="POST">
+    {%csrf_token%}
+    {% if error %}
+      <h2>{{ error }}</h2>
+    {% else %}
+      {{componente_form.as_p}}
+      <button type = "submit">Crear</button>
+    {% endif %}
+  </form>
+
+<a href="javascript:history.back()"><img src="../../static/images/boton.png" height="33" width="100" alt="Botón"</a>
+{% endblock body%}

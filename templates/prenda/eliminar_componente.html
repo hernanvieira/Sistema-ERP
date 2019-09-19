@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Eliminar componente
+{% endblock titulo%}
+{% block body%}
+  <form method="POST">
+    {%csrf_token%}
+    <h2>¿Desea eliminar el componente {{ componente.id_componente}}?</h2>
+    <button type="submit">Eliminar</button>
+    <a href="{% url 'prenda:listar_componente' %}">Cancelar</a>
+  </form>
+{% endblock body%}

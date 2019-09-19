@@ -1,0 +1,36 @@
+{% extends 'index.html'%}
+
+{% block titulo %}
+Listado de Componentes
+{% endblock titulo %}
+
+{% block body %}
+  {% if tipo_prendas %}
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Componente/s</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tipo_prenda in tipo_prendas %}
+          <tr>
+            <td>{{tipo_prenda.id_tipo_prenda}}</td>
+            <td>{{tipo_prenda.nombre}}</td>
+            <td>{{tipo_prenda.componente}}</td>
+            <td>
+            <a href="{% url 'prenda:editar_tipo_prenda' tipo_prenda.id_tipo_prenda %}">Editar</a>
+            <a href="{% url 'prenda:eliminar_tipo_prenda' tipo_prenda.id_tipo_prenda %}">Eliminar</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <h1>No existen tipos de prenda registrados</h1>
+  {% endif %}
+  <a href="javascript:history.back()"><img src="../../static/images/boton.png" height="33" width="100" alt="Botón"</a>
+{% endblock body %}

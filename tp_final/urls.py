@@ -23,6 +23,6 @@ urlpatterns = [
     path('estado/',include(('apps.estado.urls','estado'))),
     path('material/',include(('apps.material.urls','material'))),
     path('pedido/',include(('apps.pedido.urls','pedido'))),
-    path('prenda/',include(('apps.prenda.urls','prenda'))),
+    path('prenda/',include(('apps.prenda.urls','prenda')),name='prenda'),
     path('home/', Home, name = 'index'),
 ]

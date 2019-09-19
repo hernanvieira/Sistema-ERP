@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from tp_final.forms import ClienteForm
 from .models import Cliente
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,7 +11,6 @@ def Home(request):
 def CrearCliente (request):
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
-        print (request.POST)
         if cliente_form.is_valid():
             cliente_form.save()
             return ListarCliente(request)
@@ -38,10 +37,13 @@ def EditarCliente (request,dni):
     except ObjectDoesNotExist as e:
         error = e
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form, 'error':error})
-
+#Eliminar un cliente
 def EliminarCliente (request,dni):
     cliente = Cliente.objects.get(dni = dni)
     if request.method=='POST':
         cliente.delete()
         return redirect('cliente:listar_cliente')
     return render(request,'cliente/eliminar_cliente.html',{'cliente':cliente})
+
+def ClienteHome(request):
+    return render (request, 'cliente/index_cliente.html')

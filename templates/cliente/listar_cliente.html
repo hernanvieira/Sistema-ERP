@@ -4,40 +4,43 @@
 Listado de Clientes
 {% endblock titulo %}
 
-{% block body %}
+{% block content %}
 
   {% if clientes %}
-    <table>
-      <thead>
-        <tr>
-          <th>DNI</th>
-          <th>Apellido</th>
-          <th>Nombre</th>
-          <th>Telefono</th>
-          <th>Correo</th>
-          <th>domicilio</th>
-          <th>Opciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for cliente in clientes %}
-          <tr>
-            <td>{{cliente.dni}}</td>
-            <td>{{cliente.apellido}}</td>
-            <td>{{cliente.nombre}}</td>
-            <td>{{cliente.telefono}}</td>
-            <td>{{cliente.correo}}</td>
-            <td>{{cliente.domicilio}}</td>
-            <td>
-              <a href="{% url 'cliente:editar_cliente' cliente.dni %}">Editar</a>
-              <a href="{% url 'cliente:eliminar_cliente' cliente.dni %}">Eliminar</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- DATA TABLE-->
+  <div class="table-responsive m-b-40">
+      <table class="table table-borderless table-data3">
+        <thead>
+            <tr>
+              <th>DNI</th>
+              <th>Apellido</th>
+              <th>Nombre</th>
+              <th>Telefono</th>
+              <th>Correo</th>
+              <th>domicilio</th>
+              <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for cliente in clientes %}
+            <tr>
+              <td>{{cliente.dni}}</td>
+              <td>{{cliente.apellido}}</td>
+              <td>{{cliente.nombre}}</td>
+              <td>{{cliente.telefono}}</td>
+              <td>{{cliente.correo}}</td>
+              <td>{{cliente.domicilio}}</td>
+              <td>
+                <a href="{% url 'cliente:editar_cliente' cliente.dni %}">Editar</a>
+                <a href="{% url 'cliente:eliminar_cliente' cliente.dni %}">Eliminar</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  <!-- END DATA TABLE-->
   {% else %}
     <h1>No existen clientes registrados</h1>
   {% endif %}
-
-{% endblock body %}
+{% endblock content %}

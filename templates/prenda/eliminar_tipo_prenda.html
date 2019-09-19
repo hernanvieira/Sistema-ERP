@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Eliminar tipo de prenda
+{% endblock titulo%}
+{% block body%}
+  <form method="POST">
+    {%csrf_token%}
+    <h2>¿Desea eliminar el tipo de prenda {{ tipo_prenda.id_tipo_prenda}}?</h2>
+    <button type="submit">Eliminar</button>
+    <a href="{% url 'prenda:listar_componente' %}">Cancelar</a>
+  </form>
+{% endblock body%}
