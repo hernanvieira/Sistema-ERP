@@ -1,0 +1,54 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Nuevo Material
+{% endblock titulo%}
+
+{% block content%}
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Material</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
+
+      {{material_form.tipo_material.label}}
+      <div class="form-control">
+        {{material_form.tipo_material}}
+      </div>
+      {{material_form.nombre.label}}
+      <div class="form-control">
+        {{material_form.nombre}}
+      </div>
+      {{material_form.color.label}}
+      <div class="form-control">
+        {{material_form.color}}
+      </div>
+      {{material_form.stock.label}}
+      <div class="form-control">
+        {{material_form.stock}}
+      </div>
+
+      <div class="card-footer">
+        <button type="submit" class="btn btn-success">
+          <i class="fa fa-dot-circle-o"></i> Crear
+        </button>
+        <button type="reset" class="btn btn-danger">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+      </div>
+    {% endif %}
+    </form>
+
+
+  </div>
+</div>
+</div>
+
+{% endblock content%}

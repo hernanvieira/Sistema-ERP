@@ -38,7 +38,7 @@ class Tipo_materialForm (forms.ModelForm):
 class MaterialForm (forms.ModelForm):
     class Meta:
         model = Material
-        fields = ['nombre','color','tipo_material']
+        fields = ['nombre','color','tipo_material','stock']
 
 class CompraForm (forms.ModelForm):
     class Meta:

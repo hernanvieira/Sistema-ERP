@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Listado de Tipos de Materials
+{% endblock titulo%}
+
+{% block content%}
+
+{% if materiales %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Tipo de Material</th>
+            <th>Nombre</th>
+            <th>Color</th>
+            <th>Stock</th>
+            <th>Opciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for material in materiales %}
+          <tr>
+            <td>{{material.id_material}}</td>
+            <td>{{material.tipo_material}}</td>
+            <td>{{material.nombre}}</td>
+            <td>{{material.color}}</td>
+            <td>{{material.stock}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'material:eliminar_material' material.id_material %}'">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen Tipos de Materiales registrados</h1>
+{% endif %}
+{% endblock content %}

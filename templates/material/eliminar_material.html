@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Eliminar Tipo de material
+{% endblock titulo%}
+{% block content%}
+  <form method="POST">
+    {%csrf_token%}
+    <h2>¿Desea eliminar el tipo de material {{ material.id_material}}?</h2>
+    <button type="submit">Eliminar</button>
+    <a href="{% url 'material:listar_material' %}">Cancelar</a>
+  </form>
+{% endblock content%}
