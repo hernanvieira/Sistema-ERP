@@ -4,12 +4,13 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nuevo Componente
+Nuevo Tipo de Prenda
 {% endblock titulo%}
+
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Componente</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Tipo de Prenda</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
@@ -17,10 +18,16 @@ Nuevo Componente
         <h2>{{ error }}</h2>
       {% else %}
 
-      {{componente_form.nombre.label}}
+      {{tipo_prenda_form.nombre.label}}
       <div class="form-control">
-        {{componente_form.nombre}}
+        {{tipo_prenda_form.nombre}}
       </div>
+      {{tipo_prenda_form.componente.label}}
+      {% for componente in componentes %}
+
+        <div class="badge badge-secondary">{{componente.nombre}}</div>
+
+      {% endfor %}
 
       <div class="card-footer">
         <button type="submit" class="btn btn-success">
@@ -32,10 +39,4 @@ Nuevo Componente
       </div>
     {% endif %}
     </form>
-
-
-  </div>
-</div>
-</div>
-
-{% endblock content%}
+{% endblock content %}

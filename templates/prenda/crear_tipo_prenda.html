@@ -1,19 +1,51 @@
 {% extends 'index.html' %}
+{% load static %}
 
 <!DOCTYPE html>
-{% block titulo%}
-Crear tipo de prenda
-{% endblock titulo%}
-{% block body%}
-  <form method="POST">
-    {%csrf_token%}
-    {% if error %}
-      <h2>{{ error }}</h2>
-    {% else %}
-      {{tipo_prenda_form.as_p}}
-      <button type = "submit">Crear</button>
-    {% endif %}
-  </form>
 
-<a href="javascript:history.back()"><img src="../../static/images/boton.png" height="33" width="100" alt="Botón"</a>
-{% endblock body%}
+{% block titulo%}
+Nuevo Tipo de Prenda
+{% endblock titulo%}
+
+{% block content%}
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Tipo de Prenda</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
+
+      {{tipo_prenda_form.nombre.label}}
+      <div class="form-control">
+        {{tipo_prenda_form.nombre}}
+      </div>
+      {{tipo_prenda_form.componente.label}}
+      <div class="form-control">
+        {{tipo_prenda_form.componente}}
+      </div>
+        {% for componente in componentes %}
+
+        <div class="label label-info">{{componente.nombre}}</div>
+
+        {% endfor %}
+
+      <div class="card-footer">
+        <button type="submit" class="btn btn-success">
+          <i class="fa fa-dot-circle-o"></i> Crear
+        </button>
+        <button type="reset" class="btn btn-danger">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+      </div>
+    {% endif %}
+    </form>
+
+
+  </div>
+</div>
+</div>
+
+{% endblock content%}

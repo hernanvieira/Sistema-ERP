@@ -2,45 +2,46 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Crear cliente
+Nuevo Pedido
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Agregar Cliente</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Pedido</strong></div>
   <div class="card-body card-block">
 
     <form method="POST">
       {% csrf_token %}
-      <!-- {% if error %}
+      {% if error %}
         <h2>{{ error }}</h2>
-      {% else %} -->
-      {{cliente_form.dni.label}}
+      {% else %}
+
+      {{pedido_form.cliente.label}}
       <div class="form-control">
-        {{cliente_form.dni}}
+        {{pedido_form.cliente}}
       </div>
-      {{cliente_form.apellido.label}}
+      {{pedido_form.apellido.label}}
       <div class="form-control">
-        {{cliente_form.apellido}}
+        {{pedido_form.apellido}}
       </div>
-      {{cliente_form.nombre.label}}
+      {{pedido_form.nombre.label}}
       <div class="form-control">
-        {{cliente_form.nombre}}
+        {{pedido_form.nombre}}
       </div>
-      {{cliente_form.telefono.label}}
+      {{pedido_form.telefono.label}}
       <div class="form-control">
-        {{cliente_form.telefono}}
+        {{pedido_form.telefono}}
       </div>
-      {{cliente_form.correo.label}}
+      {{pedido_form.correo.label}}
       <div class="form-control">
-        {{cliente_form.correo}}
+        {{pedido_form.correo}}
       </div>
-      {{cliente_form.domicilio.label}}
+      {{pedido_form.domicilio.label}}
       <div class="form-control">
-        {{cliente_form.domicilio}}
+        {{pedido_form.domicilio}}
       </div>
 
-      <!-- {% endif %} -->
+      {% endif %}
       <div class="card-footer">
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Crear

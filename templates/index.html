@@ -11,7 +11,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>{% block titulo %}Dashboard{% endblock titulo %}</title>
+    <title>{% block titulo %}Inicio{% endblock titulo %}</title>
 
     <!-- Fontfaces CSS-->
     <link href="{% static 'css/font-face.css' %}" rel="stylesheet" media="all">
@@ -44,7 +44,7 @@
                 <div class="container-fluid">
                     <div class="header-mobile-inner">
                         <a class="logo" href="index.html">
-                            <img src="{% static 'images/icon/logo.png' %}" alt="CoolAdmin" />
+                            <img src="{% static 'images/icon/logo.png' %}" width="200"/>
                         </a>
                         <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
@@ -59,25 +59,25 @@
                     <ul class="navbar-mobile__list list-unstyled">
                         <li class="has-sub">
                             <a class="js-arrow" href="#">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                                <i class="fas fa-tachometer-alt"></i>Pedido</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="index.html">Dashboard 1</a>
+                                    <a href="index.html">Crear Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="index2.html">Dashboard 2</a>
+                                    <a href="index2.html">Seguir Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="index3.html">Dashboard 3</a>
+                                    <a href="index3.html">Ver Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="index4.html">Dashboard 4</a>
+                                    <a href="index4.html">Modificar Pedido</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="chart.html">
-                                <i class="fas fa-chart-bar"></i>Charts</a>
+                            <a href="/cliente/index_cliente.html">
+                                <i class="fas fa-chart-bar"></i>Cliente</a>
                         </li>
                         <li>
                             <a href="table.html">
@@ -158,7 +158,7 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="#">
+                <a href="/home/">
                     <img src="{% static 'images/icon/logo.png' %}" width="200px"/>
                 </a>
             </div>
@@ -170,7 +170,7 @@
                                 <i class="fas fa-book"></i>Pedidos</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="index.html">Crear Pedido</a>
+                                    <a href="index.html">Nuevo Pedido</a>
                                 </li>
                                 <li>
                                     <a href="index2.html">Seguir Pedido</a>
@@ -182,43 +182,48 @@
                                     <a href="index4.html">Modificar Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="index4.html">Eliminar Pedido</a>
+                                    <a href="index4.html">Cancelar Pedido</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="chart.html">
+                            <a href="/cliente/cliente_home/">
                                 <i class="fas fa-user"></i>Clientes</a>
-                                <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                    <li>
-                                        <a href="index.html">Agregar Cliente</a>
-                                    </li>
-                                    <li>
-                                        <a href="index2.html">Historial Cliente</a>
-                                    </li>
-                                    <li>
-                                        <a href="index3.html">Ver Clientes</a>
-                                    </li>
-                                    <li>
-                                        <a href="index4.html">Modificar Cliente</a>
-                                    </li>
-                                    <li>
-                                        <a href="index4.html">Eliminar Cliente</a>
-                                    </li>
-                                </ul>
                         </li>
-                        <li>
-                            <a href="table.html">
+                        <ul class="list-unstyled navbar__list">
+                          <li class="active has-sub">
+                            <a class="js-arrow" href="#">
                                 <i class="fas fa-archive"></i>Materiales</a>
-                        </li>
+                            <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                <li>
+                                    <a href="/prenda/crear_tipo_prenda/">Registrar Compra</a>
+                                </li>
+                                <li>
+                                    <a href="/prenda/crear_componente/">Nuevo Material</a>
+                                </li>
+                                <li>
+                                    <a href="#">Nuevo Tipo de Material</a>
+                                </li>
+                            </ul>
+                        </ul>
                         <li>
-                            <a href="calendar.html">
+                            <a href="#">
                                 <i class="fas fa-calendar-alt"></i>Calendario</a>
                         </li>
-
-                            </ul>
-                        </li>
-                    </ul>
+                      </ul>
+                      <ul class="list-unstyled navbar__list">
+                        <li class="active has-sub">
+                          <a class="js-arrow" href="#">
+                              <i class="fas fa-th"></i>Prendas</a>
+                          <ul class="list-unstyled navbar__sub-list js-sub-list">
+                              <li>
+                                  <a href="/prenda/crear_tipo_prenda/">Nuevo Tipo de Prenda</a>
+                              </li>
+                              <li>
+                                  <a href="/prenda/crear_componente/">Nuevo Componente</a>
+                              </li>
+                          </ul>
+                      </ul>
                 </nav>
             </div>
         </aside>
@@ -230,13 +235,7 @@
             <header class="header-desktop">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        <div class="header-wrap">
-                            <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Pedido o Cliente..." />
-                                <button class="au-btn--submit" type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
-                            </form>
+                        <div class="alineado-derecha">
                             <div class="header-button">
                                 <div class="noti-wrap">
                                     <div class="noti__item js-item-menu">
@@ -350,6 +349,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
@@ -408,10 +408,13 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
-                               <div class="overview-wrap">
                               {% block content %}
+
+                              <div class="alineado-centro">
+
+                              </div>
+
                               {% endblock content %}
-                               </div>
                             </div>
                         </div>
                     </div>

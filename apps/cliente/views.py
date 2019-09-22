@@ -13,7 +13,7 @@ def CrearCliente (request):
         cliente_form = ClienteForm(request.POST)
         if cliente_form.is_valid():
             cliente_form.save()
-            return ListarCliente(request)
+            return ClienteHome(request)
     else:
         cliente_form = ClienteForm()
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form})
@@ -46,4 +46,5 @@ def EliminarCliente (request,dni):
     return render(request,'cliente/eliminar_cliente.html',{'cliente':cliente})
 
 def ClienteHome(request):
-    return render (request, 'cliente/index_cliente.html')
+    clientes = Cliente.objects.all()
+    return render (request, 'cliente/index_cliente.html',{'clientes':clientes})

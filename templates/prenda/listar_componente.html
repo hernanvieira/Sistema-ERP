@@ -1,18 +1,23 @@
-{% extends 'index.html'%}
+{% extends 'index.html' %}
 
-{% block titulo %}
-Listado de Componentes
-{% endblock titulo %}
+<!DOCTYPE html>
 
-{% block body %}
-  {% if componentes %}
-    <table>
+{% block titulo%}
+Listado de componentes
+{% endblock titulo%}
+
+{% block content%}
+
+{% if componentes %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Opciones</th>
-        </tr>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Opciones</th>
+          </tr>
       </thead>
       <tbody>
         {% for componente in componentes %}
@@ -20,15 +25,23 @@ Listado de Componentes
             <td>{{componente.id_componente}}</td>
             <td>{{componente.nombre}}</td>
             <td>
-            <a href="{% url 'prenda:editar_componente' componente.id_componente %}">Editar</a>
-            <a href="{% url 'prenda:eliminar_componente' componente.id_componente %}">Eliminar</a>
+              <button type="button" class="btn btn-primary btn-sm" onclick="location.href='#'">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_componente' componente.id_componente %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_componente' componente.id_componente %}'">
+                <i class="fas fa-trash"></i>
+              </button>
             </td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-  {% else %}
-    <h1>No existen componentes registrados</h1>
-  {% endif %}
-  <a href="javascript:history.back()"><img src="../../static/images/boton.png" height="33" width="100" alt="Botón"</a>
-{% endblock body %}
+  </div
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen clientes registrados</h1>
+{% endif %}
+{% endblock content %}

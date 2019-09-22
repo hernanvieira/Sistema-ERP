@@ -6,6 +6,14 @@ class Componente (models.Model):
     id_componente = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, blank = False, null = False)
 
+    class Meta:
+        verbose_name = 'Componente'
+        verbose_name_plural = 'Componentes'
+        ordering = ['nombre']
+
+    def __str__(self):
+        return self.nombre
+
 class Tipo_prenda (models.Model):
     id_tipo_prenda = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)

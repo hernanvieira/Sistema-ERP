@@ -73,7 +73,7 @@ button {
 }
 
 img {
-    max-width: 100%;
+    max-width: 99%;
     height: auto;
 }
 
@@ -1174,9 +1174,9 @@ section {
 /* ----- Header ----- */
 .header-desktop {
     background: #f5f5f5;
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
     position: fixed;
     top: 0;
     right: 0;
@@ -1591,10 +1591,10 @@ section {
     -moz-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    border-right: 1px solid #e5e5e5;
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
+    border-right: 0px solid #e5e5e5;
     position: relative;
     z-index: 3;
 }
@@ -1635,8 +1635,8 @@ section {
     color: #4272d7;
 }
 
-.navbar-sidebar .navbar__list li.active > a {
-    color: #4272d7;
+.navbar-sidebar .navbar__list li a {
+    color: #555555;
 }
 
 .has-sub {
@@ -4686,13 +4686,13 @@ section {
 }
 
 .table-data3 thead tr th:last-child {
-    text-align: right;
-    padding-right: 50px;
+    text-align: center;
+    padding-right: 0px;
 }
 
 .table-data3 tbody tr td:last-child {
-    text-align: right;
-    padding-right: 50px;
+    text-align: center;
+    padding-right: 0px;
 }
 
 .table-data3 tbody tr {
@@ -4717,7 +4717,7 @@ section {
     background: #fff;
     font-size: 14px;
     color: #808080;
-    padding: 12px 40px;
+    padding: 12px 30px;
     padding-right: 10px;
 }
 
@@ -14639,4 +14639,21 @@ section {
 
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
+}
+.alineado-derecha{
+  display:flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  justify-content: flex-end;
+}
+.alineado-centro{
+  display:flex;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+
+  flex-direction: row;
+  justify-content: center;
 }

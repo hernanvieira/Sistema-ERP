@@ -70,6 +70,23 @@ def EditarTipo_prenda (request,id_tipo_prenda):
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'prenda/crear_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'error':error})
+#Ver tipo de prenda
+def VerTipo_prenda (request,id_tipo_prenda):
+    try:
+        error = None
+        tipo_prenda_form=None
+        tipo_prenda = Tipo_prenda.objects.get(id_tipo_prenda=id_tipo_prenda)
+        componentes = tipo_prenda.componente.all()
+        if request.method=='GET':
+            tipo_prenda_form=Tipo_prendaForm(instance=tipo_prenda)
+        else:
+            tipo_prenda_form=Tipo_prendaForm(request.POST, instance=tipo_prenda)
+            if tipo_prenda_form.is_valid():
+                tipo_prenda_form.save()
+            return redirect('index')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'prenda/ver_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'componentes':componentes, 'error':error})
 #Eliminar un tipo de prenda
 def EliminarTipo_prenda (request,id_tipo_prenda):
     tipo_prenda = Tipo_prenda.objects.get(id_tipo_prenda=id_tipo_prenda)
