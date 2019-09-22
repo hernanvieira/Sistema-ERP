@@ -23,7 +23,6 @@ class Prenda (models.Model):
     id_prenda = models.AutoField(primary_key = True)
     talle = models.IntegerField()
     tiempo_prod_prenda = models.IntegerField()
-    activo = models.BooleanField()
     tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.CASCADE)
 
 class Ingrediente (models.Model):

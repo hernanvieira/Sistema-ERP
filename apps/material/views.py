@@ -12,17 +12,17 @@ def CrearTipo_material (request):
             return ListarTipo_material(request)
     else:
         tipo_material_form = Tipo_materialForm()
-    return render(request, 'tipo_material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form})
+    return render(request, 'material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form})
 #Listar todos los tipo_materiales
 def ListarTipo_material (request):
-    tipo_materiales = tipo_material.objects.all()
-    return render(request,'tipo_material/listar_tipo_material.html',{'tipo_materiales':tipo_materiales})
+    tipo_materiales = Tipo_material.objects.all()
+    return render(request,'material/listar_tipo_material.html',{'tipo_materiales':tipo_materiales})
 #Editar un tipo_material
 def EditarTipo_material (request,id_tipo_material):
     try:
         error = None
         tipo_material_form=None
-        tipo_material = tipo_material.objects.get(id_tipo_material=id_tipo_material)
+        tipo_material = Tipo_material.objects.get(id_tipo_material=id_tipo_material)
         if request.method=='GET':
             tipo_material_form=Tipo_materialForm(instance=tipo_material)
         else:
@@ -32,11 +32,11 @@ def EditarTipo_material (request,id_tipo_material):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'tipo_material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form, 'error':error})
+    return render(request,'material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form, 'error':error})
 #Eliminar un tipo_material
 def EliminarTipo_material (request,id_tipo_material):
-    tipo_material = tipo_material.objects.get(id_tipo_material=id_tipo_material)
+    tipo_material = Tipo_material.objects.get(id_tipo_material=id_tipo_material)
     if request.method=='POST':
         tipo_material.delete()
-        return redirect('tipo_material:listar_tipo_material')
-    return render(request,'tipo_material/eliminar_tipo_material.html',{'tipo_material':tipo_material})
+        return redirect('material:listar_tipo_material')
+    return render(request,'material/eliminar_tipo_material.html',{'tipo_material':tipo_material})

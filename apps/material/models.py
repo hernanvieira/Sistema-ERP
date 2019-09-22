@@ -7,10 +7,17 @@ class Unidad_medida (models.Model):
     nombre = models.CharField(max_length=50)
     descripcion = models.TextField()
 
+    class Meta:
+        verbose_name = 'Unidad_medida'
+        verbose_name_plural = 'Unidad_medida'
+        ordering = ['nombre']
+
+    def __str__(self):
+        return self.nombre
+
 class Tipo_material (models.Model):
-    id_material = models.AutoField(primary_key=True)
+    id_tipo_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
-    activo = models.BooleanField()
     unidad_medida = models.ForeignKey(Unidad_medida,on_delete=models.CASCADE)
 
 class Material (models.Model):

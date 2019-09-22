@@ -1,0 +1,44 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Listado de Tipos de Materials
+{% endblock titulo%}
+
+{% block content%}
+
+{% if tipo_materiales %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Opciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for tipo_material in tipo_materiales %}
+          <tr>
+            <td>{{tipo_material.id_tipo_material}}</td>
+            <td>{{tipo_material.nombre}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_tipo_material' tipo_material.id_tipo_material %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'material:eliminar_tipo_material' tipo_material.id_tipo_material %}'">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen Tipos de Materiales registrados</h1>
+{% endif %}
+{% endblock content %}
