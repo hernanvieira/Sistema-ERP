@@ -5,7 +5,7 @@ from django.db import models
 class Unidad_medida (models.Model):
     id_unidad = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50)
-    descripcion = models.TextField()
+    descripcion = models.CharField(max_length=200)
 
     class Meta:
         verbose_name = 'Unidad_medida'

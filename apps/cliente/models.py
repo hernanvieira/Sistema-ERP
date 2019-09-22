@@ -7,7 +7,7 @@ class Cliente(models.Model):
     nombre = models.CharField('Nombres',max_length=100, blank=False, null=False)
     telefono = models.CharField('Telefonos',max_length=50)
     correo = models.EmailField('Correos')
-    domicilio = models.TextField('Domicilios',blank = True, null = True)
+    domicilio = models.CharField('Domicilios',blank = True, null = True, max_length=500)
 
     class Meta:
         verbose_name = 'Cliente'

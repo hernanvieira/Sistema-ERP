@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Listado de Unidades de Medida
+{% endblock titulo%}
+
+{% block content%}
+
+{% if unidad_medidas %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Opciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for unidad_medida in unidad_medidas %}
+          <tr>
+            <td>{{unidad_medida.id_unidad}}</td>
+            <td>{{unidad_medida.nombre}}</td>
+            <td>{{unidad_medida.descripcion}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_unidad_medida' unidad_medida.id_unidad %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'material:eliminar_unidad_medida' unidad_medida.id_unidad %}'">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen Unidades de medida registradas</h1>
+{% endif %}
+{% endblock content %}

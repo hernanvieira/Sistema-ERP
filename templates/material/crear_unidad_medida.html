@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nuevo Tipo de Material
+Nueva Unidad de Medida
 {% endblock titulo%}
 
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Tipo de Material</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Unidad de Medida</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
@@ -18,16 +18,13 @@ Nuevo Tipo de Material
         <h2>{{ error }}</h2>
       {% else %}
 
-      {{tipo_material_form.nombre.label}}
+      {{unidad_medida_form.nombre.label}}
       <div class="form-control">
-        {{tipo_material_form.nombre}}
+        {{unidad_medida_form.nombre}}
       </div>
-      {{tipo_material_form.unidad_medida.label}}
+      {{unidad_medida_form.descripcion.label}}
       <div class="form-control">
-        {{tipo_material_form.unidad_medida}}
-        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'material:crear_unidad_medida' %}'">
-          <i class="fas fa-cog"></i>
-        </button>
+        {{unidad_medida_form.descripcion}}
       </div>
 
       <div class="card-footer">

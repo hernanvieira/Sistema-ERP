@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CrearTipo_material, ListarTipo_material, EditarTipo_material, EliminarTipo_material, CrearMaterial, ListarMaterial, EditarMaterial, EliminarMaterial
+from .views import CrearTipo_material, ListarTipo_material, EditarTipo_material, EliminarTipo_material, CrearMaterial, ListarMaterial, EditarMaterial, EliminarMaterial, CrearUnidad_medida, ListarUnidad_medida, EditarUnidad_medida, EliminarUnidad_medida
 
 urlpatterns = [
             #URL Tipo_material
@@ -12,5 +12,11 @@ urlpatterns = [
             path ('crear_material/',CrearMaterial,name='crear_material'),
             path ('listar_material/',ListarMaterial,name='listar_material'),
             path ('editar_material/<int:id_material>',EditarMaterial,name='editar_material'),
-            path ('eliminar_material/<int:id_material>',EliminarMaterial,name='eliminar_material')
+            path ('eliminar_material/<int:id_material>',EliminarMaterial,name='eliminar_material'),
+
+            #URL Unidad_medida
+            path ('crear_unidad_medida/',CrearUnidad_medida,name='crear_unidad_medida'),
+            path ('listar_unidad_medida/',ListarUnidad_medida,name='listar_unidad_medida'),
+            path ('editar_unidad_medida/<int:id_unidad>',EditarUnidad_medida,name='editar_unidad_medida'),
+            path ('eliminar_unidad_medida/<int:id_unidad>',EliminarUnidad_medida,name='eliminar_unidad_medida')
 ]

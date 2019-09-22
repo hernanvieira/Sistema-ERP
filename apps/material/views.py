@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from tp_final.forms import Tipo_materialForm, MaterialForm
-from .models import Tipo_material, Material
+from tp_final.forms import Tipo_materialForm, MaterialForm, Unidad_medidaForm
+from .models import Tipo_material, Material, Unidad_medida
 from django.core.exceptions import ObjectDoesNotExist
 
 #Crear un tipo de tipo_material
@@ -78,3 +78,41 @@ def EliminarMaterial (request,id_material):
         material.delete()
         return redirect('material:listar_material')
     return render(request,'material/eliminar_material.html',{'material':material})
+
+#Crear una unidad de medida
+def CrearUnidad_medida (request):
+    if request.method == 'POST':
+        unidad_medida_form = Unidad_medidaForm(request.POST)
+        if unidad_medida_form.is_valid():
+            unidad_medida_form.save()
+            return ListarUnidad_medida(request)
+    else:
+        unidad_medida_form = Unidad_medidaForm()
+    return render(request, 'material/crear_unidad_medida.html',{'unidad_medida_form':unidad_medida_form})
+#Listar todos las unidad_medidas
+def ListarUnidad_medida (request):
+    unidad_medidas = Unidad_medida.objects.all()
+    return render(request,'material/listar_unidad_medida.html',{'unidad_medidas':unidad_medidas})
+#Editar un unidad_medida
+def EditarUnidad_medida (request,id_unidad):
+    try:
+        error = None
+        unidad_medida_form=None
+        unidad_medida = Unidad_medida.objects.get(id_unidad=id_unidad)
+        if request.method=='GET':
+            unidad_medida_form=Unidad_medidaForm(instance=unidad_medida)
+        else:
+            unidad_medida_form=Unidad_medidaForm(request.POST, instance=unidad_medida)
+            if unidad_medida_form.is_valid():
+                unidad_medida_form.save()
+            return redirect('index')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'material/crear_unidad_medida.html',{'unidad_medida_form':unidad_medida_form, 'error':error})
+#Eliminar un unidad_medida
+def EliminarUnidad_medida (request,id_unidad):
+    unidad_medida = Unidad_medida.objects.get(id_unidad=id_unidad)
+    if request.method=='POST':
+        unidad_medida.delete()
+        return redirect('material:listar_unidad_medida')
+    return render(request,'material/eliminar_unidad_medida.html',{'unidad_medida':unidad_medida})
