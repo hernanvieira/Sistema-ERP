@@ -43,7 +43,7 @@ class MaterialForm (forms.ModelForm):
 class CompraForm (forms.ModelForm):
     class Meta:
         model = Compra
-        fields = ['fecha','material']
+        fields = ['fecha','cantidad','material']
 
 class PedidoForm (forms.ModelForm):
     class Meta:

@@ -1,0 +1,51 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Nueva Compra
+{% endblock titulo%}
+
+{% block content%}
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Compra</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
+
+
+      {{compra_form.fecha.label}}
+      <div class="form-control">
+        {{compra_form.fecha}}
+      </div>
+      {{compra_form.material.label}}
+      <div class="form-control">
+        {{compra_form.material}}
+      </div>
+      {{compra_form.cantidad.label}}
+      <div class="form-control">
+        {{compra_form.cantidad}}
+      </div>
+
+      <div class="card-footer">
+        <button type="submit" class="btn btn-success">
+          <i class="fa fa-dot-circle-o"></i> Crear
+        </button>
+        <button type="reset" class="btn btn-danger">
+          <i class="fa fa-ban"></i> Reset
+        </button>
+      </div>
+    {% endif %}
+    </form>
+
+
+  </div>
+</div>
+</div>
+
+{% endblock content%}

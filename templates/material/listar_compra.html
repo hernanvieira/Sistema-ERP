@@ -1,0 +1,48 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Listado de compras
+{% endblock titulo%}
+
+{% block content%}
+
+{% if compras %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Fecha</th>
+            <th>Material</th>
+            <th>Cantidad</th>
+            <th>Opciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for compra in compras %}
+          <tr>
+            <td>{{compra.id_compra}}</td>
+            <td>{{compra.fecha}}</td>
+            <td>{{compra.material}}</td>
+            <td>{{compra.cantidad}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'compra:editar_compra' compra.id_compra %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'compra:eliminar_compra' compra.id_compra %}'">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen Compras registradas</h1>
+{% endif %}
+{% endblock content %}

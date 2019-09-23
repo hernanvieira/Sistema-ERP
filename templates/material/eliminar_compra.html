@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Eliminar Compra
+{% endblock titulo%}
+{% block content%}
+  <form method="POST">
+    {%csrf_token%}
+    <h2>¿Desea eliminar la compra {{ compra.id_compra}}?</h2>
+    <button type="submit">Eliminar</button>
+    <a href="{% url 'compra:listar_compra' %}">Cancelar</a>
+  </form>
+{% endblock content%}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from tp_final.forms import Tipo_materialForm, MaterialForm, Unidad_medidaForm
-from .models import Tipo_material, Material, Unidad_medida
+from tp_final.forms import Tipo_materialForm, MaterialForm, Unidad_medidaForm, CompraForm
+from .models import Tipo_material, Material, Unidad_medida, Compra
 from django.core.exceptions import ObjectDoesNotExist
 
 #Crear un tipo de tipo_material
@@ -116,3 +116,48 @@ def EliminarUnidad_medida (request,id_unidad):
         unidad_medida.delete()
         return redirect('material:listar_unidad_medida')
     return render(request,'material/eliminar_unidad_medida.html',{'unidad_medida':unidad_medida})
+
+
+#Registrar una compra
+def CrearCompra (request):
+    if request.method == 'POST':
+        compra_form = CompraForm(request.POST)
+        if compra_form.is_valid():
+            compra_form.save() #Registro la compra
+            id_material = request.POST['material'] #Obtengo el id del material involucrado
+            cantidad = request.POST['cantidad'] #Obtengo la cantidad de la compra registrada
+            material = Material.objects.get(id_material=id_material) #Obtengo el material
+            material.stock=material.stock + int(cantidad) #Sumo la cantidad al stock actual
+            material.save()
+            
+            return ListarMaterial(request)
+    else:
+        compra_form = CompraForm()
+    return render(request, 'material/crear_compra.html',{'compra_form':compra_form})
+#Listar todos las compras
+def ListarCompra (request):
+    compras = Compra.objects.all()
+    return render(request,'material/listar_compra.html',{'compras':compras})
+#Editar un compra
+def EditarCompra (request,id_compra):
+    try:
+        error = None
+        compra_form=None
+        compra = Compra.objects.get(id_compra=id_compra)
+        if request.method=='GET':
+            compra_form=CompraForm(instance=compra)
+        else:
+            compra_form=CompraForm(request.POST, instance=compra)
+            if compra_form.is_valid():
+                compra_form.save()
+            return redirect('index')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'material/crear_compra.html',{'compra_form':compra_form, 'error':error})
+#Eliminar un compra
+def EliminarCompra (request,id_compra):
+    compra = compra.objects.get(id_compra=id_compra)
+    if request.method=='POST':
+        compra.delete()
+        return redirect('material:listar_compra')
+    return render(request,'material/eliminar_compra.html',{'compra':compra})
