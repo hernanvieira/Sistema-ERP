@@ -2,12 +2,12 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Nuevo Pedido
+Crear pedido
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Pedido</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Agregar pedido</strong></div>
   <div class="card-body card-block">
 
     <form method="POST">
@@ -15,30 +15,30 @@ Nuevo Pedido
       {% if error %}
         <h2>{{ error }}</h2>
       {% else %}
-
+      
+      {{pedido_form.fecha_entrega.label}}
+      <div class="form-control">
+        {{pedido_form.fecha_entrega}}
+      </div>
+      {{pedido_form.precio_total.label}}
+      <div class="form-control">
+        {{pedido_form.precio_total}}
+      </div>
+      {{pedido_form.entrega.label}}
+      <div class="form-control">
+        {{pedido_form.entrega}}
+      </div>
+      {{pedido_form.seña.label}}
+      <div class="form-control">
+        {{pedido_form.seña}}
+      </div>
+      {{pedido_form.prioridad_entrega.label}}
+      <div class="form-control">
+        {{pedido_form.prioridad_entrega}}
+      </div>
       {{pedido_form.cliente.label}}
       <div class="form-control">
         {{pedido_form.cliente}}
-      </div>
-      {{pedido_form.apellido.label}}
-      <div class="form-control">
-        {{pedido_form.apellido}}
-      </div>
-      {{pedido_form.nombre.label}}
-      <div class="form-control">
-        {{pedido_form.nombre}}
-      </div>
-      {{pedido_form.telefono.label}}
-      <div class="form-control">
-        {{pedido_form.telefono}}
-      </div>
-      {{pedido_form.correo.label}}
-      <div class="form-control">
-        {{pedido_form.correo}}
-      </div>
-      {{pedido_form.domicilio.label}}
-      <div class="form-control">
-        {{pedido_form.domicilio}}
       </div>
 
       {% endif %}

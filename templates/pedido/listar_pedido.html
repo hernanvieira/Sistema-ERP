@@ -1,0 +1,92 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Listado de pedidos
+{% endblock titulo%}
+
+{% block content%}
+
+{% if pedidos %}
+<!-- DATA TABLE -->
+<h3 class="title-5 m-b-35">Lista de Pedidos</h3>
+<div class="table-data__tool">
+    <div class="table-data__tool-left">
+        <div class="rs-select2--light rs-select2--md">
+            <select class="js-select2" name="property">
+                <option selected="selected">All Properties</option>
+                <option value="">Option 1</option>
+                <option value="">Option 2</option>
+            </select>
+            <div class="dropDownSelect2"></div>
+        </div>
+        <div class="rs-select2--light rs-select2--sm">
+            <select class="js-select2" name="time">
+                <option selected="selected">Today</option>
+                <option value="">3 Days</option>
+                <option value="">1 Week</option>
+            </select>
+            <div class="dropDownSelect2"></div>
+        </div>
+        <button class="au-btn-filter">
+            <i class="zmdi zmdi-filter-list"></i>filters</button>
+    </div>
+    <div class="table-data__tool-right">
+        <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+            <i class="zmdi zmdi-plus"></i>add item</button>
+        <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
+            <select class="js-select2" name="type">
+                <option selected="selected">Export</option>
+                <option value="">Option 1</option>
+                <option value="">Option 2</option>
+            </select>
+            <div class="dropDownSelect2"></div>
+        </div>
+    </div>
+</div>
+<div class="table-responsive table-responsive-data2">
+    <table class="table table-data2">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Fecha Entrega</th>
+                <th>Precio Total</th>
+                <th>Entrega</th>
+                <th>Seña</th>
+                <th>Prioridad</th>
+                <th>Cliente</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr class="tr-shadow">
+
+              <td>{{pedido.id_pedido}}</td>
+              <td>{{pedido.fecha_entrega}}</td>
+              <td>{{pedido.precio_total}}</td>
+              <td>{{pedido.entrega}}</td>
+              <td>{{pedido.seña}}</td>
+              <td>{{pedido.prioridad_entrega}}</td>
+              <td>{{pedido.cliente}}</td>
+                <td>
+                    <div class="table-data-feature">
+                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
+                        <i class="fas fa-pencil-square-o"></i>
+                      </button>
+                      <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'pedido:eliminar_pedido' pedido.id_pedido %}'">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                </td>
+            </tr>
+            <tr class="spacer"></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- END DATA TABLE -->
+{% else %}
+  <h1>No existen pedidos registradas</h1>
+{% endif %}
+{% endblock content %}
