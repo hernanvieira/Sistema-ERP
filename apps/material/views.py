@@ -128,8 +128,8 @@ def CrearCompra (request):
             cantidad = request.POST['cantidad'] #Obtengo la cantidad de la compra registrada
             material = Material.objects.get(id_material=id_material) #Obtengo el material
             material.stock=material.stock + int(cantidad) #Sumo la cantidad al stock actual
-            material.save()
-            
+            material.save() #Se actualiza el stock del material
+
             return ListarMaterial(request)
     else:
         compra_form = CompraForm()
