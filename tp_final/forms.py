@@ -47,8 +47,17 @@ class CompraForm (forms.ModelForm):
 
 class PedidoForm (forms.ModelForm):
     class Meta:
+        CHOICES= [
+        ('2', 'Alta'),
+        ('1', 'Media'),
+        ('0', 'Baja'),
+        ]
         model = Pedido
         fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
+        widgets = {
+        'fecha_entrega' : forms.DateTimeInput(),
+        'prioridad_entrega' : forms.Select(choices = CHOICES)
+        }
 
 class DetalleForm (forms.ModelForm):
     class Meta:
@@ -65,12 +74,13 @@ class Tipo_prendaForm (forms.ModelForm):
         model = Tipo_prenda
         fields = ['nombre','componente']
 
+
 class PrendaForm (forms.ModelForm):
     class Meta:
         model = Prenda
-        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda']
+        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio']
 
-class Ingrediente (forms.ModelForm):
+class IngredienteForm (forms.ModelForm):
     class Meta:
         model = Ingrediente
         fields = ['cantidad', 'prenda', 'componente', 'material']

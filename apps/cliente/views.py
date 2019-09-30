@@ -33,7 +33,7 @@ def EditarCliente (request,dni):
             cliente_form=ClienteForm(request.POST, instance=cliente)
             if cliente_form.is_valid():
                 cliente_form.save()
-            return redirect('index')
+            return redirect('cliente:cliente_home')
     except ObjectDoesNotExist as e:
         error = e
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form, 'error':error})
@@ -42,7 +42,7 @@ def EliminarCliente (request,dni):
     cliente = Cliente.objects.get(dni = dni)
     if request.method=='POST':
         cliente.delete()
-        return redirect('cliente:listar_cliente')
+        return redirect('cliente:cliente_home')
     return render(request,'cliente/eliminar_cliente.html',{'cliente':cliente})
 
 def ClienteHome(request):

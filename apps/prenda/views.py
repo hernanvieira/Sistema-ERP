@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from tp_final.forms import ComponenteForm, Tipo_prendaForm
-from .models import Componente, Tipo_prenda
+from tp_final.forms import ComponenteForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
+from .models import Componente, Tipo_prenda, Prenda, Ingrediente
+from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 #Crear un componente
 def CrearComponente (request):
@@ -66,7 +67,7 @@ def EditarTipo_prenda (request,id_tipo_prenda):
             tipo_prenda_form=Tipo_prendaForm(request.POST, instance=tipo_prenda)
             if tipo_prenda_form.is_valid():
                 tipo_prenda_form.save()
-            return redirect('index')
+            return ListarTipo_prenda(request)
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'prenda/crear_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'error':error})
@@ -94,3 +95,102 @@ def EliminarTipo_prenda (request,id_tipo_prenda):
         tipo_prenda.delete()
         return redirect('prenda:listar_tipo_prenda')
     return render(request,'prenda/eliminar_tipo_prenda.html',{'tipo_prenda':tipo_prenda})
+
+#Registrar una prenda al detalle
+def CrearPrenda (request,id_pedido):
+    if request.method == 'POST':
+        prenda_form = PrendaForm(request.POST)
+        detalle_form = DetalleForm(request.POST)
+        pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
+        if prenda_form.is_valid() and detalle_form.is_valid():
+            prenda = prenda_form.save() #Guardo prenda
+            detalle = detalle_form.save() #Guardo detalle
+            detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+            detalle.save() #Actualizo el detalle
+            pedido.precio_total = prenda.precio * detalle.cantidad #Calculo precio total
+            pedido.seña = pedido.precio_total/2
+            # Asocio datos de prenda y pedido a detalle
+            detalle.prenda = prenda
+            detalle.pedido = pedido
+            detalle.tiempo_prod_lote = prenda.tiempo_prod_prenda * detalle.cantidad #Calculo el tiempo de produccion de lote
+            pedido.save() # Actualizo el pedido
+            detalle.save() # Actualizo el detalle
+            id_detalle = detalle.id_detalle #Obtengo el id del detalle
+            return redirect('/pedido/volver_pedido/'+str(id_pedido)+ '/' +str(id_detalle))
+    else:
+        prenda_form = PrendaForm()
+        detalle_form = DetalleForm()
+    return render(request, 'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form})
+#Listar todos las prendas
+def ListarPrenda (request):
+    prendas = Prenda.objects.all()
+    return redirect('index')
+#Editar una prenda
+def EditarPrenda (request,id_prenda,id_detalle):
+    try:
+        error = None
+        prenda_form=None
+        detalle_form=None
+        prenda = Prenda.objects.get(id_prenda=id_prenda)
+        detalle = Detalle.objects.get(id_detalle=id_detalle)
+        if request.method=='GET':
+            prenda_form=PrendaForm(instance=prenda)
+            detalle_form=DetalleForm(instance=detalle)
+        else:
+            prenda_form=PrendaForm(request.POST, instance=prenda)
+            detalle_form=DetalleForm(request.POST, instance=detalle)
+            if detalle_form.is_valid():
+                detalle_form.save()
+            if prenda_form.is_valid():
+                prenda_form.save()
+            return redirect('index')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form, 'error':error, 'detalle_form':detalle_form})
+#Eliminar una prenda
+def EliminarPrenda (request,id_prenda, id_detalle):
+    prenda = Prenda.objects.get(id_prenda=id_prenda)
+    detalle = Detalle.objects.get(id_detalle=id_detalle)
+    if request.method=='POST':
+        detalle.delete()
+        prenda.delete()
+        return redirect('prenda:listar_prenda')
+    return redirect('index')
+
+#Registrar un ingrediente
+def CrearIngrediente (request):
+    if request.method == 'POST':
+        ingrediente_form = IngredienteForm(request.POST)
+        if ingrediente_form.is_valid():
+            ingrediente_form.save() #Registro el ingrediente
+            return ListarIngrediente(request)
+    else:
+        ingrediente_form = IngredienteForm()
+    return render(request, 'material/crear_ingrediente.html',{'ingrediente_form':ingrediente_form})
+#Listar todos las ingredientes
+def ListarIngrediente (request):
+    ingredientes = Ingrediente.objects.all()
+    return redirect('index')
+#Editar un ingrediente
+def EditarIngrediente (request,id_ingrediente):
+    try:
+        error = None
+        ingrediente_form=None
+        ingrediente = Ingrediente.objects.get(id_ingrediente=id_ingrediente)
+        if request.method=='GET':
+            ingrediente_form=ingredienteForm(instance=ingrediente)
+        else:
+            ingrediente_form=IngredienteForm(request.POST, instance=ingrediente)
+            if ingrediente_form.is_valid():
+                ingrediente_form.save()
+            return redirect('index')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'material/crear_ingrediente.html',{'ingrediente_form':ingrediente_form, 'error':error})
+#Eliminar un ingrediente
+def EliminarIngrediente (request,id_ingrediente):
+    ingrediente = Ingrediente.objects.get(id_ingrediente=id_ingrediente)
+    if request.method=='POST':
+        ingrediente.delete()
+        return redirect('material:listar_ingrediente')
+    return redirect('index')

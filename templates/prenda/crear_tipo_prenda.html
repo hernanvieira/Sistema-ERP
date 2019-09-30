@@ -31,14 +31,15 @@ Nuevo Tipo de Prenda
         <div class="label label-info">{{componente.nombre}}</div>
 
         {% endfor %}
-
       <div class="card-footer">
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Crear
         </button>
-        <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
-        </button>
+        <a href="{% url 'index'%}">
+          <button type="button" class="btn btn-danger" onclick="history.back()">
+            <i class="fa fa-ban"></i> Cancelar
+          </button>
+        </a>
       </div>
     {% endif %}
     </form>

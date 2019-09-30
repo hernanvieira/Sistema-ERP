@@ -12,9 +12,9 @@ Crear cliente
 
     <form method="POST">
       {% csrf_token %}
-      <!-- {% if error %}
+      {% if error %}
         <h2>{{ error }}</h2>
-      {% else %} -->
+      {% else %}
       {{cliente_form.dni.label}}
       <div class="form-control">
         {{cliente_form.dni}}

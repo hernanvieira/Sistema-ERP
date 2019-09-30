@@ -2,23 +2,25 @@
 {% load static %}
 
 {% block titulo %}
-Listado de Clientes
+Gestionar Clientes
 {% endblock titulo %}
 
 {% block content %}
 <div>
-<div style="margin-left: 220px; height: 75px;">
+<div class="row">
+  <div class="col-md-12">
   <form class="form-header" action="" method="POST">
       <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Pedido o Cliente..." />
-      <button class="btn btn-info" type="submit">
+      <button class="btn btn-info" onclick="location.href='#'" >
           <i class="zmdi zmdi-search"></i>
       </button>
       <button class="btn btn-success" style="margin-left: 10px" type="button" onclick="location.href='/cliente/crear_cliente/'">
           <i class="fas fa-plus"></i>
       </button>
-
   </form>
+  </div>
 </div>
+<br>
 
   {% if clientes %}
   <!-- DATA TABLE-->

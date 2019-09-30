@@ -36,8 +36,12 @@
 
 </head>
 {% block body %}
+
+
+
 <body class="animsition">
     <div class="page-wrapper">
+
         <!-- HEADER MOBILE-->
         <header class="header-mobile d-block d-lg-none">
             <div class="header-mobile__bar">
@@ -173,13 +177,7 @@
                                     <a href="/pedido/crear_pedido/">Nuevo Pedido</a>
                                 </li>
                                 <li>
-                                    <a href="index2.html">Seguir Pedido</a>
-                                </li>
-                                <li>
-                                    <a href="index3.html">Ver Pedidos</a>
-                                </li>
-                                <li>
-                                    <a href="index4.html">Modificar Pedido</a>
+                                    <a href="/pedido/listar_pedido/">Gestionar Pedidos</a>
                                 </li>
                                 <li>
                                     <a href="index4.html">Cancelar Pedido</a>
@@ -228,6 +226,68 @@
             </div>
         </aside>
         <!-- END MENU SIDEBAR-->
+
+
+    <!-- Modal -->
+
+    <div class="modal fade show" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="card-header bg-success">
+            <strong class="card-title text-light" id="exampleModalLabel">Agregar pedido</strong>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="card-body">
+              <form method="POST">
+                {% csrf_token %}
+                {% if error %}
+                  <h2>{{ error }}</h2>
+                {% else %}
+                {{cliente_form.dni.label}}
+                <div class="form-control">
+                  {{cliente_form.dni}}
+                </div>
+                {{cliente_form.apellido.label}}
+                <div class="form-control">
+                  {{cliente_form.apellido}}
+                </div>
+                {{cliente_form.nombre.label}}
+                <div class="form-control">
+                  {{cliente_form.nombre}}
+                </div>
+                {{cliente_form.telefono.label}}
+                <div class="form-control">
+                  {{cliente_form.telefono}}
+                </div>
+                {{cliente_form.correo.label}}
+                <div class="form-control">
+                  {{cliente_form.correo}}
+                </div>
+                {{cliente_form.domicilio.label}}
+                <div class="form-control">
+                  {{cliente_form.domicilio}}
+                </div>
+
+                <!-- {% endif %} -->
+                <div class="card-footer">
+                  <div class="alineado-derecha">
+                    <button type="submit" class="btn btn-success">
+                      <i class="fa fa-dot-circle-o"></i> Crear
+                    </button>
+                    <button type="reset" class="btn btn-danger">
+                      <i class="fa fa-ban"></i> Reset
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
@@ -410,9 +470,6 @@
                             <div class="col-md-12">
                               {% block content %}
 
-                              <div class="alineado-centro">
-
-                              </div>
 
                               {% endblock content %}
                             </div>
@@ -448,6 +505,50 @@
 
     <!-- Main JS-->
     <script src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript">
+$(function() {
+  // for now, there is something adding a click handler to 'a'
+  var tues = moment().day(2).hour(19);
+
+  // build trival night events for example data
+  var events = [
+    {
+      title: "Special Conference",
+      start: moment().format('YYYY-MM-DD'),
+      url: '#'
+    },
+    {
+      title: "Doctor Appt",
+      start: moment().hour(9).add(2, 'days').toISOString(),
+      url: '#'
+    }
+
+  ];
+
+  var trivia_nights = []
+
+  for(var i = 1; i <= 4; i++) {
+    var n = tues.clone().add(i, 'weeks');
+    console.log("isoString: " + n.toISOString());
+    trivia_nights.push({
+      title: 'Trival Night @ Pub XYZ',
+      start: n.toISOString(),
+      allDay: false,
+      url: '#'
+    });
+  }
+
+  // setup a few events
+  $('#calendar').fullCalendar({
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay,listWeek'
+    },
+    events: events.concat(trivia_nights)
+  });
+});
+    </script>
 
 </body>
 {% endblock body %}

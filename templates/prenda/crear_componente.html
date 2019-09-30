@@ -26,9 +26,11 @@ Nuevo Componente
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Crear
         </button>
-        <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
+        <a href="{% url 'index'%}">
+        <button type="button" class="btn btn-danger" >
+          <i class="fa fa-ban"></i> Cancelar
         </button>
+        </a>
       </div>
     {% endif %}
     </form>

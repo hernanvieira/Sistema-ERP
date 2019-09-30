@@ -18,25 +18,37 @@ Nuevo Tipo de Material
         <h2>{{ error }}</h2>
       {% else %}
 
-      {{tipo_material_form.nombre.label}}
-      <div class="form-control">
-        {{tipo_material_form.nombre}}
-      </div>
-      {{tipo_material_form.unidad_medida.label}}
-      <div class="form-control">
-        {{tipo_material_form.unidad_medida}}
-        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'material:crear_unidad_medida' %}'">
-          <i class="fas fa-cog"></i>
-        </button>
+      <div class="row">
+        <div class="col-md-12">
+          {{tipo_material_form.nombre.label}}
+          <div class="form-control">
+            {{tipo_material_form.nombre}}
+          </div>
+        </div>
+        <div class="col-md-10">
+          {{tipo_material_form.unidad_medida.label}}
+          <div class="form-control">
+            {{tipo_material_form.unidad_medida}}
+          </div>
+        </div>
+        <div class="col-md-2">
+          <br>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'material:crear_unidad_medida' %}'">
+            <i class="fas fa-cog"></i>
+          </button>
+        </div>
+
       </div>
 
       <div class="card-footer">
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Crear
         </button>
-        <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
+        <a href="{% url 'index'%}">
+        <button type="button" class="btn btn-danger" >
+          <i class="fa fa-ban"></i> Cancelar
         </button>
+        </a>
       </div>
     {% endif %}
     </form>

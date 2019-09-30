@@ -10,51 +10,135 @@ Crear pedido
   <div class="card-header bg-success"><strong class="card-title text-light">Agregar pedido</strong></div>
   <div class="card-body card-block">
 
+
     <form method="POST">
       {% csrf_token %}
       {% if error %}
         <h2>{{ error }}</h2>
       {% else %}
-      
-      {{pedido_form.fecha_entrega.label}}
-      <div class="form-control">
-        {{pedido_form.fecha_entrega}}
-      </div>
-      {{pedido_form.precio_total.label}}
-      <div class="form-control">
-        {{pedido_form.precio_total}}
-      </div>
-      {{pedido_form.entrega.label}}
-      <div class="form-control">
-        {{pedido_form.entrega}}
-      </div>
-      {{pedido_form.seña.label}}
-      <div class="form-control">
-        {{pedido_form.seña}}
-      </div>
-      {{pedido_form.prioridad_entrega.label}}
-      <div class="form-control">
-        {{pedido_form.prioridad_entrega}}
-      </div>
-      {{pedido_form.cliente.label}}
-      <div class="form-control">
-        {{pedido_form.cliente}}
+
+      <div class="row">
+        <!-- cliente -->
+        <div class="col-md-11">
+          {{pedido_form.cliente.label}}
+          <div class="form-control">
+            {{pedido_form.cliente}}
+          </div>
+        </div>
+        <div class="col-md-1">
+          <br>
+          <button class="btn btn-success" type="button" data-toggle="modal" data-target="#largeModal">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <!-- end cliente -->
+        <div class="col-md-12">
+          <!-- Button trigger modal -->
+          <hr class="line-seprate">
+          <a>Prenda/s</a>
+          <div>
+            <button type="submit" class="btn btn-success">
+              <i class="fa fa-dot-circle-o"></i> Agregar Prenda
+            </button>
+          </div>
+          <hr class="line-seprate">
+          {% if detalles %}
+          <!-- DATA TABLE-->
+          <div class="table-responsive m-b-40">
+              <table class="table table-borderless table-data3">
+                  <thead>
+                      <tr>
+                          <th>Tipo de Prenda</th>
+                          <th>Talle</th>
+                          <th>Cantidad</th>
+                          <th>Tiempo Prod. Lote</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for detalle in detalles %}
+                      <tr>
+                        <td>{{detalle.prenda.tipo_prenda}}</td>
+                        <td>{{detalle.prenda.talle}}</td>
+                        <td>{{detalle.cantidad}}</td>
+                        <td>{{detalle.tiempo_prod_lote}}</td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle %}'">
+                              <i class="fas fa-pencil-square-o"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle %}'">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+          <!-- END DATA TABLE-->
+          {% endif %}
+        </div>
+        <div class="col-md-4">
+          {{pedido_form.fecha_entrega.label}}
+          <div class="form-control">
+            {{pedido_form.fecha_entrega}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{pedido_form.prioridad_entrega.label}}
+          <div class="form-control">
+            {{pedido_form.prioridad_entrega}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{pedido_form.precio_total.label}}
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fa fa-dollar"></i>
+            </div>
+            <div class="form-control">
+              {{pedido_form.precio_total}}
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+          <a>Seña minima</a>
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fa fa-dollar"></i>
+            </div>
+            <div class="form-control">
+              {{pedido_form.seña}}
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+          {{pedido_form.entrega.label}}
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fa fa-dollar"></i>
+            </div>
+            <div class="form-control">
+              {{pedido_form.entrega}}
+            </div>
+          </div>
+        </div>
       </div>
 
       {% endif %}
       <div class="card-footer">
-        <button type="submit" class="btn btn-success">
+        <button type="button" class="btn btn-success" onclick="location.href='{% url 'pedido:listar_pedido' %}'">
           <i class="fa fa-dot-circle-o"></i> Crear
         </button>
-        <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
+        <button type="button" class="btn btn-danger" onclick="history.back()">
+          <i class="fa fa-ban"></i> Cancelar
         </button>
       </div>
 
     </form>
-
-
   </div>
 </div>
-</div>
+
 {% endblock content%}
