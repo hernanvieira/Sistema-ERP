@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_estado_pedido', models.AutoField(primary_key=True, serialize=False)),
                 ('fecha', models.DateField()),
-                ('estado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='estado.Estado')),
-                ('pedido', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pedido.Pedido')),
+                ('estado', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='estado.Estado')),
+                ('pedido', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='pedido.Pedido')),
             ],
         ),
         migrations.CreateModel(
@@ -36,8 +36,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_estado_lote', models.AutoField(primary_key=True, serialize=False)),
                 ('fecha', models.DateField()),
-                ('detalle', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pedido.Detalle')),
-                ('pedido', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='pedido.Pedido')),
+                ('detalle', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='pedido.Detalle')),
+                ('pedido', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='pedido.Pedido')),
             ],
         ),
     ]

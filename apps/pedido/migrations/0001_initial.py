@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('entrega', models.DecimalField(blank=True, decimal_places=2, default=0, max_digits=10, null=True)),
                 ('seña', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
                 ('prioridad_entrega', models.CharField(blank=True, max_length=50, null=True)),
-                ('cliente', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cliente.Cliente')),
+                ('cliente', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='cliente.Cliente')),
             ],
         ),
         migrations.CreateModel(
@@ -33,8 +33,8 @@ class Migration(migrations.Migration):
                 ('id_detalle', models.AutoField(primary_key=True, serialize=False)),
                 ('cantidad', models.IntegerField()),
                 ('tiempo_prod_lote', models.IntegerField(blank=True, null=True)),
-                ('pedido', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='pedido.Pedido')),
-                ('prenda', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='prenda.Prenda')),
+                ('pedido', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='pedido.Pedido')),
+                ('prenda', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, to='prenda.Prenda')),
             ],
         ),
     ]

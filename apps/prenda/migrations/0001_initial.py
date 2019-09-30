@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('talle', models.IntegerField()),
                 ('tiempo_prod_prenda', models.IntegerField()),
                 ('precio', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('tipo_prenda', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='prenda.Tipo_prenda')),
+                ('tipo_prenda', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='prenda.Tipo_prenda')),
             ],
             options={
                 'verbose_name': 'Prenda',
@@ -58,9 +58,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_ingrediente', models.AutoField(primary_key=True, serialize=False)),
                 ('cantidad', models.PositiveIntegerField()),
-                ('componente', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='prenda.Componente')),
-                ('material', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='material.Material')),
-                ('prenda', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='prenda.Prenda')),
+                ('componente', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='prenda.Componente')),
+                ('material', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='material.Material')),
+                ('prenda', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='prenda.Prenda')),
             ],
             options={
                 'verbose_name': 'Ingrediente',

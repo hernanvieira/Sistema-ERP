@@ -18,7 +18,7 @@ class Unidad_medida (models.Model):
 class Tipo_material (models.Model):
     id_tipo_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
-    unidad_medida = models.ForeignKey(Unidad_medida,on_delete=models.CASCADE)
+    unidad_medida = models.ForeignKey(Unidad_medida,on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Tipo de Material'
@@ -33,7 +33,7 @@ class Material (models.Model):
     nombre = models.CharField(max_length=100)
     color = models.CharField(max_length=50)
     stock = models.PositiveIntegerField()
-    tipo_material = models.ForeignKey(Tipo_material, on_delete=models.CASCADE)
+    tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Material'

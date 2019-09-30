@@ -31,7 +31,7 @@ class Prenda (models.Model):
     id_prenda = models.AutoField(primary_key = True)
     talle = models.IntegerField()
     tiempo_prod_prenda = models.IntegerField()
-    tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.CASCADE)
+    tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.PROTECT)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
@@ -45,9 +45,9 @@ class Prenda (models.Model):
 class Ingrediente (models.Model):
     id_ingrediente = models.AutoField(primary_key=True)
     cantidad = models.PositiveIntegerField()
-    prenda = models.ForeignKey(Prenda, on_delete=models.CASCADE)
-    componente = models.ForeignKey(Componente, on_delete=models.CASCADE)
-    material =  models.ForeignKey(Material, on_delete=models.CASCADE)
+    prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT)
+    componente = models.ForeignKey(Componente, on_delete=models.PROTECT)
+    material =  models.ForeignKey(Material, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Ingrediente'

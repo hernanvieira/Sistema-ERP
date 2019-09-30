@@ -13,11 +13,11 @@ class Estado (models.Model):
 class Estado_pedido (models.Model):
     id_estado_pedido = models.AutoField(primary_key=True)
     fecha = models.DateField()
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT)
+    estado = models.ForeignKey(Estado, on_delete=models.PROTECT)
 
 class Estado_lote (models.Model):
     id_estado_lote = models.AutoField(primary_key=True)
     fecha = models.DateField()
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
-    detalle = models.ForeignKey(Detalle, on_delete = models.CASCADE)
+    pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT)
+    detalle = models.ForeignKey(Detalle, on_delete = models.PROTECT)

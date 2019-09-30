@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id_tipo_material', models.AutoField(primary_key=True, serialize=False)),
                 ('nombre', models.CharField(max_length=100)),
-                ('unidad_medida', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='material.Unidad_medida')),
+                ('unidad_medida', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='material.Unidad_medida')),
             ],
             options={
                 'verbose_name': 'Tipo de Material',
@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
                 ('nombre', models.CharField(max_length=100)),
                 ('color', models.CharField(max_length=50)),
                 ('stock', models.PositiveIntegerField()),
-                ('tipo_material', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='material.Tipo_material')),
+                ('tipo_material', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='material.Tipo_material')),
             ],
             options={
                 'verbose_name': 'Material',
