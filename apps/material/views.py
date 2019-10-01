@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import Tipo_materialForm, MaterialForm, Unidad_medidaForm, CompraForm
 from .models import Tipo_material, Material, Unidad_medida, Compra
 from django.core.exceptions import ObjectDoesNotExist
@@ -35,11 +35,21 @@ def EditarTipo_material (request,id_tipo_material):
     return render(request,'material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form, 'error':error})
 #Eliminar un tipo_material
 def EliminarTipo_material (request,id_tipo_material):
-    tipo_material = Tipo_material.objects.get(id_tipo_material=id_tipo_material)
-    if request.method=='POST':
-        tipo_material.delete()
-        return redirect('material:listar_tipo_material')
-    return render(request,'material/eliminar_tipo_material.html',{'tipo_material':tipo_material})
+    try:
+        error = None
+        tipo_material = None
+        tipo_material = get_object_or_404(Tipo_material,id_tipo_material=id_tipo_material)
+        if request.method=='POST':
+            try:
+                tipo_material.delete()
+                return redirect('material:listar_tipo_material')
+            except ObjectDoesNotExist as e:
+                error = e
+            except Exception as e:
+                error = e
+    except Exception as e:
+        error = e
+    return render(request,'material/eliminar_tipo_material.html',{'tipo_material':tipo_material, 'error':error})
 
 #Crear un material
 def CrearMaterial (request):
@@ -73,11 +83,18 @@ def EditarMaterial (request,id_material):
     return render(request,'material/crear_material.html',{'material_form':material_form, 'error':error})
 #Eliminar un material
 def EliminarMaterial (request,id_material):
-    material = Material.objects.get(id_material=id_material)
-    if request.method=='POST':
-        material.delete()
-        return redirect('material:listar_material')
-    return render(request,'material/eliminar_material.html',{'material':material})
+    error = None
+    try:
+        material = None
+        material = get_object_or_404(Material,id_material=id_material)
+        if request.method=='POST':
+            material.delete()
+            return redirect('material:listar_material')
+    except Exception as e:
+        error = e
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'material/eliminar_material.html',{'material':material, 'error':error})
 
 #Crear una unidad de medida
 def CrearUnidad_medida (request):
@@ -111,12 +128,17 @@ def EditarUnidad_medida (request,id_unidad):
     return render(request,'material/crear_unidad_medida.html',{'unidad_medida_form':unidad_medida_form, 'error':error})
 #Eliminar un unidad_medida
 def EliminarUnidad_medida (request,id_unidad):
-    unidad_medida = Unidad_medida.objects.get(id_unidad=id_unidad)
-    if request.method=='POST':
-        unidad_medida.delete()
-        return redirect('material:listar_unidad_medida')
-    return render(request,'material/eliminar_unidad_medida.html',{'unidad_medida':unidad_medida})
-
+    error = None
+    try:
+        unidad_medida = get_object_or_404(Unidad_medida,id_unidad=id_unidad)
+        if request.method=='POST':
+            unidad_medida.delete()
+            return redirect('material:listar_unidad_medida')
+    except Exception as e:
+        error = e
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'material/eliminar_unidad_medida.html',{'unidad_medida':unidad_medida, 'error':error})
 
 #Registrar una compra
 def CrearCompra (request):
@@ -156,8 +178,8 @@ def EditarCompra (request,id_compra):
     return render(request,'material/crear_compra.html',{'compra_form':compra_form, 'error':error})
 #Eliminar un compra
 def EliminarCompra (request,id_compra):
-    compra = compra.objects.get(id_compra=id_compra)
+    compra = Compra.objects.get(id_compra=id_compra)
     if request.method=='POST':
         compra.delete()
         return redirect('material:listar_compra')
-    return render(request,'material/eliminar_compra.html',{'compra':compra})
+    return render(request,'material/eliminar_compra.html',{'compra':compra,})

@@ -55,4 +55,4 @@ class Ingrediente (models.Model):
         ordering = ['id_ingrediente']
 
     def __str__(self):
-        return self.nombre
+        return str(self.id_ingrediente)

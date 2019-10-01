@@ -7,8 +7,12 @@ Eliminar Tipo de material
 {% block content%}
   <form method="POST">
     {%csrf_token%}
+    {% if error %}
+      <h2>{{error}}</h2>
+    {% else %}
     <h2>¿Desea eliminar el tipo de material {{ tipo_material.id_tipo_material}}?</h2>
     <button type="submit">Eliminar</button>
     <a href="{% url 'material:listar_tipo_material' %}">Cancelar</a>
+    {% endif %}
   </form>
 {% endblock content%}

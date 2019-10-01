@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm
 from .models import Pedido, Detalle
 from apps.prenda.models import Prenda
@@ -66,8 +66,14 @@ def EditarPedido (request,id_pedido):
     return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'error':error})
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):
-    pedido = Pedido.objects.get(id_pedido=id_pedido)
-    if request.method=='POST':
-        pedido.delete()
-        return redirect('pedido:listar_pedido')
-    return render(request,'pedido/eliminar_pedido.html',{'pedido':pedido})
+    error = None
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    try:
+        if request.method=='POST':
+            pedido.delete()
+            return redirect('pedido:listar_pedido')
+    except Exception as e:
+        error = e
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'pedido/eliminar_pedido.html',{'pedido':pedido,'error':error})

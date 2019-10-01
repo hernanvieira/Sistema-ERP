@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import ComponenteForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
 from .models import Componente, Tipo_prenda, Prenda, Ingrediente
 from apps.pedido.models import Pedido, Detalle
@@ -35,11 +35,17 @@ def EditarComponente (request,id_componente):
     return render(request,'prenda/crear_componente.html',{'componente_form':componente_form, 'error':error})
 #Eliminar un componente
 def EliminarComponente (request,id_componente):
-    componente = Componente.objects.get(id_componente=id_componente)
-    if request.method=='POST':
-        componente.delete()
-        return redirect('prenda:listar_componente')
-    return render(request,'prenda/eliminar_componente.html',{'componente':componente})
+    error = None
+    componente = get_object_or_404(Componente, id_componente=id_componente)
+    try:
+        if request.method=='POST':
+            componente.delete()
+            return redirect('prenda:listar_componente')
+    except Exception as e:
+        error = e
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'prenda/eliminar_componente.html',{'componente':componente, 'error':error})
 
 #Crear un tipo de prenda
 def CrearTipo_prenda (request):
@@ -90,11 +96,17 @@ def VerTipo_prenda (request,id_tipo_prenda):
     return render(request,'prenda/ver_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'componentes':componentes, 'error':error})
 #Eliminar un tipo de prenda
 def EliminarTipo_prenda (request,id_tipo_prenda):
-    tipo_prenda = Tipo_prenda.objects.get(id_tipo_prenda=id_tipo_prenda)
-    if request.method=='POST':
-        tipo_prenda.delete()
-        return redirect('prenda:listar_tipo_prenda')
-    return render(request,'prenda/eliminar_tipo_prenda.html',{'tipo_prenda':tipo_prenda})
+    error = None
+    tipo_prenda = get_object_or_404(Tipo_prenda, id_tipo_prenda=id_tipo_prenda)
+    try:
+        if request.method=='POST':
+            tipo_prenda.delete()
+            return redirect('prenda:listar_tipo_prenda')
+    except Exception as e:
+        error = e
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request,'prenda/eliminar_tipo_prenda.html',{'tipo_prenda':tipo_prenda, 'error':error})
 
 #Registrar una prenda al detalle
 def CrearPrenda (request,id_pedido):
