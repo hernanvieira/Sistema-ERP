@@ -1,5 +1,6 @@
 from django.db import models
 from apps.material.models import Material
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 #Se crean las clases de acuerdo con diagrama de clases
 class Componente (models.Model):
@@ -32,7 +33,7 @@ class Prenda (models.Model):
     talle = models.IntegerField()
     tiempo_prod_prenda = models.IntegerField()
     tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.PROTECT)
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)])
 
     class Meta:
         verbose_name = 'Prenda'

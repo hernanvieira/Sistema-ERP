@@ -6,6 +6,7 @@ Crear pedido
 {% endblock titulo%}
 {% block content%}
 
+
 <div class="card">
   <div class="card-header bg-success"><strong class="card-title text-light">Agregar pedido</strong></div>
   <div class="card-body card-block">
@@ -78,6 +79,20 @@ Crear pedido
           <!-- END DATA TABLE-->
           {% endif %}
         </div>
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
           <div class="form-control">
@@ -115,6 +130,7 @@ Crear pedido
 
         </div>
         <div class="col-md-4">
+          
           {{pedido_form.entrega.label}}
           <div class="input-group">
             <div class="input-group-addon">

@@ -1,6 +1,7 @@
 from django.db import models
 from apps.cliente.models import Cliente
 from apps.prenda.models import Prenda
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 #Se crean las clases de acuerdo al diagrama de clases
 
@@ -8,9 +9,9 @@ class Pedido (models.Model):
     id_pedido = models.AutoField(primary_key=True)
     fecha_pedido = models.DateField(auto_now=True)
     fecha_entrega = models.DateField(null = True, blank = True)
-    precio_total = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True)
-    entrega = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0)
-    seña = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True)
+    precio_total = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, validators=[MinValueValidator(0.00)])
+    entrega = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0, validators=[MinValueValidator(0.00)])
+    seña = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, validators=[MinValueValidator(0.00)])
     prioridad_entrega = models.CharField(max_length=50, null = True, blank=True)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
 

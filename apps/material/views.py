@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import Tipo_materialForm, MaterialForm, Unidad_medidaForm, CompraForm
 from .models import Tipo_material, Material, Unidad_medida, Compra
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 #Crear un tipo de tipo_material
 def CrearTipo_material (request):
@@ -33,23 +34,18 @@ def EditarTipo_material (request,id_tipo_material):
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form, 'error':error})
-#Eliminar un tipo_material
+
+#Eliminar un cliente
 def EliminarTipo_material (request,id_tipo_material):
+    tipo_material = get_object_or_404(Tipo_material,id_tipo_material=id_tipo_material)
     try:
-        error = None
-        tipo_material = None
-        tipo_material = get_object_or_404(Tipo_material,id_tipo_material=id_tipo_material)
-        if request.method=='POST':
-            try:
-                tipo_material.delete()
-                return redirect('material:listar_tipo_material')
-            except ObjectDoesNotExist as e:
-                error = e
-            except Exception as e:
-                error = e
+        tipo_material.delete()
+        tipo_materiales = Tipo_material.objects.all()
+        return render (request,'material/listar_tipo_material',{'tipo_material':tipo_material,'tipo_materiales':tipo_materiales})
     except Exception as e:
-        error = e
-    return render(request,'material/eliminar_tipo_material.html',{'tipo_material':tipo_material, 'error':error})
+        messages.error(request, 'Ocurrió un error al tratar de eliminar el tipo de material')
+        tipo_materiales = Tipo_material.objects.all()
+        return render(request,'material/listar_tipo_material.html',{'tipo_material':tipo_material,'tipo_materiales':tipo_materiales})
 
 #Crear un material
 def CrearMaterial (request):

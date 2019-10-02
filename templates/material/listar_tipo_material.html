@@ -7,7 +7,16 @@ Listado de Tipos de Materials
 {% endblock titulo%}
 
 {% block content%}
-
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }} {{tipo_material.nombre}}</p>
+    </div>
+    {% endfor %}
+  </ul>
+{% endif %}
 {% if tipo_materiales %}
 <!-- DATA TABLE-->
 <div class="table-responsive m-b-40">
@@ -28,9 +37,30 @@ Listado de Tipos de Materials
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_tipo_material' tipo_material.id_tipo_material %}'">
                 <i class="fas fa-pencil-square-o"></i>
               </button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'material:eliminar_tipo_material' tipo_material.id_tipo_material %}'">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{tipo_material.id_tipo_material}}">
                 <i class="fas fa-trash"></i>
               </button>
+              <div class="modal fade bs-example-modal-lg2{{tipo_material.id_tipo_material}}" id="myModal2{{tipo_material.id_tipo_material}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel{{tipo_material.id_tipo_material}}">Confirmar Eliminacion</h4>
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                              <a>¿Está seguro de <strong>eliminar</strong> el tipo de material {{tipo_material.nombre}}?</a>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="alineado-derecha">
+                              <a href="{% url 'material:eliminar_tipo_material' tipo_material.id_tipo_material %}">
+                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                              </a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
             </td>
           </tr>
         {% endfor %}

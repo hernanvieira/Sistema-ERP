@@ -21,8 +21,17 @@ Gestionar Clientes
   </div>
 </div>
 <br>
-
-  {% if clientes %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }} {{cliente.apellido}} {{cliente.nombre}}</p>
+    </div>
+    {% endfor %}
+  </ul>
+{% endif %}
+{% if clientes %}
   <!-- DATA TABLE-->
   <div class="table-responsive m-b-40"">
       <table class="table table-borderless table-data3">
@@ -54,16 +63,38 @@ Gestionar Clientes
                 <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'cliente:editar_cliente' cliente.dni %}'">
                   <i class="fas fa-pencil-square-o"></i>
                 </button>
-                <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'cliente:eliminar_cliente' cliente.dni %}'">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{cliente.dni}}">
                   <i class="fas fa-trash"></i>
                 </button>
-
+                <div class="modal fade bs-example-modal-lg2{{cliente.dni}}" id="myModal2{{cliente.dni}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel{{cliente.dni}}">Confirmar Eliminacion</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <a>¿Está seguro de <strong>eliminar</strong> al cliente {{cliente.apellido}} {{cliente.nombre}} ?</a>
+                            </div>
+                            <div class="modal-footer">
+                              <div class="alineado-derecha">
+                                <a href="{% url 'cliente:eliminar_cliente' cliente.dni %}">
+                                  <button type="button" class="btn btn-danger" >Eliminar</button>
+                                </a>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
               </td>
             </tr>
           {% endfor %}
+
         </tbody>
       </table>
   <!-- END DATA TABLE-->
+
   {% else %}
     <h1>No existen clientes registrados</h1>
   {% endif %}

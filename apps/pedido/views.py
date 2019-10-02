@@ -5,23 +5,37 @@ from apps.prenda.models import Prenda
 from apps.prenda.views import CrearPrenda
 from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
+import datetime
+from django.contrib import messages
 #Crear un pedido
 def CrearPedido (request):
     if request.method == 'POST':
-        print(request.POST)
         pedido_form = PedidoForm(request.POST)
         prenda_form = PrendaForm(request.POST)
         cliente_form = ClienteForm(request.POST)
-        if cliente_form.is_valid() :
+        if cliente_form.is_valid():
             cliente_form.save()
         if pedido_form.is_valid():
-            pedido = pedido_form.save()
-            id_pedido = pedido.id_pedido
-            return redirect('/prenda/crear_prenda/'+str(id_pedido))
+            pedido = pedido_form.save(commit = False)
+            if pedido.fecha_entrega != None:
+                fecha = datetime.datetime.strptime(str(pedido.fecha_entrega), '%Y-%m-%d')
+                if fecha.date() > datetime.date.today():
+                    pedido = pedido_form.save()
+                    id_pedido = pedido.id_pedido
+                    return redirect('/prenda/crear_prenda/'+str(id_pedido))
+                else:
+                    messages.error(request, 'La fecha debe ser posterior a la actual')
+            else:
+                pedido = pedido_form.save()
+                id_pedido = pedido.id_pedido
+                return redirect('/prenda/crear_prenda/'+str(id_pedido))
+        else:
+            messages.error(request, 'No se puede introducir valores negativos')
     else:
         pedido_form = PedidoForm()
         cliente_form = ClienteForm()
     return render(request, 'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
+
 #Listar todos los pedidoes
 def ListarPedido (request):
     pedidos = Pedido.objects.all()

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import ClienteForm
 from .models import Cliente
 from django.core.exceptions import *
+from django.contrib import messages
 # Create your views here.
 
 #Pagina de inicio
@@ -37,24 +38,16 @@ def EditarCliente (request,dni):
     except ObjectDoesNotExist as e:
         error = e
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form, 'error':error})
+
 #Eliminar un cliente
 def EliminarCliente (request,dni):
+    cliente = get_object_or_404(Cliente,dni=dni)
     try:
-        error = None
-        cliente = get_object_or_404(Cliente,dni=dni)
-        #cliente = Cliente.objects.get(dni = dni)
-        if request.method=='POST':
-            try:
-                cliente.delete()
-                return redirect('cliente:cliente_home')
-            except ObjectDoesNotExist as e:
-                error = e
-            except Exception as e:
-                error = e
-    except Exception  as e:
-        error = e
-    return render(request,'cliente/eliminar_cliente.html',{'cliente':cliente, 'error':error})
-
+        cliente.delete()
+    except Exception as e:
+        messages.error(request, 'Ocurrió un error al tratar de eliminar el cliente')
+    clientes = Cliente.objects.all()
+    return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
 
 def ClienteHome(request):
     clientes = Cliente.objects.all()
