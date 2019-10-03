@@ -55,7 +55,7 @@ class PedidoForm (forms.ModelForm):
         model = Pedido
         fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
         widgets = {
-        'fecha_entrega' : forms.DateTimeInput(),
+        'fecha_entrega' : forms.DateInput(),
         'prioridad_entrega' : forms.Select(choices = CHOICES)
         }
 

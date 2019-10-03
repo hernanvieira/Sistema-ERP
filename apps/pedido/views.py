@@ -10,27 +10,37 @@ from django.contrib import messages
 #Crear un pedido
 def CrearPedido (request):
     if request.method == 'POST':
-        pedido_form = PedidoForm(request.POST)
-        prenda_form = PrendaForm(request.POST)
-        cliente_form = ClienteForm(request.POST)
-        if cliente_form.is_valid():
-            cliente_form.save()
-        if pedido_form.is_valid():
-            pedido = pedido_form.save(commit = False)
-            if pedido.fecha_entrega != None:
-                fecha = datetime.datetime.strptime(str(pedido.fecha_entrega), '%Y-%m-%d')
-                if fecha.date() > datetime.date.today():
+        if 'boton_agregar' in request.POST:
+            pedido_form = PedidoForm(request.POST)
+            prenda_form = PrendaForm(request.POST)
+            cliente_form = ClienteForm(request.POST)
+            if cliente_form.is_valid():
+                cliente_form.save()
+            if pedido_form.is_valid():
+                pedido = pedido_form.save(commit = False)
+                if pedido.fecha_entrega != None:
+                    fecha = datetime.datetime.strptime(str(pedido.fecha_entrega), '%Y-%m-%d')
+                    if fecha.date() > datetime.date.today():
+                        pedido = pedido_form.save()
+                        id_pedido = pedido.id_pedido
+                        return redirect('/prenda/crear_prenda/'+str(id_pedido))
+                    else:
+                        messages.error(request, 'La fecha debe ser posterior a la actual')
+                else:
                     pedido = pedido_form.save()
                     id_pedido = pedido.id_pedido
                     return redirect('/prenda/crear_prenda/'+str(id_pedido))
-                else:
-                    messages.error(request, 'La fecha debe ser posterior a la actual')
             else:
-                pedido = pedido_form.save()
-                id_pedido = pedido.id_pedido
-                return redirect('/prenda/crear_prenda/'+str(id_pedido))
+                messages.error(request, 'No se puede introducir valores negativos')
         else:
-            messages.error(request, 'No se puede introducir valores negativos')
+            pedido_form = PedidoForm(request.POST)
+            pedido = pedido_form.save(commit=False)
+            if pedido.precio_total != None:
+                pedido.save()
+                return redirect('/pedido/listar_pedido/')
+            else:
+                cliente_form = ClienteForm(request.POST)
+                messages.error(request, 'Debe agregar prendas')
     else:
         pedido_form = PedidoForm()
         cliente_form = ClienteForm()
@@ -43,24 +53,30 @@ def ListarPedido (request):
 
 #Volver al pedido
 def VolverPedido (request,id_pedido,id_detalle):
-    try:
         detalles = None
         error = None
         pedido_form=None
         pedido = Pedido.objects.get(id_pedido=id_pedido)
         pedido_id = pedido.id_pedido
         detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
-        print(detalles)
         if request.method=='GET':
             pedido_form=PedidoForm(instance=pedido)
         else:
-            pedido_form=PedidoForm(request.POST, instance=pedido)
-            if pedido_form.is_valid():
-                pedido_form.save()
-            return redirect('/prenda/crear_prenda/'+str(id_pedido))
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles, 'error':error,'id_pedido':id_pedido})
+            if 'boton_agregar' in request.POST:
+                pedido_form=PedidoForm(request.POST, instance=pedido)
+                if pedido_form.is_valid():
+                    pedido_form.save()
+                return redirect('/prenda/crear_prenda/'+str(id_pedido))
+            else:
+                pedido_form = PedidoForm(request.POST)
+                pedido = pedido_form.save(commit=False)
+                if pedido.precio_total != None:
+                    pedido.save()
+                    return redirect('/pedido/listar_pedido/')
+                else:
+                    cliente_form = ClienteForm(request.POST)
+                    messages.error(request, 'Debe agregar prendas')
+        return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles,'id_pedido':id_pedido})
 
 #Editar un pedido
 def EditarPedido (request,id_pedido):

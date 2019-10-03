@@ -138,24 +138,35 @@ def ListarPrenda (request):
     prendas = Prenda.objects.all()
     return redirect('index')
 #Editar una prenda
-def EditarPrenda (request,id_prenda,id_detalle):
+def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
     try:
         error = None
         prenda_form=None
         detalle_form=None
         prenda = Prenda.objects.get(id_prenda=id_prenda)
         detalle = Detalle.objects.get(id_detalle=id_detalle)
+        pedido = Pedido.objects.get(id_pedido=id_pedido)
         if request.method=='GET':
             prenda_form=PrendaForm(instance=prenda)
             detalle_form=DetalleForm(instance=detalle)
         else:
             prenda_form=PrendaForm(request.POST, instance=prenda)
             detalle_form=DetalleForm(request.POST, instance=detalle)
-            if detalle_form.is_valid():
-                detalle_form.save()
-            if prenda_form.is_valid():
-                prenda_form.save()
-            return redirect('index')
+            if prenda_form.is_valid() and detalle_form.is_valid():
+                prenda = prenda_form.save() #Guardo prenda
+                detalle = detalle_form.save() #Guardo detalle
+                detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+                detalle.save() #Actualizo el detalle
+                pedido.precio_total = prenda.precio * detalle.cantidad #Calculo precio total
+                pedido.seña = pedido.precio_total/2
+                # Asocio datos de prenda y pedido a detalle
+                detalle.prenda = prenda
+                detalle.pedido = pedido
+                detalle.tiempo_prod_lote = prenda.tiempo_prod_prenda * detalle.cantidad #Calculo el tiempo de produccion de lote
+                pedido.save() # Actualizo el pedido
+                detalle.save() # Actualizo el detalle
+                id_detalle = detalle.id_detalle #Obtengo el id del detalle
+                return redirect('/pedido/volver_pedido/'+str(id_pedido)+ '/' +str(id_detalle))
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form, 'error':error, 'detalle_form':detalle_form})
