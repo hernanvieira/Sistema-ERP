@@ -52,7 +52,7 @@ def ListarPedido (request):
     return render(request,'pedido/listar_pedido.html',{'pedidos':pedidos})
 
 #Volver al pedido
-def VolverPedido (request,id_pedido,id_detalle):
+def VolverPedido (request,id_pedido):
         detalles = None
         error = None
         pedido_form=None
@@ -76,7 +76,7 @@ def VolverPedido (request,id_pedido,id_detalle):
                 else:
                     cliente_form = ClienteForm(request.POST)
                     messages.error(request, 'Debe agregar prendas')
-        return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles,'id_pedido':id_pedido})
+        return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
 
 #Editar un pedido
 def EditarPedido (request,id_pedido):

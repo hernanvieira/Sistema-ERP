@@ -19,5 +19,5 @@ urlpatterns = [
             path ('crear_prenda/<int:id_pedido>',CrearPrenda,name='crear_prenda'),
             path ('listar_prenda/',ListarPrenda,name='listar_prenda'),
             path ('editar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',EditarPrenda,name='editar_prenda'),
-            path ('eliminar_prenda/<int:id_prenda>/<int:id_detalle>',EliminarPrenda,name='eliminar_prenda')
+            path ('eliminar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',EliminarPrenda,name='eliminar_prenda')
 ]

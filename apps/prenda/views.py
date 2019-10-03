@@ -3,6 +3,7 @@ from tp_final.forms import ComponenteForm, Tipo_prendaForm, PrendaForm, Ingredie
 from .models import Componente, Tipo_prenda, Prenda, Ingrediente
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 #Crear un componente
 def CrearComponente (request):
     if request.method == 'POST':
@@ -119,7 +120,7 @@ def CrearPrenda (request,id_pedido):
             detalle = detalle_form.save() #Guardo detalle
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
             detalle.save() #Actualizo el detalle
-            pedido.precio_total = prenda.precio * detalle.cantidad #Calculo precio total
+            pedido.precio_total =+ prenda.precio * detalle.cantidad #Calculo precio total
             pedido.seña = pedido.precio_total/2
             # Asocio datos de prenda y pedido a detalle
             detalle.prenda = prenda
@@ -128,7 +129,7 @@ def CrearPrenda (request,id_pedido):
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
-            return redirect('/pedido/volver_pedido/'+str(id_pedido)+ '/' +str(id_detalle))
+            return redirect('/pedido/volver_pedido/'+str(id_pedido))
     else:
         prenda_form = PrendaForm()
         detalle_form = DetalleForm()
@@ -157,7 +158,7 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
                 detalle = detalle_form.save() #Guardo detalle
                 detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
                 detalle.save() #Actualizo el detalle
-                pedido.precio_total = prenda.precio * detalle.cantidad #Calculo precio total
+                pedido.precio_total =+ prenda.precio * detalle.cantidad #Calculo precio total
                 pedido.seña = pedido.precio_total/2
                 # Asocio datos de prenda y pedido a detalle
                 detalle.prenda = prenda
@@ -166,19 +167,24 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
                 pedido.save() # Actualizo el pedido
                 detalle.save() # Actualizo el detalle
                 id_detalle = detalle.id_detalle #Obtengo el id del detalle
-                return redirect('/pedido/volver_pedido/'+str(id_pedido)+ '/' +str(id_detalle))
+                return redirect('/pedido/volver_pedido/'+str(id_pedido))
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form, 'error':error, 'detalle_form':detalle_form})
-#Eliminar una prenda
-def EliminarPrenda (request,id_prenda, id_detalle):
-    prenda = Prenda.objects.get(id_prenda=id_prenda)
-    detalle = Detalle.objects.get(id_detalle=id_detalle)
-    if request.method=='POST':
-        detalle.delete()
-        prenda.delete()
-        return redirect('prenda:listar_prenda')
-    return redirect('index')
+#Eliminar un cliente
+def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
+    prenda = get_object_or_404(Prenda,id_prenda=id_prenda)
+    detalle = get_object_or_404(Detalle, id_detalle=id_detalle)
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    # try:
+    pedido.precio_total = (pedido.precio_total) - (prenda.precio * detalle.cantidad) #Actualizo el precio total
+    pedido.seña = pedido.precio_total/2 #Actualizo la seña minima
+    pedido.save() # Actualizo el pedido
+    detalle.delete() #Elimino el detalle
+    prenda.delete() #Elimino la prenda
+    # except Exception as e:
+        # messages.error(request, 'Ocurrió un error al tratar de eliminar el clientela prenda')
+    return redirect('/pedido/volver_pedido/'+str(id_pedido))
 
 #Registrar un ingrediente
 def CrearIngrediente (request):

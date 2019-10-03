@@ -65,7 +65,7 @@ Crear pedido
                             <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle %}'">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
                               <i class="fas fa-trash"></i>
                             </button>
                         </td>
