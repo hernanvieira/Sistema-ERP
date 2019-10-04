@@ -1145,7 +1145,7 @@ section {
 }
 
 .card {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
 .input-group-addon {
@@ -4569,6 +4569,8 @@ section {
     -ms-flex-pack: justify;
     justify-content: space-between;
     margin-bottom: 28px;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 .table-data__tool .table-data__tool-left > div {

@@ -18,6 +18,11 @@
     <link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'vendor/font-awesome-5/css/fontawesome-all.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'css/daterangepicker.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet" media="all">
+
+
+
 
     <!-- Bootstrap CSS-->
     <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css' %}" rel="stylesheet" media="all">
@@ -541,55 +546,54 @@
     <script src="{% static 'vendor/circle-progress/circle-progress.min.js' %}"></script>
     <script src="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
     <script src="{% static 'vendor/chartjs/Chart.bundle.min.js' %}"></script>
-    <script src="{% static 'vendor/select2/select2.min.js' %}">
-    </script>
+    <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/daterangepicker.min.js' %}"></script>
 
     <!-- Main JS-->
     <script src="{% static 'js/main.js' %}"></script>
-    <script type="text/javascript">
-$(function() {
-  // for now, there is something adding a click handler to 'a'
-  var tues = moment().day(2).hour(19);
+    <script src="{% static 'js/datatables.js' %}"></script>
 
-  // build trival night events for example data
-  var events = [
-    {
-      title: "Special Conference",
-      start: moment().format('YYYY-MM-DD'),
-      url: '#'
-    },
-    {
-      title: "Doctor Appt",
-      start: moment().hour(9).add(2, 'days').toISOString(),
-      url: '#'
-    }
+    <script>
+      $(document).ready( function () {
+        $('#mydatatable').DataTable({
+          "paging": true,
+          "language": {
+            "sProcessing":     "Procesando...",
+                        "sLengthMenu":     "Mostrar _MENU_ registros",
+                        "sZeroRecords":    "No se encontraron resultados",
+                        "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
+                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix":    "",
+                        "sSearch":         "Buscar:",
+                        "sUrl":            "",
+                        "sInfoThousands":  ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst":    "Primero",
+                            "sLast":     "Último",
+                            "sNext":     "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        },
+                        "buttons": {
+                            "copy": "Copiar",
+                            "colvis": "Visibilidad"
+                        }
+        },
 
-  ];
-
-  var trivia_nights = []
-
-  for(var i = 1; i <= 4; i++) {
-    var n = tues.clone().add(i, 'weeks');
-    console.log("isoString: " + n.toISOString());
-    trivia_nights.push({
-      title: 'Trival Night @ Pub XYZ',
-      start: n.toISOString(),
-      allDay: false,
-      url: '#'
-    });
-  }
-
-  // setup a few events
-  $('#calendar').fullCalendar({
-    header: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'month,agendaWeek,agendaDay,listWeek'
-    },
-    events: events.concat(trivia_nights)
-  });
-});
+        });
+      });
     </script>
+
+
 
 </body>
 {% endblock body %}
