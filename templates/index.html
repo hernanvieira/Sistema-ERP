@@ -19,7 +19,10 @@
     <link href="{% static 'vendor/font-awesome-5/css/fontawesome-all.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'css/daterangepicker.css' %}" rel="stylesheet" media="all">
+    <!-- DataTables -->
     <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet" media="all">
+
 
 
 
@@ -533,6 +536,13 @@
     <!-- Bootstrap JS-->
     <script src="{% static 'vendor/bootstrap-4.1/popper.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap-4.1/bootstrap.min.js' %}"></script>
+    <!-- DataTable JS -->
+    <script src="{% static 'js/datatables.min.js' %}"></script>
+    <script src="{% static 'js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'js/jszip.min.js' %}"></script>
+    <script src="{% static 'js/pdfmake.min.js' %}"></script>
+    <script src="{% static 'js/vfs_fonts.js' %}"></script>
     <!-- Vendor JS       -->
     <script src="{% static 'vendor/slick/slick.min.js' %}">
     </script>
@@ -555,45 +565,6 @@
     <!-- Main JS-->
     <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/datatables.js' %}"></script>
-
-    <script>
-      $(document).ready( function () {
-        $('#mydatatable').DataTable({
-          "paging": true,
-          "language": {
-            "sProcessing":     "Procesando...",
-                        "sLengthMenu":     "Mostrar _MENU_ registros",
-                        "sZeroRecords":    "No se encontraron resultados",
-                        "sEmptyTable":     "Ningún dato disponible en esta tabla =(",
-                        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix":    "",
-                        "sSearch":         "Buscar:",
-                        "sUrl":            "",
-                        "sInfoThousands":  ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst":    "Primero",
-                            "sLast":     "Último",
-                            "sNext":     "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        },
-                        "buttons": {
-                            "copy": "Copiar",
-                            "colvis": "Visibilidad"
-                        }
-        },
-
-        });
-      });
-    </script>
-
-
 
 </body>
 {% endblock body %}

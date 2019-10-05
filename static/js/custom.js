@@ -1,3 +1,13 @@
+$(document).ready(function() {
+    $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+    } );
+} );
+
+
 $(document).ready(function(){
 
   midatatable = $('#midatatable').DataTable({
@@ -6,7 +16,7 @@ $(document).ready(function(){
             [5, 25, 50, "All"]
         ],
         //"dom": '<"row"<"col-md-6"l><"col-md-6"f>><"row"rt><"row"<"col-md-6"i><"col-md-6"p>>',
-        "dom": 'lrtip',
+        "dom": 'Blrtip',
         'columnDefs': [
             { 'sortable': true, 'searchable': false, 'visible': false, 'type': 'num', 'targets': [0] }
         ],
@@ -40,7 +50,11 @@ $(document).ready(function(){
                 "copy": "Copiar",
                 "colvis": "Visibilidad"
             }
-        }
+        },
+        // para usar botones
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
     });
     $('#midtbusqueda').keyup(function() {
       midatatable.search($(this).val()).draw();

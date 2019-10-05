@@ -65,7 +65,6 @@ Listado de pedidos
   </div>
 
 </div>
-
 <div class="table-responsive table-responsive-data2">
     <table class="table table-data2" id="midatatable">
         <thead>
@@ -91,7 +90,7 @@ Listado de pedidos
               <td>{{pedido.precio_total}}</td>
               <td>{{pedido.entrega}}</td>
               <td>{{pedido.seña}}</td>
-              <td>{{pedido.prioridad_entrega}}</td>              
+              <td>{{pedido.prioridad_entrega}}</td>
                 <td>
                     <div class="table-data-feature">
                       <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
