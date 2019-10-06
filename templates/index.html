@@ -23,10 +23,6 @@
     <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet" media="all">
 
-
-
-
-
     <!-- Bootstrap CSS-->
     <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css' %}" rel="stylesheet" media="all">
 
@@ -510,11 +506,7 @@
 
 
             <div class="main-content">
-                <!-- <div class="section__content section__content--p30"> -->
-
-
                     <div class="container-fluid">
-
                         <div class="row">
                             <div class="col-md-12">
                               {% block content %}
@@ -551,20 +543,17 @@
     <script src="{% static 'vendor/bootstrap-progressbar/bootstrap-progressbar.min.js' %}">
     </script>
     <script src="{% static 'vendor/counter-up/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'vendor/counter-up/jquery.counterup.min.js' %}">
-    </script>
+    <script src="{% static 'vendor/counter-up/jquery.counterup.min.js' %}"></script>
     <script src="{% static 'vendor/circle-progress/circle-progress.min.js' %}"></script>
     <script src="{% static 'vendor/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
     <script src="{% static 'vendor/chartjs/Chart.bundle.min.js' %}"></script>
     <script src="{% static 'vendor/select2/select2.min.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
-    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script> -->
     <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/daterangepicker.min.js' %}"></script>
 
     <!-- Main JS-->
     <script src="{% static 'js/main.js' %}"></script>
-    <script src="{% static 'js/datatables.js' %}"></script>
 
 </body>
 {% endblock body %}
