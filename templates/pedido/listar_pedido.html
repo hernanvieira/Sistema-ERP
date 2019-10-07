@@ -13,7 +13,6 @@ Listado de pedidos
 <!-- Filtros -->
 
 <!-- DATA TABLE -->
-<h1 class="title-5 m-b-35">Lista de Pedidos</h1>
 <strong class="card-title">Filtrar</strong>
 <div class="card">
   <br>
@@ -43,28 +42,15 @@ Listado de pedidos
     </div>
       <div class="alineado-derecha">
         <div class="table-data__tool-right">
-            <div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
-                <select class="btn btn-outline-secondary btn-sm">
-                    <option value="">PDF</option>
-                    <option value="">DOCX</option>
-                </select>
-            </div>
-            <button type="button" name="button" class="btn btn-outline-danger">Generar Reporte</button>
+          <div class="form-control">
+            <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
+          </div>
         </div>
       </div>
 
   </div>
 </div>
-<div class="card">
 
-    <br>
-  <div class="table-data__tool">
-    <div class="form-control">
-      <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
-    </div>
-  </div>
-
-</div>
 <div class="table-responsive table-responsive-data2">
     <table class="table table-data2" id="midatatable">
         <thead>
@@ -72,24 +58,24 @@ Listado de pedidos
                 <th>ID</th>
                 <th>DNI</th>
                 <th>Cliente</th>
-                <th>Fecha Entrega</th>
-                <th>Precio Total</th>
+                <th>Fecha E.</th>
+                <th>Total</th>
                 <th>Entrega</th>
                 <th>Seña</th>
                 <th>Prioridad</th>
-                <th>Opciones</th>
+                <th class="noExport">Opciones</th>
             </tr>
         </thead>
         <tbody>
             {% for pedido in pedidos %}
             <tr class="tr-shadow">
               <td>{{pedido.id_pedido}}</td>
-              <td>{{pedido.cliente.dni}}</td>
-              <td>{{pedido.cliente}}</td>
-              <td>{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
-              <td>{{pedido.precio_total}}</td>
-              <td>{{pedido.entrega}}</td>
-              <td>{{pedido.seña}}</td>
+              <td style="text-align: right;">{{pedido.cliente.dni}}</td>
+              <td style="text-align: left;">{{pedido.cliente}}</td>
+              <td style="text-align: center;">{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
+              <td style="text-align: right;">${{pedido.precio_total}}</td>
+              <td style="text-align: right;">${{pedido.entrega}}</td>
+              <td style="text-align: right;">${{pedido.seña}}</td>
               <td>{{pedido.prioridad_entrega}}</td>
                 <td>
                     <div class="table-data-feature">
