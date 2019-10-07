@@ -10,9 +10,6 @@ $(document).ready(function(){
             { extend: 'copy',
               text: 'Copiar',
               className: 'btn btn-warning'},
-            { extend: 'print',
-              text: 'Imprimir',
-              className: 'btn btn-primary'},
             { extend: 'excel',
               text: 'Excel',
               className: 'btn btn-success'},
@@ -92,7 +89,7 @@ $(document).ready(function(){
 									},
 									{
 										alignment: 'right',
-										text: ['Pagina ', { text: page.toString() },	' de ',	{ text: pages.toString() }],
+										text: ['Página ', { text: page.toString() },	' de ',	{ text: pages.toString() }],
                     fontSize: 9,
 									}
 								],

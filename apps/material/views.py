@@ -40,12 +40,10 @@ def EliminarTipo_material (request,id_tipo_material):
     tipo_material = get_object_or_404(Tipo_material,id_tipo_material=id_tipo_material)
     try:
         tipo_material.delete()
-        tipo_materiales = Tipo_material.objects.all()
-        return render (request,'material/listar_tipo_material',{'tipo_material':tipo_material,'tipo_materiales':tipo_materiales})
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el tipo de material')
         tipo_materiales = Tipo_material.objects.all()
-        return render(request,'material/listar_tipo_material.html',{'tipo_material':tipo_material,'tipo_materiales':tipo_materiales})
+    return render(request,'material/listar_tipo_material.html',{'tipo_material':tipo_material,'tipo_materiales':tipo_materiales})
 
 #Crear un material
 def CrearMaterial (request):
@@ -79,18 +77,13 @@ def EditarMaterial (request,id_material):
     return render(request,'material/crear_material.html',{'material_form':material_form, 'error':error})
 #Eliminar un material
 def EliminarMaterial (request,id_material):
-    error = None
+    material = get_object_or_404(Material,id_material=id_material)
     try:
-        material = None
-        material = get_object_or_404(Material,id_material=id_material)
-        if request.method=='POST':
-            material.delete()
-            return redirect('material:listar_material')
+        material.delete()
     except Exception as e:
-        error = e
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'material/eliminar_material.html',{'material':material, 'error':error})
+        messages.error(request, 'Ocurrió un error al tratar de eliminar el material')
+    materiales = Material.objects.all()
+    return render(request,'material/listar_material.html',{'materiales':materiales})
 
 #Crear una unidad de medida
 def CrearUnidad_medida (request):

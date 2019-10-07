@@ -10,12 +10,13 @@ from django.contrib import messages
 #Crear un pedido
 def CrearPedido (request):
     if request.method == 'POST':
-        if 'boton_agregar' in request.POST:
-            pedido_form = PedidoForm(request.POST)
-            prenda_form = PrendaForm(request.POST)
+        if 'boton_crear_cliente' in request.POST:
             cliente_form = ClienteForm(request.POST)
             if cliente_form.is_valid():
                 cliente_form.save()
+        if 'boton_agregar' in request.POST:
+            pedido_form = PedidoForm(request.POST)
+            prenda_form = PrendaForm(request.POST)
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit = False)
                 if pedido.fecha_entrega != None:
@@ -32,7 +33,7 @@ def CrearPedido (request):
                     return redirect('/prenda/crear_prenda/'+str(id_pedido))
             else:
                 messages.error(request, 'No se puede introducir valores negativos')
-        else:
+        if 'boton_finalizar' in request.POST:
             pedido_form = PedidoForm(request.POST)
             pedido = pedido_form.save(commit=False)
             if pedido.precio_total != None:
@@ -44,6 +45,7 @@ def CrearPedido (request):
     else:
         pedido_form = PedidoForm()
         cliente_form = ClienteForm()
+    pedido_form = PedidoForm()
     return render(request, 'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
 
 #Listar todos los pedidoes
@@ -84,13 +86,14 @@ def EditarPedido (request,id_pedido):
         error = None
         pedido_form=None
         pedido = Pedido.objects.get(id_pedido=id_pedido)
+        pedidos = Pedido.objects.all()
         if request.method=='GET':
             pedido_form=PedidoForm(instance=pedido)
         else:
             pedido_form=PedidoForm(request.POST, instance=pedido)
             if pedido_form.is_valid():
                 pedido_form.save()
-            return redirect('index')
+            return render(request,'pedido/listar_pedido.html',{'pedido':pedido,'pedidos':pedidos})
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'error':error})
