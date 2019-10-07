@@ -96,14 +96,10 @@ def EditarPedido (request,id_pedido):
     return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'error':error})
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):
-    error = None
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     try:
-        if request.method=='POST':
-            pedido.delete()
-            return redirect('pedido:listar_pedido')
+        pedido.delete()
     except Exception as e:
-        error = e
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'pedido/eliminar_pedido.html',{'pedido':pedido,'error':error})
+        messages.error(request, "Ocurrió un error al tratar de eliminar el pedido " + str(id_pedido))
+    pedidos = Pedido.objects.all()
+    return render(request,'pedido/listar_pedido.html',{'pedido':pedido,'pedidos':pedidos})

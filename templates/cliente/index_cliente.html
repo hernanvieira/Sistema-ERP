@@ -63,6 +63,7 @@ Gestionar Clientes
                 <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'cliente:editar_cliente' cliente.dni %}'">
                   <i class="fas fa-pencil-square-o"></i>
                 </button>
+                <!-- Modal Eliminar -->
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{cliente.dni}}">
                   <i class="fas fa-trash"></i>
                 </button>
@@ -87,6 +88,7 @@ Gestionar Clientes
                         </div>
                     </div>
                 </div>
+                <!-- End Modal -->
               </td>
             </tr>
           {% endfor %}
