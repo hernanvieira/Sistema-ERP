@@ -26,7 +26,8 @@ $(document).ready(function(){
               className: 'btn btn-danger',
 					customize: function (doc) {
 						//Remove the title created by datatTables
-						doc.content.splice(0,1);
+						// doc.content.splice(0,1);
+            doc.content[0] = [{text: 'Titulo'}];
 						//Create a date string that we use in the footer. Format is dd-mm-yyyy
 						var now = new Date();
 						var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
@@ -42,7 +43,7 @@ $(document).ready(function(){
 						// Set page margins [left,top,right,bottom] or [horizontal,vertical]
 						// or one number for equal spread
 						// It's important to create enough space at the top for a header !!!
-						doc.pageMargins = [100,160,0,60];
+						doc.pageMargins = [50,160,0,50];
 						// Set the font size fot the entire document
 						doc.defaultStyle.fontSize = 9;
 						// Set the fontsize for the table header
@@ -60,7 +61,8 @@ $(document).ready(function(){
 									},
                   {
 										alignment: 'center',
-										text:[{text:"Productora de Prendas AAA \n \n ", bold:true, fontSize:12}, {text:"Carlos Pellegrini 269, N3350 Apóstoles, Misiones \n Teléfono: 03758 42-3232 \n \n \n" },{text:"Listado de pedidos \n", bold:true, fontSize:15, alignment:'left'},{text:"Filtros:", alignment:'left'}],
+										text:[{text:"Productora de Prendas AAA \n \n ", bold:true, fontSize:12}, {text:"Carlos Pellegrini 269, N3350 Apóstoles, Misiones \n Teléfono: 03758 42-3232 \n \n \n" },{text:"Listado de pedidos \n", bold:true, fontSize:15, alignment:'left'},
+                    {text:"Filtros:", alignment:'left'}],
 										fontSize: 10,
 										margin: [0,20,0,0]
 									},
@@ -76,6 +78,7 @@ $(document).ready(function(){
 								margin: 20
 							}
 						});
+
 						// Create a footer object with 2 columns
 						// Left side: report creation date
 						// Right side: current page and total pages
@@ -106,9 +109,15 @@ $(document).ready(function(){
                     } else { colCount.push('*'); }
                 });
                 //console.log(colCount);
-                colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
+                // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
 
-                doc.content[0].table.widths = colCount;
+                doc.content[1].table.widths = colCount;
+                var rowCount = document.getElementById("midatatable").rows.length; //Obtiene la cantidad de filas
+                for (i = 1; i < rowCount; i++) { //Recorre cada fila
+                  doc.content[1].table.body[i][5].alignment = 'right'; //El segundo [] es el numero de columna a alinear
+                  doc.content[1].table.body[i][4].alignment = 'right';
+                  doc.content[1].table.body[i][3].alignment = 'right';
+                }; // Arnold deja de copiarme
                 //Es equivalente a: doc.content[0].table.widths = ['*', '*', '*', '*', '*', '*'];
 						// Change dataTable layout (Table styling)
 						// To use predefined layouts uncomment the line below and comment the custom lines below
@@ -120,10 +129,10 @@ $(document).ready(function(){
 						objLayout['vLineColor'] = function(i) { return '#aaa'; };
 						objLayout['paddingLeft'] = function(i) { return 4; };
 						objLayout['paddingRight'] = function(i) { return 4; };
-						doc.content[0].layout = objLayout;
+						doc.content[1].layout = objLayout;
 				}}
         ],
-        'columnDefs': [
+        columnDefs: [
             { 'sortable': true, 'searchable': false, 'visible': false, 'type': 'num', 'targets': [0] }
         ],
         order: [
