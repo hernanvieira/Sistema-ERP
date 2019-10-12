@@ -35,7 +35,7 @@ def CrearPedido (request):
                 messages.error(request, 'No se puede introducir valores negativos')
         if 'boton_finalizar' in request.POST:
             pedido_form = PedidoForm(request.POST)
-            pedido = pedido_form.save(commit=False)
+            pedido = pedido_form.save()
             if pedido.precio_total != None:
                 pedido.save()
                 return redirect('/pedido/listar_pedido/')
@@ -56,7 +56,6 @@ def ListarPedido (request):
 #Volver al pedido
 def VolverPedido (request,id_pedido):
         detalles = None
-        error = None
         pedido_form=None
         pedido = Pedido.objects.get(id_pedido=id_pedido)
         pedido_id = pedido.id_pedido
@@ -69,8 +68,8 @@ def VolverPedido (request,id_pedido):
                 if pedido_form.is_valid():
                     pedido_form.save()
                 return redirect('/prenda/crear_prenda/'+str(id_pedido))
-            else:
-                pedido_form = PedidoForm(request.POST)
+            if 'boton_finalizar' in request.POST:
+                pedido_form = PedidoForm(request.POST, instance=pedido)
                 pedido = pedido_form.save(commit=False)
                 if pedido.precio_total != None:
                     pedido.save()

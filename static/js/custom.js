@@ -110,10 +110,10 @@ $(document).ready(function(){
                 });
                 //console.log(colCount);
                 // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
-
                 doc.content[1].table.widths = colCount;
-                var rowCount = document.getElementById("midatatable").rows.length; //Obtiene la cantidad de filas
-                for (i = 1; i < rowCount; i++) { //Recorre cada fila
+                var table = $("#midatatable").DataTable();//Obtengo la tabla
+                var pageInfo = table.page.info(); //Obtiene el objeto page.info()
+                for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
                   doc.content[1].table.body[i][5].alignment = 'right'; //El segundo [] es el numero de columna a alinear
                   doc.content[1].table.body[i][4].alignment = 'right';
                   doc.content[1].table.body[i][3].alignment = 'right';
@@ -166,7 +166,6 @@ $(document).ready(function(){
                 "colvis": "Visibilidad"
             }
         },
-
     });
     $('#midtbusqueda').keyup(function() {
       midatatable.search($(this).val()).draw();
