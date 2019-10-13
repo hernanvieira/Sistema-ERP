@@ -22,7 +22,14 @@ Crear pedido
         <!-- cliente -->
         <div class="col-md-11">
           {{pedido_form.cliente.label}}
-          <div class="form-control">{{pedido_form.cliente}}</div>
+          <div class="">
+            {{pedido_form.cliente}}
+          </div>
+          <!-- <select class="js-example-basic-single" name="state">
+            {% for cli in pedido_form.cliente %}
+              <option value="{{cli.dni}}">{{cli}}</option>
+            {% endfor %}
+          </select> -->
         </div>
         <div class="col-md-1">
           <br>

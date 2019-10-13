@@ -23,6 +23,9 @@
     <link href="{% static 'css/jquery.dataTables.min.css' %}" rel="stylesheet" media="all">
     <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet" media="all">
 
+    <!-- select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+
     <!-- Bootstrap CSS-->
     <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css' %}" rel="stylesheet" media="all">
 
@@ -516,7 +519,7 @@
                         <div class="row">
                             <div class="col-md-12">
                               {% block content %}
-
+                              
 
                               {% endblock content %}
                             </div>
@@ -541,6 +544,10 @@
     <script src="{% static 'js/jszip.min.js' %}"></script>
     <script src="{% static 'js/pdfmake.min.js' %}"></script>
     <script src="{% static 'js/vfs_fonts.js' %}"></script>
+
+    <!-- select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+
     <!-- Vendor JS       -->
     <!-- <script src="{% static 'vendor/slick/slick.min.js' %}"></script> -->
     <!-- <script src="{% static 'vendor/wow/wow.min.js' %}"></script> -->

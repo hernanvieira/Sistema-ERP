@@ -14,6 +14,8 @@ def CrearPedido (request):
             cliente_form = ClienteForm(request.POST)
             if cliente_form.is_valid():
                 cliente_form.save()
+            else:
+                messages.error(request, 'Error al crear el cliente')
         if 'boton_agregar' in request.POST:
             pedido_form = PedidoForm(request.POST)
             prenda_form = PrendaForm(request.POST)
@@ -48,7 +50,7 @@ def CrearPedido (request):
     pedido_form = PedidoForm()
     return render(request, 'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
 
-#Listar todos los pedidoes
+#Listar todos los pedidos
 def ListarPedido (request):
     pedidos = Pedido.objects.all()
     return render(request,'pedido/listar_pedido.html',{'pedidos':pedidos})
