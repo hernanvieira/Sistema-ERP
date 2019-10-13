@@ -10,10 +10,7 @@ Gestionar Clientes
 <div class="row">
   <div class="col-md-12">
   <form class="form-header" action="" method="POST">
-      <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Pedido o Cliente..." />
-      <button class="btn btn-info" onclick="location.href='#'" >
-          <i class="zmdi zmdi-search"></i>
-      </button>
+      <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Pedido o Cliente..." id="midtbusqueda"/>
       <button class="btn btn-success" style="margin-left: 10px" type="button" onclick="location.href='/cliente/crear_cliente/'">
           <i class="fas fa-plus"></i>
       </button>
@@ -33,28 +30,28 @@ Gestionar Clientes
 {% endif %}
 {% if clientes %}
   <!-- DATA TABLE-->
-  <div class="table-responsive m-b-40"">
-      <table class="table table-borderless table-data3">
+  <div class="table-responsive table-responsive-data2">
+      <table class="table table-data2" id="midatatable">
         <thead>
             <tr>
+              <th></th>
               <th>DNI</th>
               <th>Apellido</th>
               <th>Nombre</th>
               <th>Telefono</th>
               <th>Correo</th>
-              <th>domicilio</th>
               <th>Opciones</th>
             </tr>
         </thead>
         <tbody>
           {% for cliente in clientes %}
             <tr>
+              <td></td>
               <td>{{cliente.dni}}</td>
               <td>{{cliente.apellido}}</td>
               <td>{{cliente.nombre}}</td>
               <td>{{cliente.telefono}}</td>
               <td>{{cliente.correo}}</td>
-              <td>{{cliente.domicilio}}</td>
               <td>
 
                 <button type="button" class="btn btn-primary btn-sm" onclick="location.href='#'">
