@@ -14,6 +14,7 @@ def CrearPedido (request):
             cliente_form = ClienteForm(request.POST)
             if cliente_form.is_valid():
                 cliente_form.save()
+                messages.success(request, 'Se agregó correctamente el cliente')
             else:
                 messages.error(request, 'Error al crear el cliente')
         if 'boton_agregar' in request.POST:
