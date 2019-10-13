@@ -67,7 +67,7 @@ Listado de pedidos
                 <th>ID</th>
                 <th>DNI</th>
                 <th>Cliente</th>
-                <th>Fecha E.</th>
+                <th>Fecha</th>
                 <th>Total</th>
                 <th>Entrega</th>
                 <th>Seña</th>
@@ -80,12 +80,22 @@ Listado de pedidos
             <tr class="tr-shadow">
               <td>{{pedido.id_pedido}}</td>
               <td style="text-align: center;">{{pedido.cliente.dni}}</td>
-              <td style="text-align: left;">{{pedido.cliente}}</td>
-              <td style="text-align: center;">{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
+              <td style="text-align: left;">{{pedido.cliente.apellido}}</td>
+              <td>{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
               <td style="text-align: right;">${{pedido.precio_total}}</td>
               <td style="text-align: right;">${{pedido.entrega}}</td>
               <td style="text-align: right;">${{pedido.seña}}</td>
-              <td>{{pedido.prioridad_entrega}}</td>
+              <td style="text-align: center;"> 
+                {% if pedido.prioridad_entrega == '2' %}
+                  Alta
+                {% endif %}
+                {% if pedido.prioridad_entrega == '1' %}
+                  Media
+                {% endif %}
+                {% if pedido.prioridad_entrega == '0' %}
+                  Baja
+                {% endif %}
+              </td>
                 <td>
                     <div class="table-data-feature">
                       <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
