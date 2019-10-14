@@ -19,17 +19,14 @@ Crear pedido
       {% else %}
 
       <div class="row">
+        <input type="hidden" id="min" value="">
+        <input type="hidden" id="max" value="">
         <!-- cliente -->
         <div class="col-md-11">
           {{pedido_form.cliente.label}}
           <div class="">
             {{pedido_form.cliente}}
           </div>
-          <!-- <select class="js-example-basic-single" name="state">
-            {% for cli in pedido_form.cliente %}
-              <option value="{{cli.dni}}">{{cli}}</option>
-            {% endfor %}
-          </select> -->
         </div>
         <div class="col-md-1">
           <br>
@@ -104,6 +101,7 @@ Crear pedido
           </ul>
         </div>
         {% endif %}
+        <hr class="line-seprate">
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
           <div class="form-control">

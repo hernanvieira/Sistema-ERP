@@ -84,21 +84,18 @@ def VolverPedido (request,id_pedido):
 
 #Editar un pedido
 def EditarPedido (request,id_pedido):
-    try:
-        error = None
-        pedido_form=None
-        pedido = Pedido.objects.get(id_pedido=id_pedido)
-        pedidos = Pedido.objects.all()
-        if request.method=='GET':
-            pedido_form=PedidoForm(instance=pedido)
-        else:
-            pedido_form=PedidoForm(request.POST, instance=pedido)
-            if pedido_form.is_valid():
-                pedido_form.save()
-            return render(request,'pedido/listar_pedido.html',{'pedido':pedido,'pedidos':pedidos})
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'error':error})
+    pedido_form=None
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    pedidos = Pedido.objects.all()
+    detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
+    if request.method=='GET':
+        pedido_form=PedidoForm(instance=pedido)
+    else:
+        pedido_form=PedidoForm(request.POST, instance=pedido)
+        if pedido_form.is_valid():
+            pedido_form.save()
+        return render(request,'pedido/listar_pedido.html',{'pedido':pedido,'pedidos':pedidos})
+    return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
