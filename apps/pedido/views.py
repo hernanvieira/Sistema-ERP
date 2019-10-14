@@ -91,10 +91,20 @@ def EditarPedido (request,id_pedido):
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
     else:
-        pedido_form=PedidoForm(request.POST, instance=pedido)
-        if pedido_form.is_valid():
-            pedido_form.save()
-        return render(request,'pedido/listar_pedido.html',{'pedido':pedido,'pedidos':pedidos})
+        if 'boton_agregar' in request.POST:
+            pedido_form=PedidoForm(request.POST, instance=pedido)
+            if pedido_form.is_valid():
+                pedido_form.save()
+            return redirect('/prenda/crear_prenda/'+str(id_pedido))
+        if 'boton_finalizar' in request.POST:
+            pedido_form = PedidoForm(request.POST, instance=pedido)
+            pedido = pedido_form.save(commit=False)
+            if pedido.precio_total != None:
+                pedido.save()
+                return redirect('/pedido/listar_pedido/')
+            else:
+                cliente_form = ClienteForm(request.POST)
+                messages.error(request, 'Debe agregar prendas')
     return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):

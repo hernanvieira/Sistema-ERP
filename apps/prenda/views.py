@@ -120,12 +120,12 @@ def CrearPrenda (request,id_pedido):
             detalle = detalle_form.save() #Guardo detalle
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
             detalle.save() #Actualizo el detalle
-            pedido.precio_total =+ prenda.precio * detalle.cantidad #Calculo precio total
+            pedido.precio_total += prenda.precio * detalle.cantidad #Calculo precio total
             pedido.seña = pedido.precio_total/2
             # Asocio datos de prenda y pedido a detalle
             detalle.prenda = prenda
             detalle.pedido = pedido
-            detalle.tiempo_prod_lote = prenda.tiempo_prod_prenda * detalle.cantidad #Calculo el tiempo de produccion de lote
+            detalle.tiempo_prod_lote += prenda.tiempo_prod_prenda * detalle.cantidad #Calculo el tiempo de produccion de lote
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
