@@ -125,7 +125,6 @@ def CrearPrenda (request,id_pedido):
             # Asocio datos de prenda y pedido a detalle
             detalle.prenda = prenda
             detalle.pedido = pedido
-            detalle.tiempo_prod_lote += prenda.tiempo_prod_prenda * detalle.cantidad #Calculo el tiempo de produccion de lote
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
@@ -147,6 +146,9 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
         prenda = Prenda.objects.get(id_prenda=id_prenda)
         detalle = Detalle.objects.get(id_detalle=id_detalle)
         pedido = Pedido.objects.get(id_pedido=id_pedido)
+        cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
+        precio_pre = prenda.precio #Obtengo el precio previo a editar
+        tpp_pre = prenda.tiempo_prod_prenda #Obtengo el tiempo pp previo a editar
         if request.method=='GET':
             prenda_form=PrendaForm(instance=prenda)
             detalle_form=DetalleForm(instance=detalle)
@@ -156,14 +158,18 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
             if prenda_form.is_valid() and detalle_form.is_valid():
                 prenda = prenda_form.save() #Guardo prenda
                 detalle = detalle_form.save() #Guardo detalle
-                detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
-                detalle.save() #Actualizo el detalle
-                pedido.precio_total =+ prenda.precio * detalle.cantidad #Calculo precio total
-                pedido.seña = pedido.precio_total/2
-                # Asocio datos de prenda y pedido a detalle
+
+                if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
+                    precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
+                    precio_pos = prenda.precio * detalle.cantidad - precio_total_pre #Calculo el precio del lote actualizado
+                    pedido.precio_total += precio_pos #Actualizo el precio total
+                    pedido.seña = pedido.precio_total/2 #Actualizo la seña
+                    detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+
+                #Asocio datos de prenda y pedido a detalle
                 detalle.prenda = prenda
                 detalle.pedido = pedido
-                detalle.tiempo_prod_lote = prenda.tiempo_prod_prenda * detalle.cantidad #Calculo el tiempo de produccion de lote
+
                 pedido.save() # Actualizo el pedido
                 detalle.save() # Actualizo el detalle
                 id_detalle = detalle.id_detalle #Obtengo el id del detalle

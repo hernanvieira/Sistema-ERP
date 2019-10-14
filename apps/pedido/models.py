@@ -18,6 +18,6 @@ class Pedido (models.Model):
 class Detalle (models.Model):
     id_detalle = models.AutoField(primary_key=True)
     cantidad = models.IntegerField()
-    tiempo_prod_lote = models.IntegerField(null = True, blank = True)
+    tiempo_prod_lote = models.IntegerField(null = True, blank = True, default=0)
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT,null = True, blank = True)
     prenda = models.ForeignKey(Prenda, on_delete = models.PROTECT,null = True, blank = True)
