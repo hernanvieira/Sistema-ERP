@@ -80,12 +80,12 @@ Listado de pedidos
             <tr class="tr-shadow">
               <td>{{pedido.id_pedido}}</td>
               <td style="text-align: center;">{{pedido.cliente.dni}}</td>
-              <td style="text-align: left;">{{pedido.cliente.apellido}}</td>
+              <td style="text-align: left;">{{pedido.cliente.apellido}} {{pedido.cliente.nombre}}</td>
               <td>{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
               <td style="text-align: right;">${{pedido.precio_total}}</td>
               <td style="text-align: right;">${{pedido.entrega}}</td>
               <td style="text-align: right;">${{pedido.seña}}</td>
-              <td style="text-align: center;"> 
+              <td style="text-align: center;">
                 {% if pedido.prioridad_entrega == '2' %}
                   Alta
                 {% endif %}

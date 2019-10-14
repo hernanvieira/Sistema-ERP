@@ -117,6 +117,8 @@ $(document).ready(function(){
                   doc.content[1].table.body[i][5].alignment = 'right'; //El segundo [] es el numero de columna a alinear
                   doc.content[1].table.body[i][4].alignment = 'right';
                   doc.content[1].table.body[i][3].alignment = 'right';
+                  doc.content[1].table.body[i][6].alignment = 'center';
+                  doc.content[1].table.body[i][2].alignment = 'center';
                 }; // Arnold deja de copiarme
                 //Es equivalente a: doc.content[0].table.widths = ['*', '*', '*', '*', '*', '*'];
 						// Change dataTable layout (Table styling)
