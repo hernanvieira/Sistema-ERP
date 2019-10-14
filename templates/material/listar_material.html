@@ -9,6 +9,8 @@ Listado de Tipos de Materials
 {% block content%}
 
 {% if materiales %}
+<input type="hidden" name="" value="" id="min">
+<input type="hidden" name="" value="" id="max">
 {% if messages %}
   <ul class="messages">
     {% for message in messages %}
@@ -21,7 +23,7 @@ Listado de Tipos de Materials
 {% endif %}
 <!-- DATA TABLE-->
 <div class="table-responsive m-b-40">
-    <table class="table table-borderless table-data3">
+    <table class="table table-borderless table-data3" id="midatatable">
       <thead>
           <tr>
             <th>Id</th>
