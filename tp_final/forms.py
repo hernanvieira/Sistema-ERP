@@ -57,7 +57,7 @@ class PedidoForm (forms.ModelForm):
         widgets = {
         'fecha_entrega' : forms.DateInput(),
         'prioridad_entrega' : forms.Select(choices = CHOICES),
-        'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'})        
+        'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'})
         }
 
 class DetalleForm (forms.ModelForm):
@@ -74,7 +74,9 @@ class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda
         fields = ['nombre','componente']
-
+        widgets = {
+        'componente' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
+        }
 
 class PrendaForm (forms.ModelForm):
     class Meta:

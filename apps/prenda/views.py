@@ -52,6 +52,7 @@ def EliminarComponente (request,id_componente):
 def CrearTipo_prenda (request):
     if request.method == 'POST':
         tipo_prenda_form = Tipo_prendaForm(request.POST)
+        print(tipo_prenda_form.errors)
         if tipo_prenda_form.is_valid():
             tipo_prenda_form.save()
             return ListarTipo_prenda(request)
