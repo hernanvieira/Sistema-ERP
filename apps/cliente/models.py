@@ -16,4 +16,4 @@ class Cliente(models.Model):
         ordering = ['apellido']
 
     def __str__(self):
-        return str(self.dni) + ' | ' + self.apellido + ' ' + self.nombre
+        return str(self.dni) + ' - ' + self.apellido + ' ' + self.nombre

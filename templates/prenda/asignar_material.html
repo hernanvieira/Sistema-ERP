@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Asignar materiales
+{% endblock titulo%}
+{% block content%}
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Asignar Materiales </strong><h class="card-title text-light">| {{prenda.tipo_prenda}} | {{pedido.cliente}}</h></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+
+      <div class="row">
+        <div class="col-md-3">
+          {{ingrediente_form.componente.label}}
+            {{ingrediente_form.componente}}
+        </div>
+        <div class="col-md-3">
+          {{ingrediente_form.material.label}}
+            {{ingrediente_form.material}}
+        </div>
+        <div class="col-md-3">
+          {{ingrediente_form.cantidad.label}}
+          <div class="form-control">
+            {{ingrediente_form.cantidad}}
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="alineado-derecha">
+          <button type="submit" class="btn btn-success" onclick="history.back()">
+            <i class="fa fa-dot-circle-o"></i> Finalizar
+          </button>
+          <button type="button" class="btn btn-danger" onclick="history.back()">
+            <i class="fa fa-ban"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content%}

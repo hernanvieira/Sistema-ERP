@@ -119,6 +119,9 @@ def CrearPrenda (request,id_pedido):
         if prenda_form.is_valid() and detalle_form.is_valid():
             prenda = prenda_form.save() #Guardo prenda
             detalle = detalle_form.save() #Guardo detalle
+            if 'boton_asignar_material' in request.POST:
+                ingrediente_form = IngredienteForm()
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
             detalle.save() #Actualizo el detalle
             pedido.precio_total += prenda.precio * detalle.cantidad #Calculo precio total
@@ -133,7 +136,8 @@ def CrearPrenda (request,id_pedido):
     else:
         prenda_form = PrendaForm()
         detalle_form = DetalleForm()
-    return render(request, 'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form})
+        pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
+    return render(request, 'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form,'pedido':pedido})
 #Listar todos las prendas
 def ListarPrenda (request):
     prendas = Prenda.objects.all()
@@ -159,6 +163,9 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
             if prenda_form.is_valid() and detalle_form.is_valid():
                 prenda = prenda_form.save() #Guardo prenda
                 detalle = detalle_form.save() #Guardo detalle
+                if 'boton_asignar_material' in request.POST:
+                    ingrediente_form = IngredienteForm()
+                    return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
 
                 if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
                     precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
@@ -193,16 +200,25 @@ def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
         # messages.error(request, 'Ocurrió un error al tratar de eliminar el clientela prenda')
     return redirect('/pedido/volver_pedido/'+str(id_pedido))
 
-#Registrar un ingrediente
-def CrearIngrediente (request):
+#Asigna un material a la prenda
+def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
+    prenda = Prenda.objects.get(id_prenda=id_prenda)
+    pedido = Pedido.objects.get(id_pedido = id_pedido)
     if request.method == 'POST':
         ingrediente_form = IngredienteForm(request.POST)
+        prenda = Prenda.objects.get(id_prenda=id_prenda)
+        detalle = Detalle.objects.get(id_detalle=id_detalle)
         if ingrediente_form.is_valid():
-            ingrediente_form.save() #Registro el ingrediente
+            ingrediente = ingrediente_form.save() #guardo el ingrediente
+            ingrediente.prenda = prenda
+            ingrediente.save()
             return ListarIngrediente(request)
     else:
         ingrediente_form = IngredienteForm()
-    return render(request, 'material/crear_ingrediente.html',{'ingrediente_form':ingrediente_form})
+        prenda_form = PrendaForm()
+        detalle_form = DetalleForm()
+    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido})
+
 #Listar todos las ingredientes
 def ListarIngrediente (request):
     ingredientes = Ingrediente.objects.all()

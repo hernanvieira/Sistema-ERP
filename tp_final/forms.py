@@ -87,3 +87,7 @@ class IngredienteForm (forms.ModelForm):
     class Meta:
         model = Ingrediente
         fields = ['cantidad', 'prenda', 'componente', 'material']
+        widgets = {
+        'componente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        'material' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        }

@@ -4,19 +4,16 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nuevo Componente
+Agregar Prenda
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Prenda</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Prenda</strong>
+    <h class="card-title text-light"> | Cliente: {{pedido.cliente}}</h></div>
   <div class="card-body card-block">
-    <a>Cliente:{{pedido.cliente}}</a>
     <form method="POST">
       {%csrf_token%}
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
 
       <div class="row">
         <div class="col-md-7">
@@ -68,23 +65,23 @@ Nuevo Componente
 
               </div>
         </div>
-
+        <br>
+        <button type="submit" class="btn btn-warning" name="boton_asignar_material">
+          <i class="fa fa-archive"></i> Asignar Materiales
+        </button>
       <div class="card-footer">
         <div class="alineado-derecha">
-          <button type="submit" class="btn btn-success" onclick="location.href='/prenda/crear_prenda/'">
-            <i class="fa fa-dot-circle-o"></i> Crear Prenda
+          <button type="submit" class="btn btn-success">
+            <i class="fa fa-dot-circle-o"></i> Agregar Prenda
           </button>
           <button type="button" class="btn btn-danger" onclick="history.back()">
             <i class="fa fa-ban"></i> Cancelar
           </button>
         </div>
       </div>
-    {% endif %}
     </form>
 
 
   </div>
 </div>
-</div>
-
 {% endblock content%}
