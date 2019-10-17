@@ -30,8 +30,8 @@ class Tipo_prenda (models.Model):
 
 class Prenda (models.Model):
     id_prenda = models.AutoField(primary_key = True)
-    talle = models.IntegerField()
-    tiempo_prod_prenda = models.IntegerField()
+    talle = models.PositiveIntegerField()
+    tiempo_prod_prenda = models.PositiveIntegerField()
     tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.PROTECT)
     precio = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)])
 

@@ -69,6 +69,11 @@ class ComponenteForm (forms.ModelForm):
     class Meta:
         model = Componente
         fields = ['nombre']
+    def clean_nombre(self):
+        nombre = self.cleaned_data.get('nombre')
+        if not nombre.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return nombre
 
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:

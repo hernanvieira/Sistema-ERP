@@ -9,8 +9,10 @@ def CrearComponente (request):
     if request.method == 'POST':
         componente_form = ComponenteForm(request.POST)
         if componente_form.is_valid():
-            componente_form.save()
+            componente = componente_form.save()
             return ListarComponente(request)
+        else:
+            messages.error(request, 'Ocurrió un error al tratar de crear el componente')
     else:
         componente_form = ComponenteForm()
     return render(request, 'prenda/crear_componente.html',{'componente_form':componente_form})
