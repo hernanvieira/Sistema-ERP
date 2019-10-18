@@ -9,11 +9,31 @@ class ClienteForm (forms.ModelForm):
     class Meta:
         model = Cliente
         fields = ['dni', 'apellido', 'nombre', 'telefono', 'correo','domicilio']
+    def clean_apellido(self):
+        value = self.cleaned_data.get('apellido')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
+    def clean_nombre(self):
+        value = self.cleaned_data.get('nombre')
+        if not value.isalpha() :
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
 
 class EstadoForm (forms.ModelForm):
     class Meta:
         model = Estado
         fields = ['nombre','descripcion','tipo' ]
+    def clean_nombre(self):
+        value = self.cleaned_data.get('nombre')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
+    def clean_descripcion(self):
+        value = self.cleaned_data.get('descripcion')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
 
 class Estado_pedidoForm (forms.ModelForm):
     class Meta:
@@ -29,16 +49,31 @@ class Unidad_medidaForm (forms.ModelForm):
     class Meta:
         model = Unidad_medida
         fields = ['nombre','descripcion']
+    def clean_nombre(self):
+        value = self.cleaned_data.get('nombre')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
 
 class Tipo_materialForm (forms.ModelForm):
     class Meta:
         model = Tipo_material
         fields = ['nombre','unidad_medida']
+    def clean_nombre(self):
+        value = self.cleaned_data.get('nombre')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
 
 class MaterialForm (forms.ModelForm):
     class Meta:
         model = Material
         fields = ['nombre','color','tipo_material','stock']
+    def clean_nombre(self):
+        value = self.cleaned_data.get('nombre')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
 
 class CompraForm (forms.ModelForm):
     class Meta:
@@ -79,9 +114,14 @@ class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda
         fields = ['nombre','componente']
-        widgets = {
-        'componente' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
-        }
+    def clean_nombre(self):
+        value = self.cleaned_data.get('nombre')
+        if not value.isalpha():
+            raise forms.ValidationError("No puede introducir numeros")
+        return value
+    widgets = {
+    'componente' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
+    }
 
 class PrendaForm (forms.ModelForm):
     class Meta:

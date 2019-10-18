@@ -14,13 +14,29 @@ Crear pedido
 
     <form method="POST">
       {% csrf_token %}
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
-
       <div class="row">
         <input type="hidden" id="min" value="">
         <input type="hidden" id="max" value="">
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
         <!-- cliente -->
         <div class="col-md-11">
           {{pedido_form.cliente.label}}
@@ -83,26 +99,7 @@ Crear pedido
           <!-- END DATA TABLE-->
           {% endif %}
         </div>
-        {% if messages %}
-        <div class="col-md-12">
-          <ul class="messages">
-            {% for message in messages %}
-              {% if message.tags == 'success'%}
-                <div class="alert alert-success">
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-                </div>
-              {% endif %}
-              {% if message.tags == 'error' %}
-              <div class="alert alert-danger">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-              </div>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
+
         <hr class="line-seprate">
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
@@ -154,7 +151,6 @@ Crear pedido
         </div>
       </div>
 
-      {% endif %}
       <div class="card-footer">
         <button type="submit" class="btn btn-success" name="boton_finalizar">
           <i class="fa fa-dot-circle-o"></i> Finalizar

@@ -12,10 +12,14 @@ def Home(request):
 def CrearCliente (request):
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
-        print(cliente_form.errors)
         if cliente_form.is_valid():
+            print("ENTRASSEE")
             cliente_form.save()
+            messages.success(request, 'Sea agregó correctamente el cliente')
             return ClienteHome(request)
+        else:
+            print("ERORAROSOO")
+            messages.error(request, 'Ocurrió un error al tratar de agregar el cliente')
     else:
         cliente_form = ClienteForm()
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form})
@@ -56,7 +60,13 @@ def ClienteHome(request):
         cliente_form = ClienteForm(request.POST)
         if cliente_form.is_valid():
             cliente_form.save()
-            return ClienteHome(request)
+            messages.success(request, 'Sea agregó correctamente el cliente')
+            print("Entra")
+            return render (request, 'cliente/index_cliente.html',{'clientes':clientes})
+        else:
+            print("Entra aca tambien")
+            messages.error(request, 'Ocurrió un error al tratar de agregar el cliente')
+            cliente_form = ClienteForm()
     else:
         cliente_form = ClienteForm()
     return render (request, 'cliente/index_cliente.html',{'clientes':clientes,'cliente_form':cliente_form})
