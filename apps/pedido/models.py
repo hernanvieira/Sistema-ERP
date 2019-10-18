@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.db import models
 from apps.cliente.models import Cliente
 from apps.prenda.models import Prenda
@@ -14,6 +15,7 @@ class Pedido (models.Model):
     seña = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, validators=[MinValueValidator(0.00)])
     prioridad_entrega = models.CharField(max_length=50, null = True, blank=True)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
+auditlog.register(Pedido)
 
 class Detalle (models.Model):
     id_detalle = models.AutoField(primary_key=True)
@@ -21,3 +23,4 @@ class Detalle (models.Model):
     tiempo_prod_lote = models.PositiveIntegerField(null = True, blank = True, default=0)
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT,null = True, blank = True)
     prenda = models.ForeignKey(Prenda, on_delete = models.PROTECT,null = True, blank = True)
+auditlog.register(Detalle)

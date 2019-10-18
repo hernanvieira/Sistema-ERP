@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.cliente.views import Home
+from apps.cliente.views import Home, Auditoria
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,4 +25,6 @@ urlpatterns = [
     path('pedido/',include(('apps.pedido.urls','pedido'))),
     path('prenda/',include(('apps.prenda.urls','prenda')),name='prenda'),
     path('home/', Home, name = 'index'),
+    path('auditoria/', Auditoria, name = 'auditoria'),
+
 ]

@@ -8,6 +8,11 @@ from django.contrib import messages
 #Pagina de inicio
 def Home(request):
     return render(request, 'index.html')
+
+#Pagina de auditoria
+def Auditoria(request):
+    return render(request, 'auditoria.html')
+    
 #Crear un cliente
 def CrearCliente (request):
     if request.method == 'POST':

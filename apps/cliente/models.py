@@ -1,3 +1,4 @@
+from auditlog.registry import auditlog
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
@@ -17,3 +18,4 @@ class Cliente(models.Model):
 
     def __str__(self):
         return str(self.dni) + ' - ' + self.apellido + ' ' + self.nombre
+auditlog.register(Cliente)
