@@ -1,4 +1,5 @@
 from auditlog.registry import auditlog
+from auditlog.models import AuditlogHistoryField
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
@@ -10,6 +11,8 @@ class Cliente(models.Model):
     telefono = models.CharField('Telefonos',max_length=50)
     correo = models.EmailField('Correos')
     domicilio = models.CharField('Domicilios',blank = True, null = True, max_length=500)
+
+    history = AuditlogHistoryField()
 
     class Meta:
         verbose_name = 'Cliente'

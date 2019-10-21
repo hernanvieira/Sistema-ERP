@@ -51,14 +51,30 @@ Listado de pedidos
   </div>
 </div>
 {% if messages %}
+<div class="col-md-12">
   <ul class="messages">
     {% for message in messages %}
-    <div class="alert alert-danger">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-    </div>
+      {% if message.tags == 'success'%}
+        <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        </div>
+      {% endif %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
+      {% if message.tags == 'warning' %}
+      <div class="alert alert-warning">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
     {% endfor %}
   </ul>
+</div>
 {% endif %}
 <div class="table-responsive table-responsive-data2">
     <table class="table table-data2" id="midatatable">
@@ -78,10 +94,10 @@ Listado de pedidos
         <tbody>
             {% for pedido in pedidos %}
             <tr class="tr-shadow">
-              <td>{{pedido.id_pedido}}</td>
+              <td style="text-align: right;">{{pedido.id_pedido}}</td>
               <td style="text-align: center;">{{pedido.cliente.dni}}</td>
               <td style="text-align: left;">{{pedido.cliente.apellido}} {{pedido.cliente.nombre}}</td>
-              <td>{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
+              <td style="font-size: 12px;text-align: center;">{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
               <td style="text-align: right;">${{pedido.precio_total}}</td>
               <td style="text-align: right;">${{pedido.entrega}}</td>
               <td style="text-align: right;">${{pedido.seña}}</td>

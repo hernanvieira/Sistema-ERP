@@ -41,7 +41,7 @@ class Material (models.Model):
         ordering = ['nombre']
 
     def __str__(self):
-        return self.nombre
+        return self.nombre + ' ' + self.color
 
 class Compra (models.Model):
     id_compra = models.AutoField(primary_key=True)

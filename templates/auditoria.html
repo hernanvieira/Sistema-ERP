@@ -6,4 +6,79 @@ Auditoria
 {% endblock titulo%}
 {% block content%}
 
+<!-- DATA TABLE -->
+<strong class="card-title">Filtrar</strong>
+<div class="card">
+  <br>
+  <div class="table-data__tool">
+      <div class="table-data__tool-left">
+        <span>Tabla:</span>
+          <div class="rs-select2--light rs-select2--sm">
+              <select class="btn btn-secondary" name="property">
+                  <option value="2">Pedido</option>
+                  <option value="1">Cliente</option>
+              </select>
+              <div class="dropDownSelect2"></div>
+          </div>
+          <span>Entre:</span>
+          <div class="rs-select2--light rs-select2--sm">
+            <div class="form-control">
+              <input type="" name="" value="" id="min">
+            </div>
+          </div>
+          <h> y </h>
+          <div class="rs-select2--light rs-select2--sm">
+            <div class="form-control">
+              <input type="" name="" value="" id="max">
+            </div>
+          </div>
+    </div>
+      <div class="alineado-derecha">
+        <div class="table-data__tool-right">
+          <div class="form-control">
+            <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+<div class="table-responsive table-responsive-data2">
+    <table class="table table-data2" id="midatatable">
+        <thead>
+            <tr>
+                <th>Acción</th>
+                <th>Tabla</th>
+                <th>Afectado</th>
+                <th>Fecha y Hora</th>
+                <th>Usuario</th>
+                <th class="noExport">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for audi in auditoria %}
+            {{auditoria}}
+          {% endfor %}
+            <!-- {% for pedido in pedidos %}
+            <tr class="tr-shadow">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{pedido.fecha_entrega|date:'d-m-Y'}}</td>
+              <td></td>
+              <td>
+                  <div class="table-data-feature">
+                    <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+              </td>
+            </tr>
+
+            {% endfor %} -->
+        </tbody>
+    </table>
+</div>
+<!-- END DATA TABLE -->
 {% endblock content%}

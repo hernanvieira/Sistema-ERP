@@ -3,6 +3,11 @@ from tp_final.forms import ClienteForm
 from .models import Cliente
 from django.core.exceptions import *
 from django.contrib import messages
+from auditlog.registry import auditlog
+
+from django.contrib.admin.models import LogEntry
+
+
 # Create your views here.
 
 #Pagina de inicio
@@ -11,8 +16,20 @@ def Home(request):
 
 #Pagina de auditoria
 def Auditoria(request):
-    return render(request, 'auditoria.html')
-    
+    auditoria = []
+    tipo = Cliente.objects.all()[1].history.last()
+    print("TIPO")
+    print(tipo)
+    # recentActions = LogEntry.objects.all()
+    # print("MIRA ESTO")
+    # print(recentActions)
+    num = Cliente.objects.all().count()
+    for i in range(num):
+        if Cliente.objects.all()[i].history.all().count() != 0:
+            auditoria.insert(i,Cliente.objects.all()[i].history.last())
+    print(auditoria)
+    return render(request, 'auditoria.html',{'auditoria':auditoria})
+
 #Crear un cliente
 def CrearCliente (request):
     if request.method == 'POST':
@@ -35,7 +52,6 @@ def ListarCliente (request):
 #Editar un cliente
 def EditarCliente (request,dni):
     try:
-        error = None
         cliente_form=None
         cliente = Cliente.objects.get(dni=dni)
         if request.method=='GET':
@@ -47,13 +63,16 @@ def EditarCliente (request,dni):
             return redirect('cliente:cliente_home')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form, 'error':error})
+    return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form})
 
 #Eliminar un cliente
 def EliminarCliente (request,dni):
     cliente = get_object_or_404(Cliente,dni=dni)
     try:
         cliente.delete()
+        messages.warning(request, 'Se eliminó el cliente')
+
+        return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el cliente')
     clientes = Cliente.objects.all()

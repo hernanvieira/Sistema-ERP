@@ -76,11 +76,13 @@ def VolverPedido (request,id_pedido):
                 pedido = pedido_form.save(commit=False)
                 if pedido.precio_total != None:
                     pedido.save()
+                    messages.success(request, 'Todo ocurrió correctamente')
                     return redirect('/pedido/listar_pedido/')
                 else:
                     cliente_form = ClienteForm(request.POST)
                     messages.error(request, 'Debe agregar prendas')
-        return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
+        cliente_form = ClienteForm(request.POST)
+        return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles,'cliente_form':cliente_form})
 
 #Editar un pedido
 def EditarPedido (request,id_pedido):
@@ -105,13 +107,14 @@ def EditarPedido (request,id_pedido):
             else:
                 cliente_form = ClienteForm(request.POST)
                 messages.error(request, 'Debe agregar prendas')
-    return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
+    return render(request,'pedido/editar_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     try:
         pedido.delete()
+        messages.warning(request, 'Se eliminó el pedido')
     except Exception as e:
         messages.error(request, "Ocurrió un error al tratar de eliminar el pedido " + str(id_pedido))
     pedidos = Pedido.objects.all()
-    return render(request,'pedido/listar_pedido.html',{'pedido':pedido,'pedidos':pedidos})
+    return ListarPedido(request)

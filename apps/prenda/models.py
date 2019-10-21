@@ -47,7 +47,7 @@ class Ingrediente (models.Model):
     id_ingrediente = models.AutoField(primary_key=True)
     cantidad = models.PositiveIntegerField()
     prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT,null = True, blank = True)
-    componente = models.ForeignKey(Componente, on_delete=models.PROTECT,null = True, blank = True)
+    # componente = models.ForeignKey(Componente, on_delete=models.PROTECT,null = True, blank = True)
     material =  models.ForeignKey(Material, on_delete=models.PROTECT,null = True, blank = True)
 
     class Meta:

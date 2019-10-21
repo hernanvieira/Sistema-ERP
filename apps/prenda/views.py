@@ -135,6 +135,8 @@ def CrearPrenda (request,id_pedido):
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
+        else:
+            messages.error(request, 'Ocurrió un error al tratar de agregar una prenda')
     else:
         prenda_form = PrendaForm()
         detalle_form = DetalleForm()

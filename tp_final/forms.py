@@ -19,6 +19,20 @@ class ClienteForm (forms.ModelForm):
         if not value.isalpha() :
             raise forms.ValidationError("No puede introducir numeros")
         return value
+    #Evito que cambie el DNI al editar el cliente
+    def __init__(self, *args, **kwargs):
+        super(ClienteForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['dni'].widget.attrs.update({'readonly': 'True'})
+
+    def clean_dni(self):
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            return instance.dni
+        else:
+            return self.cleaned_data['dni']
+
 
 class EstadoForm (forms.ModelForm):
     class Meta:
@@ -94,6 +108,19 @@ class PedidoForm (forms.ModelForm):
         'prioridad_entrega' : forms.Select(choices = CHOICES),
         'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'})
         }
+    # #Evito que cambie el Cliente al editar el Pedido
+    # def __init__(self, *args, **kwargs):
+    #     super(PedidoForm, self).__init__(*args, **kwargs)
+    #     instance = getattr(self, 'instance', None)
+    #     if instance and instance.cliente:
+    #         self.fields['cliente'].widget = forms.HiddenInput()
+    #
+    # def clean_cliente(self):
+    #     instance = getattr(self, 'instance', None)
+    #     if instance and instance.cliente:
+    #         return instance.cliente
+    #     else:
+    #         return self.cleaned_data['cliente']
 
 class DetalleForm (forms.ModelForm):
     class Meta:
@@ -131,8 +158,8 @@ class PrendaForm (forms.ModelForm):
 class IngredienteForm (forms.ModelForm):
     class Meta:
         model = Ingrediente
-        fields = ['cantidad', 'prenda', 'componente', 'material']
+        fields = ['cantidad', 'prenda', 'material']
         widgets = {
-        'componente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        # 'componente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         'material' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         }
