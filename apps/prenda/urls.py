@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CrearComponente, ListarComponente, EditarComponente, EliminarComponente , CrearTipo_prenda, ListarTipo_prenda, EditarTipo_prenda, EliminarTipo_prenda, VerTipo_prenda
-from .views import CrearPrenda, ListarPrenda, EditarPrenda, EliminarPrenda, AsignarMaterial
+from .views import CrearPrenda, ListarPrenda, EditarPrenda, EliminarPrenda, AsignarMaterial, VolverPrenda
 urlpatterns = [
             #URL Componente
             path ('crear_componente/',CrearComponente,name='crear_componente'),
@@ -20,5 +20,9 @@ urlpatterns = [
             path ('listar_prenda/',ListarPrenda,name='listar_prenda'),
             path ('editar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',EditarPrenda,name='editar_prenda'),
             path ('eliminar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',EliminarPrenda,name='eliminar_prenda'),
-            path ('asignar_material/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',AsignarMaterial,name='asignar_material')
+            path ('volver_prenda/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',VolverPrenda,name='volver_prenda'),
+            path ('asignar_material/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',AsignarMaterial,name='asignar_material'),
+            path ('asignar_material/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',AsignarMaterial,name='editar_ingrediente'),
+            path ('asignar_material/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',AsignarMaterial,name='eliminar_ingrediente')
+
             ]

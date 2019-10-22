@@ -34,6 +34,7 @@ class Material (models.Model):
     color = models.CharField(max_length=50)
     stock = models.PositiveIntegerField()
     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
+    stock_minimo = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = 'Material'

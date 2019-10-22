@@ -14,11 +14,11 @@ class ClienteForm (forms.ModelForm):
         if not value.isalpha():
             raise forms.ValidationError("No puede introducir numeros")
         return value
-    def clean_nombre(self):
-        value = self.cleaned_data.get('nombre')
-        if not value.isalpha() :
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
+    # def clean_nombre(self):
+    #     value = self.cleaned_data.get('nombre')
+    #     if not value.isalpha() :
+    #         raise forms.ValidationError("No puede introducir numeros")
+    #     return value
     #Evito que cambie el DNI al editar el cliente
     def __init__(self, *args, **kwargs):
         super(ClienteForm, self).__init__(*args, **kwargs)

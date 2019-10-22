@@ -70,7 +70,6 @@ Agregar Prenda
                     {{prenda_form.precio}}
                   </div>
                 </div>
-
               </div>
               <div class="col-md-5">
                 {{detalle_form.cantidad.label}}
@@ -89,6 +88,65 @@ Agregar Prenda
         <button type="submit" class="btn btn-warning" name="boton_asignar_material">
           <i class="fa fa-archive"></i> Asignar Materiales
         </button>
+        <hr class="line-seprate">
+        {% if ingredientes %}
+        <!-- DATA TABLE-->
+        <div class="table-responsive m-b-40">
+            <table class="table table-borderless table-data3">
+                <thead>
+                    <tr>
+                        <th>Tipo de Prenda</th>
+                        <th>Material</th>
+                        <th>Cantidad</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for ingrediente in ingredientes %}
+                    <tr>
+                      <td style="text-align: left">{{prenda.tipo_prenda}}</td>
+                      <td style="text-align: center;">{{ingrediente.material}}</td>
+                      <td style="text-align: center;">{{ingrediente.cantidad}}</td>
+                      <td style="text-align: center;>
+                          <div class="table-data-feature">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_ingrediente' ingrediente.id_ingrediente ingrediente.id_ingrediente ingrediente.id_ingrediente  %}'">
+                              <i class="fas fa-pencil-square-o"></i>
+                            </button>
+                            <!-- Modal Eliminar -->
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{ingrediente.id_ingrediente}}">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                            <div class="modal fade bs-example-modal-lg2{{ingrediente.id_ingrediente}}" id="myModal2{{ingrediente.id_ingrediente}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel{{ingrediente.id_ingrediente}}">Confirmar Eliminacion</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <a>¿Está seguro de <strong>remover</strong> el material?</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <div class="alineado-derecha">
+                                            <a href="{% url 'prenda:eliminar_ingrediente' ingrediente.id_ingrediente ingrediente.id_ingrediente ingrediente.id_ingrediente%}">
+                                              <button type="button" class="btn btn-danger" >Eliminar</button>
+                                            </a>
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Modal -->
+                          </div>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- END DATA TABLE-->
+        {% endif %}
       <div class="card-footer">
         <div class="alineado-derecha">
           <button type="submit" class="btn btn-success">
@@ -100,8 +158,6 @@ Agregar Prenda
         </div>
       </div>
     </form>
-
-
   </div>
 </div>
 {% endblock content%}

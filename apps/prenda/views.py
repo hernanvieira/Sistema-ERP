@@ -122,6 +122,9 @@ def CrearPrenda (request,id_pedido):
             prenda = prenda_form.save() #Guardo prenda
             detalle = detalle_form.save() #Guardo detalle
             if 'boton_asignar_material' in request.POST:
+                prenda_form=PrendaForm(request.POST, instance=prenda)
+                if prenda_form.is_valid():
+                    prenda_form.save()
                 ingrediente_form = IngredienteForm()
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
@@ -148,47 +151,43 @@ def ListarPrenda (request):
     return redirect('index')
 #Editar una prenda
 def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
-    try:
-        error = None
-        prenda_form=None
-        detalle_form=None
-        prenda = Prenda.objects.get(id_prenda=id_prenda)
-        detalle = Detalle.objects.get(id_detalle=id_detalle)
-        pedido = Pedido.objects.get(id_pedido=id_pedido)
-        cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
-        precio_pre = prenda.precio #Obtengo el precio previo a editar
-        tpp_pre = prenda.tiempo_prod_prenda #Obtengo el tiempo pp previo a editar
-        if request.method=='GET':
-            prenda_form=PrendaForm(instance=prenda)
-            detalle_form=DetalleForm(instance=detalle)
-        else:
-            prenda_form=PrendaForm(request.POST, instance=prenda)
-            detalle_form=DetalleForm(request.POST, instance=detalle)
-            if prenda_form.is_valid() and detalle_form.is_valid():
-                prenda = prenda_form.save() #Guardo prenda
-                detalle = detalle_form.save() #Guardo detalle
-                if 'boton_asignar_material' in request.POST:
-                    ingrediente_form = IngredienteForm()
-                    return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+    prenda_form=None
+    detalle_form=None
+    prenda = Prenda.objects.get(id_prenda=id_prenda)
+    detalle = Detalle.objects.get(id_detalle=id_detalle)
+    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
+    precio_pre = prenda.precio #Obtengo el precio previo a editar
+    tpp_pre = prenda.tiempo_prod_prenda #Obtengo el tiempo pp previo a editar
+    if request.method=='GET':
+        prenda_form=PrendaForm(instance=prenda)
+        detalle_form=DetalleForm(instance=detalle)
+    else:
+        prenda_form=PrendaForm(request.POST, instance=prenda)
+        detalle_form=DetalleForm(request.POST, instance=detalle)
+        if prenda_form.is_valid() and detalle_form.is_valid():
+            prenda = prenda_form.save() #Guardo prenda
+            detalle = detalle_form.save() #Guardo detalle
+            if 'boton_asignar_material' in request.POST:
+                ingrediente_form = IngredienteForm()
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
 
-                if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
-                    precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
-                    precio_pos = prenda.precio * detalle.cantidad - precio_total_pre #Calculo el precio del lote actualizado
-                    pedido.precio_total += precio_pos #Actualizo el precio total
-                    pedido.seña = pedido.precio_total/2 #Actualizo la seña
-                    detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+            if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
+                precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
+                precio_pos = prenda.precio * detalle.cantidad - precio_total_pre #Calculo el precio del lote actualizado
+                pedido.precio_total += precio_pos #Actualizo el precio total
+                pedido.seña = pedido.precio_total/2 #Actualizo la seña
+                detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
 
-                #Asocio datos de prenda y pedido a detalle
-                detalle.prenda = prenda
-                detalle.pedido = pedido
+            #Asocio datos de prenda y pedido a detalle
+            detalle.prenda = prenda
+            detalle.pedido = pedido
 
-                pedido.save() # Actualizo el pedido
-                detalle.save() # Actualizo el detalle
-                id_detalle = detalle.id_detalle #Obtengo el id del detalle
-                return redirect('/pedido/volver_pedido/'+str(id_pedido))
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form, 'error':error, 'detalle_form':detalle_form})
+            pedido.save() # Actualizo el pedido
+            detalle.save() # Actualizo el detalle
+            id_detalle = detalle.id_detalle #Obtengo el id del detalle
+            return redirect('/pedido/volver_pedido/'+str(id_pedido))
+    return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
 #Eliminar un cliente
 def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
     prenda = get_object_or_404(Prenda,id_prenda=id_prenda)
@@ -214,14 +213,58 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
         detalle = Detalle.objects.get(id_detalle=id_detalle)
         if ingrediente_form.is_valid():
             ingrediente = ingrediente_form.save() #guardo el ingrediente
+            print(ingrediente.material.stock)
+            detalle.prenda = prenda
+            detalle.pedido = pedido
+            detalle.save()
             ingrediente.prenda = prenda
             ingrediente.save()
-            return ListarIngrediente(request)
+            return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
     else:
+        print("WEKELEKE")
         ingrediente_form = IngredienteForm()
-        prenda_form = PrendaForm()
-        detalle_form = DetalleForm()
-    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido})
+    print("ACA SIP")
+    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,})
+
+def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
+    prenda_form=None
+    detalle_form=None
+    prenda = Prenda.objects.get(id_prenda=id_prenda)
+    detalle = Detalle.objects.get(id_detalle=id_detalle)
+    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
+    precio_pre = prenda.precio #Obtengo el precio previo a editar
+    tpp_pre = prenda.tiempo_prod_prenda #Obtengo el tiempo pp previo a editar
+    if request.method=='GET':
+        prenda_form=PrendaForm(instance=prenda)
+        detalle_form=DetalleForm(instance=detalle)
+    else:
+        prenda_form=PrendaForm(request.POST, instance=prenda)
+        detalle_form=DetalleForm(request.POST, instance=detalle)
+        if prenda_form.is_valid() and detalle_form.is_valid():
+            prenda = prenda_form.save() #Guardo prenda
+            detalle = detalle_form.save() #Guardo detalle
+            if 'boton_asignar_material' in request.POST:
+                ingrediente_form = IngredienteForm()
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+
+            if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
+                precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
+                precio_pos = prenda.precio * detalle.cantidad - precio_total_pre #Calculo el precio del lote actualizado
+                pedido.precio_total += precio_pos #Actualizo el precio total
+                pedido.seña = pedido.precio_total/2 #Actualizo la seña
+                detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+
+            #Asocio datos de prenda y pedido a detalle
+            detalle.prenda = prenda
+            detalle.pedido = pedido
+
+            pedido.save() # Actualizo el pedido
+            detalle.save() # Actualizo el detalle
+            id_detalle = detalle.id_detalle #Obtengo el id del detalle
+            return redirect('/pedido/volver_pedido/'+str(id_pedido))
+    ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
+    return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes})
 
 #Listar todos las ingredientes
 def ListarIngrediente (request):
