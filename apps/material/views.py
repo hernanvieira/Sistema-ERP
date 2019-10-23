@@ -7,10 +7,16 @@ from django.contrib import messages
 #Crear un tipo de tipo_material
 def CrearTipo_material (request):
     if request.method == 'POST':
-        tipo_material_form = Tipo_materialForm(request.POST)
-        if tipo_material_form.is_valid():
-            tipo_material_form.save()
-            return ListarTipo_material(request)
+        if 'boton_guardar_listar' in request.POST:
+            tipo_material_form = Tipo_materialForm(request.POST)
+            if tipo_material_form.is_valid():
+                tipo_material_form.save()
+                return ListarTipo_material(request)
+        if 'boton_guardar_agregar' in request.POST:
+            tipo_material_form = Tipo_materialForm(request.POST)
+            if tipo_material_form.is_valid():
+                tipo_material_form.save()
+            return redirect('/material/crear_tipo_material')
     else:
         tipo_material_form = Tipo_materialForm()
     return render(request, 'material/crear_tipo_material.html',{'tipo_material_form':tipo_material_form})
@@ -42,16 +48,23 @@ def EliminarTipo_material (request,id_tipo_material):
         tipo_material.delete()
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el tipo de material')
-        tipo_materiales = Tipo_material.objects.all()
+    tipo_materiales = Tipo_material.objects.all()
     return render(request,'material/listar_tipo_material.html',{'tipo_material':tipo_material,'tipo_materiales':tipo_materiales})
 
 #Crear un material
 def CrearMaterial (request):
     if request.method == 'POST':
-        material_form = MaterialForm(request.POST)
-        if material_form.is_valid():
-            material_form.save()
-            return ListarMaterial(request)
+        if 'boton_guardar_listar' in request.POST:
+            material_form = MaterialForm(request.POST)
+            if material_form.is_valid():
+                material_form.save()
+                return ListarMaterial(request)
+        if 'boton_guardar_agregar' in request.POST:
+            print("HOLISKIS")
+            material_form = MaterialForm(request.POST)
+            if material_form.is_valid():
+                material_form.save()
+            return redirect ('/material/crear_material')
     else:
         material_form = MaterialForm()
     return render(request, 'material/crear_material.html',{'material_form':material_form})
@@ -68,10 +81,16 @@ def EditarMaterial (request,id_material):
         if request.method=='GET':
             material_form=MaterialForm(instance=material)
         else:
-            material_form=MaterialForm(request.POST, instance=material)
-            if material_form.is_valid():
-                material_form.save()
-            return redirect('index')
+            if 'boton_guardar_listar' in request.POST:
+                material_form=MaterialForm(request.POST, instance=material)
+                if material_form.is_valid():
+                    material_form.save()
+                    return ListarMaterial(request)
+            if 'boton_guardar_agregar' in request.POST:
+                material_form=MaterialForm(request.POST, instance=material)
+                if material_form.is_valid():
+                    material_form.save()
+                return redirect ('/material/crear_material')
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'material/crear_material.html',{'material_form':material_form, 'error':error})
@@ -88,10 +107,16 @@ def EliminarMaterial (request,id_material):
 #Crear una unidad de medida
 def CrearUnidad_medida (request):
     if request.method == 'POST':
-        unidad_medida_form = Unidad_medidaForm(request.POST)
-        if unidad_medida_form.is_valid():
-            unidad_medida_form.save()
-            return ListarUnidad_medida(request)
+        if 'boton_guardar_listar' in request.POST:
+            unidad_medida_form = Unidad_medidaForm(request.POST)
+            if unidad_medida_form.is_valid():
+                unidad_medida_form.save()
+                return ListarUnidad_medida(request)
+        if 'boton_guardar_agregar' in request.POST:
+            unidad_medida_form = Unidad_medidaForm(request.POST)
+            if unidad_medida_form.is_valid():
+                unidad_medida_form.save()
+            return redirect('/material/crear_unidad_medida')
     else:
         unidad_medida_form = Unidad_medidaForm()
     return render(request, 'material/crear_unidad_medida.html',{'unidad_medida_form':unidad_medida_form})

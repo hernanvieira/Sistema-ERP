@@ -32,7 +32,7 @@ class Material (models.Model):
     id_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     color = models.CharField(max_length=50)
-    stock = models.PositiveIntegerField()
+    stock = models.PositiveIntegerField(default=0)
     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
     stock_minimo = models.PositiveIntegerField(default=0)
 
@@ -48,4 +48,4 @@ class Compra (models.Model):
     id_compra = models.AutoField(primary_key=True)
     fecha = models.DateField()
     cantidad = models.PositiveIntegerField()
-    material = models.ManyToManyField(Material)
+    material = models.ForeignKey(Material, on_delete=models.PROTECT)

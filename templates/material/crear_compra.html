@@ -18,26 +18,34 @@ Nueva Compra
         <h2>{{ error }}</h2>
       {% else %}
 
+      <div class="row">
+        <div class="col-md-3">
+          {{compra_form.fecha.label}}
+          <div class="form-control">
+            {{compra_form.fecha}}
+          </div>
+        </div>
+        <div class="col-md-6">
+          {{compra_form.material.label}}
+            {{compra_form.material}}
+        </div>
+        <div class="col-md-3">
+          {{compra_form.cantidad.label}}
+          <div class="form-control">
+            {{compra_form.cantidad}}
+          </div>
+        </div>
+      </div>
 
-      {{compra_form.fecha.label}}
-      <div class="form-control">
-        {{compra_form.fecha}}
-      </div>
-      {{compra_form.material.label}}
-      <div class="form-control">
-        {{compra_form.material}}
-      </div>
-      {{compra_form.cantidad.label}}
-      <div class="form-control">
-        {{compra_form.cantidad}}
-      </div>
 
-      <div class="card-footer">
+
+
+      <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Crear
         </button>
-        <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
+        <button type="button" class="btn btn-danger">
+          <i class="fa fa-dot-circle-o"></i> Cancelar
         </button>
       </div>
     {% endif %}
@@ -46,6 +54,8 @@ Nueva Compra
 
   </div>
 </div>
-</div>
+<script>
+  document.getElementById('datePicker').valueAsDate = new Date();
+</script>
 
 {% endblock content%}

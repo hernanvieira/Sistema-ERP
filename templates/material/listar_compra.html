@@ -27,7 +27,7 @@ Listado de compras
             <td>{{compra.id_compra}}</td>
             <td>{{compra.fecha}}</td>
             <td>{{compra.material}}</td>
-            <td>{{compra.cantidad}}</td>
+            <td style="text-align: right;">{{compra.cantidad}}</td>
             <td>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_compra' compra.id_compra %}'">
                 <i class="fas fa-pencil-square-o"></i>

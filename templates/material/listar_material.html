@@ -41,7 +41,7 @@ Listado de Tipos de Materials
             <td>{{material.tipo_material}}</td>
             <td>{{material.nombre}}</td>
             <td>{{material.color}}</td>
-            <td>{{material.stock}}</td>
+            <td style="text-align: right;">{{material.stock}}</td>
             <td>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
                 <i class="fas fa-pencil-square-o"></i>

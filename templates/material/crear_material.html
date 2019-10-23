@@ -17,27 +17,34 @@ Nuevo Material
       {% if error %}
         <h2>{{ error }}</h2>
       {% else %}
+      <div class="row">
+        <div class="col-md-3">
+          {{material_form.tipo_material.label}}
+          <div class="form-control">
+            {{material_form.tipo_material}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{material_form.nombre.label}}
+          <div class="form-control">
+            {{material_form.nombre}}
+          </div>
+        </div>
+        <div class="col-md-3">
+          {{material_form.color.label}}
+          <div class="form-control">
+            {{material_form.color}}
+          </div>
+        </div>
+      </div>
+        {{material_form.stock.as_hidden}}
 
-      {{material_form.tipo_material.label}}
-      <div class="form-control">
-        {{material_form.tipo_material}}
-      </div>
-      {{material_form.nombre.label}}
-      <div class="form-control">
-        {{material_form.nombre}}
-      </div>
-      {{material_form.color.label}}
-      <div class="form-control">
-        {{material_form.color}}
-      </div>
-      {{material_form.stock.label}}
-      <div class="form-control">
-        {{material_form.stock}}
-      </div>
-
-      <div class="card-footer">
-        <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" name="boton_guardar_agregar">
+          <i class="fa fa-dot-circle-o"></i> Crear y agregar otro
+        </button>
+        <button type="submit" class="btn btn-success" name="boton_guardar_listar">
+          <i class="fa fa-dot-circle-o"></i> Crear y listar
         </button>
         <button type="reset" class="btn btn-danger">
           <i class="fa fa-ban"></i> Reset
@@ -48,7 +55,6 @@ Nuevo Material
 
 
   </div>
-</div>
 </div>
 
 {% endblock content%}

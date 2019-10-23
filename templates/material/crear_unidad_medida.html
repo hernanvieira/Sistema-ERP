@@ -14,28 +14,32 @@ Nueva Unidad de Medida
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
-
-      {{unidad_medida_form.nombre.label}}
-      <div class="form-control">
-        {{unidad_medida_form.nombre}}
+      <div class="row">
+        <div class="col-md-3">
+          {{unidad_medida_form.nombre.label}}
+          <div class="form-control">
+            {{unidad_medida_form.nombre}}
+          </div>
+        </div>
+        <div class="col-md-3">
+          {{unidad_medida_form.descripcion.label}}
+          <div class="form-control">
+            {{unidad_medida_form.descripcion}}
+          </div>
+        </div>
       </div>
-      {{unidad_medida_form.descripcion.label}}
-      <div class="form-control">
-        {{unidad_medida_form.descripcion}}
-      </div>
 
-      <div class="card-footer">
-        <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" name="boton_guardar_agregar">
+          <i class="fa fa-dot-circle-o"></i> Guardar y agregar otro
+        </button>
+        <button type="submit" class="btn btn-success" name="boton_guardar_listar">
+          <i class="fa fa-dot-circle-o"></i> Guardar y listar
         </button>
         <button type="button" class="btn btn-danger" onclick="history.back()" >
           <i class="fa fa-ban"></i> Cancelar
         </button>
       </div>
-    {% endif %}
     </form>
 
 

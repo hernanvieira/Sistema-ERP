@@ -19,19 +19,19 @@ Nuevo Tipo de Material
       {% else %}
 
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-4">
           {{tipo_material_form.nombre.label}}
           <div class="form-control">
             {{tipo_material_form.nombre}}
           </div>
         </div>
-        <div class="col-md-10">
+        <div class="col-md-3">
           {{tipo_material_form.unidad_medida.label}}
           <div class="form-control">
             {{tipo_material_form.unidad_medida}}
           </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
           <br>
           <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'material:crear_unidad_medida' %}'">
             <i class="fas fa-cog"></i>
@@ -40,9 +40,12 @@ Nuevo Tipo de Material
 
       </div>
 
-      <div class="card-footer">
-        <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" name="boton_guardar_agregar">
+          <i class="fa fa-dot-circle-o"></i> Crear y agregar otro
+        </button>
+        <button type="submit" class="btn btn-success" name="boton_guardar_listar">
+          <i class="fa fa-dot-circle-o"></i> Crear y listar
         </button>
         <a href="{% url 'index'%}">
         <button type="button" class="btn btn-danger" >
