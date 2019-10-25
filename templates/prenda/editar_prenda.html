@@ -12,7 +12,7 @@ Agregar Prenda
   <div class="card-header bg-success"><strong class="card-title text-light">Nueva Prenda</strong>
     <h class="card-title text-light"> | Cliente: {{pedido.cliente}}</h></div>
   <div class="card-body card-block">
-    <form method="POST" enctype="multipart/form-data">
+    <form class="user" method="POST" enctype="multipart/form-data">
       {%csrf_token%}
 
       <div class="row">
@@ -87,6 +87,12 @@ Agregar Prenda
                 <input type="file" class="form-control mb-2" name="txtImagen" id="txtImagen">
               </div>
         </div>
+        <div class="">
+          {% if prenda_form.imagen %}
+            <p>Imagen aqui</p>
+            <img src="{{ prenda_form.imagen.url }}" width="200px" height="200px">
+          {% endif %}
+        </div>
         <br>
         <button type="submit" class="btn btn-warning" name="boton_asignar_material">
           <i class="fa fa-archive"></i> Asignar Materiales
@@ -141,6 +147,7 @@ Agregar Prenda
                                 </div>
                             </div>
                             <!-- End Modal -->
+                          </div>
                       </td>
                     </tr>
                   {% endfor %}

@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from apps.cliente.views import Home, Auditoria
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cliente/',include(('apps.cliente.urls','cliente')),name='cliente'),
@@ -26,5 +29,7 @@ urlpatterns = [
     path('prenda/',include(('apps.prenda.urls','prenda')),name='prenda'),
     path('home/', Home, name = 'index'),
     path('auditoria/', Auditoria, name = 'auditoria'),
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

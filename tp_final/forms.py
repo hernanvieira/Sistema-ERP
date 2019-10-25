@@ -135,29 +135,30 @@ class ComponenteForm (forms.ModelForm):
     class Meta:
         model = Componente
         fields = ['nombre']
-    def clean_nombre(self):
-        nombre = self.cleaned_data.get('nombre')
-        if not nombre.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return nombre
+    # def clean_nombre(self):
+    #     nombre = self.cleaned_data.get('nombre')
+    #     if not nombre.isalpha():
+    #         raise forms.ValidationError("No puede introducir numeros")
+    #     return nombre
 
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda
         fields = ['nombre','componente']
+        widgets = {
+        'componente' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
+        }
     def clean_nombre(self):
         value = self.cleaned_data.get('nombre')
         if not value.isalpha():
             raise forms.ValidationError("No puede introducir numeros")
         return value
-    widgets = {
-    'componente' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
-    }
+
 
 class PrendaForm (forms.ModelForm):
     class Meta:
         model = Prenda
-        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio']
+        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio','imagen']
 
 class IngredienteForm (forms.ModelForm):
     class Meta:

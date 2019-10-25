@@ -118,8 +118,13 @@ def CrearPrenda (request,id_pedido):
         prenda_form = PrendaForm(request.POST)
         detalle_form = DetalleForm(request.POST)
         pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
+        print(prenda_form.errors)
+        print('IMPRIME ALGO?')
+        print(request.FILES.get('txtImagen'))
         if prenda_form.is_valid() and detalle_form.is_valid():
-            prenda = prenda_form.save() #Guardo prenda
+            prenda = prenda_form.save(commit = False) #Guardo prenda
+            prenda.imagen = request.FILES.get('txtImagen')
+            prenda.save()
             detalle = detalle_form.save() #Guardo detalle
             if 'boton_asignar_material' in request.POST:
                 prenda_form=PrendaForm(request.POST, instance=prenda)
@@ -187,7 +192,7 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
-    return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
+    return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
 #Eliminar un cliente
 def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
     prenda = get_object_or_404(Prenda,id_prenda=id_prenda)

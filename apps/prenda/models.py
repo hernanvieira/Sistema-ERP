@@ -34,6 +34,7 @@ class Prenda (models.Model):
     tiempo_prod_prenda = models.PositiveIntegerField()
     tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.PROTECT)
     precio = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)])
+    imagen = models.ImageField(upload_to = "prendas", null = True)
 
     class Meta:
         verbose_name = 'Prenda'
