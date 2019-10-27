@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Agregar Prenda
+Editar Prenda
 {% endblock titulo%}
 {% block content%}
 
@@ -87,12 +87,11 @@ Agregar Prenda
                 <input type="file" class="form-control mb-2" name="txtImagen" id="txtImagen">
               </div>
         </div>
-        <div class="">
-          {% if prenda_form.imagen %}
-            <p>Imagen aqui</p>
-            <img src="{{ prenda_form.imagen.url }}" width="200px" height="200px">
+
+          {% if prenda.imagen %}
+            <img src="{{prenda.imagen.url}}" width="200px" height="200px">
           {% endif %}
-        </div>
+
         <br>
         <button type="submit" class="btn btn-warning" name="boton_asignar_material">
           <i class="fa fa-archive"></i> Asignar Materiales
@@ -147,7 +146,6 @@ Agregar Prenda
                                 </div>
                             </div>
                             <!-- End Modal -->
-                          </div>
                       </td>
                     </tr>
                   {% endfor %}
