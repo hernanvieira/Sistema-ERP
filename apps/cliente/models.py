@@ -1,7 +1,7 @@
-from auditlog.registry import auditlog
-from auditlog.models import AuditlogHistoryField
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+
+from simple_history.models import HistoricalRecords
 # Create your models here.
 #Se crean las clases de acuerdo con el diagrama de clases
 class Cliente(models.Model):
@@ -11,8 +11,7 @@ class Cliente(models.Model):
     telefono = models.CharField('Telefonos',max_length=50)
     correo = models.EmailField('Correos')
     domicilio = models.CharField('Domicilios',blank = True, null = True, max_length=500)
-
-    history = AuditlogHistoryField()
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = 'Cliente'
@@ -21,4 +20,3 @@ class Cliente(models.Model):
 
     def __str__(self):
         return str(self.dni) + ' - ' + self.apellido + ' ' + self.nombre
-auditlog.register(Cliente)

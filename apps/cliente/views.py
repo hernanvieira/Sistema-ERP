@@ -3,9 +3,6 @@ from tp_final.forms import ClienteForm
 from .models import Cliente
 from django.core.exceptions import *
 from django.contrib import messages
-from auditlog.registry import auditlog
-
-from django.contrib.admin.models import LogEntry
 
 
 # Create your views here.
@@ -16,18 +13,7 @@ def Home(request):
 
 #Pagina de auditoria
 def Auditoria(request):
-    auditoria = []
-    tipo = Cliente.objects.all()[1].history.last()
-    print("TIPO")
-    print(tipo)
-    # recentActions = LogEntry.objects.all()
-    # print("MIRA ESTO")
-    # print(recentActions)
-    num = Cliente.objects.all().count()
-    for i in range(num):
-        if Cliente.objects.all()[i].history.all().count() != 0:
-            auditoria.insert(i,Cliente.objects.all()[i].history.last())
-    print(auditoria)
+    auditoria =  Cliente.history.all()
     return render(request, 'auditoria.html',{'auditoria':auditoria})
 
 #Crear un cliente
