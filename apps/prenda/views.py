@@ -124,12 +124,6 @@ def CrearPrenda (request,id_pedido):
             prenda.save()
             print(prenda.imagen)
             detalle = detalle_form.save() #Guardo detalle
-            if 'boton_asignar_material' in request.POST:
-                prenda_form=PrendaForm(request.POST, instance=prenda)
-                if prenda_form.is_valid():
-                    prenda_form.save()
-                ingrediente_form = IngredienteForm()
-                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
             detalle.save() #Actualizo el detalle
             pedido.precio_total += prenda.precio * detalle.cantidad #Calculo precio total
@@ -140,6 +134,12 @@ def CrearPrenda (request,id_pedido):
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
+            if 'boton_asignar_material' in request.POST:
+                prenda_form=PrendaForm(request.POST, instance=prenda)
+                if prenda_form.is_valid():
+                    prenda_form.save() #Guardo prenda
+                ingrediente_form = IngredienteForm()
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
         else:
             messages.error(request, 'Ocurrió un error al tratar de agregar una prenda')
@@ -170,12 +170,10 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
         detalle_form=DetalleForm(request.POST, instance=detalle)
         if prenda_form.is_valid() and detalle_form.is_valid():
             prenda = prenda_form.save(commit = False) #Guardo prenda
-            prenda.imagen = request.FILES.get('txtImagen')
+            if request.FILES:
+                prenda.imagen = request.FILES.get('txtImagen')
             prenda.save()
             detalle = detalle_form.save() #Guardo detalle
-            if 'boton_asignar_material' in request.POST:
-                ingrediente_form = IngredienteForm()
-                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
 
             if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
                 precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
@@ -191,6 +189,10 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
+            if 'boton_asignar_material' in request.POST:
+                ingrediente_form = IngredienteForm()
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
     return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
 #Eliminar un cliente
@@ -216,9 +218,21 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
         ingrediente_form = IngredienteForm(request.POST)
         prenda = Prenda.objects.get(id_prenda=id_prenda)
         detalle = Detalle.objects.get(id_detalle=id_detalle)
+
         if ingrediente_form.is_valid():
-            ingrediente = ingrediente_form.save() #guardo el ingrediente
-            print(ingrediente.material.stock)
+            ingrediente = ingrediente_form.save(commit = False) #guardo el ingrediente
+            material = ingrediente.material
+            if ingrediente.cantidad < material.stock:
+                print("La cantidad es menor al stock")
+                ing_pos = material.stock - ingrediente.cantidad
+                if ing_pos > material.stock_minimo:
+                    print("El stock despues de restar es mayor al stock minimo")
+                    #Actualizar stock
+                    material.stock -= ingrediente.cantidad
+                    material.save()
+                    ingrediente.save()
+
+            print(material.stock)
             detalle.prenda = prenda
             detalle.pedido = pedido
             detalle.save()
@@ -269,7 +283,7 @@ def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
-    return render(request,'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes})
+    return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes})
 
 #Listar todos las ingredientes
 def ListarIngrediente (request):

@@ -82,7 +82,7 @@ class Tipo_materialForm (forms.ModelForm):
 class MaterialForm (forms.ModelForm):
     class Meta:
         model = Material
-        fields = ['nombre','color','tipo_material','stock']
+        fields = ['nombre','color','tipo_material','stock','stock_minimo']
     def clean_nombre(self):
         value = self.cleaned_data.get('nombre')
         if not value.isalpha():

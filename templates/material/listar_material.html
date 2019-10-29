@@ -31,6 +31,7 @@ Listado de Tipos de Materials
             <th>Nombre</th>
             <th>Color</th>
             <th>Stock</th>
+            <th>Stock Mínimo</th>
             <th>Opciones</th>
           </tr>
       </thead>
@@ -42,6 +43,7 @@ Listado de Tipos de Materials
             <td>{{material.nombre}}</td>
             <td>{{material.color}}</td>
             <td style="text-align: right;">{{material.stock}}</td>
+            <td style="text-align: right;">{{material.stock_minimo}}</td>
             <td>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
                 <i class="fas fa-pencil-square-o"></i>
