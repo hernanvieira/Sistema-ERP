@@ -36,6 +36,12 @@ Gestionar Clientes
         <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
       </div>
       {% endif %}
+      {% if message.tags == 'warning' %}
+      <div class="alert alert-warning">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
     {% endfor %}
   </ul>
 </div>

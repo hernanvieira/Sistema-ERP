@@ -48,35 +48,43 @@ Auditoria
     <table class="table table-data2" id="midatatable">
         <thead>
             <tr>
+                <th>id</th>
                 <th>Acción</th>
                 <th>Tabla</th>
-                <th>Afectado</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
                 <th class="noExport">Opciones</th>
             </tr>
         </thead>
         <tbody>
-          {% for audi in auditoria %}
-            {{auditoria}}
-          {% endfor %}
-            <!-- {% for pedido in pedidos %}
+
+            {% for audi in auditoria %}
             <tr class="tr-shadow">
+              <td>{{audi.history_id}}</td>
+              <td>
+                {% if audi.history_type == '-' %}
+                  Baja
+                {% endif %}
+                {% if audi.history_type == '~' %}
+                  Modificación
+                {% endif %}
+                {% if audi.history_type == '+' %}
+                  Alta
+                {% endif %}
+              </td>
               <td></td>
-              <td></td>
-              <td></td>
-              <td>{pedido.fecha_entrega|date:'d-m-Y'}}</td>
-              <td></td>
+              <td>{{audi.history_date}}</td>
+              <td>{{audi.history_user}}</td>
               <td>
                   <div class="table-data-feature">
-                    <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="#">
                       <i class="fas fa-eye"></i>
                     </button>
                   </div>
               </td>
             </tr>
 
-            {% endfor %} -->
+            {% endfor %}
         </tbody>
     </table>
 </div>
