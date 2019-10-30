@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import ComponenteForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
 from .models import Componente, Tipo_prenda, Prenda, Ingrediente
+from apps.material.models import Material
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -214,6 +215,7 @@ def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
 def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
     prenda = Prenda.objects.get(id_prenda=id_prenda)
     pedido = Pedido.objects.get(id_pedido = id_pedido)
+    detalle = Detalle.objects.get(id_detalle = id_detalle)
     if request.method == 'POST':
         ingrediente_form = IngredienteForm(request.POST)
         prenda = Prenda.objects.get(id_prenda=id_prenda)
@@ -222,28 +224,35 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
         if ingrediente_form.is_valid():
             ingrediente = ingrediente_form.save(commit = False) #guardo el ingrediente
             material = ingrediente.material
-            if ingrediente.cantidad < material.stock:
-                print("La cantidad es menor al stock")
-                ing_pos = material.stock - ingrediente.cantidad
-                if ing_pos > material.stock_minimo:
-                    print("El stock despues de restar es mayor al stock minimo")
-                    #Actualizar stock
-                    material.stock -= ingrediente.cantidad
-                    material.save()
-                    ingrediente.save()
-
-            print(material.stock)
-            detalle.prenda = prenda
-            detalle.pedido = pedido
-            detalle.save()
-            ingrediente.prenda = prenda
-            ingrediente.save()
-            return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+            cantidad_material = ingrediente.cantidad * detalle.cantidad
+            if cantidad_material < material.stock:
+                ingrediente_post = material.stock - cantidad_material
+                #Actualizar stock
+                material.stock -= cantidad_material
+                material.save()
+                #Guardo la asignación de material
+                ingrediente.prenda = prenda
+                ingrediente.save()
+                detalle.prenda = prenda
+                detalle.pedido = pedido
+                detalle.save()
+                messages.success(request, 'Se asignó el material')
+                if ingrediente_post > material.stock_minimo:
+                    if 'boton_guardar_cargar' in request.POST:
+                        return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+                    return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+                else:
+                    messages.warning(request, 'La cantidad introducida supera el stock mínimo')
+                    if 'boton_guardar_cargar' in request.POST:
+                        return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+                    return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+            else:
+                messages.error(request, 'La cantidad introducida es mayor al stock disponible')
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
     else:
-        print("WEKELEKE")
         ingrediente_form = IngredienteForm()
-    print("ACA SIP")
-    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,})
+    ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
+    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
 
 def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
     prenda_form=None
@@ -283,14 +292,14 @@ def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
-    return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes})
+    return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes, 'detalle':detalle})
 
 #Listar todos las ingredientes
 def ListarIngrediente (request):
     ingredientes = Ingrediente.objects.all()
     return redirect('index')
 #Editar un ingrediente
-def EditarIngrediente (request,id_ingrediente):
+def EditarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prenda):
     try:
         error = None
         ingrediente_form=None
@@ -301,14 +310,17 @@ def EditarIngrediente (request,id_ingrediente):
             ingrediente_form=IngredienteForm(request.POST, instance=ingrediente)
             if ingrediente_form.is_valid():
                 ingrediente_form.save()
-            return redirect('index')
+            return redirect('/prenda/editar_material/'+str(ingrediente.id_ingrediente),{'ingrediente_form':ingrediente_form})
     except ObjectDoesNotExist as e:
         error = e
     return render(request,'material/crear_ingrediente.html',{'ingrediente_form':ingrediente_form, 'error':error})
 #Eliminar un ingrediente
-def EliminarIngrediente (request,id_ingrediente):
+def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prenda):
     ingrediente = Ingrediente.objects.get(id_ingrediente=id_ingrediente)
-    if request.method=='POST':
-        ingrediente.delete()
-        return redirect('material:listar_ingrediente')
-    return redirect('index')
+    detalle = Detalle.objects.get(id_detalle = id_detalle)
+    material = Material.objects.get(id_material = str(ingrediente.material.id_material))
+    cantidad_material = ingrediente.cantidad * detalle.cantidad
+    material.stock += cantidad_material
+    material.save()
+    ingrediente.delete()
+    return redirect('/prenda/asignar_material/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))

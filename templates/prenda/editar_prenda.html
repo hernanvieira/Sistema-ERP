@@ -117,7 +117,7 @@ Editar Prenda
                       <td style="text-align: center;">{{ingrediente.cantidad}}</td>
                       <td style="text-align: center;>
                           <div class="table-data-feature">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_ingrediente' ingrediente.id_ingrediente ingrediente.id_ingrediente ingrediente.id_ingrediente  %}'">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_ingrediente' ingrediente.id_ingrediente pedido.id_pedido detalle.id_detalle prenda.id_prenda %}'">
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
                             <!-- Modal Eliminar -->
@@ -136,7 +136,7 @@ Editar Prenda
                                         </div>
                                         <div class="modal-footer">
                                           <div class="alineado-derecha">
-                                            <a href="{% url 'prenda:eliminar_ingrediente' ingrediente.id_ingrediente ingrediente.id_ingrediente ingrediente.id_ingrediente%}">
+                                            <a href="{% url 'prenda:eliminar_ingrediente' ingrediente.id_ingrediente pedido.id_pedido detalle.id_detalle prenda.id_prenda %}">
                                               <button type="button" class="btn btn-danger" >Eliminar</button>
                                             </a>
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

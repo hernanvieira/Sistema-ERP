@@ -12,8 +12,41 @@ Asignar materiales
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-
       <div class="row">
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+              {% if message.tags == 'warning' %}
+              <div class="alert alert-warning">
+                <div class="row">
+                  <div class="col-md-9">
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="alineado-derecha">
+                        <a href="#" class="btn btn-secondary" data-dismiss="alert" aria-label="close">Aceptar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
         <div class="col-md-3">
           {{ingrediente_form.material.label}}
             {{ingrediente_form.material}}
@@ -24,10 +57,18 @@ Asignar materiales
             {{ingrediente_form.cantidad}}
           </div>
         </div>
+        <div class="col-md-6 alineado-derecha">
+          {% if prenda.imagen %}
+            <img src="{{prenda.imagen.url}}" width="200px" height="200px">
+          {% endif %}
+        </div>
       </div>
 
       <div class="card-footer">
         <div class="alineado-derecha">
+          <button type="submit" class="btn btn-success" name="boton_guardar_cargar">
+            <i class="fa fa-dot-circle-o"></i> Guardar y cargar otro
+          </button>
           <button type="submit" class="btn btn-success">
             <i class="fa fa-dot-circle-o"></i> Finalizar
           </button>
@@ -36,6 +77,64 @@ Asignar materiales
           </button>
         </div>
       </div>
+      <hr class="line-seprate">
+      {% if ingredientes %}
+      <!-- DATA TABLE-->
+      <div class="table-responsive m-b-40">
+          <table class="table table-borderless table-data3">
+              <thead>
+                  <tr>
+                      <th>Tipo de Prenda</th>
+                      <th>Material</th>
+                      <th>Cantidad</th>
+                      <th>Opciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for ingrediente in ingredientes %}
+                  <tr>
+                    <td style="text-align: left">{{prenda.tipo_prenda}}</td>
+                    <td style="text-align: center;">{{ingrediente.material}}</td>
+                    <td style="text-align: center;">{{ingrediente.cantidad}}</td>
+                    <td style="text-align: center;>
+                        <div class="table-data-feature">
+                          <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_ingrediente' ingrediente.id_ingrediente pedido.id_pedido detalle.id_detalle prenda.id_prenda %}'">
+                            <i class="fas fa-pencil-square-o"></i>
+                          </button>
+                          <!-- Modal Eliminar -->
+                          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{ingrediente.id_ingrediente}}">
+                            <i class="fas fa-trash"></i>
+                          </button>
+                          <div class="modal fade bs-example-modal-lg2{{ingrediente.id_ingrediente}}" id="myModal2{{ingrediente.id_ingrediente}}" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-lg">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h4 class="modal-title" id="myModalLabel{{ingrediente.id_ingrediente}}">Confirmar Eliminacion</h4>
+                                      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                      </div>
+                                      <div class="modal-body">
+                                          <a>¿Está seguro de <strong>remover</strong> el material?</a>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <div class="alineado-derecha">
+                                          <a href="{% url 'prenda:eliminar_ingrediente' ingrediente.id_ingrediente pedido.id_pedido detalle.id_detalle prenda.id_prenda %}">
+                                            <button type="button" class="btn btn-danger" >Eliminar</button>
+                                          </a>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- End Modal -->
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+      </div>
+      <!-- END DATA TABLE-->
+      {% endif %}
     </form>
   </div>
 </div>
