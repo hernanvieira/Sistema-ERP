@@ -223,20 +223,23 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
 
         if ingrediente_form.is_valid():
             ingrediente = ingrediente_form.save(commit = False) #guardo el ingrediente
-            material = ingrediente.material
-            cantidad_material = ingrediente.cantidad * detalle.cantidad
-            if cantidad_material < material.stock:
-                ingrediente_post = material.stock - cantidad_material
+            material = ingrediente.material # objtengo el material
+            cantidad_material = ingrediente.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
+            if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
+                ingrediente_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
+
                 #Actualizar stock
-                material.stock -= cantidad_material
-                material.save()
+                material.stock -= cantidad_material # Actualizo el stock
+                material.save() # persisto
                 #Guardo la asignación de material
-                ingrediente.prenda = prenda
-                ingrediente.save()
-                detalle.prenda = prenda
-                detalle.pedido = pedido
-                detalle.save()
-                messages.success(request, 'Se asignó el material')
+                ingrediente.prenda = prenda # asocio el material con la prenda
+                ingrediente.save() #persisto
+
+                #Actualizo el detalle
+                detalle.prenda = prenda # Asocio la prenda con el detalle
+                detalle.pedido = pedido # Asocio el pedido con el detalle
+                detalle.save() #Persisto
+                messages.success(request, 'Se asignó el material') # Informo que se asignó correctamente 
                 if ingrediente_post > material.stock_minimo:
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})

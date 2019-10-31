@@ -60,7 +60,6 @@ def EliminarCliente (request,dni):
         clientes = Cliente.objects.all()
         return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
     except Exception as e:
-        print("por k entra aca?")
         messages.error(request, 'Ocurrió un error al tratar de eliminar el cliente')
     clientes = Cliente.objects.all()
     return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
