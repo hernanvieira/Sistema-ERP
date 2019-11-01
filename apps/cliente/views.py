@@ -21,12 +21,10 @@ def CrearCliente (request):
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
         if cliente_form.is_valid():
-            print("ENTRASSEE")
             cliente_form.save()
             messages.success(request, 'Sea agregó correctamente el cliente')
             return ClienteHome(request)
         else:
-            print("ERORAROSOO")
             messages.error(request, 'Ocurrió un error al tratar de agregar el cliente')
     else:
         cliente_form = ClienteForm()

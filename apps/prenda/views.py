@@ -159,6 +159,10 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
     detalle_form=None
     prenda = Prenda.objects.get(id_prenda=id_prenda)
     detalle = Detalle.objects.get(id_detalle=id_detalle)
+
+    cant_pre = detalle.cantidad
+    print("Cantidad prenda actual: " + str(cant_pre))
+
     pedido = Pedido.objects.get(id_pedido=id_pedido)
     cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
     precio_pre = prenda.precio #Obtengo el precio previo a editar
@@ -189,6 +193,31 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
 
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
+
+            cant_post = detalle.cantidad
+            print("Cantidad prenda nueva: " + str(cant_post))
+            ingredientes = Ingrediente.objects.filter(prenda_id = prenda.id_prenda)
+            print(ingredientes)
+            for ingre in ingredientes:
+                mat_pre = cant_pre * ingre.cantidad
+                mat_post = cant_post * ingre.cantidad
+                print("Cantidad material previo: " + str(mat_pre))
+                print("Cantidad material nuevo: " + str(mat_post))
+                cant_dif = mat_post - mat_pre
+                print("Diferencia de cantidad: " + str(cant_dif))
+                material = Material.objects.get(id_material = ingre.material_id)
+                print(material.nombre)
+
+                if cant_dif < material.stock:
+                    print("Hay stock disponible")
+                    redireccionar = 0
+                else:
+                    print("No hay stock disponible")
+                    redireccionar = 1
+                    messages.error(request, 'No hay stock disponible para el material ' + str(material)) # Informo que no hay stock para dicho material
+            print(redireccionar)
+            if redireccionar == 1:
+                return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+ str(id_detalle)+'/'+str(id_pedido))
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             if 'boton_asignar_material' in request.POST:
                 ingrediente_form = IngredienteForm()
@@ -226,7 +255,7 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
             material = ingrediente.material # objtengo el material
             cantidad_material = ingrediente.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
             if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
-                ingrediente_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
+                material_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
 
                 #Actualizar stock
                 material.stock -= cantidad_material # Actualizo el stock
@@ -239,8 +268,8 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                 detalle.prenda = prenda # Asocio la prenda con el detalle
                 detalle.pedido = pedido # Asocio el pedido con el detalle
                 detalle.save() #Persisto
-                messages.success(request, 'Se asignó el material') # Informo que se asignó correctamente 
-                if ingrediente_post > material.stock_minimo:
+                messages.success(request, 'Se asignó el material') # Informo que se asignó correctamente
+                if material_post > material.stock_minimo:
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
                     return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))

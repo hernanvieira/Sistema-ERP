@@ -50,6 +50,8 @@ Auditoria
             <tr>
                 <th>id</th>
                 <th>Acción</th>
+                <th>DNI</th>
+                <th>Nombre y apellido</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
                 <th class="noExport">Opciones</th>
@@ -71,6 +73,8 @@ Auditoria
                   Alta
                 {% endif %}
               </td>
+              <td>{{audi.dni}}</td>
+              <td>{{audi.nombre}}</td>
               <td>{{audi.history_date}}</td>
               <td>{{audi.history_user}}</td>
               <td>
