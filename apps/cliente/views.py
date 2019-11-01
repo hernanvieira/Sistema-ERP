@@ -4,6 +4,8 @@ from .models import Cliente
 from django.core.exceptions import *
 from django.contrib import messages
 
+from apps.prenda.models import Tipo_prenda, Prenda
+
 
 # Create your views here.
 
@@ -15,6 +17,21 @@ def Home(request):
 def Auditoria(request):
     auditoria =  Cliente.history.all()
     return render(request, 'auditoria.html',{'auditoria':auditoria})
+
+#Pagina de estadisticas
+def Estadistica(request):
+    lista_chart = []
+
+    tipo_prendas_list = Tipo_prenda.objects.all()
+    for tipo_prenda in tipo_prendas_list:
+        diccionario = {
+        'prenda':tipo_prenda.nombre,
+        'valor':Prenda.objects.filter(tipo_prenda = tipo_prenda).count()
+        }
+        lista_chart.append(diccionario)
+    print("ACA LA LISTA")
+    print(lista_chart)
+    return render(request, 'estadistica.html',{'lista_chart':lista_chart})
 
 #Crear un cliente
 def CrearCliente (request):

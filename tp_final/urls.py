@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.cliente.views import Home, Auditoria
+from apps.cliente.views import Home, Auditoria, Estadistica
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,6 +29,7 @@ urlpatterns = [
     path('prenda/',include(('apps.prenda.urls','prenda')),name='prenda'),
     path('home/', Home, name = 'index'),
     path('auditoria/', Auditoria, name = 'auditoria'),
+    path('estadistica/', Estadistica, name = 'estadistica'),
 ]
 
 if settings.DEBUG:

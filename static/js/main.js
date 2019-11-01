@@ -882,10 +882,10 @@
         type: 'bar',
         defaultFontFamily: 'Poppins',
         data: {
-          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          labels: [],
           datasets: [
             {
-              label: "My First dataset",
+              label: "Vestido",
               data: [65, 59, 80, 81, 56, 55, 40],
               borderColor: "rgba(0, 123, 255, 0.9)",
               borderWidth: "0",
@@ -1121,12 +1121,6 @@
               "rgba(0, 123, 255,0.7)",
               "rgba(0, 123, 255,0.5)",
               "rgba(0,0,0,0.07)"
-            ],
-            hoverBackgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
             ]
 
           }],
@@ -1276,8 +1270,8 @@
         window.location.href = url;
       }
     });
-  
-  
+
+
   })(jQuery);
 (function ($) {
   // USE STRICT
@@ -1308,7 +1302,7 @@
 
   // Europe Map
   try {
-    
+
     var vmap1 = $('#vmap1');
     if(vmap1[0]) {
       vmap1.vectorMap( {
@@ -1327,7 +1321,7 @@
 
   // USA Map
   try {
-    
+
     var vmap2 = $('#vmap2');
 
     if(vmap2[0]) {
@@ -1357,7 +1351,7 @@
 
   // Germany Map
   try {
-    
+
     var vmap3 = $('#vmap3');
     if(vmap3[0]) {
       vmap3.vectorMap( {
@@ -1372,14 +1366,14 @@
         }
       });
     }
-    
+
   } catch (error) {
     console.log(error);
   }
-  
+
   // France Map
   try {
-    
+
     var vmap4 = $('#vmap4');
     if(vmap4[0]) {
       vmap4.vectorMap( {
@@ -1418,10 +1412,10 @@
   } catch (error) {
     console.log(error);
   }
-  
+
   // Brazil Map
   try {
-    
+
     var vmap6 = $('#vmap6');
     if(vmap6[0]) {
       vmap6.vectorMap( {
@@ -1478,7 +1472,7 @@
   try {
     var jscr1 = $('.js-scrollbar1');
     if(jscr1[0]) {
-      const ps1 = new PerfectScrollbar('.js-scrollbar1');      
+      const ps1 = new PerfectScrollbar('.js-scrollbar1');
     }
 
     var jscr2 = $('.js-scrollbar2');
@@ -1516,7 +1510,7 @@
   // USE STRICT
   "use strict";
 
-  // Dropdown 
+  // Dropdown
   try {
     var menu = $('.js-item-menu');
     var sub_menu_is_showed = -1;
@@ -1524,7 +1518,7 @@
     for (var i = 0; i < menu.length; i++) {
       $(menu[i]).on('click', function (e) {
         e.preventDefault();
-        $('.js-right-sidebar').removeClass("show-sidebar");        
+        $('.js-right-sidebar').removeClass("show-sidebar");
         if (jQuery.inArray(this, menu) == sub_menu_is_showed) {
           $(this).toggleClass('show-dropdown');
           sub_menu_is_showed = -1;
@@ -1575,7 +1569,7 @@
       right_sidebar.removeClass("show-sidebar");
 
     });
- 
+
 
   // Sublist Sidebar
   try {
@@ -1643,7 +1637,7 @@
   "use strict";
 
   try {
-    
+
     $('[data-toggle="tooltip"]').tooltip();
 
   } catch (error) {
@@ -1661,7 +1655,7 @@
         $(this).parent().parent().parent().toggleClass('show-chat-box');
       });
     });
-    
+
 
   } catch (error) {
     console.log(error);

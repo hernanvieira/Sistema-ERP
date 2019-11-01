@@ -1,0 +1,89 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Estadisticas
+{% endblock titulo%}
+{% block content%}
+<div class="row">
+  <div class="col-lg-6">
+      <div class="au-card m-b-30">
+          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+              <h3 class="title-2 m-b-40">Tipos de Prendas por ventas</h3>
+              <canvas id="pieChart2" height="260" width="390" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
+          </div>
+      </div>
+  </div>
+  <div class="col-lg-6">
+      <div class="au-card m-b-30">
+          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+              <h3 class="title-2 m-b-40">Tipos de prendas por epocas del año</h3>
+              <canvas id="barChart" height="260" width="390" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
+          </div>
+      </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js" integrity="sha256-arMsf+3JJK2LoTGqxfnuJPFTU4hAK57MtIPdFpiHXOU=" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+
+<script>
+    var tipo_prenda = [];
+    var cantidad = [];
+</script>
+
+{% for a  in lista_chart %}
+<script>
+    tipo_prenda.push(String('{{a.prenda}}'))
+    cantidad.push(parseInt('{{a.valor}}'))
+</script>
+{%endfor%}
+<script>
+  console.log(tipo_prenda)
+  console.log(cantidad)
+</script>
+
+<script>
+    var ctx = document.getElementById('pieChart2').getContext("2d");
+    var chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: tipo_prenda,
+        datasets: [{
+          data: cantidad,
+          backgroundColor: [
+            "rgba(0, 123, 255,0.9)",
+            "rgba(0, 123, 255,0.7)",
+            "rgba(0, 123, 255,0.5)",
+            "rgba(0,0,0,0.07)"
+          ]
+
+        }]
+
+      },
+      options: {
+        legend: {
+          position: 'top',
+          labels: {
+            fontFamily: 'Poppins'
+          }
+
+        },
+        responsive: true
+      }
+    });
+
+</script>
+
+<!-- <script>
+  chart.data.labels = tipo_prenda;
+
+  chart.data.datasets.forEach((dataset) => {
+      datasets.data = cantidad;
+  });
+</script> -->
+
+<script>
+  console.log(chart.data.labels)
+  console.log(chart.data.datasets.data)
+</script>
+{% endblock content%}
