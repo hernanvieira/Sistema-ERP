@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import ComponenteForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
 from .models import Componente, Tipo_prenda, Prenda, Ingrediente
-from apps.material.models import Material
+from apps.material.models import Material, Tipo_material
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -273,6 +273,13 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
         if ingrediente_form.is_valid():
             ingrediente = ingrediente_form.save(commit = False) #guardo el ingrediente
             material = ingrediente.material # objtengo el material
+
+            # Obtener Unidad de medida
+            tipo_material = Tipo_material.objects.get(material = material)
+            unidad_medida = tipo_material.unidad_medida
+            print("ACA LA MEDUDI")
+            print(unidad_medida)
+
             cantidad_material = ingrediente.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
             if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
                 material_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
