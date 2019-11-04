@@ -155,6 +155,7 @@ def ListarPrenda (request):
     return redirect('index')
 #Editar una prenda
 def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
+    redireccionar = 0
     prenda_form=None
     detalle_form=None
     prenda = Prenda.objects.get(id_prenda=id_prenda)
@@ -208,22 +209,41 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
                 material = Material.objects.get(id_material = ingre.material_id)
                 print(material.nombre)
 
-                if cant_dif < material.stock:
+                if cant_dif <= material.stock:
                     print("Hay stock disponible")
-                    redireccionar = 0
                 else:
                     print("No hay stock disponible")
                     redireccionar = 1
                     messages.error(request, 'No hay stock disponible para el material ' + str(material)) # Informo que no hay stock para dicho material
             print(redireccionar)
+
             if redireccionar == 1:
+                detalle.cantidad = cantidad_pre
+                detalle.save()
                 return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+ str(id_detalle)+'/'+str(id_pedido))
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             if 'boton_asignar_material' in request.POST:
                 ingrediente_form = IngredienteForm()
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
 
-            return redirect('/pedido/volver_pedido/'+str(id_pedido))
+            if redireccionar == 0:
+
+                for ingre in ingredientes:
+                    mat_pre = cant_pre * ingre.cantidad
+                    mat_post = cant_post * ingre.cantidad
+                    print("Cantidad material previo: " + str(mat_pre))
+                    print("Cantidad material nuevo: " + str(mat_post))
+                    cant_dif = mat_post - mat_pre
+                    print("Diferencia de cantidad: " + str(cant_dif))
+                    material = Material.objects.get(id_material = ingre.material_id)
+                    print(material.nombre)
+
+                    #Actualizar stock
+                    material.stock -= cant_dif # Actualizo el stock
+                    material.save() # persisto
+
+                return redirect('/pedido/volver_pedido/'+str(id_pedido))
+
     return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
 #Eliminar un cliente
 def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
