@@ -118,3 +118,8 @@ def EliminarPedido (request,id_pedido):
         messages.error(request, "Ocurrió un error al tratar de eliminar el pedido " + str(id_pedido))
     pedidos = Pedido.objects.all()
     return ListarPedido(request)
+
+#Pagina de auditoria
+def Auditoria(request):
+    auditoria =  Pedido.history.all()
+    return render(request, 'auditoria_pedido.html',{'auditoria':auditoria})

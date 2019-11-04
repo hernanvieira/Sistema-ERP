@@ -28,7 +28,6 @@ urlpatterns = [
     path('pedido/',include(('apps.pedido.urls','pedido'))),
     path('prenda/',include(('apps.prenda.urls','prenda')),name='prenda'),
     path('home/', Home, name = 'index'),
-    path('auditoria/', Auditoria, name = 'auditoria'),
     path('estadistica/', Estadistica, name = 'estadistica'),
 ]
 

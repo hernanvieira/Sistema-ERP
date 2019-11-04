@@ -13,11 +13,6 @@ from apps.prenda.models import Tipo_prenda, Prenda
 def Home(request):
     return render(request, 'index.html')
 
-#Pagina de auditoria
-def Auditoria(request):
-    auditoria =  Cliente.history.all()
-    return render(request, 'auditoria.html',{'auditoria':auditoria})
-
 #Pagina de estadisticas
 def Estadistica(request):
     lista_chart = []
@@ -95,3 +90,8 @@ def ClienteHome(request):
     else:
         cliente_form = ClienteForm()
     return render (request, 'cliente/index_cliente.html',{'clientes':clientes,'cliente_form':cliente_form})
+
+#Pagina de auditoria
+def Auditoria(request):
+    auditoria =  Cliente.history.all()
+    return render(request, 'auditoria_cliente.html',{'auditoria':auditoria})

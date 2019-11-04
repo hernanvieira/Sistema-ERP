@@ -1,0 +1,94 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Auditoria Pedidos
+{% endblock titulo%}
+{% block content%}
+
+<!-- DATA TABLE -->
+<strong class="card-title">Filtrar</strong>
+<div class="card">
+  <br>
+  <div class="table-data__tool">
+      <div class="table-data__tool-left">
+        <span>Tabla:</span>
+          <div class="rs-select2--light rs-select2--sm">
+              <select class="btn btn-secondary" name="property">
+                  <option value="2">Pedido</option>
+                  <option value="1">Cliente</option>
+              </select>
+              <div class="dropDownSelect2"></div>
+          </div>
+          <span>Entre:</span>
+          <div class="rs-select2--light rs-select2--sm">
+            <div class="form-control">
+              <input type="" name="" value="" id="min">
+            </div>
+          </div>
+          <h> y </h>
+          <div class="rs-select2--light rs-select2--sm">
+            <div class="form-control">
+              <input type="" name="" value="" id="max">
+            </div>
+          </div>
+    </div>
+      <div class="alineado-derecha">
+        <div class="table-data__tool-right">
+          <div class="form-control">
+            <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+<div class="table-responsive table-responsive-data2">
+    <table class="table table-data2" id="midatatable">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Acción</th>
+                <th>Id pedido</th>
+                <th>Cliente</th>
+                <th>Fecha y Hora</th>
+                <th>Usuario</th>
+                <th class="noExport">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for audi in auditoria %}
+            <tr class="tr-shadow">
+              <td>{{audi.history_id}}</td>
+              <td style="text-align: center;">
+                {% if audi.history_type == '-' %}
+                  Baja
+                {% endif %}
+                {% if audi.history_type == '~' %}
+                  Modificación
+                {% endif %}
+                {% if audi.history_type == '+' %}
+                  Alta
+                {% endif %}
+              </td>
+              <td style="text-align: right;">{{audi.id_pedido}}</td>
+              <td style="text-align: right;">{{audi.cliente_id}}</td>
+              <td style="text-align: center;">{{audi.history_date}}</td>
+              <td style="text-align: left;">{{audi.history_user}}</td>
+              <td>
+                  <div class="table-data-feature">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="#">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+              </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- END DATA TABLE -->
+{% endblock content%}
