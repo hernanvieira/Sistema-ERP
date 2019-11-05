@@ -21,3 +21,4 @@ class Estado_lote (models.Model):
     fecha = models.DateField()
     pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT)
     detalle = models.ForeignKey(Detalle, on_delete = models.PROTECT)
+    estado = models.ForeignKey(Estado, on_delete=models.PROTECT)

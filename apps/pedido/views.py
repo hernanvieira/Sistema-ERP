@@ -108,6 +108,33 @@ def EditarPedido (request,id_pedido):
                 cliente_form = ClienteForm(request.POST)
                 messages.error(request, 'Debe agregar prendas')
     return render(request,'pedido/editar_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
+
+#Editar un pedido
+def VerPedido (request,id_pedido):
+    pedido_form=None
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    pedidos = Pedido.objects.all()
+    detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
+    if request.method=='GET':
+        pedido_form=PedidoForm(instance=pedido)
+    else:
+        if 'boton_agregar' in request.POST:
+            pedido_form=PedidoForm(request.POST, instance=pedido)
+            if pedido_form.is_valid():
+                pedido_form.save()
+            return redirect('/prenda/crear_prenda/'+str(id_pedido))
+        if 'boton_finalizar' in request.POST:
+            pedido_form = PedidoForm(request.POST, instance=pedido)
+            pedido = pedido_form.save(commit=False)
+            if pedido.precio_total != None:
+                pedido.save()
+                return redirect('/pedido/listar_pedido/')
+            else:
+                cliente_form = ClienteForm(request.POST)
+                messages.error(request, 'Debe agregar prendas')
+    return render(request,'pedido/ver_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
+
+
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)

@@ -2,13 +2,12 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Editar pedido
+Ver pedido
 {% endblock titulo%}
 {% block content%}
 
-
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Editar pedido</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Ver pedido</strong></div>
   <div class="card-body card-block">
 
 
@@ -43,12 +42,6 @@ Editar pedido
         <div class="col-md-12">
           <!-- Button trigger modal -->
           <a>Prenda/s</a>
-          <div>
-            <button type="submit" class="btn btn-success" name="boton_agregar">
-              <i class="fa fa-dot-circle-o"></i> Agregar Prenda
-            </button>
-          </div>
-          <hr class="line-seprate">
           {% if detalles %}
           <!-- DATA TABLE-->
           <div class="table-responsive m-b-40">
@@ -91,14 +84,22 @@ Editar pedido
         <hr class="line-seprate">
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
-          <div class="form-control">
-            {{pedido_form.fecha_entrega}}
+          <div disable class="form-control">
+            <input readonly="readonly" value="{{pedido_form.fecha_entrega.value}}">
           </div>
         </div>
         <div class="col-md-4">
           {{pedido_form.prioridad_entrega.label}}
           <div class="form-control">
-            {{pedido_form.prioridad_entrega}}
+            {% if pedido_form.prioridad_entrega.value == "0" %}
+            <input readonly="readonly" value="Baja">
+            {% endif %}
+            {% if pedido_form.prioridad_entrega.value == "1" %}
+            <input readonly="readonly" value="Media">
+            {% endif %}
+            {% if pedido_form.prioridad_entrega.value == "2" %}
+            <input readonly="readonly" value="Alta">
+            {% endif %}
           </div>
         </div>
         <div class="col-md-4">
@@ -108,7 +109,7 @@ Editar pedido
               <i class="fa fa-dollar"></i>
             </div>
             <div class="form-control">
-              {{pedido_form.precio_total}}
+              <input readonly="readonly" value="{{pedido_form.precio_total.value}}">
             </div>
           </div>
 
@@ -120,7 +121,7 @@ Editar pedido
               <i class="fa fa-dollar"></i>
             </div>
             <div class="form-control">
-              {{pedido_form.seña}}
+              <input readonly="readonly" value="{{pedido_form.seña.value}}">
             </div>
           </div>
 
@@ -133,7 +134,7 @@ Editar pedido
               <i class="fa fa-dollar"></i>
             </div>
             <div class="form-control">
-              {{pedido_form.entrega}}
+              <input readonly="readonly" value="{{pedido_form.entrega.value}}">
             </div>
           </div>
         </div>

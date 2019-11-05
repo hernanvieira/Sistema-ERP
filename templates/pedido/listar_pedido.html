@@ -114,6 +114,9 @@ Listado de pedidos
               </td>
                 <td>
                     <div class="table-data-feature">
+                      <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.id_pedido %}'">
+                        <i class="fas fa-eye"></i>
+                      </button>
                       <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
                         <i class="fas fa-pencil-square-o"></i>
                       </button>
