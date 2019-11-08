@@ -1,15 +1,12 @@
 {% extends 'index.html' %}
-{% load static %}
 
 <!DOCTYPE html>
-
 {% block titulo%}
-Nuevo Componente
+Crear Estado
 {% endblock titulo%}
 {% block content%}
-
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Componente</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Estado</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
@@ -33,9 +30,14 @@ Nuevo Componente
         </ul>
       </div>
       {% endif %}
-      {{componente_form.nombre.label}}
+
+      {{estado_form.nombre.label}}
       <div class="form-control">
-        {{componente_form.nombre}}
+        {{estado_form.nombre}}
+      </div>
+      {{estado_form.descripcion.label}}
+      <div class="form-control">
+        {{estado_form.descripcion}}
       </div>
 
       <div class="card-footer">

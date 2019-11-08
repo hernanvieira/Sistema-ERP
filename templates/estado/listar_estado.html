@@ -1,0 +1,113 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Listar Estados
+{% endblock titulo%}
+{% block content%}
+{% if estados %}
+
+<!-- Filtros -->
+
+<!-- DATA TABLE -->
+      <input type="hidden" name="" value="" id="min">
+
+      <input type="hidden" name="" value="" id="max">
+      <div class="alineado-derecha">
+        <div class="table-data__tool-right">
+          <div class="form-control">
+            <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+{% if messages %}
+<div class="col-md-12">
+  <ul class="messages">
+    {% for message in messages %}
+      {% if message.tags == 'success'%}
+        <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        </div>
+      {% endif %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
+      {% if message.tags == 'warning' %}
+      <div class="alert alert-warning">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+<div class="table-responsive table-responsive-data2">
+    <table class="table table-data2" id="midatatable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th class="noExport">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for estado in estados %}
+            <tr class="tr-shadow">
+              <td style="text-align: right;">{{estado.id_estado}}</td>
+              <td style="text-align: center;">{{estado.nombre}}</td>
+              <td style="text-align: left;">{{estado.descripcion}}</td>
+              <td>
+                    <div class="table-data-feature">
+                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'estado:editar_estado' estado.id_estado %}'">
+                        <i class="fas fa-pencil-square-o"></i>
+                      </button>
+                      <!-- Modal Eliminar -->
+                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{estado.id_estado}}">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                      <div class="modal fade bs-example-modal-lg2{{estado.id_estado}}" id="myModal2{{estado.id_estado}}" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h4 class="modal-title" id="myModalLabel{{estado.id_estado}}">Confirmar Eliminacion</h4>
+                                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <a>¿Está seguro de <strong>eliminar</strong> el estado?</a>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <div class="alineado-derecha">
+                                      <a href="{% url 'estado:eliminar_estado' estado.id_estado %}">
+                                        <button type="button" class="btn btn-danger" >Eliminar</button>
+                                      </a>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- End Modal -->
+                    </div>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- END DATA TABLE -->
+
+{% else %}
+  <h1>No existen estados registrados</h1>
+{% endif %}
+
+{% endblock content%}

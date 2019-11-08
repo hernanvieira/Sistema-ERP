@@ -14,7 +14,7 @@ class ClienteForm (forms.ModelForm):
         if not value.isalpha():
             raise forms.ValidationError("No puede introducir numeros")
         return value
-        
+
     def __init__(self, *args, **kwargs):
         super(ClienteForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
@@ -32,17 +32,7 @@ class ClienteForm (forms.ModelForm):
 class EstadoForm (forms.ModelForm):
     class Meta:
         model = Estado
-        fields = ['nombre','descripcion','tipo' ]
-    def clean_nombre(self):
-        value = self.cleaned_data.get('nombre')
-        if not value.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
-    def clean_descripcion(self):
-        value = self.cleaned_data.get('descripcion')
-        if not value.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
+        fields = ['nombre','descripcion']
 
 class Estado_pedidoForm (forms.ModelForm):
     class Meta:
