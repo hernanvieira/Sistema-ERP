@@ -4,35 +4,19 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nuevo Tipo de Prenda
+Editar Tipo de Prenda
 {% endblock titulo%}
 
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Tipo de Prenda</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Tipo de Prenda</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-
-      {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            {% if message.tags == 'success'%}
-              <div class="alert alert-success">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-              </div>
-            {% endif %}
-            {% if message.tags == 'error' %}
-            <div class="alert alert-danger">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            </div>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      {% endif %}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
 
       {{tipo_prenda_form.nombre.label}}
       <div class="form-control">
@@ -42,11 +26,8 @@ Nuevo Tipo de Prenda
         {{tipo_prenda_form.componente}}
 
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success" name="boton_crear_agregar">
-          <i class="fa fa-dot-circle-o"></i> Crear y agregar otro
-        </button>
         <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear y listar
+          <i class="fa fa-dot-circle-o"></i> Actualizar
         </button>
         <a href="{% url 'index'%}">
           <button type="button" class="btn btn-danger" onclick="history.back()">
@@ -54,6 +35,7 @@ Nuevo Tipo de Prenda
           </button>
         </a>
       </div>
+    {% endif %}
     </form>
 
 

@@ -6,7 +6,7 @@ from apps.pedido.models import Detalle
 
 class Estado (models.Model):
     id_estado = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique = True)
     descripcion = models.CharField(max_length=255)
 
     class Meta:

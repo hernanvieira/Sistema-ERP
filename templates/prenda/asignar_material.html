@@ -74,7 +74,7 @@ Asignar materiales
           <button type="submit" class="btn btn-success" name="boton_guardar_cargar">
             <i class="fa fa-dot-circle-o"></i> Guardar y cargar otro
           </button>
-          <button type="submit" class="btn btn-success">
+          <button type="button" class="btn btn-success" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
             <i class="fa fa-dot-circle-o"></i> Finalizar
           </button>
           <button type="button" class="btn btn-danger" onclick="history.back()">

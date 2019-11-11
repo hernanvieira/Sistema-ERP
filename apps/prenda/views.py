@@ -7,16 +7,22 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 #Crear un componente
 def CrearComponente (request):
+    componentes = Componente.objects.all()
     if request.method == 'POST':
         componente_form = ComponenteForm(request.POST)
         if componente_form.is_valid():
+            if "boton_crear_agregar" in request.POST:
+                componente = componente_form.save()
+                componentes = Componente.objects.all()
+                return render(request, 'prenda/crear_componente.html',{'componentes':componentes, 'componente_form':componente_form})
             componente = componente_form.save()
             return ListarComponente(request)
         else:
             messages.error(request, 'Ocurrió un error al tratar de crear el componente')
     else:
         componente_form = ComponenteForm()
-    return render(request, 'prenda/crear_componente.html',{'componente_form':componente_form})
+        componentes = Componente.objects.all()
+    return render(request, 'prenda/crear_componente.html',{'componentes':componentes, 'componente_form':componente_form})
 #Listar todos los componentes
 def ListarComponente (request):
     componentes = Componente.objects.all()
@@ -36,40 +42,42 @@ def EditarComponente (request,id_componente):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/crear_componente.html',{'componente_form':componente_form, 'error':error})
+    return render(request,'prenda/editar_componente.html',{'componente_form':componente_form, 'error':error})
 #Eliminar un componente
 def EliminarComponente (request,id_componente):
-    error = None
     componente = get_object_or_404(Componente, id_componente=id_componente)
     try:
-        if request.method=='POST':
-            componente.delete()
-            return redirect('prenda:listar_componente')
+        componente.delete()
+        messages.warning(request, 'Se eliminó el componente')
     except Exception as e:
-        error = e
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'prenda/eliminar_componente.html',{'componente':componente, 'error':error})
+        messages.error(request, "Ocurrió un error al tratar de eliminar el componente " + str(id_pedido))
+    return ListarComponente(request)
 
 #Crear un tipo de prenda
 def CrearTipo_prenda (request):
+    tipo_prendas = Tipo_prenda.objects.all()
     if request.method == 'POST':
         tipo_prenda_form = Tipo_prendaForm(request.POST)
-        print(tipo_prenda_form.errors)
         if tipo_prenda_form.is_valid():
+            if "boton_crear_agregar" in request.POST:
+                tipo_prenda_form.save()
+                return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
             tipo_prenda_form.save()
             return ListarTipo_prenda(request)
+        else:
+            messages.error(request,"Ocurrió un error al crear el tipo de prenda")
+
     else:
         tipo_prenda_form = Tipo_prendaForm()
-    return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form})
+    return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
 #Listar todos los tipos de prendas
 def ListarTipo_prenda (request):
     tipo_prendas = Tipo_prenda.objects.all()
     return render(request,'prenda/listar_tipo_prenda.html',{'tipo_prendas':tipo_prendas})
 #Editar un tipo de prenda
 def EditarTipo_prenda (request,id_tipo_prenda):
+    tipo_prendas = Tipo_prenda.objects.all()
     try:
-        error = None
         tipo_prenda_form=None
         tipo_prenda = Tipo_prenda.objects.get(id_tipo_prenda=id_tipo_prenda)
         if request.method=='GET':
@@ -81,7 +89,7 @@ def EditarTipo_prenda (request,id_tipo_prenda):
             return ListarTipo_prenda(request)
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/crear_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'error':error})
+    return render(request,'prenda/editar_tipo_prenda.html',{'tipo_prendas':tipo_prendas,'tipo_prenda_form':tipo_prenda_form})
 #Ver tipo de prenda
 def VerTipo_prenda (request,id_tipo_prenda):
     try:
@@ -101,18 +109,13 @@ def VerTipo_prenda (request,id_tipo_prenda):
     return render(request,'prenda/ver_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'componentes':componentes, 'error':error})
 #Eliminar un tipo de prenda
 def EliminarTipo_prenda (request,id_tipo_prenda):
-    error = None
     tipo_prenda = get_object_or_404(Tipo_prenda, id_tipo_prenda=id_tipo_prenda)
     try:
-        if request.method=='POST':
-            tipo_prenda.delete()
-            return redirect('prenda:listar_tipo_prenda')
+        tipo_prenda.delete()
+        messages.warning(request, 'Se eliminó el tipo de prenda')
     except Exception as e:
-        error = e
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'prenda/eliminar_tipo_prenda.html',{'tipo_prenda':tipo_prenda, 'error':error})
-
+        messages.error(request, 'Ocurrió un error al tratar de eliminar el estado')
+    return ListarTipo_prenda(request)
 #Registrar una prenda al detalle
 def CrearPrenda (request,id_pedido):
     if request.method == 'POST':

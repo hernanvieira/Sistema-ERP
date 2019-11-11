@@ -37,9 +37,14 @@ Ver pedido
         </div>
         {% endif %}
         <!-- cliente -->
-        {{pedido_form.cliente.as_hidden}}
+
         <!-- end cliente -->
         <div class="col-md-12">
+          {{pedido_form.cliente.label}}
+          <div class="form-control">
+              {{cliente}}
+          </div>
+          <br>
           <!-- Button trigger modal -->
           <a>Prenda/s</a>
           {% if detalles %}
@@ -61,7 +66,7 @@ Ver pedido
                       <tr>
                         <td>{{detalle.prenda.tipo_prenda}}</td>
                         <td style="text-align: center;">{{detalle.prenda.talle}}</td>
-                        <td style="text-align: right;">{{detalle.prenda.precio}}</td>
+                        <td style="text-align: right;">${{detalle.prenda.precio}}</td>
                         <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
                         <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
                         <td>
@@ -140,12 +145,9 @@ Ver pedido
         </div>
       </div>
 
-      <div class="card-footer">
-        <button type="submit" class="btn btn-success" name="boton_finalizar">
-          <i class="fa fa-dot-circle-o"></i> Finalizar
-        </button>
+      <div class="card-footer alineado-derecha">
         <button type="button" class="btn btn-danger" onclick="history.back()">
-          <i class="fa fa-ban"></i> Cancelar
+          <i class="fa fa-chevron-left"></i> Volver
         </button>
       </div>
 

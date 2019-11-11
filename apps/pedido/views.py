@@ -114,6 +114,7 @@ def VerPedido (request,id_pedido):
     pedido_form=None
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     pedidos = Pedido.objects.all()
+    cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
@@ -132,7 +133,7 @@ def VerPedido (request,id_pedido):
             else:
                 cliente_form = ClienteForm(request.POST)
                 messages.error(request, 'Debe agregar prendas')
-    return render(request,'pedido/ver_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
+    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles})
 
 
 #Eliminar un pedido

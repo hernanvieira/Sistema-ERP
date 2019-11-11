@@ -14,9 +14,32 @@ Nuevo Material
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
+
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            {% if message.tags == 'success'%}
+              <div class="alert alert-success">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+            {% endif %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+            {% if message.tags == 'warning' %}
+            <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
       <div class="row">
         <div class="col-md-3">
           {{material_form.tipo_material.label}}
@@ -53,14 +76,81 @@ Nuevo Material
           <i class="fa fa-dot-circle-o"></i> Crear y listar
         </button>
         <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
+          <i class="fa fa-ban"></i> Limpiar
         </button>
       </div>
-    {% endif %}
     </form>
-
-
   </div>
 </div>
+
+{% if materiales %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Tipo de Material</th>
+            <th>Nombre</th>
+            <th>Color</th>
+            <th>Stock</th>
+            <th>Stock Mínimo</th>
+            <th>Opciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for material in materiales %}
+          <tr>
+            <td>{{material.id_material}}</td>
+            <td>{{material.tipo_material}}</td>
+            <td>{{material.nombre}}</td>
+            <td>{{material.color}}</td>
+            <td style="text-align: right;">{{material.stock}}</td>
+            <td style="text-align: right;">{{material.stock_minimo}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <!-- Modal Eliminar -->
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}">
+                <i class="fas fa-trash"></i>
+              </button>
+              <div class="modal fade bs-example-modal-lg2{{material.id_material}}" id="myModal2{{material.id_material}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel{{material.id_material}}">Confirmar Eliminacion</h4>
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                              <a>¿Está seguro de <strong>eliminar</strong> el material?</a>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="alineado-derecha">
+                              <a href="{% url 'material:eliminar_material' material.id_material %}">
+                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                              </a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End Modal -->
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="alineado-derecha">
+    <button type="button" class="btn btn-danger" onclick="history.back()" >
+      <i class="fa fa-chevron-left"></i> Volver
+    </button>
+  </div>
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen Tipos de Materiales registrados</h1>
+{% endif %}
 
 {% endblock content%}

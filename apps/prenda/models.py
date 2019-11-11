@@ -5,7 +5,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 #Se crean las clases de acuerdo con diagrama de clases
 class Componente (models.Model):
     id_componente = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100, blank = False, null = False)
+    nombre = models.CharField(max_length=100, blank = False, null = False, unique = True)
 
     class Meta:
         verbose_name = 'Componente'
@@ -17,7 +17,7 @@ class Componente (models.Model):
 
 class Tipo_prenda (models.Model):
     id_tipo_prenda = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique = True)
     componente = models.ManyToManyField(Componente)
 
     class Meta:
@@ -49,7 +49,7 @@ class Ingrediente (models.Model):
     cantidad = models.PositiveIntegerField()
     prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT,null = True, blank = True)
     # componente = models.ForeignKey(Componente, on_delete=models.PROTECT,null = True, blank = True)
-    material =  models.ForeignKey(Material, on_delete=models.PROTECT,null = True, blank = True)
+    material =  models.ForeignKey(Material, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Ingrediente'

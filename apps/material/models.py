@@ -4,7 +4,7 @@ from django.db import models
 #Se crean las clases de acuerdo al diagrama de clases
 class Unidad_medida (models.Model):
     id_unidad = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=50, unique = True)
     descripcion = models.CharField(max_length=200)
 
     class Meta:
@@ -17,7 +17,7 @@ class Unidad_medida (models.Model):
 
 class Tipo_material (models.Model):
     id_tipo_material = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique = True)
     unidad_medida = models.ForeignKey(Unidad_medida,on_delete=models.PROTECT)
 
     class Meta:

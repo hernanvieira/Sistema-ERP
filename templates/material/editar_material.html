@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nueva Unidad de Medida
+Editar Material
 {% endblock titulo%}
 
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Unidad de Medida</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Material</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
@@ -42,74 +42,89 @@ Nueva Unidad de Medida
 
       <div class="row">
         <div class="col-md-3">
-          {{unidad_medida_form.nombre.label}}
+          {{material_form.tipo_material.label}}
           <div class="form-control">
-            {{unidad_medida_form.nombre}}
+            {{material_form.tipo_material}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{material_form.nombre.label}}
+          <div class="form-control">
+            {{material_form.nombre}}
           </div>
         </div>
         <div class="col-md-3">
-          {{unidad_medida_form.descripcion.label}}
+          {{material_form.color.label}}
           <div class="form-control">
-            {{unidad_medida_form.descripcion}}
+            {{material_form.color}}
+          </div>
+        </div>
+        <div class="col-md-3">
+          <p>Stock Mínimo</p>
+          <div class="form-control">
+            {{material_form.stock_minimo}}
           </div>
         </div>
       </div>
+        {{material_form.stock.as_hidden}}
 
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success" name="boton_guardar_agregar">
-          <i class="fa fa-dot-circle-o"></i> Guardar y agregar otro
-        </button>
         <button type="submit" class="btn btn-success" name="boton_guardar_listar">
-          <i class="fa fa-dot-circle-o"></i> Guardar y listar
+          <i class="fa fa-dot-circle-o"></i> Actualizar
         </button>
-        <button type="button" class="btn btn-danger" onclick="history.back()" >
+        <button type="reset" class="btn btn-danger" onclick="history.back()">
           <i class="fa fa-ban"></i> Cancelar
         </button>
       </div>
     </form>
-
-
   </div>
 </div>
-{% if unidad_medidas %}
+
+{% if materiales %}
 <!-- DATA TABLE-->
 <div class="table-responsive m-b-40">
     <table class="table table-borderless table-data3">
       <thead>
           <tr>
             <th>Id</th>
+            <th>Tipo de Material</th>
             <th>Nombre</th>
-            <th>Descripción</th>
+            <th>Color</th>
+            <th>Stock</th>
+            <th>Stock Mínimo</th>
             <th>Opciones</th>
           </tr>
       </thead>
       <tbody>
-        {% for unidad_medida in unidad_medidas %}
+        {% for material in materiales %}
           <tr>
-            <td>{{unidad_medida.id_unidad}}</td>
-            <td>{{unidad_medida.nombre}}</td>
-            <td>{{unidad_medida.descripcion}}</td>
+            <td>{{material.id_material}}</td>
+            <td>{{material.tipo_material}}</td>
+            <td>{{material.nombre}}</td>
+            <td>{{material.color}}</td>
+            <td style="text-align: right;">{{material.stock}}</td>
+            <td style="text-align: right;">{{material.stock_minimo}}</td>
             <td>
-              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_unidad_medida' unidad_medida.id_unidad %}'">
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
                 <i class="fas fa-pencil-square-o"></i>
               </button>
               <!-- Modal Eliminar -->
-              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{unidad_medida.id_unidad}}">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}">
                 <i class="fas fa-trash"></i>
               </button>
-              <div class="modal fade bs-example-modal-lg2{{unidad_medida.id_unidad}}" id="myModal2{{unidad_medida.id_unidad}}" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal fade bs-example-modal-lg2{{material.id_material}}" id="myModal2{{material.id_material}}" tabindex="-1" role="dialog" aria-hidden="true">
                   <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                           <div class="modal-header">
-                              <h4 class="modal-title" id="myModalLabel{{unidad_medida.id_unidad}}">Confirmar Eliminacion</h4>
+                              <h4 class="modal-title" id="myModalLabel{{material.id_material}}">Confirmar Eliminacion</h4>
                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
                           </div>
                           <div class="modal-body">
-                              <a>¿Está seguro de <strong>eliminar</strong> la unidad de medida?</a>
+                              <a>¿Está seguro de <strong>eliminar</strong> el material?</a>
                           </div>
                           <div class="modal-footer">
                             <div class="alineado-derecha">
-                              <a href="{% url 'material:eliminar_unidad_medida' unidad_medida.id_unidad %}">
+                              <a href="{% url 'material:eliminar_material' material.id_material %}">
                                 <button type="button" class="btn btn-danger" >Eliminar</button>
                               </a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -127,12 +142,12 @@ Nueva Unidad de Medida
   </div>
   <div class="alineado-derecha">
     <button type="button" class="btn btn-danger" onclick="history.back()" >
-      <i class="fa  fa-chevron-left"></i> Volver
+      <i class="fa fa-chevron-left"></i> Volver
     </button>
   </div>
 <!-- END DATA TABLE-->
 {% else %}
-  <h1>No existen Unidades de medida registradas</h1>
+  <h1>No existen Tipos de Materiales registrados</h1>
 {% endif %}
 
 {% endblock content%}

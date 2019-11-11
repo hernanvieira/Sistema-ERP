@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Listar Estados
+Listado de Estados
 {% endblock titulo%}
 {% block content%}
 {% if estados %}
@@ -53,7 +53,6 @@ Listar Estados
     <table class="table table-data2" id="midatatable">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Descripcion</th>
                 <th class="noExport">Opciones</th>
@@ -62,7 +61,6 @@ Listar Estados
         <tbody>
             {% for estado in estados %}
             <tr class="tr-shadow">
-              <td style="text-align: right;">{{estado.id_estado}}</td>
               <td style="text-align: center;">{{estado.nombre}}</td>
               <td style="text-align: left;">{{estado.descripcion}}</td>
               <td>
@@ -104,10 +102,16 @@ Listar Estados
         </tbody>
     </table>
 </div>
+
 <!-- END DATA TABLE -->
 
 {% else %}
   <h1>No existen estados registrados</h1>
 {% endif %}
-
+<br>
+<div class="alineado-derecha">
+  <button type="button" class="btn btn-danger" onclick="history.back()" >
+    <i class="fa fa-chevron-left"></i> Volver
+  </button>
+</div>
 {% endblock content%}

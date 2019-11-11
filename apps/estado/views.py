@@ -5,6 +5,7 @@ from django.contrib import messages
 
 #Crear un Estado
 def CrearEstado (request):
+    estados = Estado.objects.all()
     if request.method == 'POST':
         estado_form = EstadoForm(request.POST)
         print(estado_form.errors)
@@ -15,7 +16,7 @@ def CrearEstado (request):
             messages.error(request, 'Ocurrió un error al tratar de crear el estado')
     else:
         estado_form = EstadoForm()
-    return render(request, 'estado/crear_estado.html',{'estado_form':estado_form})
+    return render(request, 'estado/crear_estado.html',{'estados':estados,'estado_form':estado_form})
 
 #Listar todos los estados
 def ListarEstado (request):

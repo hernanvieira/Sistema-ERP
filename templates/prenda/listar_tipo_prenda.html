@@ -25,15 +25,35 @@ Listado de Tipos de Prendas
             <td>{{tipo_prenda.id_tipo_prenda}}</td>
             <td>{{tipo_prenda.nombre}}</td>
             <td>
-              <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'prenda:ver_tipo_prenda' tipo_prenda.id_tipo_prenda %}'">
-                <i class="fas fa-eye"></i>
-              </button>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_tipo_prenda' tipo_prenda.id_tipo_prenda %}'">
                 <i class="fas fa-pencil-square-o"></i>
               </button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_tipo_prenda' tipo_prenda.id_tipo_prenda %}'">
+              <!-- Modal Eliminar -->
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{tipo_prenda.id_tipo_prenda}}">
                 <i class="fas fa-trash"></i>
               </button>
+              <div class="modal fade bs-example-modal-lg2{{tipo_prenda.id_tipo_prenda}}" id="myModal2{{tipo_prenda.id_tipo_prenda}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel{{tipo_prenda.id_tipo_prenda}}">Confirmar Eliminacion</h4>
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                              <a>¿Está seguro de <strong>eliminar</strong> el tipo de prenda?</a>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="alineado-derecha">
+                              <a href="{% url 'prenda:eliminar_tipo_prenda' tipo_prenda.id_tipo_prenda %}">
+                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                              </a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End Modal -->
             </td>
           </tr>
         {% endfor %}
@@ -42,7 +62,7 @@ Listado de Tipos de Prendas
   </div>
   <div class="alineado-derecha">
     <button type="button" class="btn btn-danger" onclick="history.back()" >
-      <i class="fa fa-ban"></i> Volver
+      <i class="fa fa-chevron-left"></i> Volver
     </button>
   </div>
 <!-- END DATA TABLE-->

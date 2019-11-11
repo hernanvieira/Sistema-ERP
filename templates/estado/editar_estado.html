@@ -2,16 +2,15 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Crear Estado
+Editar Estado
 {% endblock titulo%}
 {% block content%}
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Estado</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Estado</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
       {% if messages %}
-      <div class="col-md-12">
         <ul class="messages">
           {% for message in messages %}
             {% if message.tags == 'success'%}
@@ -28,7 +27,6 @@ Crear Estado
             {% endif %}
           {% endfor %}
         </ul>
-      </div>
       {% endif %}
 
       {{estado_form.nombre.label}}
@@ -40,9 +38,9 @@ Crear Estado
         {{estado_form.descripcion}}
       </div>
 
-      <div class="card-footer">
+      <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+          <i class="fa fa-dot-circle-o"></i> Actualizar
         </button>
         <a href="{% url 'index'%}">
         <button type="button" class="btn btn-danger" >
@@ -51,9 +49,72 @@ Crear Estado
         </a>
       </div>
     </form>
-
-
   </div>
 </div>
 
+{% if estados %}
+<div class="table-responsive table-responsive-data2">
+    <table class="table table-data3">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th class="noExport">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for estado in estados %}
+            <tr class="tr-shadow">
+              <td style="text-align: left;">{{estado.nombre}}</td>
+              <td style="text-align: left;">{{estado.descripcion}}</td>
+              <td>
+                    <div class="table-data-feature">
+                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'estado:editar_estado' estado.id_estado %}'">
+                        <i class="fas fa-pencil-square-o"></i>
+                      </button>
+                      <!-- Modal Eliminar -->
+                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{estado.id_estado}}">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                      <div class="modal fade bs-example-modal-lg2{{estado.id_estado}}" id="myModal2{{estado.id_estado}}" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h4 class="modal-title" id="myModalLabel{{estado.id_estado}}">Confirmar Eliminacion</h4>
+                                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <a>¿Está seguro de <strong>eliminar</strong> el estado?</a>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <div class="alineado-derecha">
+                                      <a href="{% url 'estado:eliminar_estado' estado.id_estado %}">
+                                        <button type="button" class="btn btn-danger" >Eliminar</button>
+                                      </a>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <!-- End Modal -->
+                    </div>
+                </td>
+            </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<!-- END DATA TABLE -->
+
+{% else %}
+  <h1>No existen estados registrados</h1>
+{% endif %}
+<br>
+<div class="alineado-derecha">
+  <button type="button" class="btn btn-danger" onclick="history.back()" >
+    <i class="fa fa-chevron-left"></i> Volver
+  </button>
+</div>
 {% endblock content%}

@@ -38,9 +38,12 @@ Nuevo Componente
         {{componente_form.nombre}}
       </div>
 
-      <div class="card-footer">
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" name="boton_crear_agregar">
+          <i class="fa fa-dot-circle-o"></i> Crear y agregar otro
+        </button>
         <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+          <i class="fa fa-dot-circle-o"></i> Crear y listar
         </button>
         <a href="{% url 'index'%}">
         <button type="button" class="btn btn-danger" >
@@ -53,5 +56,66 @@ Nuevo Componente
 
   </div>
 </div>
+{% if componentes %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Opciones</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for componente in componentes %}
+          <tr>
+            <td>{{componente.id_componente}}</td>
+            <td>{{componente.nombre}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_componente' componente.id_componente %}'">
+                <i class="fas fa-pencil-square-o"></i>
+              </button>
+              <!-- Modal Eliminar -->
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{componente.id_componente}}">
+                <i class="fas fa-trash"></i>
+              </button>
+              <div class="modal fade bs-example-modal-lg2{{componente.id_componente}}" id="myModal2{{componente.id_componente}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel{{componente.id_componente}}">Confirmar Eliminacion</h4>
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                              <a>¿Está seguro de <strong>eliminar</strong> el componente?</a>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="alineado-derecha">
+                              <a href="{% url 'prenda:eliminar_componente' componente.id_componente %}">
+                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                              </a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End Modal -->
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="alineado-derecha">
+    <button type="button" class="btn btn-danger" onclick="history.back()" >
+      <i class="fa fa-chevron-left"></i> Volver
+    </button>
+  </div>
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen componentes registrados</h1>
+{% endif %}
 
 {% endblock content%}

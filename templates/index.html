@@ -25,7 +25,7 @@
     <link href="{% static 'css/datatables.min.css' %}" rel="stylesheet" media="all">
 
     <!-- select2 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
+    <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" media="all">
 
     <!-- Bootstrap CSS-->
     <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css' %}" rel="stylesheet" media="all">
@@ -375,12 +375,6 @@ left: 43px;
                                     <a href="/material/crear_compra/">Registrar Compra</a>
                                 </li>
                                 <li>
-                                    <a href="/material/crear_material/">Nuevo Material</a>
-                                </li>
-                                <li>
-                                    <a href="/material/crear_tipo_material/">Nuevo Tipo de Material</a>
-                                </li>
-                                <li>
                                     <a href="/material/listar_material/">Gestionar Materiales</a>
                                 </li>
                                 <li>
@@ -388,10 +382,14 @@ left: 43px;
                                 </li>
                             </ul>
                         </ul>
-                        <li>
-                            <a href="/cliente/cliente_home/">
-                                <i class="fas fa-user"></i>Clientes</a>
-                        </li>
+                        <li class="active has-sub">
+                          <a class="js-arrow" href="#">
+                              <i class="fas fa-users"></i>Clientes</a>
+                          <ul class="list-unstyled navbar__sub-list js-sub-list">
+                              <li>
+                                  <a href="/cliente/cliente_home/">Gestionar Clientes</a>
+                              </li>
+                          </ul>
                       </ul>
                       <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
@@ -399,13 +397,7 @@ left: 43px;
                               <i class="fas fa-th"></i>Prendas</a>
                           <ul class="list-unstyled navbar__sub-list js-sub-list">
                               <li>
-                                  <a href="/prenda/crear_tipo_prenda/">Nuevo Tipo de Prenda</a>
-                              </li>
-                              <li>
                                   <a href="/prenda/listar_tipo_prenda/">Gestionar Tipos de Prendas</a>
-                              </li>
-                              <li>
-                                  <a href="/prenda/crear_componente/">Nuevo Componente</a>
                               </li>
                               <li>
                                   <a href="/prenda/listar_componente/">Gestionar Componentes</a>
@@ -422,16 +414,33 @@ left: 43px;
                                     <a href="/pedido/auditoria">Pedidos</a>
                                 </li>
                             </ul>
-                            <li>
-                                <a href="/estadistica">
-                                    <i class="fas fa-bar-chart-o"></i>Estadisticas</a>
-                            </li>
+                            <li class="active has-sub">
+                              <a class="js-arrow" href="#">
+                                  <i class="fas fa-bar-chart-o"></i>Estadisticas</a>
+                              <ul class="list-unstyled navbar__sub-list js-sub-list">
+                                  <li>
+                                      <a href="/estadistica">Ver Estadisticas</a>
+                                  </li>
+                              </ul>
+
                             <li class="active has-sub">
                               <a class="js-arrow" href="#">
                                   <i class="fas fa-cogs"></i>Configuración</a>
                               <ul class="list-unstyled navbar__sub-list js-sub-list">
                                   <li>
-                                      <a href="/estado/crear_estado">Estados de Pedido</a>
+                                      <a href="/estado/crear_estado"> Nuevo Estado de Pedido</a>
+                                  </li>
+                                  <li>
+                                      <a href="/material/crear_material/">Nuevo Material</a>
+                                  </li>
+                                  <li>
+                                      <a href="/material/crear_tipo_material/">Nuevo Tipo de Material</a>
+                                  </li>
+                                  <li>
+                                      <a href="/prenda/crear_componente/">Nuevo Componente</a>
+                                  </li>
+                                  <li>
+                                      <a href="/prenda/crear_tipo_prenda/">Nuevo Tipo de Prenda</a>
                                   </li>
                               </ul>
                       </ul>
@@ -509,7 +518,7 @@ left: 43px;
                       <i class="fa fa-dot-circle-o"></i> Crear
                     </button>
                     <button type="reset" class="btn btn-danger">
-                      <i class="fa fa-ban"></i> Reset
+                      <i class="fa fa-ban"></i> Limpiar
                     </button>
                   </div>
                 </div>
@@ -746,7 +755,7 @@ left: 43px;
     <script src="{% static 'js/vfs_fonts.js' %}"></script>
 
     <!-- select2 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
+    <script src="{% static 'js/select2.min.js' %}"></script>
 
     <!-- Vendor JS       -->
     <!-- <script src="{% static 'vendor/slick/slick.min.js' %}"></script> -->

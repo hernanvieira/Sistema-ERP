@@ -4,43 +4,42 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nueva Unidad de Medida
+Editar Unidad de Medida
 {% endblock titulo%}
 
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Unidad de Medida</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Unidad de Medida</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-
-      {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            {% if message.tags == 'success'%}
-              <div class="alert alert-success">
+      <div class="row">
+        {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
               </div>
-            {% endif %}
-            {% if message.tags == 'error' %}
-            <div class="alert alert-danger">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            </div>
-            {% endif %}
-            {% if message.tags == 'warning' %}
-            <div class="alert alert-warning">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            </div>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      {% endif %}
+              {% endif %}
+              {% if message.tags == 'warning' %}
+              <div class="alert alert-warning">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
 
-      <div class="row">
         <div class="col-md-3">
           {{unidad_medida_form.nombre.label}}
           <div class="form-control">
@@ -56,11 +55,8 @@ Nueva Unidad de Medida
       </div>
 
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success" name="boton_guardar_agregar">
-          <i class="fa fa-dot-circle-o"></i> Guardar y agregar otro
-        </button>
         <button type="submit" class="btn btn-success" name="boton_guardar_listar">
-          <i class="fa fa-dot-circle-o"></i> Guardar y listar
+          <i class="fa fa-dot-circle-o"></i> Actualizar
         </button>
         <button type="button" class="btn btn-danger" onclick="history.back()" >
           <i class="fa fa-ban"></i> Cancelar

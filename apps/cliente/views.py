@@ -76,15 +76,14 @@ def EliminarCliente (request,dni):
 
 def ClienteHome(request):
     clientes = Cliente.objects.all()
+    cliente_form = ClienteForm()
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
         if cliente_form.is_valid():
             cliente_form.save()
             messages.success(request, 'Sea agregó correctamente el cliente')
-            print("Entra")
             return render (request, 'cliente/index_cliente.html',{'clientes':clientes})
         else:
-            print("Entra aca tambien")
             messages.error(request, 'Ocurrió un error al tratar de agregar el cliente')
             cliente_form = ClienteForm()
     else:

@@ -4,42 +4,19 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nuevo Tipo de Material
+Editar Tipo de Material
 {% endblock titulo%}
 
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Tipo de Material</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Tipo de Material</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-
-
-      {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-            {% if message.tags == 'success'%}
-              <div class="alert alert-success">
-              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-              </div>
-            {% endif %}
-            {% if message.tags == 'error' %}
-            <div class="alert alert-danger">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            </div>
-            {% endif %}
-            {% if message.tags == 'warning' %}
-            <div class="alert alert-warning">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
-            </div>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      {% endif %}
+      {% if error %}
+        <h2>{{ error }}</h2>
+      {% else %}
 
       <div class="row">
         <div class="col-md-4">
@@ -64,11 +41,8 @@ Nuevo Tipo de Material
       </div>
 
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success" name="boton_guardar_agregar">
-          <i class="fa fa-dot-circle-o"></i> Crear y agregar otro
-        </button>
         <button type="submit" class="btn btn-success" name="boton_guardar_listar">
-          <i class="fa fa-dot-circle-o"></i> Crear y listar
+          <i class="fa fa-dot-circle-o"></i> Actualizar
         </button>
         <a href="{% url 'index'%}">
         <button type="button" class="btn btn-danger" >
@@ -76,11 +50,22 @@ Nuevo Tipo de Material
         </button>
         </a>
       </div>
+    {% endif %}
     </form>
 
 
   </div>
 </div>
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }} {{tipo_material.nombre}}</p>
+    </div>
+    {% endfor %}
+  </ul>
+{% endif %}
 {% if tipo_materiales %}
 <!-- DATA TABLE-->
 <div class="table-responsive m-b-40">
