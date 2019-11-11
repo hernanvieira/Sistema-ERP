@@ -2,57 +2,66 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Crear cliente
+Editar Cliente
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Agregar Cliente</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Cliente</strong></div>
   <div class="card-body card-block">
 
     <form method="POST">
       {% csrf_token %}
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
-      {{cliente_form.dni.label}}
-      <div class="form-control">
-        {{cliente_form.dni}}
-      </div>
-      {{cliente_form.apellido.label}}
-      <div class="form-control">
-        {{cliente_form.apellido}}
-      </div>
-      {{cliente_form.nombre.label}}
-      <div class="form-control">
-        {{cliente_form.nombre}}
-      </div>
-      {{cliente_form.telefono.label}}
-      <div class="form-control">
-        {{cliente_form.telefono}}
-      </div>
-      {{cliente_form.correo.label}}
-      <div class="form-control">
-        {{cliente_form.correo}}
-      </div>
-      {{cliente_form.domicilio.label}}
-      <div class="form-control">
-        {{cliente_form.domicilio}}
+      <div class="row">
+        <div class="col-md-4">
+          {{cliente_form.dni.label}}
+          <div class="form-control">
+            {{cliente_form.dni}}
+          </div>
+        </div>
+        <div class="col-md-8">
+        </div>
+        <div class="col-md-4">
+          {{cliente_form.apellido.label}}
+          <div class="form-control">
+            {{cliente_form.apellido}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{cliente_form.nombre.label}}
+          <div class="form-control">
+            {{cliente_form.nombre}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{cliente_form.telefono.label}}
+          <div class="form-control">
+            {{cliente_form.telefono}}
+          </div>
+        </div>
+        <div class="col-md-12">
+          {{cliente_form.domicilio.label}}
+          <div class="form-control">
+            {{cliente_form.domicilio}}
+          </div>
+        </div>
+        <div class="col-md-12">
+          {{cliente_form.correo.label}}
+          <div class="form-control">
+            {{cliente_form.correo}}
+          </div>
+        </div>
       </div>
 
-      <!-- {% endif %} -->
       <div class="card-footer">
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Crear
         </button>
         <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Reset
+          <i class="fa fa-ban"></i> Limpiar
         </button>
       </div>
-
     </form>
-
-
   </div>
 </div>
 </div>

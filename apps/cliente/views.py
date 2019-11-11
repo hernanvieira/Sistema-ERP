@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import ClienteForm
 from .models import Cliente
+from apps.pedido.models import Pedido
 from django.core.exceptions import *
 from django.contrib import messages
 
@@ -24,7 +25,6 @@ def Estadistica(request):
         'valor':Prenda.objects.filter(tipo_prenda = tipo_prenda).count()
         }
         lista_chart.append(diccionario)
-    print("ACA LA LISTA")
     print(lista_chart)
     return render(request, 'estadistica.html',{'lista_chart':lista_chart})
 
@@ -41,6 +41,24 @@ def CrearCliente (request):
     else:
         cliente_form = ClienteForm()
     return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form})
+
+#Editar un cliente
+def VerCliente (request,dni):
+    try:
+        cliente_form=None
+        cliente = Cliente.objects.get(dni=dni)
+        pedidos = Pedido.objects.filter(cliente = cliente)
+        if request.method=='GET':
+            cliente_form=ClienteForm(instance=cliente)
+        else:
+            cliente_form=ClienteForm(request.POST, instance=cliente)
+            if cliente_form.is_valid():
+                cliente_form.save()
+            return redirect('cliente:cliente_home')
+    except ObjectDoesNotExist as e:
+        error = e
+    return render(request, 'cliente/ver_cliente.html',{'pedidos':pedidos,'cliente_form':cliente_form})
+
 #Listar todos los clientes
 def ListarCliente (request):
     clientes = Cliente.objects.all()

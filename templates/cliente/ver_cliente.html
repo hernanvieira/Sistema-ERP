@@ -1,46 +1,143 @@
 {% extends 'index.html'%}
 
 {% block titulo %}
-Listado de Clientes
+Ver Cliente
 {% endblock titulo %}
 
 {% block content %}
+<div class="card">
+      <div class="card-header bg-success"><strong class="card-title text-light" id="exampleModalLabel">Cliente</strong>
+      </div>
+        <div class="card-body card-block">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-4">
+                {{cliente_form.dni.label}}
+                <div class="form-control">
+                  {{cliente_form.dni}}
+                </div>
+              </div>
+              <div class="col-md-8">
+              </div>
+              <div class="col-md-4">
+                {{cliente_form.apellido.label}}
+                <div class="form-control">
+                  {{cliente_form.apellido.value}}
+                </div>
+              </div>
+              <div class="col-md-4">
+                {{cliente_form.nombre.label}}
+                <div class="form-control">
+                  {{cliente_form.nombre.value}}
+                </div>
+              </div>
+              <div class="col-md-4">
+                {{cliente_form.telefono.label}}
+                <div class="form-control">
+                  {{cliente_form.telefono.value}}
+                </div>
+              </div>
+              <div class="col-md-12">
+                {{cliente_form.domicilio.label}}
+                <div class="form-control">
+                  {{cliente_form.domicilio.value}}
+                </div>
+              </div>
+              <div class="col-md-12">
+                {{cliente_form.correo.label}}
+                <div class="form-control">
+                  {{cliente_form.correo.value}}
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
-  {% if clientes %}
-  <!-- DATA TABLE-->
-  <div class="table-responsive m-b-40">
-      <table class="table table-borderless table-data3">
-        <thead>
-            <tr>
-              <th>DNI</th>
-              <th>Apellido</th>
-              <th>Nombre</th>
-              <th>Telefono</th>
-              <th>Correo</th>
-              <th>domicilio</th>
-              <th>Opciones</th>
-            </tr>
-        </thead>
-        <tbody>
-          {% for cliente in clientes %}
-            <tr>
-              <td>{{cliente.dni}}</td>
-              <td>{{cliente.apellido}}</td>
-              <td>{{cliente.nombre}}</td>
-              <td>{{cliente.telefono}}</td>
-              <td>{{cliente.correo}}</td>
-              <td>{{cliente.domicilio}}</td>
-              <td>
-                <a href="{% url 'cliente:editar_cliente' cliente.dni %}">Editar</a>
-                <a href="{% url 'cliente:eliminar_cliente' cliente.dni %}">Eliminar</a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-  </div>
-  <!-- END DATA TABLE-->
-  {% else %}
-    <h1>No existen clientes registrados</h1>
-  {% endif %}
+        {% if pedidos %}
+        <div class="card-header bg-success"><strong class="card-title text-light" id="exampleModalLabel">Pedidos</strong>
+        </div>
+        <div class="table-responsive table-responsive-data2">
+            <table class="table table-data3">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>DNI</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Entrega</th>
+                        <th>Seña</th>
+                        <th>Prioridad</th>
+                        <th class="noExport">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr class="tr-shadow">
+                      <td style="text-align: right;">{{pedido.id_pedido}}</td>
+                      <td style="text-align: center;">{{pedido.cliente.dni}}</td>
+                      <td style="text-align: left;">{{pedido.cliente.apellido}}</td>
+                      <td style="font-size: 12px;text-align: center;">{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
+                      <td style="text-align: right;">${{pedido.precio_total}}</td>
+                      <td style="text-align: right;">${{pedido.entrega}}</td>
+                      <td style="text-align: right;">${{pedido.seña}}</td>
+                      <td style="text-align: center;">
+                        {% if pedido.prioridad_entrega == '2' %}
+                          Alta
+                        {% endif %}
+                        {% if pedido.prioridad_entrega == '1' %}
+                          Media
+                        {% endif %}
+                        {% if pedido.prioridad_entrega == '0' %}
+                          Baja
+                        {% endif %}
+                      </td>
+                        <td>
+                            <div class="table-data-feature">
+                              <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.id_pedido %}'">
+                                <i class="fas fa-eye"></i>
+                              </button>
+                              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
+                                <i class="fas fa-pencil-square-o"></i>
+                              </button>
+                              <!-- Modal Eliminar -->
+                              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido.id_pedido}}">
+                                <i class="fas fa-trash"></i>
+                              </button>
+                              <div class="modal fade bs-example-modal-lg2{{pedido.id_pedido}}" id="myModal2{{pedido.id_pedido}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                  <div class="modal-dialog modal-lg">
+                                      <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h4 class="modal-title" id="myModalLabel{{pedido.id_pedido}}">Confirmar Eliminacion</h4>
+                                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                              <a>¿Está seguro de <strong>eliminar</strong> el pedido?</a>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <div class="alineado-derecha">
+                                              <a href="{% url 'pedido:eliminar_pedido' pedido.id_pedido %}">
+                                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                                              </a>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                            </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- End Modal -->
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- END DATA TABLE -->
+
+        {% else %}
+          <h1>No existen pedidos registradas</h1>
+        {% endif %}
 {% endblock content %}

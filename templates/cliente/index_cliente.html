@@ -73,7 +73,7 @@ Gestionar Clientes
               <td>{{cliente.correo}}</td>
               <td>
 
-                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='#'">
+                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'cliente:ver_cliente' cliente.dni %}'">
                   <i class="fas fa-eye"></i>
                 </button>
                 <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'cliente:editar_cliente' cliente.dni %}'">
