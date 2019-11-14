@@ -12,7 +12,8 @@ from apps.prenda.models import Tipo_prenda, Prenda
 
 #Pagina de inicio
 def Home(request):
-    return render(request, 'index.html')
+    pedidos = Pedido.objects.all()
+    return render(request, 'index.html',{'pedidos':pedidos})
 
 #Pagina de estadisticas
 def Estadistica(request):
