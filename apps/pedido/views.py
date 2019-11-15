@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm
+from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm, Estado_pedidoForm
 from .models import Pedido, Detalle
 from apps.prenda.models import Prenda
+from apps.estado.models import Estado_pedido, Estado
 from apps.prenda.views import CrearPrenda
 from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
@@ -38,8 +39,9 @@ def CrearPedido (request):
                 messages.error(request, 'No se puede introducir valores negativos')
         if 'boton_finalizar' in request.POST:
             pedido_form = PedidoForm(request.POST)
-            pedido = pedido_form.save()
-            if pedido.precio_total != None:
+            pedido = pedido_form.save(commit=False)
+
+            if pedido.seña != None:
                 pedido.save()
                 return redirect('/pedido/listar_pedido/')
             else:
@@ -74,8 +76,19 @@ def VolverPedido (request,id_pedido):
             if 'boton_finalizar' in request.POST:
                 pedido_form = PedidoForm(request.POST, instance=pedido)
                 pedido = pedido_form.save(commit=False)
-                if pedido.precio_total != None:
+
+                estado_pedido_form = Estado_pedidoForm()
+                estado_pedido = estado_pedido_form.save(commit = False)
+
+                estado_enespera = Estado.objects.get(id_estado = 6)
+
+                estado_pedido.estado = estado_enespera
+                estado_pedido.pedido = pedido
+                estado_pedido.fecha = datetime.date.today()
+
+                if pedido.seña != None:
                     pedido.save()
+                    estado_pedido.save()
                     messages.success(request, 'Todo ocurrió correctamente')
                     return redirect('/pedido/listar_pedido/')
                 else:
@@ -116,6 +129,10 @@ def VerPedido (request,id_pedido):
     pedidos = Pedido.objects.all()
     cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
+    if Estado_pedido.objects.filter(pedido_id=id_pedido). exists():
+        estado = Estado_pedido.objects.filter(pedido_id=id_pedido).latest()
+    else:
+        estado = None
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
     else:
@@ -133,7 +150,7 @@ def VerPedido (request,id_pedido):
             else:
                 cliente_form = ClienteForm(request.POST)
                 messages.error(request, 'Debe agregar prendas')
-    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles})
+    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido})
 
 
 #Eliminar un pedido
@@ -146,6 +163,28 @@ def EliminarPedido (request,id_pedido):
         messages.error(request, "Ocurrió un error al tratar de eliminar el pedido " + str(id_pedido))
     pedidos = Pedido.objects.all()
     return ListarPedido(request)
+
+#Cancelar un pedido
+def CancelarPedido (request,id_pedido):
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    pedido.cancelado = True
+    estado_pedido_form = Estado_pedidoForm()
+    estado_pedido = estado_pedido_form.save(commit = False)
+
+    estado_cancelado = Estado.objects.get(id_estado = 5)
+
+    estado_pedido.estado = estado_cancelado
+    estado_pedido.pedido = pedido
+    estado_pedido.fecha = datetime.date.today()
+
+    pedido.save()
+    estado_pedido.save()
+    messages.warning(request, 'Se canceló el pedido')
+    # except Exception as e:
+    #     messages.error(request, "Ocurrió un error al tratar de cancelar el pedido " + str(id_pedido))
+    pedidos = Pedido.objects.all()
+    return ListarPedido(request)
+
 
 #Pagina de auditoria
 def Auditoria(request):

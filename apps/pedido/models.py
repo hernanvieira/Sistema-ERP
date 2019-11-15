@@ -14,7 +14,8 @@ class Pedido (models.Model):
     precio_total = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, validators=[MinValueValidator(0.00)], default=0)
     entrega = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0, validators=[MinValueValidator(0.00)])
     seña = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, validators=[MinValueValidator(0.00)])
-    prioridad_entrega = models.CharField(max_length=50, null = True, blank=True)
+    prioridad_entrega = models.CharField(max_length=50, null = True, blank=True, default = 2)
+    cancelado = models.BooleanField(default = False)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
     history = HistoricalRecords()
 

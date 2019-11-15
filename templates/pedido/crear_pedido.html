@@ -51,10 +51,59 @@ Crear pedido
           </button>
         </div>
         <!-- end cliente -->
+        <hr class="line-seprate">
+        <div class="col-md-4">
+          {{pedido_form.fecha_entrega.label}}
+          <div class="form-control">
+            {{pedido_form.fecha_entrega}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{pedido_form.prioridad_entrega.label}}
+          <div class="form-control">
+            {{pedido_form.prioridad_entrega}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          {{pedido_form.precio_total.label}}
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fa fa-dollar"></i>
+            </div>
+            <div class="form-control">
+              {{pedido_form.precio_total}}
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+          <a>Seña minima</a>
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fa fa-dollar"></i>
+            </div>
+            <div class="form-control">
+              {{pedido_form.seña}}
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-4">
+
+          {{pedido_form.entrega.label}}
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="fa fa-dollar"></i>
+            </div>
+            <div class="form-control">
+              {{pedido_form.entrega}}
+            </div>
+          </div>
+        </div>
         <div class="col-md-12">
           <!-- Button trigger modal -->
           <hr class="line-seprate">
-          <a>Prenda/s</a>
+          <p>Prenda/s</p>
           <div>
             <button type="submit" class="btn btn-success" name="boton_agregar">
               <i class="fa fa-dot-circle-o"></i> Agregar Prenda

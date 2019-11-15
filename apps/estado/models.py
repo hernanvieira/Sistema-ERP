@@ -20,14 +20,15 @@ class Estado (models.Model):
 
 class Estado_pedido (models.Model):
     id_estado_pedido = models.AutoField(primary_key=True)
-    fecha = models.DateField()
-    pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT)
-    estado = models.ForeignKey(Estado, on_delete=models.PROTECT)
+    fecha = models.DateField(null=True, blank=True)
+    pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT, null=True, blank=True)
+    estado = models.ForeignKey(Estado, on_delete=models.PROTECT, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Estado_pedido'
         verbose_name_plural = 'Estados_pedido'
-        ordering = ['id_estado_pedido']
+        ordering = ['fecha']
+        get_latest_by = 'fecha'
 
     def __str__(self):
         return str(self.estado)

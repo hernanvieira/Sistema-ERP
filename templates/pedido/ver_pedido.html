@@ -143,12 +143,80 @@ Ver pedido
             </div>
           </div>
         </div>
+        <div class="col-md-4">
+          {% if estado %}
+          Estado
+
+          <div class="input-group">
+            {% if estado.estado_id == 6 %}
+            <div class="btn btn-primary">
+                {{estado}}
+            </div>
+            {% endif %}
+            {% if estado.estado_id == 5 %}
+            <div class="btn btn-danger">
+                {{estado}}
+            </div>
+            {% endif %}
+            {% if estado.estado_id == 4 %}
+            <div class="btn btn-success">
+                {{estado}}
+            </div>
+            {% endif %}
+            {% if estado.estado_id == 3 %}
+            <div class="btn btn-info">
+                {{estado}}
+            </div>
+            {% endif %}
+            {% if estado.estado_id == 2 %}
+            <div class="btn btn-warning">
+                {{estado}}
+            </div>
+            {% endif %}
+
+          </div>
+          {% endif %}
+        </div>
       </div>
 
-      <div class="card-footer alineado-derecha">
-        <button type="button" class="btn btn-danger" onclick="history.back()">
-          <i class="fa fa-chevron-left"></i> Volver
-        </button>
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-md-2">
+            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
+              Cancelar Pedido
+            </button>
+            <!-- Modal Cancelar -->
+            <div class="modal fade bs-example-modal-lg2{{pedido_form.id_pedido_form}}" id="myModal2{{pedido_form.id_pedido_form}}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel{{pedido_form.id_pedido_form}}">Confirmar Eliminacion</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <a>¿Está seguro de <strong>eliminar</strong> el pedido?</a>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="alineado-derecha">
+                            <a href="{% url 'pedido:cancelar_pedido' pedido.id_pedido %}">
+                              <button type="button" class="btn btn-danger" >Cancelar</button>
+                            </a>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+          </div>
+          <div class="col-md-10">
+            <div class="alineado-derecha">
+              <button type="button" class="btn btn-danger" onclick="history.back()">
+                <i class="fa fa-chevron-left"></i> Volver
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
     </form>
