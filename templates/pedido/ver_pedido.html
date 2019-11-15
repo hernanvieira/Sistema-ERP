@@ -182,9 +182,11 @@ Ver pedido
       <div class="card-footer">
         <div class="row">
           <div class="col-md-2">
+            {% if estado.estado_id != 5 %}
             <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
               Cancelar Pedido
             </button>
+            {% endif %}
             <!-- Modal Cancelar -->
             <div class="modal fade bs-example-modal-lg2{{pedido_form.id_pedido_form}}" id="myModal2{{pedido_form.id_pedido_form}}" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
