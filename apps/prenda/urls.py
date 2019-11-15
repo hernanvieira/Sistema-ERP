@@ -1,12 +1,12 @@
 from django.urls import path
-from .views import CrearComponente, ListarComponente, EditarComponente, EliminarComponente , CrearTipo_prenda, ListarTipo_prenda, EditarTipo_prenda, EliminarTipo_prenda, VerTipo_prenda
+from .views import CrearMedida, ListarMedida, EditarMedida, EliminarMedida , CrearTipo_prenda, ListarTipo_prenda, EditarTipo_prenda, EliminarTipo_prenda, VerTipo_prenda
 from .views import CrearPrenda, ListarPrenda, EditarPrenda, EliminarPrenda, AsignarMaterial, VolverPrenda, EditarIngrediente, EliminarIngrediente
 urlpatterns = [
-            #URL Componente
-            path ('crear_componente/',CrearComponente,name='crear_componente'),
-            path ('listar_componente/',ListarComponente,name='listar_componente'),
-            path ('editar_componente/<int:id_componente>',EditarComponente,name='editar_componente'),
-            path ('eliminar_componente/<int:id_componente>',EliminarComponente,name='eliminar_componente'),
+            #URL Medida
+            path ('crear_medida/',CrearMedida,name='crear_medida'),
+            path ('listar_medida/',ListarMedida,name='listar_medida'),
+            path ('editar_medida/<int:id_medida>',EditarMedida,name='editar_medida'),
+            path ('eliminar_medida/<int:id_medida>',EliminarMedida,name='eliminar_medida'),
 
             #URL Tipo_prenda
             path ('crear_tipo_prenda/',CrearTipo_prenda,name='crear_tipo_prenda'),

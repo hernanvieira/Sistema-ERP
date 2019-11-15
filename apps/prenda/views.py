@@ -1,57 +1,57 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from tp_final.forms import ComponenteForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
-from .models import Componente, Tipo_prenda, Prenda, Ingrediente
+from tp_final.forms import MedidaForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
+from .models import Tipo_prenda, Prenda, Ingrediente, Medida
 from apps.material.models import Material, Tipo_material
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-#Crear un componente
-def CrearComponente (request):
-    componentes = Componente.objects.all()
+#Crear un Medida
+def CrearMedida (request):
+    medidas = Medida.objects.all()
     if request.method == 'POST':
-        componente_form = ComponenteForm(request.POST)
-        if componente_form.is_valid():
+        medida_form = MedidaForm(request.POST)
+        if medida_form.is_valid():
             if "boton_crear_agregar" in request.POST:
-                componente = componente_form.save()
-                componentes = Componente.objects.all()
-                return render(request, 'prenda/crear_componente.html',{'componentes':componentes, 'componente_form':componente_form})
-            componente = componente_form.save()
-            return ListarComponente(request)
+                medida = medida_form.save()
+                medidas = Medida.objects.all()
+                return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
+            medida = medida_form.save()
+            return ListarMedida(request)
         else:
-            messages.error(request, 'Ocurrió un error al tratar de crear el componente')
+            messages.error(request, 'Ocurrió un error al tratar de crear la medida')
     else:
-        componente_form = ComponenteForm()
-        componentes = Componente.objects.all()
-    return render(request, 'prenda/crear_componente.html',{'componentes':componentes, 'componente_form':componente_form})
-#Listar todos los componentes
-def ListarComponente (request):
-    componentes = Componente.objects.all()
-    return render(request,'prenda/listar_componente.html',{'componentes':componentes})
-#Editar un componente
-def EditarComponente (request,id_componente):
+        medida_form = MedidaForm()
+        medidas = Medida.objects.all()
+    return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
+#Listar todos las medidas
+def ListarMedida (request):
+    medidas = Medida.objects.all()
+    return render(request,'prenda/listar_medida.html',{'medidas':medidas})
+#Editar una medida
+def EditarMedida (request,id_medida):
     try:
         error = None
-        componente_form=None
-        componente = Componente.objects.get(id_componente=id_componente)
+        medida_form=None
+        medida = Medida.objects.get(id_medida=id_medida)
         if request.method=='GET':
-            componente_form=ComponenteForm(instance=componente)
+            medida_form=MedidaForm(instance=medida)
         else:
-            componente_form=ComponenteForm(request.POST, instance=componente)
-            if componente_form.is_valid():
-                componente_form.save()
-            return redirect('index')
+            medida_form=MedidaForm(request.POST, instance=medida)
+            if medida_form.is_valid():
+                medida_form.save()
+            return ListarMedida(request)
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/editar_componente.html',{'componente_form':componente_form, 'error':error})
-#Eliminar un componente
-def EliminarComponente (request,id_componente):
-    componente = get_object_or_404(Componente, id_componente=id_componente)
+    return render(request,'prenda/editar_medida.html',{'medida_form':medida_form, 'error':error})
+#Eliminar una medida
+def EliminarMedida (request,id_medida):
+    medida = get_object_or_404(Medida, id_medida=id_medida)
     try:
-        componente.delete()
-        messages.warning(request, 'Se eliminó el componente')
+        medida.delete()
+        messages.warning(request, 'Se eliminó la medida')
     except Exception as e:
-        messages.error(request, "Ocurrió un error al tratar de eliminar el componente " + str(id_pedido))
-    return ListarComponente(request)
+        messages.error(request, "Ocurrió un error al tratar de eliminar la medida " + str(id_pedido))
+    return ListarMedida(request)
 
 #Crear un tipo de prenda
 def CrearTipo_prenda (request):
@@ -96,7 +96,7 @@ def VerTipo_prenda (request,id_tipo_prenda):
         error = None
         tipo_prenda_form=None
         tipo_prenda = Tipo_prenda.objects.get(id_tipo_prenda=id_tipo_prenda)
-        componentes = tipo_prenda.componente.all()
+        medidas = tipo_prenda.medida.all()
         if request.method=='GET':
             tipo_prenda_form=Tipo_prendaForm(instance=tipo_prenda)
         else:
@@ -106,7 +106,7 @@ def VerTipo_prenda (request,id_tipo_prenda):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/ver_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'componentes':componentes, 'error':error})
+    return render(request,'prenda/ver_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'medidas':medidas, 'error':error})
 #Eliminar un tipo de prenda
 def EliminarTipo_prenda (request,id_tipo_prenda):
     tipo_prenda = get_object_or_404(Tipo_prenda, id_tipo_prenda=id_tipo_prenda)

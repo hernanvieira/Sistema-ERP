@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Eliminar Componente
+Eliminar Medida
 {% endblock titulo%}
 {% block content%}
   <form method="POST">
@@ -10,9 +10,9 @@ Eliminar Componente
     {% if error %}
       <h2>{{error}}</h2>
     {% else %}
-    <h2>¿Desea eliminar el componente {{ componente.id_componente}}?</h2>
+    <h2>¿Desea eliminar la medida {{ medida.id_medida}}?</h2>
     <button type="submit">Eliminar</button>
-    <a href="{% url 'prenda:listar_componente' %}">Cancelar</a>
+    <a href="{% url 'prenda:listar_medida' %}">Cancelar</a>
     {% endif %}
   </form>
 {% endblock content%}

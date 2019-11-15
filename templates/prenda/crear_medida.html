@@ -4,12 +4,12 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Nuevo Componente
+Nueva Medida
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nuevo Componente</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Medida</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
@@ -33,9 +33,13 @@ Nuevo Componente
         </ul>
       </div>
       {% endif %}
-      {{componente_form.nombre.label}}
+      {{medida_form.nombre_medida.label}}
       <div class="form-control">
-        {{componente_form.nombre}}
+        {{medida_form.nombre_medida}}
+      </div>
+      Unidad de medida
+      <div class="form-control">
+        {{medida_form.unidad_medida}}
       </div>
 
       <div class="card-footer alineado-derecha">
@@ -56,7 +60,7 @@ Nuevo Componente
 
   </div>
 </div>
-{% if componentes %}
+{% if medidas %}
 <!-- DATA TABLE-->
 <div class="table-responsive m-b-40">
     <table class="table table-borderless table-data3">
@@ -64,35 +68,37 @@ Nuevo Componente
           <tr>
             <th>Id</th>
             <th>Nombre</th>
+            <th>Unidad de medida</th>
             <th>Opciones</th>
           </tr>
       </thead>
       <tbody>
-        {% for componente in componentes %}
+        {% for medida in medidas %}
           <tr>
-            <td>{{componente.id_componente}}</td>
-            <td>{{componente.nombre}}</td>
+            <td>{{medida.id_medida}}</td>
+            <td>{{medida.nombre_medida}}</td>
+            <td>{{medida.unidad_medida}}</td>
             <td>
-              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_componente' componente.id_componente %}'">
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_medida' medida.id_medida %}'">
                 <i class="fas fa-pencil-square-o"></i>
               </button>
               <!-- Modal Eliminar -->
-              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{componente.id_componente}}">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{medida.id_medida}}">
                 <i class="fas fa-trash"></i>
               </button>
-              <div class="modal fade bs-example-modal-lg2{{componente.id_componente}}" id="myModal2{{componente.id_componente}}" tabindex="-1" role="dialog" aria-hidden="true">
+              <div class="modal fade bs-example-modal-lg2{{medida.id_medida}}" id="myModal2{{medida.id_medida}}" tabindex="-1" role="dialog" aria-hidden="true">
                   <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                           <div class="modal-header">
-                              <h4 class="modal-title" id="myModalLabel{{componente.id_componente}}">Confirmar Eliminacion</h4>
+                              <h4 class="modal-title" id="myModalLabel{{medida.id_medida}}">Confirmar Eliminacion</h4>
                           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
                           </div>
                           <div class="modal-body">
-                              <a>¿Está seguro de <strong>eliminar</strong> el componente?</a>
+                              <a>¿Está seguro de <strong>eliminar</strong> la medida?</a>
                           </div>
                           <div class="modal-footer">
                             <div class="alineado-derecha">
-                              <a href="{% url 'prenda:eliminar_componente' componente.id_componente %}">
+                              <a href="{% url 'prenda:eliminar_medida' medida.id_medida %}">
                                 <button type="button" class="btn btn-danger" >Eliminar</button>
                               </a>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -115,7 +121,7 @@ Nuevo Componente
   </div>
 <!-- END DATA TABLE-->
 {% else %}
-  <h1>No existen componentes registrados</h1>
+  <h1>No existen medidas registradas</h1>
 {% endif %}
 
 {% endblock content%}

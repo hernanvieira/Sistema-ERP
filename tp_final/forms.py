@@ -103,22 +103,22 @@ class DetalleForm (forms.ModelForm):
         model = Detalle
         fields = ['cantidad', 'tiempo_prod_lote', 'pedido','prenda']
 
-class ComponenteForm (forms.ModelForm):
-    class Meta:
-        model = Componente
-        fields = ['nombre']
-    # def clean_nombre(self):
-    #     nombre = self.cleaned_data.get('nombre')
-    #     if not nombre.isalpha():
-    #         raise forms.ValidationError("No puede introducir numeros")
-    #     return nombre
+# class ComponenteForm (forms.ModelForm):
+#     class Meta:
+#         model = Componente
+#         fields = ['nombre']
+#     # def clean_nombre(self):
+#     #     nombre = self.cleaned_data.get('nombre')
+#     #     if not nombre.isalpha():
+#     #         raise forms.ValidationError("No puede introducir numeros")
+#     #     return nombre
 
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda
-        fields = ['nombre','componente']
+        fields = ['nombre','medida']
         widgets = {
-        'componente' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
+        'medida' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
         }
     def clean_nombre(self):
         value = self.cleaned_data.get('nombre')
@@ -140,3 +140,8 @@ class IngredienteForm (forms.ModelForm):
         # 'componente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         'material' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         }
+
+class MedidaForm (forms.ModelForm):
+    class Meta:
+        model = Medida
+        fields = ['nombre_medida', 'unidad_medida']

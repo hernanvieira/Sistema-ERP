@@ -1,24 +1,36 @@
 from django.db import models
-from apps.material.models import Material
+from apps.material.models import Material, Unidad_medida
 from django.core.validators import MaxValueValidator, MinValueValidator
-# Create your models here.
 #Se crean las clases de acuerdo con diagrama de clases
-class Componente (models.Model):
-    id_componente = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=100, blank = False, null = False, unique = True)
+# class Componente (models.Model):
+#     id_componente = models.AutoField(primary_key=True)
+#     nombre = models.CharField(max_length=100, blank = False, null = False, unique = True)
+#
+#     class Meta:
+#         verbose_name = 'Componente'
+#         verbose_name_plural = 'Componentes'
+#         ordering = ['id_componente']
+#
+#     def __str__(self):
+#         return self.nombre
+class Medida (models.Model):
+    id_medida = models.AutoField(primary_key=True)
+    nombre_medida = models.CharField(max_length=100, unique = True)
+    unidad_medida =  models.ForeignKey(Unidad_medida, on_delete=models.PROTECT)
 
     class Meta:
-        verbose_name = 'Componente'
-        verbose_name_plural = 'Componentes'
-        ordering = ['id_componente']
+        verbose_name = 'Medida'
+        verbose_name_plural = 'Medida'
+        ordering = ['id_medida']
 
     def __str__(self):
-        return self.nombre
+        return str(self.nombre_medida)
 
 class Tipo_prenda (models.Model):
     id_tipo_prenda = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique = True)
-    componente = models.ManyToManyField(Componente)
+    # componente = models.ManyToManyField(Componente)
+    medida = models.ManyToManyField(Medida)
 
     class Meta:
         verbose_name = 'Tipo de Prenda'

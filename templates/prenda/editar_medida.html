@@ -4,12 +4,12 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Editar Componente
+Editar Medida
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Editar Componente</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Medida</strong></div>
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
@@ -33,9 +33,13 @@ Editar Componente
         </ul>
       </div>
       {% endif %}
-      {{componente_form.nombre.label}}
+      {{medida_form.nombre.label}}
       <div class="form-control">
-        {{componente_form.nombre}}
+        {{medida_form.nombre_medida}}
+      </div>
+      Unidad de medida
+      <div class="form-control">
+        {{medida_form.unidad_medida}}
       </div>
 
       <div class="card-footer alineado-derecha">
