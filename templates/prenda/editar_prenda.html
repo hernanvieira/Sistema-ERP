@@ -9,7 +9,7 @@ Editar Prenda
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Nueva Prenda</strong>
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Prenda</strong>
     <h class="card-title text-light"> | Cliente: {{pedido.cliente}}</h></div>
   <div class="card-body card-block">
     <form class="user" method="POST" enctype="multipart/form-data">
@@ -36,57 +36,64 @@ Editar Prenda
           </ul>
         </div>
         {% endif %}
-        <div class="col-md-7">
+        <div class="col-md-3">
           {{prenda_form.tipo_prenda.label}}
           <div class="form-control">
             {{prenda_form.tipo_prenda}}
           </div>
         </div>
         <div class="col-md-2">
-          {{prenda_form.talle.label}}
-          <div class="form-control">
-            {{prenda_form.talle}}
-          </div>
+            {{prenda_form.talle.label}}
+            <div class="form-control">
+              {{prenda_form.talle}}
+            </div>
+        </div>
+        <div class="col-md-1">
+          <br>
+          <button type="submit" class="btn btn-secondary" name="boton_asignar_medida">
+              <i class="fa fa-bars"></i>
+          </button>
+        </div>
+        <div class="col-md-6">
+          {{prenda_form.imagen.label}}
+          <input type="file" class="form-control mb-2" name="txtImagen" id="txtImagen">
         </div>
 
-              <div class="col-md-3">
-                {{prenda_form.tiempo_prod_prenda.label}}
-                <div class="input-group">
-                  <div class="form-control">
-                    {{prenda_form.tiempo_prod_prenda}}
-                  </div>
-                  <div class="input-group-addon">
-                    Días
-                  </div>
-                </div>
+          <div class="col-md-3">
+            {{prenda_form.precio.label}}
+            <div class="input-group">
+              <div class="input-group-addon">
+                <i class="fa fa-dollar"></i>
               </div>
-              <div class="col-md-3">
-                {{prenda_form.precio.label}}
-                <div class="input-group">
-                  <div class="input-group-addon">
-                    <i class="fa fa-dollar"></i>
-                  </div>
-                  <div class="form-control">
-                    {{prenda_form.precio}}
-                  </div>
-                </div>
+              <div class="form-control">
+                {{prenda_form.precio}}
               </div>
-              <div class="col-md-3">
-                {{detalle_form.cantidad.label}}
-                <div class="input-group">
-                  <div class="form-control">
-                    {{detalle_form.cantidad}}
-                  </div>
-                  <div class="input-group-addon">
-                    Unidad/es
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            {{detalle_form.cantidad.label}}
+            <div class="input-group">
+              <div class="form-control">
+                {{detalle_form.cantidad}}
               </div>
-              <div class="col-md-6">
-                {{prenda_form.imagen.label}}
-                <input type="file" class="form-control mb-2" name="txtImagen" id="txtImagen">
+              <div class="input-group-addon">
+                Unidad/es
               </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            {{prenda_form.tiempo_prod_prenda.label}}
+            <div class="input-group">
+              <div class="form-control">
+                {{prenda_form.tiempo_prod_prenda}}
+              </div>
+              <div class="input-group-addon">
+                Días
+              </div>
+            </div>
+          </div>
         </div>
+        <br>
 
           {% if prenda.imagen %}
             <img src="{{prenda.imagen.url}}" width="200px" height="200px">
@@ -154,10 +161,56 @@ Editar Prenda
         </div>
         <!-- END DATA TABLE-->
         {% endif %}
+        <!-- Modal medidas
+
+        <div class="modal fade show" id="modal_medida" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="card-header bg-success">
+                <strong class="card-title text-light" id="exampleModalLabel">Medidas</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="card-body">
+                    <div class="row">
+                    {% for medida in medidas_prenda %}
+                        <div class="col-md-3">
+                          {{medida.nombre_medida}}
+                          <br>
+                        </div>
+                        <div class="col-md-2">
+                           <input type="number" name="valor_medida" min="0" class="form-control" placeholder="Valor">
+                           <br>
+                        </div>
+                        <div class="col-md-1">
+
+                        </div>
+
+                    {% endfor %}
+                    </div>
+
+                    <div class="card-footer">
+                      <div class="alineado-derecha">
+                        <button type="submit" class="btn btn-success" name="boton_crear_cliente">
+                          <i class="fa fa-dot-circle-o"></i> Crear
+                        </button>
+                        <button type="reset" class="btn btn-danger">
+                          <i class="fa fa-ban"></i> Limpiar
+                        </button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          end modal -->
       <div class="card-footer">
         <div class="alineado-derecha">
           <button type="submit" class="btn btn-success">
-            <i class="fa fa-dot-circle-o"></i> Agregar Prenda
+            <i class="fa fa-dot-circle-o"></i> Actualizar Prenda
           </button>
           <button type="button" class="btn btn-danger" onclick="history.back()">
             <i class="fa fa-ban"></i> Cancelar

@@ -129,15 +129,25 @@ class Tipo_prendaForm (forms.ModelForm):
 
 class PrendaForm (forms.ModelForm):
     class Meta:
+        CHOICES= [
+        ('0', 'XS'),
+        ('1', 'S'),
+        ('2', 'M'),
+        ('3', 'L'),
+        ('4', 'XL'),
+        ('5', 'XXL'),
+        ]
         model = Prenda
         fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio','imagen']
+        widgets = {
+        'talle' : forms.Select(choices = CHOICES)
+        }
 
 class IngredienteForm (forms.ModelForm):
     class Meta:
         model = Ingrediente
         fields = ['cantidad', 'prenda', 'material']
         widgets = {
-        # 'componente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         'material' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         }
 
@@ -145,3 +155,11 @@ class MedidaForm (forms.ModelForm):
     class Meta:
         model = Medida
         fields = ['nombre_medida', 'unidad_medida']
+
+class Medida_prendaForm (forms.ModelForm):
+    class Meta:
+        model = Medida_prenda
+        fields = ['prenda', 'medida', 'valor']
+        widgets = {
+        'prenda' : forms.Select(attrs={'class':'form-control'})
+        }

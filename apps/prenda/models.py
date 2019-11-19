@@ -13,6 +13,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 #
 #     def __str__(self):
 #         return self.nombre
+
 class Medida (models.Model):
     id_medida = models.AutoField(primary_key=True)
     nombre_medida = models.CharField(max_length=100, unique = True)
@@ -29,7 +30,6 @@ class Medida (models.Model):
 class Tipo_prenda (models.Model):
     id_tipo_prenda = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique = True)
-    # componente = models.ManyToManyField(Componente)
     medida = models.ManyToManyField(Medida)
 
     class Meta:
@@ -53,8 +53,16 @@ class Prenda (models.Model):
         verbose_name_plural = 'Prenda'
         ordering = ['id_prenda']
 
-    # def __str__(self):
-    #     return self.id_prenda
+class Medida_prenda (models.Model):
+    id_medida_prenda = models.AutoField(primary_key=True)
+    valor = models.PositiveIntegerField(default = 0, null = True, blank = True)
+    medida = models.ForeignKey(Medida, on_delete=models.PROTECT, null = True, blank = True)
+    prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT, null = True, blank = True)
+
+    class Meta:
+        verbose_name = 'Medida_prenda'
+        verbose_name_plural = 'Medida_prenda'
+        ordering = ['id_medida_prenda']
 
 class Ingrediente (models.Model):
     id_ingrediente = models.AutoField(primary_key=True)

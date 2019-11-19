@@ -1,0 +1,107 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Asignar Medidas
+{% endblock titulo%}
+{% block content%}
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Asignar Medidas </strong><h class="card-title text-light">| {{prenda.tipo_prenda}} | {{pedido.cliente}}</h></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      <div class="row">
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+              {% if message.tags == 'warning' %}
+              <div class="alert alert-warning">
+                <div class="row">
+                  <div class="col-md-9">
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="alineado-derecha">
+                        <a href="#" class="btn btn-secondary" data-dismiss="alert" aria-label="close">Aceptar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <div class="row">
+          {% if medidas_prenda_u %}
+            {% for medida in medidas_prenda_u %}
+                <div class="col-md-3">
+                  {{medida.medida.nombre_medida}}
+                  <input type="hidden" name="medida" value="{{medida.medida.id_medida}}" >
+                  <br>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="valor_medida" min="0" class="form-control" value="{{medida.valor}}">
+                   <br>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+
+            {% endfor %}
+          {% else %}
+            {% for medida in medidas_prenda %}
+                <div class="col-md-3">
+                  {{medida.nombre_medida}}
+                  <input type="hidden" name="medida" value="{{medida.id_medida}}" >
+                  <br>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" name="valor_medida" min="0" class="form-control" placeholder="0">
+                   <br>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+
+            {% endfor %}
+          {% endif %}
+        </div>
+        <div class="col-md-6">
+          {% if prenda.imagen %}
+            <img src="{{prenda.imagen.url}}" width="200px" height="200px">
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="alineado-derecha">
+          <button type="submit" class="btn btn-success" name="boton_guardar_cargar">
+            <i class="fa fa-dot-circle-o"></i> Guardar
+          </button>
+          <button type="button" class="btn btn-danger" onclick="history.back()">
+            <i class="fa fa-ban"></i> Cancelar
+          </button>
+        </div>
+      </div>
+      <hr class="line-seprate">
+    </form>
+  </div>
+</div>
+
+{% endblock content%}

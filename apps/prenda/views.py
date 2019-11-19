@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from tp_final.forms import MedidaForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm
-from .models import Tipo_prenda, Prenda, Ingrediente, Medida
+from tp_final.forms import MedidaForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm, Medida_prendaForm
+from .models import Tipo_prenda, Prenda, Ingrediente, Medida, Medida_prenda
 from apps.material.models import Material, Tipo_material
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
@@ -122,11 +122,12 @@ def CrearPrenda (request,id_pedido):
         prenda_form = PrendaForm(request.POST)
         detalle_form = DetalleForm(request.POST)
         pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
+
         if prenda_form.is_valid() and detalle_form.is_valid():
             prenda = prenda_form.save(commit = False) #Guardo prenda
             prenda.imagen = request.FILES.get('txtImagen')
             prenda.save()
-            print(prenda.imagen)
+
             detalle = detalle_form.save() #Guardo detalle
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
             detalle.save() #Actualizo el detalle
@@ -144,14 +145,22 @@ def CrearPrenda (request,id_pedido):
                     prenda_form.save() #Guardo prenda
                 ingrediente_form = IngredienteForm()
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+            if 'boton_asignar_medida' in request.POST:
+                prenda_form=PrendaForm(request.POST, instance=prenda)
+                if prenda_form.is_valid():
+                    prenda_form.save() #Guardo prenda
+                medida_prenda_form = Medida_prendaForm()
+                return redirect('/prenda/asignar_medida/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'medida_prenda_form':medida_prenda_form})
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
         else:
             messages.error(request, 'Ocurrió un error al tratar de agregar una prenda')
     else:
         prenda_form = PrendaForm()
         detalle_form = DetalleForm()
+        medida_prenda_form = Medida_prendaForm()
         pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
-    return render(request, 'prenda/crear_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form,'pedido':pedido})
+        medidas_prenda = Medida.objects.all()
+    return render(request, 'prenda/crear_prenda.html',{'medidas_prenda':medidas_prenda,'prenda_form':prenda_form,'detalle_form':detalle_form,'pedido':pedido, 'medida_prenda_form':medida_prenda_form})
 #Listar todos las prendas
 def ListarPrenda (request):
     prendas = Prenda.objects.all()
@@ -228,7 +237,12 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
             if 'boton_asignar_material' in request.POST:
                 ingrediente_form = IngredienteForm()
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-
+            if 'boton_asignar_medida' in request.POST:
+                prenda_form=PrendaForm(request.POST, instance=prenda)
+                if prenda_form.is_valid():
+                    prenda_form.save() #Guardo prenda
+                medida_prenda_form = Medida_prendaForm()
+                return redirect('/prenda/asignar_medida/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'medida_prenda_form':medida_prenda_form})
             if redireccionar == 0:
 
                 for ingre in ingredientes:
@@ -302,12 +316,12 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                 if material_post > material.stock_minimo:
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+                    return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
                 else:
                     messages.warning(request, 'La cantidad introducida supera el stock mínimo')
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+                    return redirect('/prenda/volver_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
             else:
                 messages.error(request, 'La cantidad introducida es mayor al stock disponible')
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
@@ -315,6 +329,97 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
         ingrediente_form = IngredienteForm()
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
     return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
+
+#Asignar medidas a la prenda
+def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
+    pedido = Pedido.objects.get(id_pedido = id_pedido)
+    detalle = Detalle.objects.get(id_detalle = id_detalle)
+    prenda = Prenda.objects.get(id_prenda=id_prenda) # Obtengo la prenda a la que voy a asociar las medida
+    medidas_prenda = Medida.objects.filter(tipo_prenda = prenda.tipo_prenda) #Obtengo las medidas asociadas a ese tipo de prenda
+    medidas_prenda_u = Medida_prenda.objects.filter(prenda_id = id_prenda) # Obtengo los valores de las medidas si ya fueron cargadas ateriormente
+    medida_prenda_form = Medida_prendaForm() # Intancio un formulario para cargar medidas
+    a = []
+    b =[]
+    c = False
+    for m in medidas_prenda:
+        b.append(m)
+    print(b)
+    if medidas_prenda_u:
+        for m in medidas_prenda_u:
+            a.append(m.medida)
+        print(a)
+        if a == b:
+            c = True
+        else:
+            c = False
+    print(c)
+    if request.method == 'POST': # si el metodo es POST
+        if medidas_prenda_u and c == True:
+            peticion = request.POST.copy() # OBtengo una copia del request
+            peticion_valor = peticion.pop('valor_medida') # Obtengo los valores de cada medida
+            i=0
+            for m in medidas_prenda_u:
+                m.valor = peticion_valor[i]
+                i+=1
+                m.save()
+            messages.success(request, 'Medidas actualizadas correctamente') # Informo al usuario que se creó correctamente
+            return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+        else:
+            if medidas_prenda_u:
+                for m in medidas_prenda_u:
+                    m.delete()
+            medida_prenda_form = Medida_prendaForm(request.POST) # Intancio el formulario con los datos de la pagina
+            peticion = request.POST.copy() # OBtengo una copia del request
+            peticion_medida = peticion.pop('medida') # Obtengo las medidas
+            peticion_valor = peticion.pop('valor_medida') # Obtengo los valores de cada medida
+            if medida_prenda_form.is_valid(): # si el formulario es valido
+                medida = medida_prenda_form.save(commit = False) # creo un objeto del formulario para asociar las medidas y los valores
+
+                #bucle de carga
+                i=0
+                while i < len(peticion_medida): # mientras haya medidas
+                    if peticion_valor[i] == '': # si no se introdujo valor
+                        valor = 0 # se asigna el valor 0
+                    else: # si se introdujo un valor
+                        valor = int(peticion_valor[i]) #se asigna el valor recibido de la peticion en esa posición
+                    medida_prenda = Medida_prenda.objects.create(prenda = prenda, medida = Medida.objects.get(id_medida = peticion_medida[i]), valor = valor) # CReamos el objeto medida_prenda
+                    medida_prenda.save()
+                    i+=1
+                #end bucle de carga
+                messages.success(request, 'Medidas agregadas correctamente') # Informo al usuario que se creó correctamente
+                return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+    if c == False:
+        medidas_prenda_u = []
+    return render(request,'prenda/asignar_medida.html',{'prenda':prenda, 'pedido':pedido, 'detalle':detalle,'medidas_prenda_u':medidas_prenda_u,'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
+
+def EditarMedidaPrenda(request,id_prenda):
+    prenda = Prenda.objects.get(id_prenda=id_prenda)
+    medidas_prenda = Medida_prenda.objects.filter(prenda_id = id_prenda)
+    medida_prenda_form = Medida_prendaForm()
+    if request.method == 'GET':
+        medida_prenda_form = Medida_prendaForm(request.POST)
+        peticion = request.POST.copy()
+        peticion_medida = peticion.pop('medida')
+        peticion_valor = peticion.pop('valor_medida')
+        print(peticion_medida)
+        print(peticion_valor)
+        if medida_prenda_form.is_valid():
+            medida = medida_prenda_form.save(commit = False)
+            i=0
+            while i < len(peticion_medida):
+                if peticion_valor[i] == '':
+                    valor = 0
+                else:
+                    valor = int(peticion_valor[i])
+                medida_prenda = Medida_prenda.objects.create(prenda = prenda, medida = Medida.objects.get(id_medida = peticion_medida[i]), valor = valor)
+                medida_prenda.save()
+                i+=1
+            messages.success(request, 'Medidas agregadas correctamente')
+        else:
+            print(medida_prenda_form.errors)
+        return render(request,'prenda/asignar_medida.html',{'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
+
+    return render(request,'prenda/asignar_medida.html',{'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
 
 def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
     prenda_form=None
@@ -337,7 +442,12 @@ def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
             if 'boton_asignar_material' in request.POST:
                 ingrediente_form = IngredienteForm()
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-
+            if 'boton_asignar_medida' in request.POST:
+                prenda_form=PrendaForm(request.POST, instance=prenda)
+                if prenda_form.is_valid():
+                    prenda_form.save() #Guardo prenda
+                medida_prenda_form = Medida_prendaForm()
+                return redirect('/prenda/asignar_medida/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'medida_prenda_form':medida_prenda_form})
             if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
                 precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
                 precio_pos = prenda.precio * detalle.cantidad - precio_total_pre #Calculo el precio del lote actualizado
