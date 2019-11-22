@@ -85,16 +85,24 @@ class CompraForm (forms.ModelForm):
 
 class PedidoForm (forms.ModelForm):
     class Meta:
-        CHOICES= [
+        CHOICES_PRIORIDAD= [
         ('2', 'Alta'),
         ('1', 'Media'),
         ('0', 'Baja'),
+        ]
+        CHOICES_PUNTAJE= [
+        ('0', 'Muy Mala'),
+        ('2', 'Mala'),
+        ('1', 'Regular'),
+        ('1', 'Buena'),
+        ('1', 'Muy Buena'),
         ]
         model = Pedido
         fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
         widgets = {
         'fecha_entrega' : forms.DateInput(attrs={'type' : 'date'}),
-        'prioridad_entrega' : forms.Select(choices = CHOICES),
+        'prioridad_entrega' : forms.Select(choices = CHOICES_PRIORIDAD),
+        'puntaje' : forms.Select(choices = CHOICES_PUNTAJE),
         'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'})
         }
 
@@ -148,7 +156,7 @@ class IngredienteForm (forms.ModelForm):
         model = Ingrediente
         fields = ['cantidad', 'prenda', 'material']
         widgets = {
-        'material' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        'material' : forms.Select(attrs={'id':'combito','class' : 'js-example-basic-single'}),
         }
 
 class MedidaForm (forms.ModelForm):

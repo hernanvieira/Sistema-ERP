@@ -17,6 +17,7 @@ class Pedido (models.Model):
     prioridad_entrega = models.CharField(max_length=50, null = True, blank=True, default = 2)
     cancelado = models.BooleanField(default = False)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
+    puntaje = models.CharField(max_length=50, null = True, blank = True, default = 2)
     history = HistoricalRecords()
 
 class Detalle (models.Model):

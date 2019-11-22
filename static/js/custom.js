@@ -254,3 +254,26 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('.js-example-basic-multiple').select2();
 });
+
+
+// combito
+$('#combito').change(function() {
+    var mt = $(this).val();
+    console.log('oliii')
+    console.log(mt)
+    $.ajax({
+        url: '/prenda/mostrar_unidad',
+        data: {
+            'material': mt
+        },
+        dataType: 'json',
+        success: function(result) {
+            var html = "";
+
+              html +=  result['medida'];
+
+              $("#unidad_medida").html(html);
+
+        }
+    })
+});

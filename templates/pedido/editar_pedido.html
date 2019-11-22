@@ -48,44 +48,7 @@ Editar pedido
               <i class="fa fa-dot-circle-o"></i> Agregar Prenda
             </button>
           </div>
-          <hr class="line-seprate">
-          {% if detalles %}
-          <!-- DATA TABLE-->
-          <div class="table-responsive m-b-40">
-              <table class="table table-borderless table-data3">
-                  <thead>
-                      <tr>
-                          <th>Tipo de Prenda</th>
-                          <th>Talle</th>
-                          <th>Precio Unitario</th>
-                          <th>Cantidad</th>
-                          <th>Tiempo Prod. Lote</th>
-                          <th>Opciones</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {% for detalle in detalles %}
-                      <tr>
-                        <td>{{detalle.prenda.tipo_prenda}}</td>
-                        <td style="text-align: center;">{{detalle.prenda.talle}}</td>
-                        <td style="text-align: right;">${{detalle.prenda.precio}}</td>
-                        <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
-                        <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
-                        <td>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
-                              <i class="fas fa-pencil-square-o"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
-                              <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                      </tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
-          </div>
-          <!-- END DATA TABLE-->
-          {% endif %}
+
         </div>
 
         <hr class="line-seprate">
@@ -138,7 +101,44 @@ Editar pedido
           </div>
         </div>
       </div>
-
+      <hr class="line-seprate">
+      {% if detalles %}
+      <!-- DATA TABLE-->
+      <div class="table-responsive m-b-40">
+          <table class="table table-borderless table-data3">
+              <thead>
+                  <tr>
+                      <th>Tipo de Prenda</th>
+                      <th>Talle</th>
+                      <th>Precio Unitario</th>
+                      <th>Cantidad</th>
+                      <th>Tiempo Prod. Lote</th>
+                      <th>Opciones</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for detalle in detalles %}
+                  <tr>
+                    <td>{{detalle.prenda.tipo_prenda}}</td>
+                    <td style="text-align: center;">{{detalle.prenda.talle}}</td>
+                    <td style="text-align: right;">${{detalle.prenda.precio}}</td>
+                    <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
+                    <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                          <i class="fas fa-pencil-square-o"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                  </tr>
+                  {% endfor %}
+              </tbody>
+          </table>
+      </div>
+      <!-- END DATA TABLE-->
+      {% endif %}
       <div class="card-footer">
         <button type="submit" class="btn btn-success" name="boton_finalizar">
           <i class="fa fa-dot-circle-o"></i> Finalizar

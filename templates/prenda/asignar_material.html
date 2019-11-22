@@ -58,7 +58,7 @@ Asignar materiales
               {{ingrediente_form.cantidad}}
             </div>
             <div class="input-group-addon">
-              <i></i>
+              <p  id="unidad_medida"></p>
             </div>
           </div>
         </div>
@@ -92,6 +92,7 @@ Asignar materiales
                       <th>Tipo de Prenda</th>
                       <th>Material</th>
                       <th>Cantidad</th>
+                      <th>Unidad de Medida</th>
                       <th>Opciones</th>
                   </tr>
               </thead>
@@ -99,8 +100,9 @@ Asignar materiales
                 {% for ingrediente in ingredientes %}
                   <tr>
                     <td style="text-align: left">{{prenda.tipo_prenda}}</td>
-                    <td style="text-align: center;">{{ingrediente.material}}</td>
+                    <td style="text-align: left;">{{ingrediente.material}}</td>
                     <td style="text-align: center;">{{ingrediente.cantidad}}</td>
+                    <td style="text-align: center;">{{ingrediente.material.tipo_material.unidad_medida.nombre}}</td>
                     <td style="text-align: center;">
                         <div class="table-data-feature">
                           <button type="button" class="btn btn-primary btn-sm" onclick="location.href='#'">

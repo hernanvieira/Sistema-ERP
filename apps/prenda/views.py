@@ -5,6 +5,25 @@ from apps.material.models import Material, Tipo_material
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+
+#JSON
+# from rest_framework.renderers import JSONRenderer
+# from rest_framework.parsers import JSONParser
+
+import json
+from django.http import HttpResponse
+from django.http import JsonResponse
+
+class JSONResponse(HttpResponse):
+    """
+    An HttpResponse that renders its content into JSON.
+    """
+    def _init_(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self)._init_(content, **kwargs)
+
+
 #Crear un Medida
 def CrearMedida (request):
     medidas = Medida.objects.all()
@@ -496,3 +515,13 @@ def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prend
     material.save()
     ingrediente.delete()
     return redirect('/prenda/asignar_material/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+
+def MostrarUnidad(request):
+    mt = request.GET.get('material',None)
+    material = Material.objects.get(id_material = mt)
+    unidad = material.tipo_material.unidad_medida.nombre
+    result = {
+        'medida': unidad
+    }
+    print(result)
+    return JsonResponse(result)
