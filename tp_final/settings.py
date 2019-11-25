@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'apps.estado',
     'apps.material',
     'apps.usuario',
-    'simple_history'
+    'simple_history',
+    'django_cron'
 ]
 
 MIDDLEWARE = [
