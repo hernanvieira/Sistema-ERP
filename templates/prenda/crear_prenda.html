@@ -165,7 +165,32 @@ Agregar Prenda
           </button>
         </div>
       </div>
+      <input type="hidden" id="myVar" name="variable" value="{{ diccionario }}">
     </form>
   </div>
 </div>
+
+
+
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+<script>
+  // calcular tiempo produccion prenda
+  $('#tipo_prenda').change(function() {
+      var tp = $(this).val();
+      console.log(tp);
+      $.ajax({
+          url: '/prenda/tiempo_prod',
+          data: {
+              'tipo_prenda': tp
+          },
+          dataType: 'json',
+          success: function(result) {
+              var value = "";
+                value =  result['promedio'];
+                $("#tiempo_prod_prenda").val(value);
+          }
+      })
+  });
+</script>
 {% endblock content%}

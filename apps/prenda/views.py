@@ -179,6 +179,8 @@ def CrearPrenda (request,id_pedido):
         medida_prenda_form = Medida_prendaForm()
         pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
         medidas_prenda = Medida.objects.all()
+    medidas_prenda = Medida.objects.all()
+    medida_prenda_form = Medida_prendaForm()
     return render(request, 'prenda/crear_prenda.html',{'medidas_prenda':medidas_prenda,'prenda_form':prenda_form,'detalle_form':detalle_form,'pedido':pedido, 'medida_prenda_form':medida_prenda_form})
 #Listar todos las prendas
 def ListarPrenda (request):
@@ -516,6 +518,7 @@ def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prend
     ingrediente.delete()
     return redirect('/prenda/asignar_material/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
 
+#Mostrar unidad de medida al asignar material
 def MostrarUnidad(request):
     mt = request.GET.get('material',None)
     material = Material.objects.get(id_material = mt)
@@ -523,5 +526,24 @@ def MostrarUnidad(request):
     result = {
         'medida': unidad
     }
+    print(result)
+    return JsonResponse(result)
+
+#Proponer tiempo de produccion estimado
+def TiempoProdPrenda(request):
+    print("ENTRA")
+    tp = request.GET.get('tipo_prenda',None)
+    if tp!= None:
+        pass
+    cant_pre = Prenda.objects.filter(tipo_prenda = tp).count()
+    prendas = Prenda.objects.filter(tipo_prenda = tp)
+    suma = sum(p.tiempo_prod_prenda for p in prendas)
+    promedio = 0
+    if cant_pre != 0:
+        promedio = suma/cant_pre
+    result = {
+        'promedio': int(promedio)
+    }
+    print("SSSSSSSSSSSSSSSSSS")
     print(result)
     return JsonResponse(result)

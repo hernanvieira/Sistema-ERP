@@ -86,7 +86,7 @@ Listado de pedidos
                 <th>Fecha</th>
                 <th>Total</th>
                 <th>Entrega</th>
-                <th>Seña</th>
+                <th>Estado</th>
                 <th>Prioridad</th>
                 <th class="noExport">Opciones</th>
             </tr>
@@ -94,41 +94,41 @@ Listado de pedidos
         <tbody>
             {% for pedido in pedidos %}
             <tr class="tr-shadow">
-              <td style="text-align: right;">{{pedido.id_pedido}}</td>
-              <td style="text-align: center;">{{pedido.cliente.dni}}</td>
-              <td style="text-align: left;">{{pedido.cliente.apellido}}</td>
-              <td style="font-size: 12px;text-align: center;">{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
-              <td style="text-align: right;">${{pedido.precio_total}}</td>
-              <td style="text-align: right;">${{pedido.entrega}}</td>
-              <td style="text-align: right;">${{pedido.seña}}</td>
+              <td style="text-align: right;">{{pedido.pedido.id_pedido}}</td>
+              <td style="text-align: center;">{{pedido.pedido.cliente.dni}}</td>
+              <td style="text-align: left;">{{pedido.pedido.cliente.apellido}}</td>
+              <td style="font-size: 12px;text-align: center;">{{pedido.pedido.fecha_entrega|date:'d-m-Y'}}</td>
+              <td style="text-align: right;">${{pedido.pedido.precio_total}}</td>
+              <td style="text-align: right;">${{pedido.pedido.entrega}}</td>
+              <td style="text-align: right;">{{pedido.estado}}</td>
               <td style="text-align: center;">
-                {% if pedido.prioridad_entrega == '2' %}
+                {% if pedido.pedido.prioridad_entrega == '2' %}
                   Alta
                 {% endif %}
-                {% if pedido.prioridad_entrega == '1' %}
+                {% if pedido.pedido.prioridad_entrega == '1' %}
                   Media
                 {% endif %}
-                {% if pedido.prioridad_entrega == '0' %}
+                {% if pedido.pedido.prioridad_entrega == '0' %}
                   Baja
                 {% endif %}
               </td>
                 <td>
                     <div class="table-data-feature">
-                      <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.id_pedido %}'">
+                      <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.pedido.id_pedido %}'">
                         <i class="fas fa-eye"></i>
                       </button>
-                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.id_pedido %}'">
+                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.pedido.id_pedido %}'">
                         <i class="fas fa-pencil-square-o"></i>
                       </button>
                       <!-- Modal Eliminar -->
-                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido.id_pedido}}">
+                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido.pedido.id_pedido}}">
                         <i class="fas fa-trash"></i>
                       </button>
-                      <div class="modal fade bs-example-modal-lg2{{pedido.id_pedido}}" id="myModal2{{pedido.id_pedido}}" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal fade bs-example-modal-lg2{{pedido.pedido.id_pedido}}" id="myModal2{{pedido.pedido.id_pedido}}" tabindex="-1" role="dialog" aria-hidden="true">
                           <div class="modal-dialog modal-lg">
                               <div class="modal-content">
                                   <div class="modal-header">
-                                      <h4 class="modal-title" id="myModalLabel{{pedido.id_pedido}}">Confirmar Eliminacion</h4>
+                                      <h4 class="modal-title" id="myModalLabel{{pedido.pedido.id_pedido}}">Confirmar Eliminacion</h4>
                                   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
                                   </div>
                                   <div class="modal-body">
@@ -136,7 +136,7 @@ Listado de pedidos
                                   </div>
                                   <div class="modal-footer">
                                     <div class="alineado-derecha">
-                                      <a href="{% url 'pedido:eliminar_pedido' pedido.id_pedido %}">
+                                      <a href="{% url 'pedido:eliminar_pedido' pedido.pedido.id_pedido %}">
                                         <button type="button" class="btn btn-danger" >Eliminar</button>
                                       </a>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

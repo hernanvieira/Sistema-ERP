@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm, Estado_pedidoForm
 from .models import Pedido, Detalle
-from apps.prenda.models import Prenda
+from apps.prenda.models import Prenda, Tipo_prenda
 from apps.estado.models import Estado_pedido, Estado
 from apps.prenda.views import CrearPrenda
 from django.core.exceptions import ObjectDoesNotExist
@@ -56,6 +56,14 @@ def CrearPedido (request):
 #Listar todos los pedidos
 def ListarPedido (request):
     pedidos = Pedido.objects.all()
+    aux = []
+    for p in pedidos:
+        a = Estado_pedido.objects.filter(pedido = p).last()
+        if a != None:
+            aux.append(a)
+    pedidos = aux
+    print("HOLASI")
+    print(pedidos)
     return render(request,'pedido/listar_pedido.html',{'pedidos':pedidos})
 
 #Volver al pedido

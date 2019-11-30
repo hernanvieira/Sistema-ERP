@@ -192,18 +192,18 @@ Ver pedido
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel{{pedido_form.id_pedido_form}}">Confirmar Eliminacion</h4>
+                            <h4 class="modal-title" id="myModalLabel{{pedido_form.id_pedido_form}}">Cancelar Pedido</h4>
                         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
                         </div>
                         <div class="modal-body">
-                            <a>¿Está seguro de <strong>eliminar</strong> el pedido?</a>
+                            <a>¿Está seguro de <strong>cancelar</strong> el pedido?</a>
                         </div>
                         <div class="modal-footer">
                           <div class="alineado-derecha">
                             <a href="{% url 'pedido:cancelar_pedido' pedido.id_pedido %}">
-                              <button type="button" class="btn btn-danger" >Cancelar</button>
+                              <button type="button" class="btn btn-danger" >Confirmar</button>
                             </a>
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
                           </div>
                         </div>
                     </div>

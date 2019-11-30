@@ -148,7 +148,9 @@ class PrendaForm (forms.ModelForm):
         model = Prenda
         fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio','imagen']
         widgets = {
-        'talle' : forms.Select(choices = CHOICES)
+        'talle' : forms.Select(choices = CHOICES),
+        'tipo_prenda' : forms.Select(attrs={'id':'tipo_prenda', 'name':'tipo_prenda'}),
+        'tiempo_prod_prenda' : forms.TextInput(attrs={'id':'tiempo_prod_prenda'})
         }
 
 class IngredienteForm (forms.ModelForm):
