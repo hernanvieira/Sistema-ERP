@@ -1,9 +1,10 @@
 {% extends 'index.html' %}
-
+{% load static %}
 <!DOCTYPE html>
 {% block titulo%}
 Crear pedido
 {% endblock titulo%}
+
 {% block content%}
 
 
@@ -58,9 +59,9 @@ Crear pedido
               <i class="fa fa-dot-circle-o"></i> Agregar Prenda
             </button>
           </div>
+          <br>
         </div>
         <!-- end cliente -->
-        <hr class="line-seprate">
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
           <div class="form-control">
@@ -92,7 +93,9 @@ Crear pedido
               <i class="fa fa-dollar"></i>
             </div>
             <div class="form-control">
-              {{pedido_form.seña}}
+              {% if detalles %}
+                {{pedido_form.seña}}
+              {% endif %}
             </div>
           </div>
 
@@ -129,7 +132,26 @@ Crear pedido
                     {% for detalle in detalles %}
                       <tr>
                         <td>{{detalle.prenda.tipo_prenda}}</td>
-                        <td style="text-align: center;">{{detalle.prenda.talle}}</td>
+                        <td style="text-align: center;">
+                          {% if detalle.prenda.talle == 0 %}
+                            XS
+                          {% endif %}
+                          {% if detalle.prenda.talle == 1 %}
+                            S
+                          {% endif %}
+                          {% if detalle.prenda.talle == 2 %}
+                            M
+                          {% endif %}
+                          {% if detalle.prenda.talle == 3 %}
+                            L
+                          {% endif %}
+                          {% if detalle.prenda.talle == 4 %}
+                            XL
+                          {% endif %}
+                          {% if detalle.prenda.talle == 5 %}
+                            XXL
+                          {% endif %}
+                        </td>
                         <td style="text-align: right;">${{detalle.prenda.precio}}</td>
                         <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
                         <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
@@ -159,9 +181,12 @@ Crear pedido
           <i class="fa fa-chevron-left"></i> Volver
         </button>
       </div>
-
     </form>
   </div>
 </div>
+
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+
 
 {% endblock content%}

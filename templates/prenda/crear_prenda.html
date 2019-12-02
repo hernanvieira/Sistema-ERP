@@ -1,4 +1,4 @@
-  {% extends 'index.html' %}
+{% extends 'index.html' %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -170,8 +170,6 @@ Agregar Prenda
   </div>
 </div>
 
-
-
 <script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
 
 <script>
@@ -193,4 +191,11 @@ Agregar Prenda
       })
   });
 </script>
+<script>
+  $(document).ready(function() {
+      var bla = $('#tiempo_prod_prenda').val();
+      console.log("oliiis");
+  });
+</script>
+
 {% endblock content%}

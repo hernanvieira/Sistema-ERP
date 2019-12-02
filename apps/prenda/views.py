@@ -342,7 +342,7 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                     messages.warning(request, 'La cantidad introducida supera el stock mínimo')
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/volver_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+                    return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
             else:
                 messages.error(request, 'La cantidad introducida es mayor al stock disponible')
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
@@ -408,7 +408,7 @@ def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
                     i+=1
                 #end bucle de carga
                 messages.success(request, 'Medidas agregadas correctamente') # Informo al usuario que se creó correctamente
-                return redirect('/prenda/volver_prenda/'+str(id_pedido)+'/'+str(id_detalle)+'/'+str(id_prenda))
+                return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
     if c == False:
         medidas_prenda_u = []
     return render(request,'prenda/asignar_medida.html',{'prenda':prenda, 'pedido':pedido, 'detalle':detalle,'medidas_prenda_u':medidas_prenda_u,'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})

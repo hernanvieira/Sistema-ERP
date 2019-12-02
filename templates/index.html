@@ -377,9 +377,7 @@ left: 43px;
                                 <li>
                                     <a href="/material/listar_material/">Gestionar Materiales</a>
                                 </li>
-                                <li>
-                                    <a href="/material/listar_tipo_material/">Gestionar Tipo de Materiales</a>
-                                </li>
+
                             </ul>
                         </ul>
                         <li class="active has-sub">
@@ -393,16 +391,7 @@ left: 43px;
                       </ul>
                       <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                          <a class="js-arrow" href="#">
-                              <i class="fas fa-th"></i>Prendas</a>
-                          <ul class="list-unstyled navbar__sub-list js-sub-list">
-                              <li>
-                                  <a href="/prenda/listar_tipo_prenda/">Gestionar Tipos de Prendas</a>
-                              </li>
-                              <li>
-                                  <a href="/prenda/listar_medida/">Gestionar Medidas</a>
-                              </li>
-                          </ul>
+                          
                           <li class="active has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-book"></i>Auditoria</a>
@@ -428,20 +417,21 @@ left: 43px;
                                   <i class="fas fa-cogs"></i>Configuración</a>
                               <ul class="list-unstyled navbar__sub-list js-sub-list">
                                   <li>
-                                      <a href="/estado/crear_estado"> Nuevo Estado de Pedido</a>
+                                      <a href="/estado/crear_estado"> Gestionar Estados de Pedido</a>
                                   </li>
                                   <li>
-                                      <a href="/material/crear_material/">Nuevo Material</a>
+                                      <a href="/material/crear_material/">Gestionar Material</a>
                                   </li>
                                   <li>
-                                      <a href="/material/crear_tipo_material/">Nuevo Tipo de Material</a>
+                                      <a href="/material/crear_tipo_material/">Gestionar Tipos de Material</a>
                                   </li>
                                   <li>
-                                      <a href="/prenda/crear_medida/">Nueva Medida</a>
+                                      <a href="/prenda/crear_medida/">Gestionar Medidas</a>
                                   </li>
                                   <li>
-                                      <a href="/prenda/crear_tipo_prenda/">Nuevo Tipo de Prenda</a>
+                                      <a href="/prenda/crear_tipo_prenda/">Gestionar Tipos de Prenda</a>
                                   </li>
+
                               </ul>
                       </ul>
 
@@ -768,7 +758,7 @@ left: 43px;
 
     <!-- Main JS-->
     <script src="{% static 'js/main.js' %}"></script>
-  
+
 
     <script type="text/javascript">
       $(function() {

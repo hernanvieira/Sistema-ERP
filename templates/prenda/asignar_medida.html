@@ -50,15 +50,22 @@ Asignar Medidas
         <div class="row">
           {% if medidas_prenda_u %}
             {% for medida in medidas_prenda_u %}
-                <div class="col-md-3">
+                <div class="col-md-2">
                   {{medida.medida.nombre_medida}}
                   <input type="hidden" name="medida" value="{{medida.medida.id_medida}}" >
                   <br>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-3">
+                  <div class="input-group">
                     <input type="number" name="valor_medida" min="0" class="form-control" value="{{medida.valor}}">
+                    <div class="input-group-addon">
+                      <p>{{medida.medida.unidad_medida}}</p>
+                    </div>
+                  </div>
                    <br>
                 </div>
+                
+
                 <div class="col-md-1">
                 </div>
             {% endfor %}

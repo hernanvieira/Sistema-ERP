@@ -4,7 +4,7 @@
 {% block titulo%}
 Auditoria Clientes
 {% endblock titulo%}
-{% block content%} 
+{% block content%}
 
 <!-- DATA TABLE -->
 <strong class="card-title">Filtrar</strong>
@@ -54,7 +54,6 @@ Auditoria Clientes
                 <th>Nombre y apellido</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
-                <th class="noExport">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -77,13 +76,6 @@ Auditoria Clientes
               <td>{{audi.nombre}}</td>
               <td>{{audi.history_date}}</td>
               <td>{{audi.history_user}}</td>
-              <td>
-                  <div class="table-data-feature">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="#">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                  </div>
-              </td>
             </tr>
 
             {% endfor %}

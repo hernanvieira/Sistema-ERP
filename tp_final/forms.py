@@ -100,7 +100,7 @@ class PedidoForm (forms.ModelForm):
         model = Pedido
         fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
         widgets = {
-        'fecha_entrega' : forms.DateInput(attrs={'type' : 'date'}),
+        'fecha_entrega' : forms.DateInput(attrs={'type' : 'date', 'id':'fecha_entrega', 'name':'fecha_entrega'}),
         'prioridad_entrega' : forms.Select(choices = CHOICES_PRIORIDAD),
         'puntaje' : forms.Select(choices = CHOICES_PUNTAJE),
         'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'})
@@ -110,16 +110,6 @@ class DetalleForm (forms.ModelForm):
     class Meta:
         model = Detalle
         fields = ['cantidad', 'tiempo_prod_lote', 'pedido','prenda']
-
-# class ComponenteForm (forms.ModelForm):
-#     class Meta:
-#         model = Componente
-#         fields = ['nombre']
-#     # def clean_nombre(self):
-#     #     nombre = self.cleaned_data.get('nombre')
-#     #     if not nombre.isalpha():
-#     #         raise forms.ValidationError("No puede introducir numeros")
-#     #     return nombre
 
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:

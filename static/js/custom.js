@@ -259,8 +259,6 @@ $(document).ready(function() {
 // combito
 $('#combito').change(function() {
     var mt = $(this).val();
-    console.log('oliii')
-    console.log(mt)
     $.ajax({
         url: '/prenda/mostrar_unidad',
         data: {

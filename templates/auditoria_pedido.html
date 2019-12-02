@@ -54,7 +54,6 @@ Auditoria Pedidos
                 <th>Cliente</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
-                <th class="noExport">Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -77,13 +76,7 @@ Auditoria Pedidos
               <td style="text-align: right;">{{audi.cliente_id}}</td>
               <td style="text-align: center;">{{audi.history_date}}</td>
               <td style="text-align: left;">{{audi.history_user}}</td>
-              <td>
-                  <div class="table-data-feature">
-                    <button type="button" class="btn btn-primary btn-sm" onclick="#">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                  </div>
-              </td>
+              
             </tr>
 
             {% endfor %}
