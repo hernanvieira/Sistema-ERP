@@ -31,8 +31,13 @@ Nueva Compra
         </div>
         <div class="col-md-3">
           {{compra_form.cantidad.label}}
-          <div class="form-control">
-            {{compra_form.cantidad}}
+          <div class="input-group">
+            <div class="form-control">
+              {{compra_form.cantidad}}
+            </div>
+            <div class="input-group-addon">
+              <p  id="unidad_medida"></p>
+            </div>
           </div>
         </div>
       </div>

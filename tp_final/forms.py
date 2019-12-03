@@ -80,7 +80,7 @@ class CompraForm (forms.ModelForm):
         fields = ['fecha','cantidad','material']
         widgets = {
         'fecha' : forms.DateInput(attrs={'type' : 'date', 'id' : 'datePicker'}),
-        'material' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        'material' : forms.Select(attrs={'class' : 'js-example-basic-single', 'id':'combito'}),
         }
 
 class PedidoForm (forms.ModelForm):

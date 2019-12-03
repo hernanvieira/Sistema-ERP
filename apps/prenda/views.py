@@ -315,8 +315,6 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
             # Obtener Unidad de medida
             tipo_material = Tipo_material.objects.get(material = material)
             unidad_medida = tipo_material.unidad_medida
-            print("ACA LA MEDUDI")
-            print(unidad_medida)
 
             cantidad_material = ingrediente.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
             if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
@@ -327,7 +325,14 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                 material.save() # persisto
                 #Guardo la asignación de material
                 ingrediente.prenda = prenda # asocio el material con la prenda
-                ingrediente.save() #persisto
+
+                mat_prenda = Ingrediente.objects.filter(prenda = prenda, material = material).exists()#Existe ese material entre los ingredientes ingresados?
+                if mat_prenda:# si existe
+                    ingre = Ingrediente.objects.get(prenda = prenda, material = material)# Obtengo el ingrediente
+                    ingre.cantidad += ingrediente.cantidad #sumo la nueva cantidad a la actual
+                    ingre.save() # actualizo el ingrediente
+                else:
+                    ingrediente.save() #persisto
 
                 #Actualizo el detalle
                 detalle.prenda = prenda # Asocio la prenda con el detalle

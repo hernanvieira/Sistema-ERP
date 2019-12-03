@@ -391,7 +391,7 @@ left: 43px;
                       </ul>
                       <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                          
+
                           <li class="active has-sub">
                             <a class="js-arrow" href="#">
                                 <i class="fas fa-book"></i>Auditoria</a>
@@ -760,36 +760,37 @@ left: 43px;
     <script src="{% static 'js/main.js' %}"></script>
 
 
-    <script type="text/javascript">
-      $(function() {
-        // for now, there is something adding a click handler to 'a'
-        var tues = moment().day(2).hour(19);
+    <script>
 
-        // build trival night events for example data
-        var events = [
-          {
-            title: "Pedido 1",
-            start: moment().format('YYYY-MM-DD'),
-            url: '#'
-          },
-          {
-            title: "Pedido 2",
-            start: moment().hour(9).add(2, 'days').toISOString(),
-            url: '#'
-          }
+        $(document).ready(function () {
+            var calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                events: [
+                    {% for event in pedidos %}
+                        {
+                            title: "{{ event.id_pedido}}",
+                            start: '{{ event.fecha_entrega|date:"Y-m-d" }}',
+                            id: '{{ event.id_pedido }}',
+                            url: '/pedido/ver_pedido/{{event.id_pedido}}'
+                        },
+                    {% endfor %}
+                ],
+                selectable: true,
+                selectHelper: true,
+                editable: true,
+                eventLimit: true,
+                eventClick: function (event) {
+                    var id = event.id;
 
-        ];
+                },
 
-        // setup a few events
-        $('#calendar').fullCalendar({
-          header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay,listWeek'
-          },
-          events: events
+            });
         });
-      });
+
     </script>
 
 

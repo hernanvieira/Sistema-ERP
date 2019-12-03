@@ -20,7 +20,7 @@ def CrearPedido (request):
                 messages.error(request, 'Error al crear el cliente')
         if 'boton_agregar' in request.POST:
             pedido_form = PedidoForm(request.POST)
-            prenda_form = PrendaForm(request.POST)
+            prenda_form = PrendaForm(request.POST)#lupy estubo aki peligro borre este mensaje para su comodidad
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit = False)
                 if pedido.fecha_entrega != None:
