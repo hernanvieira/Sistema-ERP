@@ -98,6 +98,7 @@ def EliminarCliente (request,dni):
 def ClienteHome(request):
     clientes = Cliente.objects.all()
     cliente_form = ClienteForm()
+    reporte = Configuracion.objects.all().last()
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
         if cliente_form.is_valid():
@@ -109,7 +110,7 @@ def ClienteHome(request):
             cliente_form = ClienteForm()
     else:
         cliente_form = ClienteForm()
-    return render (request, 'cliente/index_cliente.html',{'clientes':clientes,'cliente_form':cliente_form})
+    return render (request, 'cliente/index_cliente.html',{'reporte':reporte,'clientes':clientes,'cliente_form':cliente_form})
 
 #Pagina de auditoria
 def Auditoria(request):

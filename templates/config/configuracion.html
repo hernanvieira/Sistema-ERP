@@ -41,10 +41,10 @@ Configuración
       <div class="form-control">
         {{configuracion_form.telefono}}
       </div>
-    
+
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+        <button type="submit" class="btn btn-success" onclick="history.back()">
+          <i class="fa fa-dot-circle-o"></i> Configurar
         </button>
         <a href="{% url 'index'%}">
         <button type="button" class="btn btn-danger" >
