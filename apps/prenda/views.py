@@ -5,6 +5,7 @@ from apps.material.models import Material, Tipo_material
 from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from datetime import datetime, timedelta
 
 #JSON
 # from rest_framework.renderers import JSONRenderer
@@ -149,9 +150,21 @@ def CrearPrenda (request,id_pedido):
 
             detalle = detalle_form.save() #Guardo detalle
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+            tiempo = detalle.tiempo_prod_lote
             detalle.save() #Actualizo el detalle
             pedido.precio_total += prenda.precio * detalle.cantidad #Calculo precio total
             pedido.seña = pedido.precio_total/2
+
+            fecha = Pedido.objects.exclude(fecha_entrega=None).order_by('fecha_entrega') 
+            fechona  = fecha.last()
+            print("LA ULTIMA FECHARDA")
+            print(fechona.fecha_entrega)
+            print("SE LE SUMA")
+            print(tiempo)
+            pedido.fecha_entrega = fechona.fecha_entrega + timedelta(days= tiempo)
+            print("Nueva fechona")
+            print(pedido.fecha_entrega)
+
             # Asocio datos de prenda y pedido a detalle
             detalle.prenda = prenda
             detalle.pedido = pedido
