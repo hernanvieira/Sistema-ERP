@@ -25,9 +25,15 @@
 					    },
               className: 'btn btn-danger',
 					customize: function (doc) {
+            var titulo = $('.titulo_reporte').val();
+            var empresa = $('.empresa_reporte').val();
+            var direccion = $('.direccion_reporte').val();
+            var telefono = $('.telefono_reporte').val();
+            var usuario = $('.usuario_reporte').val();
 						//Remove the title created by datatTables
 						// doc.content.splice(0,1);
-            doc.content[0] = [{text: 'Titulo'}];
+            doc.content[0] = [{text: titulo + "\n", fontSize:15},{text:"Filtros:", alignment:'left'}];
+
 						//Create a date string that we use in the footer. Format is dd-mm-yyyy
 						var now = new Date();
 						var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear();
@@ -61,15 +67,14 @@
 									},
                   {
 										alignment: 'center',
-										text:[{text:"Productora de Prendas AAA \n \n ", bold:true, fontSize:12}, {text:"Carlos Pellegrini 269, N3350 Apóstoles, Misiones \n Teléfono: 03758 42-3232 \n \n \n" },{text:"Listado de pedidos \n", bold:true, fontSize:15, alignment:'left'},
-                    {text:"Filtros:", alignment:'left'}],
+										text:[{text: empresa + "\n \n ", bold:true, fontSize:12}, {text: direccion + "\n" + "Teléfono: " + telefono + "\n \n \n" }],
 										fontSize: 10,
 										margin: [0,20,0,0]
 									},
 									{
 										alignment: 'right',
 										fontSize: 9,
-										text: ['Fecha: ', { text: jsDate.toString() }, {text: '\n Generado por: ', fontSize:7}],
+										text: ['Fecha: ', { text: jsDate.toString() }, {text: '\n Generado por: ' + usuario, fontSize:7}],
                     width:80,
 										margin: [0,10,0,0],
                     alignment:'left'
@@ -114,7 +119,7 @@
                 var table = $("#midatatable").DataTable();//Obtengo la tabla
                 var pageInfo = table.page.info(); //Obtiene el objeto page.info()
                 for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
-                  doc.content[1].table.body[i][5].alignment = 'right'; //El segundo [] es el numero de columna a alinear
+                  doc.content[1].table.body[i][5].alignment = 'left'; //El segundo [] es el numero de columna a alinear
                   doc.content[1].table.body[i][4].alignment = 'right';
                   doc.content[1].table.body[i][3].alignment = 'right';
                   doc.content[1].table.body[i][6].alignment = 'center';

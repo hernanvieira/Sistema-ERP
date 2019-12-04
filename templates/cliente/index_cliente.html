@@ -49,6 +49,13 @@ Gestionar Clientes
 
 {% if clientes %}
   <!-- DATA TABLE-->
+  <input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Listado de clientes">
+  <input type="hidden" name="empresa" class="empresa_reporte" id="empresa" value="{{reporte.empresa}}">
+  <input type="hidden" name="direccion" class="direccion_reporte" id="direccion" value="{{reporte.direccion}}">
+  <input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
+  <input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
+
+
   <div class="table-responsive table-responsive-data2">
       <table class="table table-data2" id="midatatable">
         <thead>

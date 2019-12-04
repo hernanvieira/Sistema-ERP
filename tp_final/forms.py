@@ -1,4 +1,5 @@
 from django import forms
+from config.models import *
 from apps.cliente.models import *
 from apps.estado.models import *
 from apps.material.models import *
@@ -163,3 +164,11 @@ class Medida_prendaForm (forms.ModelForm):
         widgets = {
         'prenda' : forms.Select(attrs={'class':'form-control'})
         }
+
+class ConfiguracionForm (forms.ModelForm):
+    class Meta:
+        model = Configuracion
+        fields = ['empresa', 'direccion', 'telefono']
+        # widgets = {
+        # 'prenda' : forms.Select(attrs={'class':'form-control'})
+        # }

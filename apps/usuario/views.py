@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -8,6 +8,7 @@ from .forms import FormularioLogin
 from django.contrib.auth import login as dj_login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+
 # Create your views here.
 
 class Login(FormView):
@@ -32,3 +33,6 @@ class Login(FormView):
 def logoutUsuario(request):
     logout(request)
     return HttpResponseRedirect('/accounts/login')
+
+def VerPerfil(request):
+    return render(request, 'usuario/ver_perfil.html')

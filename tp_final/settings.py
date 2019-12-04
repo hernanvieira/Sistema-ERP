@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'apps.estado',
     'apps.material',
     'apps.usuario',
+    'config',
     'simple_history',
     'django_cron'
 ]

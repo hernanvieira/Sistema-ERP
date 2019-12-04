@@ -8,6 +8,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
 import datetime
 from django.contrib import messages
+from config.models import Configuracion
 #Crear un pedido
 def CrearPedido (request):
     if request.method == 'POST':
@@ -56,15 +57,14 @@ def CrearPedido (request):
 #Listar todos los pedidos
 def ListarPedido (request):
     pedidos = Pedido.objects.all()
+    reporte = Configuracion.objects.all().last()
     aux = []
     for p in pedidos:
         a = Estado_pedido.objects.filter(pedido = p).last()
         if a != None:
             aux.append(a)
     pedidos = aux
-    print("HOLASI")
-    print(pedidos)
-    return render(request,'pedido/listar_pedido.html',{'pedidos':pedidos})
+    return render(request,'pedido/listar_pedido.html',{'reporte':reporte,'pedidos':pedidos})
 
 #Volver al pedido
 def VolverPedido (request,id_pedido):

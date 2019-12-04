@@ -431,6 +431,9 @@ left: 43px;
                                   <li>
                                       <a href="/prenda/crear_tipo_prenda/">Gestionar Tipos de Prenda</a>
                                   </li>
+                                  <li>
+                                      <a href="/config/configuracion/">Configuración de Reporte</a>
+                                  </li>
 
                               </ul>
                       </ul>
@@ -530,8 +533,8 @@ left: 43px;
                             <div class="header-button">
                                 <div class="noti-wrap">
                                     <div class="noti__item js-item-menu">
-                                      <div class="mess-dropdown js-dropdown">
-                                            <div class="mess__title">
+                                       <div class="mess-dropdown js-dropdown">
+                                          <!--  <div class="mess__title">
                                                 <p>You have 2 news message</p>
                                             </div>
                                             <div class="mess__item">
@@ -634,7 +637,7 @@ left: 43px;
                                             </div>
                                             <div class="notifi__footer">
                                                 <a href="#">All notifications</a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -661,7 +664,7 @@ left: 43px;
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
+                                                    <a href="/usuario/ver_perfil/">
                                                         <i class="zmdi zmdi-account"></i>Cuenta</a>
                                                 </div>
                                             </div>
@@ -772,7 +775,7 @@ left: 43px;
                 events: [
                     {% for event in pedidos %}
                         {
-                            title: "{{ event.id_pedido}}",
+                            title: "Pedido: {{ event.id_pedido}}",
                             start: '{{ event.fecha_entrega|date:"Y-m-d" }}',
                             id: '{{ event.id_pedido }}',
                             url: '/pedido/ver_pedido/{{event.id_pedido}}'

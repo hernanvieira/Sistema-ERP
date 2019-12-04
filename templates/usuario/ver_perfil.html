@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+{% load static %}
+<!DOCTYPE html>
+{% block titulo%}
+Ver Perfil
+{% endblock titulo%}
+{% block content%}
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Ver Perfil</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            {% if message.tags == 'success'%}
+              <div class="alert alert-success">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+            {% endif %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="card">
+        <div class="card-body">
+            <div class="mx-auto d-block">
+                <img class="rounded-circle mx-auto d-block" src="{% static 'images/icon/avatar-01.jpg' %}" alt="Card image cap">
+                <h5 class="text-sm-center mt-2 mb-1">{{user.username}}</h5>
+                <div class="location text-sm-center">
+                    <i class="fa  fa-envelope"></i> {{user.email}}</div>
+            </div>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<br>
+<div class="alineado-derecha">
+  <button type="button" class="btn btn-danger" onclick="history.back()" >
+    <i class="fa fa-chevron-left"></i> Volver
+  </button>
+</div>
+{% endblock content%}

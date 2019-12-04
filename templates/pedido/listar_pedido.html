@@ -13,12 +13,18 @@ Listado de pedidos
 <!-- Filtros -->
 
 <!-- DATA TABLE -->
+<input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Lista de pedidos">
+<input type="hidden" name="empresa" class="empresa_reporte" id="empresa" value="{{reporte.empresa}}">
+<input type="hidden" name="direccion" class="direccion_reporte" id="direccion" value="{{reporte.direccion}}">
+<input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
+<input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
+
 <strong class="card-title">Filtrar</strong>
 <div class="card">
   <br>
   <div class="table-data__tool">
       <div class="table-data__tool-left">
-        <span>Prioridad:</span>
+        <!-- <span>Prioridad:</span>
           <div class="rs-select2--light rs-select2--sm">
               <select class="btn btn-secondary" name="property">
                   <option value="2">Alta</option>
@@ -26,7 +32,7 @@ Listado de pedidos
                   <option value="0">Baja</option>
               </select>
               <div class="dropDownSelect2"></div>
-          </div>
+          </div> -->
           <span>Entre:</span>
           <div class="rs-select2--light rs-select2--sm">
             <div class="form-control">

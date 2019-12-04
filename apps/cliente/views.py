@@ -4,6 +4,7 @@ from .models import Cliente
 from apps.pedido.models import Pedido
 from django.core.exceptions import *
 from django.contrib import messages
+from config.models import Configuracion
 
 from apps.prenda.models import Tipo_prenda, Prenda
 
@@ -13,7 +14,8 @@ from apps.prenda.models import Tipo_prenda, Prenda
 #Pagina de inicio
 def Home(request):
     pedidos = Pedido.objects.all()
-    return render(request, 'index.html',{'pedidos':pedidos})
+    reporte = Configuracion.objects.all().last()
+    return render(request, 'index.html',{'reporte':reporte,'pedidos':pedidos})
 
 #Pagina de estadisticas
 def Estadistica(request):
