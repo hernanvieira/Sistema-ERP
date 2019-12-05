@@ -105,12 +105,6 @@ Asignar materiales
                     <td style="text-align: center;">{{ingrediente.material.tipo_material.unidad_medida.nombre}}</td>
                     <td style="text-align: center;">
                         <div class="table-data-feature">
-                          <button type="button" class="btn btn-primary btn-sm" onclick="location.href='#'">
-                            <i class="fas fa-eye"></i>
-                          </button>
-                          <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_ingrediente' ingrediente.id_ingrediente pedido.id_pedido detalle.id_detalle prenda.id_prenda %}'">
-                            <i class="fas fa-pencil-square-o"></i>
-                          </button>
                           <!-- Modal Eliminar -->
                           <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{ingrediente.id_ingrediente}}">
                             <i class="fas fa-trash"></i>

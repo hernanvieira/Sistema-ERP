@@ -7,10 +7,20 @@ Listado de Tipos de Materials
 {% endblock titulo%}
 
 {% block content%}
-
+<input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Material..." id="midtbusqueda"/>
+<div class="">
+  <br>
+</div>
 {% if materiales %}
 <input type="hidden" name="" value="" id="min">
 <input type="hidden" name="" value="" id="max">
+
+<input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Listado de materiales">
+<input type="hidden" name="empresa" class="empresa_reporte" id="empresa" value="{{reporte.empresa}}">
+<input type="hidden" name="direccion" class="direccion_reporte" id="direccion" value="{{reporte.direccion}}">
+<input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
+<input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
+
 {% if messages %}
   <ul class="messages">
     {% for message in messages %}
@@ -22,8 +32,9 @@ Listado de Tipos de Materials
   </ul>
 {% endif %}
 <!-- DATA TABLE-->
+
 <div class="table-responsive m-b-40">
-    <table class="table table-borderless table-data3" id="midatatable">
+    <table class="table table-borderless table-data2" id="midatatable3">
       <thead>
           <tr>
             <th>Id</th>
@@ -32,7 +43,7 @@ Listado de Tipos de Materials
             <th>Color</th>
             <th>Stock</th>
             <th>Stock Mínimo</th>
-            <th>Opciones</th>
+            <th class ="noExport">Opciones</th>
           </tr>
       </thead>
       <tbody>

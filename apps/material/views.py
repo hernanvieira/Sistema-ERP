@@ -3,6 +3,7 @@ from tp_final.forms import Tipo_materialForm, MaterialForm, Unidad_medidaForm, C
 from .models import Tipo_material, Material, Unidad_medida, Compra
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from config.models import Configuracion
 
 #Crear un tipo de tipo_material
 def CrearTipo_material (request):
@@ -84,7 +85,8 @@ def CrearMaterial (request):
 #Listar todos los materiales
 def ListarMaterial (request):
     materiales = Material.objects.all()
-    return render(request,'material/listar_material.html',{'materiales':materiales})
+    reporte = Configuracion.objects.all().last()
+    return render(request,'material/listar_material.html',{'reporte':reporte,'materiales':materiales})
 #Editar un material
 def EditarMaterial (request,id_material):
     materiales = Material.objects.all()

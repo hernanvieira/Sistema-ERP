@@ -32,7 +32,7 @@
             var usuario = $('.usuario_reporte').val();
 						//Remove the title created by datatTables
 						// doc.content.splice(0,1);
-            doc.content[0] = [{text: titulo + "\n", fontSize:15},{text:"Filtros:", alignment:'left'}];
+            doc.content[0] = [{text: titulo + "\n", fontSize:15},{text:"", alignment:'left'}];
 
 						//Create a date string that we use in the footer. Format is dd-mm-yyyy
 						var now = new Date();
