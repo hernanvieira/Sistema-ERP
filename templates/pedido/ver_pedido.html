@@ -178,15 +178,60 @@ Ver pedido
           {% endif %}
         </div>
       </div>
-
+<br>
       <div class="card-footer">
         <div class="row">
-          <div class="col-md-2">
-            {% if estado.estado_id != 5 %}
-            <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
-              Cancelar Pedido
-            </button>
-            {% endif %}
+            {% if estado.estado_id == 6 or estado.estado_id == 2 %}  <!-- 6 = en espera, 2 en produccion -->
+              <div class="col-md-2">
+                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
+                  Cancelar Pedido
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
+                  Finalizar Pedido
+                </button>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg3{{pedido_form.id_pedido}}">
+                  Registrar entrega
+                </button>
+              </div>
+           {% endif %}
+
+           {% if estado.estado_id == 3 %}  <!-- 3 = Finalizado -->
+             <div class="col-md-2">
+               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
+                 Pedido Entregado
+               </button>
+             </div>
+             <div class="col-md-2">
+
+             </div>
+             <div class="col-md-2">
+
+             </div>
+          {% endif %}
+
+          {% if estado.estado_id == 4 or estado.estado_id == 5 %}  <!-- 3 = Entregado -->
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+         {% endif %}
+
+            <div class="col-md-5">
+            </div>
+              <button type="button" class="btn btn-danger" onclick="history.back()">
+                <i class="fa fa-chevron-left"></i> Volver
+              </button>
+        </div>
+
             <!-- Modal Cancelar -->
             <div class="modal fade bs-example-modal-lg2{{pedido_form.id_pedido_form}}" id="myModal2{{pedido_form.id_pedido_form}}" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -210,13 +255,37 @@ Ver pedido
                 </div>
             </div>
             <!-- End Modal -->
-          </div>
-          <div class="col-md-10">
-            <div class="alineado-derecha">
-              <button type="button" class="btn btn-danger" onclick="history.back()">
-                <i class="fa fa-chevron-left"></i> Volver
-              </button>
+
+            <!-- Modal Registrar entrega -->
+            <div class="modal fade bs-example-modal-lg3{{pedido_form.id_pedido_form}}" id="myModal2{{pedido_form.id_pedido_form}}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel{{pedido_form.id_pedido_form}}">Registrar Entrega</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Entrega:</p>
+                            <div class="input-group">
+                              <div class="input-group-addon">
+                                <i class="fa fa-dollar"></i>
+                              </div>
+                              <div class="form-control">
+                                <input type="number" name="registrar_entrega">
+                              </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="alineado-derecha">
+                              <button type="submit" name="boton_registrar_entega" class="btn btn-danger" >Registrar</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- End Modal -->
+
           </div>
         </div>
       </div>

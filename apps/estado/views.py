@@ -25,15 +25,16 @@ def ListarEstado (request):
 
 #Editar un estado
 def EditarEstado (request,id_estado):
+    estados = Estado.objects.all()
     estado_form=None
     estado = Estado.objects.get(id_estado=id_estado)
     if request.method=='GET':
         estado_form=EstadoForm(instance=estado)
     else:
-        estado_form=estadoForm(request.POST, instance=estado)
+        estado_form=EstadoForm(request.POST, instance=estado)
         if estado_form.is_valid():
             estado_form.save()
-        return redirect('index')
+        return render(request, 'estado/crear_estado.html',{'estados':estados,'estado_form':estado_form})
     return render(request,'estado/editar_estado.html',{'estado_form':estado_form})
 
 #Eliminar un estado

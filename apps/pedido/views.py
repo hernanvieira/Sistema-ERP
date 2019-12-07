@@ -144,20 +144,15 @@ def VerPedido (request,id_pedido):
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
     else:
-        if 'boton_agregar' in request.POST:
-            pedido_form=PedidoForm(request.POST, instance=pedido)
-            if pedido_form.is_valid():
-                pedido_form.save()
-            return redirect('/prenda/crear_prenda/'+str(id_pedido))
-        if 'boton_finalizar' in request.POST:
-            pedido_form = PedidoForm(request.POST, instance=pedido)
-            pedido = pedido_form.save(commit=False)
-            if pedido.precio_total != None:
-                pedido.save()
-                return redirect('/pedido/listar_pedido/')
-            else:
-                cliente_form = ClienteForm(request.POST)
-                messages.error(request, 'Debe agregar prendas')
+        if 'boton_registrar_entega' in request.POST:
+            print("AKI LA PETICION")
+            peticion = request.POST.copy()
+            peticion_valor = peticion.pop('registrar_entrega')[0]
+            print(peticion_valor)
+            pedido.entrega += int(peticion_valor)
+            pedido.save()
+            messages.success(request, 'Se registró la entrega')
+        pedido_form=PedidoForm(instance=pedido)
     return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido})
 
 
@@ -191,6 +186,34 @@ def CancelarPedido (request,id_pedido):
     # except Exception as e:
     #     messages.error(request, "Ocurrió un error al tratar de cancelar el pedido " + str(id_pedido))
     pedidos = Pedido.objects.all()
+    return ListarPedido(request)
+
+def RegistrarEntrega (request,id_pedido):
+    print("PETICION AKII")
+    peticion = request.POST
+    print(peticion)
+    print(request.POST)
+    # peticion_valor = peticion.pop('registrar_entrega')
+    # print(peticion_valor)
+
+    # pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    #
+    # pedido.entrega +=
+    # estado_pedido_form = Estado_pedidoForm()
+    # estado_pedido = estado_pedido_form.save(commit = False)
+    #
+    # estado_cancelado = Estado.objects.get(id_estado = 5)
+    #
+    # estado_pedido.estado = estado_cancelado
+    # estado_pedido.pedido = pedido
+    # estado_pedido.fecha = datetime.date.today()
+    #
+    # pedido.save()
+    # estado_pedido.save()
+    # messages.warning(request, 'Se canceló el pedido')
+    # # except Exception as e:
+    # #     messages.error(request, "Ocurrió un error al tratar de cancelar el pedido " + str(id_pedido))
+    # pedidos = Pedido.objects.all()
     return ListarPedido(request)
 
 
