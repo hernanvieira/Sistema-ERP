@@ -137,6 +137,7 @@ def VerPedido (request,id_pedido):
     pedidos = Pedido.objects.all()
     cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
+    estados = Estado_pedido.objects.filter(pedido_id=id_pedido)
     if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
         estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
     else:
@@ -167,7 +168,7 @@ def VerPedido (request,id_pedido):
             estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
         else:
             estado = None
-    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido})
+    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados})
 
 
 #Eliminar un pedido

@@ -173,10 +173,16 @@ Ver pedido
                 {{estado}}
             </div>
             {% endif %}
-
+            <div class="col-md-3">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg4">
+                        <i class="fas fa-clock-o"></i>
+              </button>
+            </div>
           </div>
+
           {% endif %}
         </div>
+
       </div>
 <br>
       <div class="card-footer">
@@ -274,6 +280,47 @@ Ver pedido
                                 <input type="number" name="registrar_entrega">
                               </div>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="alineado-derecha">
+                              <button type="submit" name="boton_registrar_entega" class="btn btn-danger" >Registrar</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+
+            <!-- Modal Historico de estados -->
+            <div class="modal fade bs-example-modal-lg4" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Estados</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                          <!-- DATA TABLE-->
+                          <div class="table-responsive m-b-40">
+                              <table class="table table-borderless table-data3">
+                                  <thead>
+                                      <tr>
+                                          <th>Fecha</th>
+                                          <th>Estado</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for estado in estados %}
+                                      <tr>
+                                        <td>{{estado.fecha}}</td>
+                                        <td style="text-align: left;">{{estado}}</td>
+                                      </tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                          </div>
+                          <!-- END DATA TABLE-->
                         </div>
                         <div class="modal-footer">
                           <div class="alineado-derecha">
