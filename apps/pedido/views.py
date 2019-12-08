@@ -60,8 +60,8 @@ def ListarPedido (request):
     reporte = Configuracion.objects.all().last()
     aux = []
     for p in pedidos:
-        a = Estado_pedido.objects.filter(pedido = p).last()
-        if a != None:
+        if Estado_pedido.objects.filter(pedido=p).exists():
+            a = Estado_pedido.objects.filter(pedido = p).order_by('-id_estado_pedido')[0]
             aux.append(a)
     pedidos = aux
     return render(request,'pedido/listar_pedido.html',{'reporte':reporte,'pedidos':pedidos})
@@ -137,22 +137,36 @@ def VerPedido (request,id_pedido):
     pedidos = Pedido.objects.all()
     cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
-    if Estado_pedido.objects.filter(pedido_id=id_pedido). exists():
-        estado = Estado_pedido.objects.filter(pedido_id=id_pedido).latest()
+    if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
+        estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
     else:
         estado = None
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
     else:
         if 'boton_registrar_entega' in request.POST:
-            print("AKI LA PETICION")
             peticion = request.POST.copy()
             peticion_valor = peticion.pop('registrar_entrega')[0]
-            print(peticion_valor)
             pedido.entrega += int(peticion_valor)
+
             pedido.save()
             messages.success(request, 'Se registró la entrega')
+            if pedido.entrega >= pedido.seña:
+                print("ES MAYOR SI")
+                estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
+                estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
+                estado_en_produccion = Estado.objects.get(id_estado = 2) #Obtengo el estado "En produccion"
+
+                estado_pedido.estado = estado_en_produccion #Asocio el estado "En produccion"
+                estado_pedido.pedido = pedido # Asocio el pedido actual
+                estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+
+                estado_pedido.save()#Guardo el estado
         pedido_form=PedidoForm(instance=pedido)
+        if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
+            estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
+        else:
+            estado = None
     return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido})
 
 
@@ -183,10 +197,9 @@ def CancelarPedido (request,id_pedido):
     pedido.save()
     estado_pedido.save()
     messages.warning(request, 'Se canceló el pedido')
-    # except Exception as e:
-    #     messages.error(request, "Ocurrió un error al tratar de cancelar el pedido " + str(id_pedido))
-    pedidos = Pedido.objects.all()
-    return ListarPedido(request)
+
+
+    return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
 def RegistrarEntrega (request,id_pedido):
     print("PETICION AKII")
