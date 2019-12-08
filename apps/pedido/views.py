@@ -150,19 +150,36 @@ def VerPedido (request,id_pedido):
             peticion_valor = peticion.pop('registrar_entrega')[0]
             pedido.entrega += int(peticion_valor)
 
-            pedido.save()
-            messages.success(request, 'Se registró la entrega')
+            saldo = pedido.precio_total - pedido.entrega
+            if saldo == 0:
+                pedido.save()
+                messages.success(request, 'Se registró la entrega y se completó el pago')
+            if saldo > 0:
+                pedido.save()
+                messages.success(request, 'Se registró la entrega, resta un saldo de: ' + str(saldo))
+            if saldo < 0:
+                pedido.entrega = pedido.precio_total
+                pedido.save()
+                messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: ' + str(abs(saldo)))
+
+
+
+
             if pedido.entrega >= pedido.seña:
-                print("ES MAYOR SI")
                 estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
                 estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
                 estado_en_produccion = Estado.objects.get(id_estado = 2) #Obtengo el estado "En produccion"
 
-                estado_pedido.estado = estado_en_produccion #Asocio el estado "En produccion"
-                estado_pedido.pedido = pedido # Asocio el pedido actual
-                estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+                estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
 
-                estado_pedido.save()#Guardo el estado
+                if estado.estado != estado_en_produccion: #Si no estaba en produccion
+
+                    estado_pedido.estado = estado_en_produccion #Asocio el estado "En produccion"
+                    estado_pedido.pedido = pedido # Asocio el pedido actual
+                    estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+
+                    estado_pedido.save()#Guardo el estado
+
         pedido_form=PedidoForm(instance=pedido)
         if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
             estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
