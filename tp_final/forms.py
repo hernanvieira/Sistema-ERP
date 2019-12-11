@@ -173,4 +173,4 @@ class ConfiguracionForm (forms.ModelForm):
 class ConfiguracionMensajeForm (forms.ModelForm):
     class Meta:
         model = ConfiguracionMensaje
-        fields = ['en_espera', 'en_produccion', 'cancelado','finalizado','entregado']
+        fields = ['en_espera', 'en_produccion', 'cancelado','finalizado','entregado', 'entrega']

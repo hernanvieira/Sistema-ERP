@@ -75,6 +75,8 @@ def VolverPedido (request,id_pedido):
         pedido = Pedido.objects.get(id_pedido=id_pedido)
         pedido_id = pedido.id_pedido
         detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
+        mensaje = ConfiguracionMensaje.objects.all().last()
+
         if request.method=='GET':
             pedido_form=PedidoForm(instance=pedido)
         else:
@@ -95,6 +97,9 @@ def VolverPedido (request,id_pedido):
                 estado_pedido.estado = estado_enespera
                 estado_pedido.pedido = pedido
                 estado_pedido.fecha = datetime.date.today()
+
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.en_espera, to=[pedido.cliente.correo])
+                email.send()
 
                 if pedido.seña != None:
                     pedido.save()
@@ -137,6 +142,7 @@ def VerPedido (request,id_pedido):
     pedido_form=None
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     pedidos = Pedido.objects.all()
+    mensaje = ConfiguracionMensaje.objects.all().last()
     cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
     estados = Estado_pedido.objects.filter(pedido_id=id_pedido)
@@ -156,14 +162,24 @@ def VerPedido (request,id_pedido):
             if saldo == 0:
                 pedido.save()
                 messages.success(request, 'Se registró la entrega y se completó el pago')
+
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: $0,00' , to=[pedido.cliente.correo])
+                email.send()
+
             if saldo > 0:
                 pedido.save()
                 messages.success(request, 'Se registró la entrega, resta un saldo de: ' + str(saldo))
+
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: ' + str(saldo), to=[pedido.cliente.correo])
+                email.send()
+
             if saldo < 0:
                 pedido.entrega = pedido.precio_total
                 pedido.save()
                 messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: ' + str(abs(saldo)))
 
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: $0,00' , to=[pedido.cliente.correo])
+                email.send()
 
             if pedido.entrega >= pedido.seña:
                 estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
@@ -179,6 +195,9 @@ def VerPedido (request,id_pedido):
                     estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
 
                     estado_pedido.save()#Guardo el estado
+
+                    email = EmailMessage('PROYECTO SOFTWARE', mensaje.en_produccion, to=[pedido.cliente.correo])
+                    email.send()
 
         pedido_form=PedidoForm(instance=pedido)
         if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
@@ -205,6 +224,7 @@ def CancelarPedido (request,id_pedido):
     pedido.cancelado = True
     estado_pedido_form = Estado_pedidoForm()
     estado_pedido = estado_pedido_form.save(commit = False)
+    mensaje = ConfiguracionMensaje.objects.all().last()
 
     estado_cancelado = Estado.objects.get(id_estado = 5)
 
@@ -216,6 +236,8 @@ def CancelarPedido (request,id_pedido):
     estado_pedido.save()
     messages.warning(request, 'Se canceló el pedido')
 
+    email = EmailMessage('PROYECTO SOFTWARE', mensaje.cancelado, to=[pedido.cliente.correo])
+    email.send()
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
@@ -248,6 +270,7 @@ def EntregarPedido (request,id_pedido):
     estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
     estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
     estado_entregado = Estado.objects.get(id_estado = 4) #Obtengo el estado "Finalizar"
+    mensaje = ConfiguracionMensaje.objects.all().last()
 
     estado_pedido.estado = estado_entregado #Asocio el estado "En produccion"
     estado_pedido.pedido = pedido # Asocio el pedido actual
@@ -257,6 +280,9 @@ def EntregarPedido (request,id_pedido):
     pedido.save()
     estado_pedido.save()
     messages.success(request, 'Se entregó el pedido')
+
+    email = EmailMessage('PROYECTO SOFTWARE', mensaje.entregado, to=[pedido.cliente.correo])
+    email.send()
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
