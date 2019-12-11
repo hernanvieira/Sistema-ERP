@@ -47,6 +47,14 @@ MIDDLEWARE = [
     'simple_history.middleware.HistoryRequestMiddleware'
 ]
 
+#CORREO ARGENTINO
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'proyectosoftware2019@gmail.com'
+EMAIL_HOST_PASSWORD = 'abcd_1234'
+EMAIL_PORT = 587
+
+
 ROOT_URLCONF = 'tp_final.urls'
 
 TEMPLATES = [

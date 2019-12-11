@@ -1,0 +1,73 @@
+{% extends 'index.html' %}
+
+<!DOCTYPE html>
+{% block titulo%}
+Configuración de Mensajes
+{% endblock titulo%}
+{% block content%}
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Configuración de Mensajes</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            {% if message.tags == 'success'%}
+              <div class="alert alert-success">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+            {% endif %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {{configuracion_mensaje_form.en_espera.label}}
+      <div class="form-control">
+        {{configuracion_mensaje_form.en_espera}}
+      </div>
+      {{configuracion_mensaje_form.en_produccion.label}}
+      <div class="form-control">
+        {{configuracion_mensaje_form.en_produccion}}
+      </div>
+      {{configuracion_mensaje_form.cancelado.label}}
+      <div class="form-control">
+        {{configuracion_mensaje_form.cancelado}}
+      </div>
+      {{configuracion_mensaje_form.finalizado.label}}
+      <div class="form-control">
+        {{configuracion_mensaje_form.finalizado}}
+      </div>
+      {{configuracion_mensaje_form.entregado.label}}
+      <div class="form-control">
+        {{configuracion_mensaje_form.entregado}}
+      </div>
+
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" onclick="history.back()">
+          <i class="fa fa-dot-circle-o"></i> Configurar
+        </button>
+        <a href="{% url 'index'%}">
+        <button type="button" class="btn btn-danger" >
+          <i class="fa fa-ban"></i> Cancelar
+        </button>
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<br>
+<div class="alineado-derecha">
+  <button type="button" class="btn btn-danger" onclick="history.back()" >
+    <i class="fa fa-chevron-left"></i> Volver
+  </button>
+</div>
+{% endblock content%}

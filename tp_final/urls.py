@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout
 from apps.cliente.views import Home, Auditoria, Estadistica
 from apps.usuario.views import Login, logoutUsuario, VerPerfil
-from config.views import Configuracion
+from config.views import Configuracion, ConfiguracionMensaje
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/login/', Login.as_view(), name='login'),
     path('accounts/logout/', login_required(logoutUsuario), name='logout'),
     path('config/configuracion/', login_required(Configuracion), name='configuracion'),
+    path('config/configuracion_mensaje/', login_required(ConfiguracionMensaje), name='configuracion_mensaje'),
     path('usuario/ver_perfil/', login_required(VerPerfil), name='ver_perfil')
 ]
 

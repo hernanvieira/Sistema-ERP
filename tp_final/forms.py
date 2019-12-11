@@ -169,6 +169,8 @@ class ConfiguracionForm (forms.ModelForm):
     class Meta:
         model = Configuracion
         fields = ['empresa', 'direccion', 'telefono']
-        # widgets = {
-        # 'prenda' : forms.Select(attrs={'class':'form-control'})
-        # }
+
+class ConfiguracionMensajeForm (forms.ModelForm):
+    class Meta:
+        model = ConfiguracionMensaje
+        fields = ['en_espera', 'en_produccion', 'cancelado','finalizado','entregado']

@@ -8,7 +8,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
 import datetime
 from django.contrib import messages
-from config.models import Configuracion
+from config.models import Configuracion, ConfiguracionMensaje
+from django.core.mail import EmailMessage
+
 #Crear un pedido
 def CrearPedido (request):
     if request.method == 'POST':
@@ -163,8 +165,6 @@ def VerPedido (request,id_pedido):
                 messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: ' + str(abs(saldo)))
 
 
-
-
             if pedido.entrega >= pedido.seña:
                 estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
                 estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
@@ -225,6 +225,8 @@ def FinalizarPedido (request,id_pedido):
     estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
     estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
     estado_finalizado = Estado.objects.get(id_estado = 3) #Obtengo el estado "Finalizar"
+    mensaje = ConfiguracionMensaje.objects.all().last()
+
 
     estado_pedido.estado = estado_finalizado #Asocio el estado "En produccion"
     estado_pedido.pedido = pedido # Asocio el pedido actual
@@ -234,6 +236,9 @@ def FinalizarPedido (request,id_pedido):
     pedido.save()
     estado_pedido.save()
     messages.success(request, 'Se finalizó el pedido')
+
+    email = EmailMessage('PROYECTO SOFTWARE', mensaje.finalizado, to=[pedido.cliente.correo])
+    email.send()
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
