@@ -219,33 +219,41 @@ def CancelarPedido (request,id_pedido):
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
-def RegistrarEntrega (request,id_pedido):
-    print("PETICION AKII")
-    peticion = request.POST
-    print(peticion)
-    print(request.POST)
-    # peticion_valor = peticion.pop('registrar_entrega')
-    # print(peticion_valor)
+#Finalizar un pedido
+def FinalizarPedido (request,id_pedido):
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
+    estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
+    estado_finalizado = Estado.objects.get(id_estado = 3) #Obtengo el estado "Finalizar"
 
-    # pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-    #
-    # pedido.entrega +=
-    # estado_pedido_form = Estado_pedidoForm()
-    # estado_pedido = estado_pedido_form.save(commit = False)
-    #
-    # estado_cancelado = Estado.objects.get(id_estado = 5)
-    #
-    # estado_pedido.estado = estado_cancelado
-    # estado_pedido.pedido = pedido
-    # estado_pedido.fecha = datetime.date.today()
-    #
-    # pedido.save()
-    # estado_pedido.save()
-    # messages.warning(request, 'Se canceló el pedido')
-    # # except Exception as e:
-    # #     messages.error(request, "Ocurrió un error al tratar de cancelar el pedido " + str(id_pedido))
-    # pedidos = Pedido.objects.all()
-    return ListarPedido(request)
+    estado_pedido.estado = estado_finalizado #Asocio el estado "En produccion"
+    estado_pedido.pedido = pedido # Asocio el pedido actual
+    estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+
+    estado_pedido.save()#Guardo el estado
+    pedido.save()
+    estado_pedido.save()
+    messages.success(request, 'Se finalizó el pedido')
+
+    return redirect('/pedido/ver_pedido/' + str(id_pedido))
+
+#Entregar un pedido
+def EntregarPedido (request,id_pedido):
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
+    estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
+    estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
+    estado_entregado = Estado.objects.get(id_estado = 4) #Obtengo el estado "Finalizar"
+
+    estado_pedido.estado = estado_entregado #Asocio el estado "En produccion"
+    estado_pedido.pedido = pedido # Asocio el pedido actual
+    estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+
+    estado_pedido.save()#Guardo el estado
+    pedido.save()
+    estado_pedido.save()
+    messages.success(request, 'Se entregó el pedido')
+
+    return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
 
 #Pagina de auditoria

@@ -194,20 +194,22 @@ Ver pedido
                 </button>
               </div>
               <div class="col-md-2">
-                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
+                <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target=".bs-example-modal-lg5{{pedido_form.id_pedido}}">
                   Finalizar Pedido
                 </button>
               </div>
               <div class="col-md-2">
+                {% if pedido.entrega != pedido.precio_total %}
                 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg3{{pedido_form.id_pedido}}">
                   Registrar entrega
                 </button>
+                {% endif %}
               </div>
            {% endif %}
 
            {% if estado.estado_id == 3 %}  <!-- 3 = Finalizado -->
              <div class="col-md-2">
-               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
+               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg6{{pedido_form.id_pedido}}">
                  Pedido Entregado
                </button>
              </div>
@@ -324,7 +326,54 @@ Ver pedido
                         </div>
                         <div class="modal-footer">
                           <div class="alineado-derecha">
-                              <button type="submit" name="boton_registrar_entega" class="btn btn-danger" >Registrar</button>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+
+            <!-- Modal Registrar entrega -->
+            <div class="modal fade bs-example-modal-lg5{{pedido_form.id_pedido_form}}" id="myModal2{{pedido_form.id_pedido_form}}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel{{pedido_form.id_pedido_form}}">Finalizar pedido</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Desea <strong>finalizar</strong> el pedido</p>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="alineado-derecha">
+                              <a href="{% url 'pedido:finalizar_pedido' pedido.id_pedido %}">
+                                <button type="button" class="btn btn-danger" >Finalizar</button>
+                              </a>
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+
+            <!-- Modal Registrar entrega -->
+            <div class="modal fade bs-example-modal-lg6{{pedido_form.id_pedido_form}}" id="myModal{{pedido_form.id_pedido_form}}" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel{{pedido_form.id_pedido_form}}">Entregar pedido</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                          <p>Desea <strong>Entregar</strong> el pedido</p>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="alineado-derecha">
+                              <a href="{% url 'pedido:entregar_pedido' pedido.id_pedido %}">
+                                <button type="button" class="btn btn-danger" >Entregar</button>
+                              </a>
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
                           </div>
                         </div>
