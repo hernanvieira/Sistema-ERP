@@ -47,6 +47,7 @@ def CrearPedido (request):
             if pedido.seña != None:
                 pedido.save()
                 return redirect('/pedido/listar_pedido/')
+
             else:
                 cliente_form = ClienteForm(request.POST)
                 messages.error(request, 'Debe agregar prendas')
@@ -76,6 +77,7 @@ def VolverPedido (request,id_pedido):
         pedido_id = pedido.id_pedido
         detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
         mensaje = ConfiguracionMensaje.objects.all().last()
+        reporte = Configuracion.objects.all().last()
 
         if request.method=='GET':
             pedido_form=PedidoForm(instance=pedido)
@@ -98,14 +100,27 @@ def VolverPedido (request,id_pedido):
                 estado_pedido.pedido = pedido
                 estado_pedido.fecha = datetime.date.today()
 
-                email = EmailMessage('PROYECTO SOFTWARE', mensaje.en_espera, to=[pedido.cliente.correo])
-                email.send()
+
+                from django.template.loader import render_to_string
+                from django.core.mail import EmailMultiAlternatives
+                #
+                text_content = 'Detalle de pedido'
+                msg_html = render_to_string('recibo.html', {'pedido':pedido, 'reporte':reporte, 'detalles':detalles})
+                html_content = msg_html
+                msg = EmailMultiAlternatives('PROYECTO SOFTWARE', text_content, to=[pedido.cliente.correo])
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+
+
+                # email = EmailMessage('PROYECTO SOFTWARE',msg_html, to=[pedido.cliente.correo])
+                # email.send()
 
                 if pedido.seña != None:
                     pedido.save()
                     estado_pedido.save()
                     messages.success(request, 'Todo ocurrió correctamente')
                     return redirect('/pedido/listar_pedido/')
+
                 else:
                     cliente_form = ClienteForm(request.POST)
                     messages.error(request, 'Debe agregar prendas')
