@@ -6,7 +6,7 @@ from django.core.exceptions import *
 from django.contrib import messages
 from config.models import Configuracion
 
-import poplib
+import poplib # Recibir correos
 
 from apps.prenda.models import Tipo_prenda, Prenda
 
@@ -18,15 +18,6 @@ def Home(request):
     pedidos = Pedido.objects.all()
     reporte = Configuracion.objects.all().last()
 
-    # Se establece conexion con el servidor pop de gmail
-    m = poplib.POP3_SSL('pop.gmail.com',995)
-    m.user('proyectosoftware2019@gmail.com')
-    m.pass_('abcd_1234')
-
-    numero = len(m.list()[1])
-
-    print("Cantidad de correos")
-    print(numero)
 
     return render(request, 'index.html',{'reporte':reporte,'pedidos':pedidos})
 
@@ -73,7 +64,7 @@ def VerCliente (request,dni):
             return redirect('cliente:cliente_home')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request, 'cliente/ver_cliente.html',{'pedidos':pedidos,'cliente_form':cliente_form})
+    return render(request, 'cliente/ver_cliente.html',{'pedidos':pedidos, 'cliente':cliente ,'cliente_form':cliente_form})
 
 #Listar todos los clientes
 def ListarCliente (request):

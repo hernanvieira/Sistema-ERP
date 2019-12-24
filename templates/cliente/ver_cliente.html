@@ -49,6 +49,46 @@ Ver Cliente
                 <div class="form-control">
                   {{cliente_form.correo.value}}
                 </div>
+                <br>
+                Reputación:
+                {%if cliente.reputacion <= 0 %}
+                  <strong>Muy Mala</strong>
+                  <div class="progress mb-3">
+  											<div class="progress-bar bg-danger" role="progressbar" style="width: 1%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  								</div>
+                {% endif %}
+                {%if cliente.reputacion > 0 and cliente.reputacion < 30 %}
+                  <strong>Muy Mala</strong>
+                  <div class="progress mb-3">
+  											<div class="progress-bar bg-danger" role="progressbar" style="width: {{cliente.reputacion}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  								</div>
+                {% endif %}
+                {%if cliente.reputacion > 29 and cliente.reputacion < 50 %}
+                  <strong>Mala</strong>
+                  <div class="progress mb-3">
+  											<div class="progress-bar bg-warning" role="progressbar" style="width: {{cliente.reputacion}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  								</div>
+                {% endif %}
+                {%if cliente.reputacion > 49 and cliente.reputacion < 70 %}
+                  <strong>Regular</strong>
+                  <div class="progress mb-3">
+  											<div class="progress-bar bg-secondary" role="progressbar" style="width: {{cliente.reputacion}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  								</div>
+                {% endif %}
+                {%if cliente.reputacion > 69 and cliente.reputacion < 90 %}
+                  <strong>Buena</strong>
+                  <div class="progress mb-3">
+  											<div class="progress-bar bg-info" role="progressbar" style="width: {{cliente.reputacion}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  								</div>
+                {% endif %}
+                {%if cliente.reputacion >= 90 %}
+                  <strong>Muy Buena</strong>
+                  <div class="progress mb-3">
+  											<div class="progress-bar bg-success" role="progressbar" style="width: {{cliente.reputacion}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+  								</div>
+                {% endif %}
+
+
               </div>
             </div>
           </form>

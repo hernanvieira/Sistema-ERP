@@ -11,7 +11,7 @@ class Cliente(models.Model):
     telefono = models.CharField('Telefono',max_length=50)
     correo = models.EmailField('Correo')
     domicilio = models.CharField('Domicilio',blank = True, null = True, max_length=500)
-    reputación = models.IntegerField('reputacion',default = 100)
+    reputacion = models.IntegerField('reputacion',default = 50)
     history = HistoricalRecords()
 
     class Meta:

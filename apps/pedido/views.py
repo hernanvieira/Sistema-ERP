@@ -251,8 +251,14 @@ def CancelarPedido (request,id_pedido):
     estado_pedido.save()
     messages.warning(request, 'Se canceló el pedido')
 
+    # Envio de correo
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.cancelado, to=[pedido.cliente.correo])
     email.send()
+
+    # Reputación
+    cliente = pedido.cliente
+
+    cliente.reputacion
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
