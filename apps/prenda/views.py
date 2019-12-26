@@ -6,6 +6,7 @@ from apps.pedido.models import Pedido, Detalle
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from datetime import datetime, timedelta
+from decimal import Decimal
 
 #JSON
 # from rest_framework.renderers import JSONRenderer
@@ -142,6 +143,17 @@ def CrearPrenda (request,id_pedido):
         prenda_form = PrendaForm(request.POST)
         detalle_form = DetalleForm(request.POST)
         pedido = Pedido.objects.get(id_pedido = id_pedido) #obtendo el pedido
+        cliente = pedido.cliente
+
+        reputacion = abs((int(cliente.reputacion)/100)-1)
+        if reputacion < 1:
+            reputacion = 0
+        if reputacion > 1:
+            reputacion = 1
+
+        print("EKEKEKEKEKE")
+        print(cliente.reputacion)
+        print(reputacion)
 
         if prenda_form.is_valid() and detalle_form.is_valid():
             prenda = prenda_form.save(commit = False) #Guardo prenda
@@ -153,9 +165,9 @@ def CrearPrenda (request,id_pedido):
             tiempo = detalle.tiempo_prod_lote
             detalle.save() #Actualizo el detalle
             pedido.precio_total += prenda.precio * detalle.cantidad #Calculo precio total
-            pedido.seña = pedido.precio_total/2
+            pedido.seña = pedido.precio_total*Decimal(reputacion)
 
-            fecha = Pedido.objects.exclude(fecha_entrega=None).order_by('fecha_entrega') 
+            fecha = Pedido.objects.exclude(fecha_entrega=None).order_by('fecha_entrega')
             fechona  = fecha.last()
             print("LA ULTIMA FECHARDA")
             print(fechona.fecha_entrega)

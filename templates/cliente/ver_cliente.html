@@ -50,6 +50,9 @@ Ver Cliente
                   {{cliente_form.correo.value}}
                 </div>
                 <br>
+
+                <!-- REPUTACION DE USUARIO -->
+
                 Reputación:
                 {%if cliente.reputacion <= 0 %}
                   <strong>Muy Mala</strong>
@@ -87,7 +90,7 @@ Ver Cliente
   											<div class="progress-bar bg-success" role="progressbar" style="width: {{cliente.reputacion}}%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
   								</div>
                 {% endif %}
-
+                <!-- end REPUTACION DE USUARIO -->
 
               </div>
             </div>

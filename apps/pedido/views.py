@@ -23,7 +23,7 @@ def CrearPedido (request):
                 messages.error(request, 'Error al crear el cliente')
         if 'boton_agregar' in request.POST:
             pedido_form = PedidoForm(request.POST)
-            prenda_form = PrendaForm(request.POST)#lupy estubo aki peligro borre este mensaje para su comodidad
+            prenda_form = PrendaForm(request.POST) # lupy estubo aki peligro borre este mensaje para su comodidad
             if pedido_form.is_valid():
                 pedido = pedido_form.save(commit = False)
                 if pedido.fecha_entrega != None:
@@ -168,6 +168,10 @@ def VerPedido (request,id_pedido):
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
     else:
+        if 'boton_cancelar' in request.POST:
+            CancelarPedido(request,id_pedido)
+        if 'boton_entregar' in request.POST:
+            EntregarPedido(request,id_pedido)
         if 'boton_registrar_entega' in request.POST:
             peticion = request.POST.copy()
             peticion_valor = peticion.pop('registrar_entrega')[0]
@@ -256,9 +260,24 @@ def CancelarPedido (request,id_pedido):
     email.send()
 
     # Reputación
-    cliente = pedido.cliente
+    cliente = pedido.cliente # Obtengo el cliente
 
-    cliente.reputacion
+    reputacion = cliente.reputacion
+
+    check = str(request.POST['optradio'])
+    print(check)
+    if check =='checkMM':
+        reputacion -= 40
+    if check=='checkM':
+        reputacion -= 20
+    if check=='checkR':
+        reputacion += 5
+    if check=='checkB':
+        reputacion += 10
+    if check=='checkMB':
+        reputacion += 20
+    cliente.reputacion = reputacion
+    cliente.save()
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
@@ -304,6 +323,26 @@ def EntregarPedido (request,id_pedido):
 
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.entregado, to=[pedido.cliente.correo])
     email.send()
+
+    # Reputación
+    cliente = pedido.cliente # Obtengo el cliente
+
+    reputacion = cliente.reputacion
+
+    check = str(request.POST['optradio'])
+    print(check)
+    if check =='checkMM':
+        reputacion -= 40
+    if check=='checkM':
+        reputacion -= 20
+    if check=='checkR':
+        reputacion += 5
+    if check=='checkB':
+        reputacion += 10
+    if check=='checkMB':
+        reputacion += 20
+    cliente.reputacion = reputacion
+    cliente.save()
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
