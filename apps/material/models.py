@@ -35,6 +35,7 @@ class Material (models.Model):
     stock = models.PositiveIntegerField(default=0)
     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
     stock_minimo = models.PositiveIntegerField(default=0)
+    tiempo_reposicion = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = 'Material'

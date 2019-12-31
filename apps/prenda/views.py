@@ -335,13 +335,14 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
 
         if ingrediente_form.is_valid():
             ingrediente = ingrediente_form.save(commit = False) #guardo el ingrediente
-            material = ingrediente.material # objtengo el material
+            material = ingrediente.material # obtengo el material
 
             # Obtener Unidad de medida
             tipo_material = Tipo_material.objects.get(material = material)
             unidad_medida = tipo_material.unidad_medida
 
             cantidad_material = ingrediente.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
+            ingrediente.cantidadxdetalle = cantidad_material
             if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
                 material_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
 
@@ -374,12 +375,33 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
                     return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
             else:
+                material_post = material.stock - cantidad_material
                 messages.error(request, 'La cantidad introducida es mayor al stock disponible')
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
     else:
         ingrediente_form = IngredienteForm()
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
-    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
+    lista = []
+    for ingrediente in ingredientes:
+        material = ingrediente.material
+        cantidad = ingrediente.cantidadxdetalle
+        print("DETALLE", detalle.cantidad)
+        print(ingrediente.material)
+        print(ingrediente.cantidad)
+        cantidad = detalle.cantidad * ingrediente.cantidad
+        print("CANTIDAD ES DE",cantidad)
+        if cantidad <= material.stock:
+            ingrediente.disponibilidad = "Disponible"
+            cant_post = material.stock - cantidad
+            if cant_post >= material.stock_minimo:
+                ingrediente.disponibilidad = "Disponible"
+            else:
+                ingrediente.disponibilidad = "Stock Minimo"
+        else:
+            ingrediente.disponibilidad = "Faltante"
+        ingrediente.save()
+        lista.append(ingrediente)
+    return render(request,'prenda/asignar_material.html',{'lista':lista,'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
 
 #Asignar medidas a la prenda
 def AsignarMedida(request,id_prenda,id_detalle,id_pedido):

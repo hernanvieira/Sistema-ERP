@@ -65,6 +65,17 @@ Editar Material
             {{material_form.stock_minimo}}
           </div>
         </div>
+        <div class="col-md-4">
+          <p>Tiempo de resposición estimado</p>
+          <div class="input-group">
+            <div class="form-control">
+              {{material_form.tiempo_reposicion}}
+            </div>
+            <div class="input-group-addon">
+              <p>Día/s</p>
+            </div>
+          </div>
+        </div>
       </div>
         {{material_form.stock.as_hidden}}
 
@@ -92,6 +103,8 @@ Editar Material
             <th>Color</th>
             <th>Stock</th>
             <th>Stock Mínimo</th>
+            <th>Unidad</th>
+            <th>Tiempo de Resposición</th>
             <th>Opciones</th>
           </tr>
       </thead>
@@ -104,6 +117,8 @@ Editar Material
             <td>{{material.color}}</td>
             <td style="text-align: right;">{{material.stock}}</td>
             <td style="text-align: right;">{{material.stock_minimo}}</td>
+            <td>{{material.tipo_material.unidad_medida.nombre}}</td>
+            <td style="text-align: right;">{{material.tiempo_reposicion}} Día/s</td>
             <td>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
                 <i class="fas fa-pencil-square-o"></i>

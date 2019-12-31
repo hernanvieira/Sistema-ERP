@@ -93,6 +93,7 @@ Asignar materiales
                       <th>Material</th>
                       <th>Cantidad</th>
                       <th>Unidad de Medida</th>
+                      <th>Disponibilidad</th>
                       <th>Opciones</th>
                   </tr>
               </thead>
@@ -102,7 +103,8 @@ Asignar materiales
                     <td style="text-align: left">{{prenda.tipo_prenda}}</td>
                     <td style="text-align: left;">{{ingrediente.material}}</td>
                     <td style="text-align: center;">{{ingrediente.cantidad}}</td>
-                    <td style="text-align: center;">{{ingrediente.material.tipo_material.unidad_medida.nombre}}</td>
+                    <td style="text-align: right;">{{ingrediente.material.tipo_material.unidad_medida.nombre}}</td>
+                    <td >{{ingrediente.disponibilidad}}</td>
                     <td style="text-align: center;">
                         <div class="table-data-feature">
                           <!-- Modal Eliminar -->
