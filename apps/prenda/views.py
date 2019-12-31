@@ -375,8 +375,29 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
                     return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
             else:
-                material_post = material.stock - cantidad_material
-                messages.error(request, 'La cantidad introducida es mayor al stock disponible')
+                material_post = material.stock - cantidad_material #Calculo cuanto material necesito a parte del stock que tengo
+
+                #Guardo la asignación de material
+                ingrediente.prenda = prenda # asocio el material con la prenda
+
+                mat_prenda = Ingrediente.objects.filter(prenda = prenda, material = material).exists()#Existe ese material entre los ingredientes ingresados?
+                if mat_prenda:# si existe
+                    ingre = Ingrediente.objects.get(prenda = prenda, material = material)# Obtengo el ingrediente
+                    ingre.cantidad += ingrediente.cantidad #sumo la nueva cantidad a la actual
+                    ingre.save() # actualizo el ingrediente
+                else:
+                    ingrediente.save() #persisto
+
+                #Actualizo el detalle
+                detalle.prenda = prenda # Asocio la prenda con el detalle
+                detalle.pedido = pedido # Asocio el pedido con el detalle
+                detalle.save() #Persisto
+                messages.success(request, 'Se asignó el material') # Informo que se asignó correctamente
+
+                pedido.fecha_entrega += timedelta(days=material.tiempo_reposicion) #Sumo el tiempo de resposicion estimado del material faltante
+                pedido.save() # Actualizo el pedido
+
+                messages.error(request, 'La cantidad introducida es mayor al stock disponible xd')
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
     else:
         ingrediente_form = IngredienteForm()
@@ -385,11 +406,9 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
     for ingrediente in ingredientes:
         material = ingrediente.material
         cantidad = ingrediente.cantidadxdetalle
-        print("DETALLE", detalle.cantidad)
-        print(ingrediente.material)
-        print(ingrediente.cantidad)
+
         cantidad = detalle.cantidad * ingrediente.cantidad
-        print("CANTIDAD ES DE",cantidad)
+
         if cantidad <= material.stock:
             ingrediente.disponibilidad = "Disponible"
             cant_post = material.stock - cantidad
