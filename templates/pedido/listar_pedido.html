@@ -155,7 +155,36 @@ Listado de pedidos
 </div>
 <!-- END DATA TABLE -->
 
+{% if id_pedido != NONE %}
+<!-- Modal numero de pedido -->
+<div class="modal fade" id="modal_numero_pedido" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Número de Seguimiento</h4>
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+            </div>
+            <div class="modal-body">
+                <h1 class="alineado-centro">{{id_pedido}}</h1>
+            </div>
+            <div class="modal-footer">
+              <div class="alineado-derecha">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal numero de pedido -->
+{% endif %}
+
+
 {% else %}
   <h1>No existen pedidos registradas</h1>
 {% endif %}
+<script>
+		window.onload=function() {
+			$('#modal_numero_pedido').modal('show');
+		}
+</script>
 {% endblock content %}

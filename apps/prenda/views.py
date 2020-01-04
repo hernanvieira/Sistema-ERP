@@ -146,9 +146,9 @@ def CrearPrenda (request,id_pedido):
         cliente = pedido.cliente
 
         reputacion = abs((int(cliente.reputacion)/100)-1)
-        if reputacion < 1:
+        if cliente.reputacion < 0:
             reputacion = 0
-        if reputacion > 1:
+        if cliente.reputacion > 100:
             reputacion = 1
 
         print("EKEKEKEKEKE")

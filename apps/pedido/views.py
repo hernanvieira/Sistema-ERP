@@ -43,10 +43,11 @@ def CrearPedido (request):
         if 'boton_finalizar' in request.POST:
             pedido_form = PedidoForm(request.POST)
             pedido = pedido_form.save(commit=False)
-
+            id_pedido = pedido.id_pedido
+            print(id_pedido)
             if pedido.seña != None:
                 pedido.save()
-                return redirect('/pedido/listar_pedido/')
+                return redirect('pedido/listar_pedido/'+str(id_pedido))
 
             else:
                 cliente_form = ClienteForm(request.POST)
@@ -68,6 +69,17 @@ def ListarPedido (request):
             aux.append(a)
     pedidos = aux
     return render(request,'pedido/listar_pedido.html',{'reporte':reporte,'pedidos':pedidos})
+
+def ListarPedido2 (request,id_pedido):
+    pedidos = Pedido.objects.all()
+    reporte = Configuracion.objects.all().last()
+    aux = []
+    for p in pedidos:
+        if Estado_pedido.objects.filter(pedido=p).exists():
+            a = Estado_pedido.objects.filter(pedido = p).order_by('-id_estado_pedido')[0]
+            aux.append(a)
+    pedidos = aux
+    return render(request,'pedido/listar_pedido.html',{'id_pedido':id_pedido,'reporte':reporte,'pedidos':pedidos})
 
 #Volver al pedido
 def VolverPedido (request,id_pedido):
@@ -91,6 +103,7 @@ def VolverPedido (request,id_pedido):
                 pedido_form = PedidoForm(request.POST, instance=pedido)
                 pedido = pedido_form.save(commit=False)
 
+
                 estado_pedido_form = Estado_pedidoForm()
                 estado_pedido = estado_pedido_form.save(commit = False)
 
@@ -109,17 +122,21 @@ def VolverPedido (request,id_pedido):
                 html_content = msg_html
                 msg = EmailMultiAlternatives('PROYECTO SOFTWARE', text_content, to=[pedido.cliente.correo])
                 msg.attach_alternative(html_content, "text/html")
-                msg.send()
+                try:
+                    msg.send()
+                except Exception as e:
+                    print(e)
 
-
-                # email = EmailMessage('PROYECTO SOFTWARE',msg_html, to=[pedido.cliente.correo])
-                # email.send()
+                print("FINALIZAAAAAAAAAAAAAAAAAAA")
+                id_pedido = pedido.id_pedido
+                print("MIRA ELN NUMERITO")
+                print(id_pedido)
 
                 if pedido.seña != None:
                     pedido.save()
                     estado_pedido.save()
                     messages.success(request, 'Todo ocurrió correctamente')
-                    return redirect('/pedido/listar_pedido/')
+                    return redirect('/pedido/listar_pedido/'+str(id_pedido))
 
                 else:
                     cliente_form = ClienteForm(request.POST)
