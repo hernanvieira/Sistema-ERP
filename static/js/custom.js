@@ -133,19 +133,20 @@
 
                 if (titulo == 'Lista de pedidos') {
                   var min = $('#min').val();
-                  console.log(min);
                   var max = $('#max').val();
-                  console.log(max);
                   // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
-                  doc.content[1].table.widths = colCount;
+                  doc.content[1].table.widths = [40,50,90,50,40,40,70,40];
                   var table = $("#midatatable").DataTable();//Obtengo la tabla
                   var pageInfo = table.page.info(); //Obtiene el objeto page.info()
                   for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
-                    doc.content[1].table.body[i][5].alignment = 'left'; //El segundo [] es el numero de columna a alinear
-                    doc.content[1].table.body[i][4].alignment = 'right';
+                    doc.content[1].table.body[i][0].alignment = 'right'; //El segundo [] es el numero de columna a alinear
+                    doc.content[1].table.body[i][1].alignment = 'right';
+                    doc.content[1].table.body[i][2].alignment = 'left';
                     doc.content[1].table.body[i][3].alignment = 'right';
-                    doc.content[1].table.body[i][6].alignment = 'center';
-                    doc.content[1].table.body[i][2].alignment = 'center';
+                    doc.content[1].table.body[i][4].alignment = 'right';
+                    doc.content[1].table.body[i][5].alignment = 'right';
+                    doc.content[1].table.body[i][6].alignment = 'left';
+                    doc.content[1].table.body[i][7].alignment = 'center';
                   }; // Arnold deja de copiarme
                 }
                 if (titulo == 'Listado de clientes') {

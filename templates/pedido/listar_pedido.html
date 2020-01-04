@@ -24,15 +24,6 @@ Listado de pedidos
   <br>
   <div class="table-data__tool">
       <div class="table-data__tool-left">
-        <!-- <span>Prioridad:</span>
-          <div class="rs-select2--light rs-select2--sm">
-              <select class="btn btn-secondary" name="property">
-                  <option value="2">Alta</option>
-                  <option value="1">Media</option>
-                  <option value="0">Baja</option>
-              </select>
-              <div class="dropDownSelect2"></div>
-          </div> -->
           <span>Entre:</span>
           <div class="rs-select2--light rs-select2--sm">
             <div class="form-control">
@@ -86,7 +77,8 @@ Listado de pedidos
     <table class="table table-data2" id="midatatable">
         <thead>
             <tr>
-                <th>ID</th>
+                <th></th>
+                <th>N°</th>
                 <th>DNI</th>
                 <th>Cliente</th>
                 <th>Fecha</th>
@@ -100,6 +92,7 @@ Listado de pedidos
         <tbody>
             {% for pedido in pedidos %}
             <tr class="tr-shadow">
+              <td></td>
               <td style="text-align: right;">{{pedido.pedido.id_pedido}}</td>
               <td style="text-align: center;">{{pedido.pedido.cliente.dni}}</td>
               <td style="text-align: left;">{{pedido.pedido.cliente.apellido}}</td>
