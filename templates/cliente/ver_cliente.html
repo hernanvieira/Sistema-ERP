@@ -99,10 +99,14 @@ Ver Cliente
       </div>
 
         {% if pedidos %}
+
+        <input type="hidden" name="" value="" id="min">
+        <input type="hidden" name="" value="" id="max">
+
         <div class="card-header bg-success"><strong class="card-title text-light" id="exampleModalLabel">Pedidos</strong>
         </div>
         <div class="table-responsive table-responsive-data2">
-            <table class="table table-data3">
+            <table class="table table-data3" id="midatatable2">
                 <thead>
                     <tr>
                         <th>ID</th>

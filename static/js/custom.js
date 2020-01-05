@@ -15,7 +15,7 @@
               className: 'btn btn-success'},
             { text: 'PDF',
 					    extend: 'pdfHtml5',
-					    filename: 'Reporte_Pedidos',
+					    filename: 'Reporte',
 					    orientation: 'portrait', //portrait
 					    pageSize: 'A4', //A3 , A5 , A6 , legal , letter
 					    exportOptions: {
@@ -232,9 +232,9 @@
               function(oSettings, aData, iDataIndex) {
                   var iFini = document.getElementById('min').value;
                   var iFfin = document.getElementById('max').value;
-                  var iStartDateCol = 3;
-                  var iEndDateCol = 3;
-                  console.log(aData[3]);
+                  var iStartDateCol = 4;
+                  var iEndDateCol = 4;
+                  console.log(aData[4]);
                   iFini = iFini.substring(6, 10) + iFini.substring(3, 5) + iFini.substring(0, 2);
                   iFfin = iFfin.substring(6, 10) + iFfin.substring(3, 5) + iFfin.substring(0, 2);
 
@@ -302,6 +302,55 @@
           });
 
       });
+
+$(document).ready(function(){
+
+midatatable2 = $('#midatatable2').DataTable({
+    "lengthMenu": [
+        [5, 25, 50, -1],
+        [5, 25, 50, "All"]
+    ],
+    dom: '',
+    columnDefs: [
+        { 'sortable': true, 'searchable': false, 'visible': false, 'type': 'num', 'targets': [0] }
+    ],
+    order: [
+        [0, "desc"]
+    ],
+    language: {
+        sProcessing: "Procesando...",
+        sLengthMenu: "Mostrar _MENU_ registros",
+        sZeroRecords: "No se encontraron resultados",
+        sEmptyTable: "Ningún dato disponible en esta tabla",
+        sInfo: "Mostrando _START_ al _END_ de un total de _TOTAL_ registros",
+        sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0 registros",
+        sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+        sInfoPostFix: "",
+        sSearch: "Buscar:",
+        sUrl: "",
+        sInfoThousands: ",",
+        sLoadingRecords: "Cargando...",
+        oPaginate: {
+            sFirst: "Primero",
+            sLast: "Último",
+            sNext: "Siguiente",
+            sPrevious: "Anterior"
+        },
+        oAria: {
+            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        },
+        buttons: {
+            "copy": "Copiar",
+            "colvis": "Visibilidad"
+        }
+    },
+});
+$('#midtbusqueda2').keyup(function() {
+  midatatable2.search($(this).val()).draw();
+})
+
+  });
 
       // In your Javascript (external .js resource or <script> tag)
 $(document).ready(function() {
