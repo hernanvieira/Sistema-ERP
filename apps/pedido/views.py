@@ -11,6 +11,51 @@ from django.contrib import messages
 from config.models import Configuracion, ConfiguracionMensaje
 from django.core.mail import EmailMessage
 
+def NuevoPedido (request):
+    if request.method == 'POST':
+        if 'boton_crear_cliente' in request.POST:
+            cliente_form = ClienteForm(request.POST)
+            if cliente_form.is_valid():
+                cliente_form.save()
+                messages.success(request, 'Se agregó correctamente el cliente')
+            else:
+                messages.error(request, 'Error al crear el cliente')
+        if 'boton_agregar' in request.POST:
+            pedido_form = PedidoForm(request.POST)
+            prenda_form = PrendaForm(request.POST) # lupy estubo aki peligro borre este mensaje para su comodidad
+            if pedido_form.is_valid():
+                pedido = pedido_form.save(commit = False)
+                if pedido.fecha_entrega != None:
+                    fecha = datetime.datetime.strptime(str(pedido.fecha_entrega), '%Y-%m-%d')
+                    if fecha.date() > datetime.date.today():
+                        pedido = pedido_form.save()
+                        id_pedido = pedido.id_pedido
+                        return redirect('/prenda/crear_prenda/'+str(id_pedido))
+                    else:
+                        messages.error(request, 'La fecha debe ser posterior a la actual')
+                else:
+                    pedido = pedido_form.save()
+                    id_pedido = pedido.id_pedido
+                    return redirect('/prenda/crear_prenda/'+str(id_pedido))
+            else:
+                messages.error(request, 'No se puede introducir valores negativos')
+        if 'boton_finalizar' in request.POST:
+            pedido_form = PedidoForm(request.POST)
+            pedido = pedido_form.save(commit=False)
+            id_pedido = pedido.id_pedido
+            if pedido.seña != None:
+                pedido.save()
+                return redirect('pedido/listar_pedido/'+str(id_pedido))
+
+            else:
+                cliente_form = ClienteForm(request.POST)
+                messages.error(request, 'Debe agregar prendas')
+    else:
+        pedido_form = PedidoForm()
+        cliente_form = ClienteForm()
+    pedido_form = PedidoForm()
+    return render(request, 'pedido/nuevo_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
+
 #Crear un pedido
 def CrearPedido (request):
     if request.method == 'POST':
@@ -126,11 +171,7 @@ def VolverPedido (request,id_pedido):
                     msg.send()
                 except Exception as e:
                     print(e)
-
-                print("FINALIZAAAAAAAAAAAAAAAAAAA")
                 id_pedido = pedido.id_pedido
-                print("MIRA ELN NUMERITO")
-                print(id_pedido)
 
                 if pedido.seña != None:
                     pedido.save()

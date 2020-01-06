@@ -1,0 +1,138 @@
+{% extends 'index.html' %}
+{% load static %}
+<!DOCTYPE html>
+{% block titulo%}
+Crear pedido
+{% endblock titulo%}
+
+{% block content%}
+
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Agregar pedido</strong></div>
+  <div class="card-body card-block">
+
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <input type="hidden" id="min" value="">
+        <input type="hidden" id="max" value="">
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        <!-- cliente -->
+        <div class="col-md-11">
+          {{pedido_form.cliente.label}}
+          <div class="">
+            {{pedido_form.cliente}}
+          </div>
+        </div>
+        <div class="col-md-1">
+          <br>
+          <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#largeModal">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="col-md-12">
+          <br>
+          <p>Prenda/s</p>
+          <div>
+            <button type="submit" class="btn btn-success" name="boton_agregar">
+              <i class="fa fa-dot-circle-o"></i> Agregar Prenda
+            </button>
+          </div>
+          <br>
+        </div>
+        <!-- end cliente -->
+
+          {% if detalles %}
+          <!-- DATA TABLE-->
+          <div class="table-responsive m-b-40">
+              <table class="table table-borderless table-data3">
+                  <thead>
+                      <tr>
+                          <th>Tipo de Prenda</th>
+                          <th>Talle</th>
+                          <th>Precio Unitario</th>
+                          <th>Cantidad</th>
+                          <th>Tiempo Prod. Lote</th>
+                          <th>Opciones</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    {% for detalle in detalles %}
+                      <tr>
+                        <td>{{detalle.prenda.tipo_prenda}}</td>
+                        <td style="text-align: center;">
+                          {% if detalle.prenda.talle == 0 %}
+                            XS
+                          {% endif %}
+                          {% if detalle.prenda.talle == 1 %}
+                            S
+                          {% endif %}
+                          {% if detalle.prenda.talle == 2 %}
+                            M
+                          {% endif %}
+                          {% if detalle.prenda.talle == 3 %}
+                            L
+                          {% endif %}
+                          {% if detalle.prenda.talle == 4 %}
+                            XL
+                          {% endif %}
+                          {% if detalle.prenda.talle == 5 %}
+                            XXL
+                          {% endif %}
+                        </td>
+                        <td style="text-align: right;">${{detalle.prenda.precio}}</td>
+                        <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
+                        <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                              <i class="fas fa-pencil-square-o"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                              <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+          <!-- END DATA TABLE-->
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="card-footer alineado-derecha">
+        <button type="button" class="btn btn-danger" onclick="history.back()">
+          <i class="fa fa-chevron-left"></i> Volver
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+
+
+{% endblock content%}
