@@ -1,19 +1,21 @@
 from django.shortcuts import render
 from tp_final.forms import ConfiguracionForm, ConfiguracionMensajeForm
+from config.models import Configuracion, ConfiguracionMensaje
 
-def Configuracion (request):
+def configuracion (request):
     if request.method == 'POST':
         configuracion_form = ConfiguracionForm(request.POST)
-        print(configuracion_form.errors)
         if configuracion_form.is_valid():
             configuracion = configuracion_form.save()
         else:
             messages.error(request, 'Ocurrió un error al tratar de establecer la configuracion')
     else:
-        configuracion_form = ConfiguracionForm()
+        configuracion_actual = Configuracion.objects.all().last()
+        configuracion_form = ConfiguracionForm(instance=configuracion_actual)
+
     return render(request, 'config/configuracion.html',{'configuracion_form':configuracion_form})
 
-def ConfiguracionMensaje (request):
+def configuracionMensaje (request):
     if request.method == 'POST':
         configuracion_mensaje_form = ConfiguracionMensajeForm(request.POST)
         print(configuracion_mensaje_form.errors)
@@ -22,5 +24,6 @@ def ConfiguracionMensaje (request):
         else:
             messages.error(request, 'Ocurrió un error al tratar de establecer la configuracion')
     else:
-        configuracion_mensaje_form = ConfiguracionMensajeForm()
+        configuracion_actual = ConfiguracionMensaje.objects.all().last()
+        configuracion_mensaje_form = ConfiguracionMensajeForm(instance=configuracion_actual)
     return render(request, 'config/configuracion_mensaje.html',{'configuracion_mensaje_form':configuracion_mensaje_form})
