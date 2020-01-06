@@ -133,9 +133,9 @@ Ver pedido
           </div>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
 
-          {{pedido_form.entrega.label}}
+          Entregado
           <div class="input-group">
             <div class="input-group-addon">
               <i class="fa fa-dollar"></i>
@@ -145,10 +145,16 @@ Ver pedido
             </div>
           </div>
         </div>
+        <div class="col-md-1">
+          <br>
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target=".bs-example-modal-lg7">
+                    <i class="fas fa-clock-o"></i>
+                    <i class="fas fa-list-ul"></i>
+          </button>
+        </div>
         <div class="col-md-4">
           {% if estado %}
           Estado
-
           <div class="input-group">
             {% if estado.estado_id == 6 %}
             <div class="btn btn-primary">
@@ -333,6 +339,51 @@ Ver pedido
                                       <tr>
                                         <td>{{estado.fecha}}</td>
                                         <td style="text-align: left;">{{estado}}</td>
+                                      </tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                          </div>
+                          <!-- END DATA TABLE-->
+                        </div>
+                        <div class="modal-footer">
+                          <div class="alineado-derecha">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Modal -->
+
+
+            <!-- Modal Historico de entregas -->
+            <div class="modal fade bs-example-modal-lg7" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Entregas</h4>
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div class="modal-body">
+                          <!-- DATA TABLE-->
+                          <div class="table-responsive m-b-40">
+                              <table class="table table-borderless table-data3">
+                                  <thead>
+                                      <tr>
+                                          <th>N°</th>
+                                          <th>Monto</th>
+                                          <th>Fecha</th>
+                                          <th>Saldo</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for entrega in entregas %}
+                                      <tr>
+                                        <td>{{entrega.id_entrega}}</td>
+                                        <td style="text-align: right;">${{entrega.monto}}</td>
+                                        <td>{{entrega.fecha_entrega}}</td>
+                                        <td style="text-align: right;">${{entrega.saldo}}</td>
                                       </tr>
                                       {% endfor %}
                                   </tbody>

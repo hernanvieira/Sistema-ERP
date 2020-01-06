@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm, Estado_pedidoForm
-from .models import Pedido, Detalle
+from .models import Pedido, Detalle, Entregas
 from apps.prenda.models import Prenda, Tipo_prenda
 from apps.estado.models import Estado_pedido, Estado
 from apps.prenda.views import CrearPrenda
@@ -219,6 +219,7 @@ def VerPedido (request,id_pedido):
     cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
     estados = Estado_pedido.objects.filter(pedido_id=id_pedido)
+    entregas = Entregas.objects.filter(pedido=pedido)
     if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
         estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
     else:
@@ -236,19 +237,34 @@ def VerPedido (request,id_pedido):
             pedido.entrega += int(peticion_valor)
 
             saldo = pedido.precio_total - pedido.entrega
+
+            saldoaux = saldo
+            if saldo < 0:
+                saldoaux = 0
+            entrega = Entregas.objects.create(monto = peticion_valor, pedido = pedido, saldo = saldoaux) # CReamos la entrega
+            entrega.save()
+
+
             if saldo == 0:
                 pedido.save()
                 messages.success(request, 'Se registró la entrega y se completó el pago')
 
                 email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: $0,00' , to=[pedido.cliente.correo])
-                email.send()
+                try:
+                    email.send()
+                except Exception as e:
+                    print(e)
+
 
             if saldo > 0:
                 pedido.save()
                 messages.success(request, 'Se registró la entrega, resta un saldo de: ' + str(saldo))
 
                 email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: ' + str(saldo), to=[pedido.cliente.correo])
-                email.send()
+                try:
+                    email.send()
+                except Exception as e:
+                    print(e)
 
             if saldo < 0:
                 pedido.entrega = pedido.precio_total
@@ -256,7 +272,10 @@ def VerPedido (request,id_pedido):
                 messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: ' + str(abs(saldo)))
 
                 email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: $0,00' , to=[pedido.cliente.correo])
-                email.send()
+                try:
+                    email.send()
+                except Exception as e:
+                    print(e)
 
             if pedido.entrega >= pedido.seña:
                 estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
@@ -274,14 +293,17 @@ def VerPedido (request,id_pedido):
                     estado_pedido.save()#Guardo el estado
 
                     email = EmailMessage('PROYECTO SOFTWARE', mensaje.en_produccion, to=[pedido.cliente.correo])
-                    email.send()
+                    try:
+                        email.send()
+                    except Exception as e:
+                        print(e)
 
         pedido_form=PedidoForm(instance=pedido)
         if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
             estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
         else:
             estado = None
-    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados})
+    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
 
 
 #Eliminar un pedido

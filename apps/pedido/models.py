@@ -26,3 +26,10 @@ class Detalle (models.Model):
     tiempo_prod_lote = models.PositiveIntegerField(null = True, blank = True, default=0)
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT,null = True, blank = True)
     prenda = models.ForeignKey(Prenda, on_delete = models.PROTECT,null = True, blank = True)
+
+class Entregas (models.Model):
+    id_entrega = models.AutoField(primary_key=True)
+    monto = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)], default=0)
+    pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT)
+    fecha_entrega = models.DateField(auto_now=True)
+    saldo = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0, validators=[MinValueValidator(0.00)])
