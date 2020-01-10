@@ -1,0 +1,106 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Asignar Medidas
+{% endblock titulo%}
+{% block content%}
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Materiales Utilizados</strong><h class="card-title text-light"> | {{pedido.cliente}}</h></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      <div class="row">
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+              {% if message.tags == 'warning' %}
+              <div class="alert alert-warning">
+                <div class="row">
+                  <div class="col-md-9">
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="alineado-derecha">
+                        <a href="#" class="btn btn-secondary" data-dismiss="alert" aria-label="close">Aceptar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+          {% if prendas %}
+            {% for prenda in prendas %}
+              <strong>Prenda {{prenda.prenda_id}}</strong>
+              <div class="row">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-11">
+                  <div class="table-responsive table-responsive-data3">
+                    <table class="table table-borderless table-data3">
+                        <thead>
+                            <tr>
+                                <th>Tipo de Material</th>
+                                <th>Material</th>
+                                <th width="15%">Solicitado</th>
+                                <th width="15%">Sobrante</th>
+                                <th>U. de Medida</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ingrediente in ingredientes %}
+                              {% if ingrediente.prenda.id_prenda == prenda.prenda_id %}
+                                <tr class="tr-shadow">
+                                  <td>{{ingrediente.material.tipo_material}}</td>
+                                  <td><input type="hidden" name="input_id_material" value="{{ingrediente.material.id_material}}">{{ingrediente.material}}</td>
+                                  <td><input style="width:100px; text-align:right;" type="number" class="form-control" name="" value="{{ingrediente.cantidadxdetalle}}" readonly></td>
+                                  <td><input style="width:100px; text-align:right;" type="number" min=0 class="form-control" name="input_sobrante" value="0"></td>
+                                  <td>{{ingrediente.material.tipo_material.unidad_medida}}</td>
+                                  <td></td>
+                                </tr>
+                              {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            <hr class="line-separate">
+            {% endfor %}
+          {% endif %}
+
+      <div class="card-footer">
+        <div class="alineado-derecha">
+          <button type="submit" class="btn btn-success" name="boton_guardar_cargar">
+            <i class="fa fa-dot-circle-o"></i> Confirmar
+          </button>
+          <button type="button" class="btn btn-danger" onclick="history.back()">
+            <i class="fa fa-ban"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content%}

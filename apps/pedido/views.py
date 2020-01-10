@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm, Estado_pedidoForm
 from .models import Pedido, Detalle, Entregas
-from apps.prenda.models import Prenda, Tipo_prenda
+from apps.prenda.models import Prenda, Tipo_prenda, Ingrediente
 from apps.estado.models import Estado_pedido, Estado
 from apps.prenda.views import CrearPrenda
+from apps.material.models import Material
 from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
 import datetime
@@ -229,6 +230,15 @@ def VerPedido (request,id_pedido):
     else:
         if 'boton_cancelar' in request.POST:
             CancelarPedido(request,id_pedido)
+            redireccionar = 0
+            prendas = Detalle.objects.filter(pedido = pedido)
+            for detalle in prendas:
+                prenda = detalle.prenda
+                ingredientes = Ingrediente.objects.filter(prenda = prenda).exists()
+                if ingredientes:
+                    redireccionar=1
+            if redireccionar == 1:
+                return redirect('/pedido/materiales_utilizados/'+str(id_pedido))
         if 'boton_entregar' in request.POST:
             EntregarPedido(request,id_pedido)
         if 'boton_registrar_entega' in request.POST:
@@ -337,7 +347,10 @@ def CancelarPedido (request,id_pedido):
 
     # Envio de correo
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.cancelado, to=[pedido.cliente.correo])
-    email.send()
+    try:
+        email.send()
+    except Exception as e:
+        print(e)
 
     # Reputación
     cliente = pedido.cliente # Obtengo el cliente
@@ -345,7 +358,6 @@ def CancelarPedido (request,id_pedido):
     reputacion = cliente.reputacion
 
     check = str(request.POST['optradio'])
-    print(check)
     if check =='checkMM':
         reputacion -= 40
     if check=='checkM':
@@ -359,7 +371,33 @@ def CancelarPedido (request,id_pedido):
     cliente.reputacion = reputacion
     cliente.save()
 
+def MaterialesUtilizados(request, id_pedido):
+    pedido = Pedido.objects.get(id_pedido= id_pedido)
+    if request.method=='POST':
+        peticion = request.POST.copy() # OBtengo una copia del request
+        peticion_sobrante = peticion.pop('input_sobrante') # Obtengo el valor de los sobrantes
+        peticion_id_material = peticion.pop('input_id_material') # Obtengo los id de los materiales
+        print(peticion_sobrante)
+        # print(peticion_id_material)
+        i=0
+        for id_material in peticion_id_material:
+            material = Material.objects.get(id_material= id_material)
+            sobrante = peticion_sobrante[i]
+            i+=1
+            material.stock += int(sobrante)
+            material.save()
+    else:
+        prendas = Detalle.objects.filter(pedido = pedido)
+        a=[]
+        for detalle in prendas:
+            prenda = detalle.prenda
+            ingredientes = Ingrediente.objects.filter(prenda = prenda)
+            for ingrediente in ingredientes:
+                a.append(ingrediente)
+        ingredientes = a
+        return render(request,'pedido/materiales_utilizados.html',{'pedido':pedido,'ingredientes':ingredientes,'prendas':prendas})
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
+
 
 #Finalizar un pedido
 def FinalizarPedido (request,id_pedido):
@@ -380,7 +418,10 @@ def FinalizarPedido (request,id_pedido):
     messages.success(request, 'Se finalizó el pedido')
 
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.finalizado, to=[pedido.cliente.correo])
-    email.send()
+    try:
+        email.send()
+    except Exception as e:
+        print(e)
 
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
@@ -402,7 +443,10 @@ def EntregarPedido (request,id_pedido):
     messages.success(request, 'Se entregó el pedido')
 
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.entregado, to=[pedido.cliente.correo])
-    email.send()
+    try:
+        email.send()
+    except Exception as e:
+        print(e)
 
     # Reputación
     cliente = pedido.cliente # Obtengo el cliente

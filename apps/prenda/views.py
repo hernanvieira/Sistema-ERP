@@ -435,16 +435,16 @@ def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
     c = False
     for m in medidas_prenda:
         b.append(m)
-    print(b)
+
     if medidas_prenda_u:
         for m in medidas_prenda_u:
             a.append(m.medida)
-        print(a)
+
         if a == b:
             c = True
         else:
             c = False
-    print(c)
+
     if request.method == 'POST': # si el metodo es POST
         if medidas_prenda_u and c == True:
             peticion = request.POST.copy() # OBtengo una copia del request
