@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 #Se crean las clases de acuerdo al diagrama de clases
 class Unidad_medida (models.Model):
@@ -28,6 +29,7 @@ class Tipo_material (models.Model):
     def __str__(self):
         return self.nombre
 
+
 class Material (models.Model):
     id_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
@@ -44,6 +46,21 @@ class Material (models.Model):
 
     def __str__(self):
         return self.nombre + ' ' + self.color
+
+# class Faltante (models.Model):
+#     id_faltante = models.AutoField(primary_key=True)
+#     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
+#     material =  models.ForeignKey(Material, on_delete=models.PROTECT)
+#     faltante = models.PositiveIntegerField(default=0)
+#     prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT)
+#
+#     class Meta:
+#         verbose_name = 'Faltante'
+#         verbose_name_plural = 'Faltantes'
+#         ordering = ['id_faltante']
+#
+#     def __str__(self):
+#         return self.nombre + ' ' + self.color
 
 class Compra (models.Model):
     id_compra = models.AutoField(primary_key=True)

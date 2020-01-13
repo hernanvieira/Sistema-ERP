@@ -26,5 +26,5 @@ urlpatterns = [
             path ('editar_material/<int:id_ingrediente>/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',EditarIngrediente,name='editar_ingrediente'),
             path ('eliminar_material/<int:id_ingrediente>/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',EliminarIngrediente,name='eliminar_ingrediente'),
             path ('mostrar_unidad/',MostrarUnidad,name='mostrar_unidad'),
-            path ('tiempo_prod/',TiempoProdPrenda,name='tiempo_prod'),
+            path ('tiempo_prod/',TiempoProdPrenda,name='tiempo_prod')
             ]

@@ -1,0 +1,158 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Lista de Faltantes
+{% endblock titulo%}
+{% block content%}
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Lista de Faltantes</strong><h class="card-title text-light"></h></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+      <div class="row">
+        {% if messages %}
+        <div class="col-md-12">
+          <ul class="messages">
+            {% for message in messages %}
+              {% if message.tags == 'success'%}
+                <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
+              {% if message.tags == 'error' %}
+              <div class="alert alert-danger">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
+              {% if message.tags == 'warning' %}
+              <div class="alert alert-warning">
+                <div class="row">
+                  <div class="col-md-9">
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="alineado-derecha">
+                        <a href="#" class="btn btn-secondary" data-dismiss="alert" aria-label="close">Aceptar</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="table-responsive table-responsive-data2">
+                <table class="table table-borderless table-data2" id='midatatable'>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tipo de Material</th>
+                            <th>Material</th>
+                            <th>Faltante</th>
+                            <th>U. de medida</th>
+                            <th class="noExport">Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for material in lista %}
+                            <tr class="tr-shadow">
+                              <td></td>
+                              <td>{{material.material.tipo_material}}</td>
+                              <td>{{material.material}}</td>
+                              <td style="text-align:center;">{{material.sum}}</td>
+                              <td style="text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
+                              <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".modal_ver_prendas{{material.material.id_material}}">
+                                  <i class="fas fa-eye"></i>
+                                </button>
+                                <!-- modal ver prendas asociadas -->
+                                <div class="modal fade modal_ver_prendas{{material.material.id_material}}" id="myModal2{{material.id_material}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="myModalLabel{{material.material.id_material}}">Prendas Asociadas</h4>
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                            <!-- DATA TABLE-->
+                                            <div class="table-responsive m-b-40">
+                                                <table class="table table-borderless table-data2">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Prenda</th>
+                                                            <th>Pedido</th>
+                                                            <th>Fecha de Entrega</th>
+                                                            <th>Tipo de Prenda</th>
+                                                            <th>Cliente</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                      {% for faltante in lista2 %}
+                                                        {% if material.material.id_material == faltante.material.id_material %}
+                                                        <tr>
+
+                                                          <td style="text-align:right;"><a href="{% url 'prenda:editar_prenda' faltante.prenda.id_prenda faltante.pedido.id_pedido faltante.pedido.id_pedido %}">
+                                                            {{faltante.prenda}}
+                                                              </a>
+                                                          </td>
+
+                                                          <td style="text-align:right"><a href="{% url 'pedido:ver_pedido' faltante.pedido.id_pedido %}">
+                                                            {{faltante.pedido}}
+                                                              </a>
+                                                          </td>
+                                                          <td>{{faltante.pedido.fecha_entrega}}</td>
+                                                          <td>{{faltante.prenda.tipo_prenda}}</td>
+                                                          <td><a href="{% url 'cliente:ver_cliente' faltante.pedido.cliente.dni %}">
+                                                            {{faltante.pedido.cliente.apellido}}</td>
+                                                        </tr>
+                                                        {% endif %}
+                                                      {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <!-- END DATA TABLE-->
+
+                                            </div>
+                                            <div class="modal-footer">
+                                              <div class="alineado-derecha">
+                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Modal -->
+                              </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <hr class="line-separate">
+
+      <div class="card-footer">
+        <div class="alineado-derecha">
+          <button type="submit" class="btn btn-success" name="boton_guardar_cargar">
+            <i class="fa fa-dot-circle-o"></i> Confirmar
+          </button>
+          <button type="button" class="btn btn-danger" onclick="history.back()">
+            <i class="fa fa-ban"></i> Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock content%}

@@ -1,6 +1,7 @@
 from django.db import models
 from apps.cliente.models import Cliente
 from apps.prenda.models import Prenda
+from apps.material.models import Material, Tipo_material
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 from simple_history.models import HistoricalRecords
@@ -20,6 +21,9 @@ class Pedido (models.Model):
     puntaje = models.CharField(max_length=50, null = True, blank = True, default = 2)
     history = HistoricalRecords()
 
+    def __str__(self):
+        return str(self.id_pedido)
+
 class Detalle (models.Model):
     id_detalle = models.AutoField(primary_key=True)
     cantidad = models.PositiveIntegerField()
@@ -33,3 +37,16 @@ class Entregas (models.Model):
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT)
     fecha_entrega = models.DateField(auto_now=True)
     saldo = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0, validators=[MinValueValidator(0.00)])
+
+class Faltante (models.Model):
+    id_faltante = models.AutoField(primary_key=True)
+    tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
+    material =  models.ForeignKey(Material, on_delete=models.PROTECT)
+    faltante = models.PositiveIntegerField(default=0)
+    prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT)
+    pedido = models.ForeignKey(Pedido, on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name = 'Faltante'
+        verbose_name_plural = 'Faltantes'
+        ordering = ['id_faltante']

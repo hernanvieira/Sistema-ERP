@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm, Estado_pedidoForm
-from .models import Pedido, Detalle, Entregas
+from .models import Pedido, Detalle, Entregas, Faltante
 from apps.prenda.models import Prenda, Tipo_prenda, Ingrediente
 from apps.estado.models import Estado_pedido, Estado
 from apps.prenda.views import CrearPrenda
@@ -11,6 +11,7 @@ import datetime
 from django.contrib import messages
 from config.models import Configuracion, ConfiguracionMensaje
 from django.core.mail import EmailMessage
+from django.db.models import Sum
 
 def NuevoPedido (request):
     if request.method == 'POST':
@@ -475,3 +476,20 @@ def EntregarPedido (request,id_pedido):
 def Auditoria(request):
     auditoria =  Pedido.history.all()
     return render(request, 'auditoria_pedido.html',{'auditoria':auditoria})
+
+def ListaCompras (request):
+    if request.method=='GET':
+        lista = Faltante.objects.values('material').order_by('material').annotate(sum=Sum('faltante')) #Obtengo un queryset con la suma de faltante agrupado por cada material, solo me trae el id
+        lista2 = Faltante.objects.all()
+        #Creo una lista para guardar los objetos de cada material
+        materiales=[]
+        #Obtengo los objetos y los agrego a la lista
+        for i in range(len(lista)):
+            material = Material.objects.get(id_material = lista[i]['material'])
+            materiales.append(material)
+
+        #Intercambio los id de cada material por el objeto en si
+        for i in range(len(materiales)):
+            lista[i]['material'] = materiales[i]
+
+        return render(request,'prenda/lista_compras.html',{'lista':lista, 'lista2':lista2})

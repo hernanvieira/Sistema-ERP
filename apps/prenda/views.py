@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import MedidaForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm, Medida_prendaForm
 from .models import Tipo_prenda, Prenda, Ingrediente, Medida, Medida_prenda
 from apps.material.models import Material, Tipo_material
-from apps.pedido.models import Pedido, Detalle
+from apps.pedido.models import Pedido, Detalle, Faltante
+# from apps.prenda.models import Faltante
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from datetime import datetime, timedelta
 from decimal import Decimal
+
 
 #JSON
 # from rest_framework.renderers import JSONRenderer
@@ -377,6 +379,8 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
             else:
                 material_post = material.stock - cantidad_material #Calculo cuanto material necesito a parte del stock que tengo
 
+                faltante = Faltante.objects.create(tipo_material = material.tipo_material, material = material, faltante = abs(material_post), prenda = prenda, pedido = pedido) # Creo el objeto faltante
+
                 #Guardo la asignación de material
                 ingrediente.prenda = prenda # asocio el material con la prenda
 
@@ -602,7 +606,6 @@ def MostrarUnidad(request):
 
 #Proponer tiempo de produccion estimado
 def TiempoProdPrenda(request):
-    print("ENTRA")
     tp = request.GET.get('tipo_prenda',None)
     if tp!= None:
         pass
@@ -615,6 +618,4 @@ def TiempoProdPrenda(request):
     result = {
         'promedio': int(promedio)
     }
-    print("SSSSSSSSSSSSSSSSSS")
-    print(result)
     return JsonResponse(result)

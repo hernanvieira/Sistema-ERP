@@ -1,6 +1,8 @@
 from django.db import models
-from apps.material.models import Material, Unidad_medida
+
+from apps.material.models import Material, Unidad_medida, Tipo_material
 from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 class Medida (models.Model):
     id_medida = models.AutoField(primary_key=True)
@@ -40,6 +42,9 @@ class Prenda (models.Model):
         verbose_name = 'Prenda'
         verbose_name_plural = 'Prenda'
         ordering = ['id_prenda']
+
+    def __str__(self):
+        return str(self.id_prenda)
 
 class Medida_prenda (models.Model):
     id_medida_prenda = models.AutoField(primary_key=True)

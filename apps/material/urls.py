@@ -25,5 +25,6 @@ urlpatterns = [
             path ('crear_compra/',CrearCompra,name='crear_compra'),
             path ('listar_compra/',ListarCompra,name='listar_compra'),
             path ('editar_compra/<int:id_compra>',EditarCompra,name='editar_compra'),
-            path ('eliminar_compra/<int:id_compra>',EliminarCompra,name='eliminar_compra')
+            path ('eliminar_compra/<int:id_compra>',EliminarCompra,name='eliminar_compra'),
+
 ]
