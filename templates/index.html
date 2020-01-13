@@ -701,14 +701,42 @@ left: 43px;
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-                          <p>Calendario con fechas de <strong>entrega</strong> de pedidos </p>
-                            <div class="col">
-                              </div>
+
+                            <div class="col-md-7">
+                              <p>Calendario con fechas de <strong>entrega</strong> de pedidos </p>
                               <div class="au-card">
                                 <div id="calendar"></div>
                               </div>
-                            </div><!-- .col -->
-                        </div>
+                            </div>
+                            <div class="col-md-5">
+                              <p>Lista de <strong>Faltante</strong> de materiales </p>
+                              <div class="au-card">
+                                <div class="table-responsive table-responsive-data3">
+                                  <table class="table table-borderless table-data3">
+                                      <thead>
+                                          <tr>
+                                              <th>Material</th>
+                                              <th>Faltante</th>
+                                              <th></th>
+                                          </tr>
+                                      </thead>
+
+                                      <tbody>
+                                          {% for material in lista %}
+                                              <tr class="tr-shadow">
+                                                <td>{{material.material}}</td>
+                                                <td style="text-align:center;">{{material.sum}} </td>
+                                                <td>{{material.material.tipo_material.unidad_medida}}</td>
+                                              </tr>
+                                          {% endfor %}
+                                      </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+
+                        </div><!-- .col -->
+                    </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">

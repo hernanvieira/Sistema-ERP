@@ -5,6 +5,10 @@ from apps.pedido.models import Pedido
 from django.core.exceptions import *
 from django.contrib import messages
 from config.models import Configuracion
+from apps.pedido.models import Faltante
+from apps.material.models import Material
+
+from django.db.models import Sum
 
 import poplib # Recibir correos
 
@@ -18,8 +22,20 @@ def Home(request):
     pedidos = Pedido.objects.all()
     reporte = Configuracion.objects.all().last()
 
+    lista = Faltante.objects.values('material').order_by('material').annotate(sum=Sum('faltante')) #Obtengo un queryset con la suma de faltante agrupado por cada material, solo me trae el id
 
-    return render(request, 'index.html',{'reporte':reporte,'pedidos':pedidos})
+    #Creo una lista para guardar los objetos de cada material
+    materiales=[]
+    #Obtengo los objetos y los agrego a la lista
+    for i in range(len(lista)):
+        material = Material.objects.get(id_material = lista[i]['material'])
+        materiales.append(material)
+
+    #Intercambio los id de cada material por el objeto en si
+    for i in range(len(materiales)):
+        lista[i]['material'] = materiales[i]
+
+    return render(request, 'index.html',{'reporte':reporte,'pedidos':pedidos, 'lista':lista})
 
 #Pagina de estadisticas
 def Estadistica(request):
