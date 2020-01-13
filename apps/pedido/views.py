@@ -478,6 +478,8 @@ def Auditoria(request):
     return render(request, 'auditoria_pedido.html',{'auditoria':auditoria})
 
 def ListaCompras (request):
+    reporte = Configuracion.objects.all().last()
+    print(reporte)
     if request.method=='GET':
         lista = Faltante.objects.values('material').order_by('material').annotate(sum=Sum('faltante')) #Obtengo un queryset con la suma de faltante agrupado por cada material, solo me trae el id
         lista2 = Faltante.objects.all()
@@ -492,4 +494,4 @@ def ListaCompras (request):
         for i in range(len(materiales)):
             lista[i]['material'] = materiales[i]
 
-        return render(request,'prenda/lista_compras.html',{'lista':lista, 'lista2':lista2})
+        return render(request,'prenda/lista_compras.html',{'reporte':reporte,'lista':lista, 'lista2':lista2})

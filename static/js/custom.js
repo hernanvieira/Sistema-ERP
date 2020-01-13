@@ -131,6 +131,19 @@
 
                 var titulo = $('.titulo_reporte').val();
 
+                if (titulo == 'Listado de faltante de materiales') {
+
+                  doc.content[1].table.widths = [120,120,100,110];
+                  var table = $("#midatatable").DataTable();//Obtengo la tabla
+                  var pageInfo = table.page.info(); //Obtiene el objeto page.info()
+                  for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
+                    doc.content[1].table.body[i][0].alignment = 'left'; //El segundo [] es el numero de columna a alinear
+                    doc.content[1].table.body[i][1].alignment = 'left';
+                    doc.content[1].table.body[i][2].alignment = 'right';
+                    doc.content[1].table.body[i][3].alignment = 'left';
+                  }; // Arnold deja de copiarme
+                }
+
                 if (titulo == 'Lista de pedidos') {
                   var min = $('#min').val();
                   var max = $('#max').val();
