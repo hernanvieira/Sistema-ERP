@@ -17,6 +17,10 @@ class Medida (models.Model):
     def __str__(self):
         return str(self.nombre_medida)
 
+    def save(self, *args, **kwargs):
+        self.nombre_medida = (self.nombre_medida).upper()
+        return super(Medida, self).save(*args, **kwargs)
+
 class Tipo_prenda (models.Model):
     id_tipo_prenda = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique = True)
@@ -29,6 +33,10 @@ class Tipo_prenda (models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def save(self, *args, **kwargs):
+        self.nombre = (self.nombre).upper()
+        return super(Tipo_prenda, self).save(*args, **kwargs)
 
 class Prenda (models.Model):
     id_prenda = models.AutoField(primary_key = True)
@@ -72,3 +80,7 @@ class Ingrediente (models.Model):
 
     def __str__(self):
         return str(self.id_ingrediente)
+
+    def save(self, *args, **kwargs):
+        self.disponibilidad = (self.disponibilidad).upper()
+        return super(Ingrediente, self).save(*args, **kwargs)

@@ -17,6 +17,11 @@ class Estado (models.Model):
     def __str__(self):
         return str(self.nombre)
 
+    def save(self, *args, **kwargs):
+        self.nombre = (self.nombre).upper()
+        self.descripcion = (self.descripcion).upper()
+        return super(Estado, self).save(*args, **kwargs)
+
 
 class Estado_pedido (models.Model):
     id_estado_pedido = models.AutoField(primary_key=True)
@@ -32,6 +37,7 @@ class Estado_pedido (models.Model):
 
     def __str__(self):
         return str(self.estado)
+
 
 class Estado_lote (models.Model):
     id_estado_lote = models.AutoField(primary_key=True)

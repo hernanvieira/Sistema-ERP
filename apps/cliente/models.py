@@ -21,3 +21,8 @@ class Cliente(models.Model):
 
     def __str__(self):
         return str(self.dni) + ' - ' + self.apellido + ' ' + self.nombre
+
+    def save(self, *args, **kwargs):
+        self.apellido = (self.apellido).upper()
+        self.nombre = (self.nombre).upper()
+        return super(Cliente, self).save(*args, **kwargs)

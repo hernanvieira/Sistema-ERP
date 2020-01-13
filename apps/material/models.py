@@ -16,6 +16,11 @@ class Unidad_medida (models.Model):
     def __str__(self):
         return self.nombre
 
+    def save(self, *args, **kwargs):
+        self.nombre = (self.nombre).upper()
+        self.descripcion = (self.descripcion).upper()
+        return super(Unidad_medida, self).save(*args, **kwargs)
+
 class Tipo_material (models.Model):
     id_tipo_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique = True)
@@ -28,6 +33,10 @@ class Tipo_material (models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def save(self, *args, **kwargs):
+        self.nombre = (self.nombre).upper()
+        return super(Tipo_material, self).save(*args, **kwargs)
 
 
 class Material (models.Model):
@@ -47,20 +56,11 @@ class Material (models.Model):
     def __str__(self):
         return self.nombre + ' ' + self.color
 
-# class Faltante (models.Model):
-#     id_faltante = models.AutoField(primary_key=True)
-#     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
-#     material =  models.ForeignKey(Material, on_delete=models.PROTECT)
-#     faltante = models.PositiveIntegerField(default=0)
-#     prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT)
-#
-#     class Meta:
-#         verbose_name = 'Faltante'
-#         verbose_name_plural = 'Faltantes'
-#         ordering = ['id_faltante']
-#
-#     def __str__(self):
-#         return self.nombre + ' ' + self.color
+    def save(self, *args, **kwargs):
+        self.nombre = (self.nombre).upper()
+        self.color = (self.color).upper()
+        return super(Material, self).save(*args, **kwargs)
+
 
 class Compra (models.Model):
     id_compra = models.AutoField(primary_key=True)
