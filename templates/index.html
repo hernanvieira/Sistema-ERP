@@ -724,9 +724,9 @@ left: 43px;
                                       <tbody>
                                           {% for material in lista %}
                                               <tr class="tr-shadow">
-                                                <td>{{material.material}}</td>
-                                                <td style="text-align:center;">{{material.sum}} </td>
-                                                <td>{{material.material.tipo_material.unidad_medida}}</td>
+                                                <td style="text-align:left;">{{material.material}}</td>
+                                                <td style="text-align:right;">{{material.sum}} </td>
+                                                <td style="text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
                                               </tr>
                                           {% endfor %}
                                       </tbody>

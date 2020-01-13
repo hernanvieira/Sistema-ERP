@@ -373,15 +373,17 @@ Ver pedido
                                           <th>Monto</th>
                                           <th>Fecha</th>
                                           <th>Saldo</th>
+                                          <th>Usuario</th>
                                       </tr>
                                   </thead>
                                   <tbody>
                                     {% for entrega in entregas %}
                                       <tr>
-                                        <td>{{entrega.id_entrega}}</td>
+                                        <td style="text-align: right;">{{entrega.id_entrega}}</td>
                                         <td style="text-align: right;">${{entrega.monto}}</td>
                                         <td>{{entrega.fecha_entrega}}</td>
                                         <td style="text-align: right;">${{entrega.saldo}}</td>
+                                        <td style="text-align: left;">{{entrega.usuario.username}}</td>
                                       </tr>
                                       {% endfor %}
                                   </tbody>

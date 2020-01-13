@@ -243,18 +243,18 @@ def VerPedido (request,id_pedido):
         if 'boton_entregar' in request.POST:
             EntregarPedido(request,id_pedido)
         if 'boton_registrar_entega' in request.POST:
-            peticion = request.POST.copy()
-            peticion_valor = peticion.pop('registrar_entrega')[0]
-            pedido.entrega += int(peticion_valor)
+            peticion = request.POST.copy() # Obtengo una copia del request
+            usuario = request.user #Obtengo el usuario registrado actualmente
+            peticion_valor = peticion.pop('registrar_entrega')[0] #Obtengo el valor de la enterga
+            pedido.entrega += int(peticion_valor) #Sumo la entrega al pedido
 
-            saldo = pedido.precio_total - pedido.entrega
+            saldo = pedido.precio_total - pedido.entrega #Obtengo el saldo despues de registrar la entrega
 
             saldoaux = saldo
             if saldo < 0:
                 saldoaux = 0
-            entrega = Entregas.objects.create(monto = peticion_valor, pedido = pedido, saldo = saldoaux) # CReamos la entrega
+            entrega = Entregas.objects.create(monto = peticion_valor, pedido = pedido, saldo = saldoaux, usuario = usuario) #Creamos la entrega
             entrega.save()
-
 
             if saldo == 0:
                 pedido.save()
