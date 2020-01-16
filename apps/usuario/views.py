@@ -15,24 +15,25 @@ from .models import customuser
 
 # Create your views here.
 def SignUp(request):
-    usuarios = customuser.objects.all()
+    usuarios = customuser.objects.filter(is_active = True)
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
 
-        errores = form.errors.values()
-        errores = list(errores)
+        errores = form.errors.values() #Obtengo los valores devueltos en el diccionario
+        errores = list(errores) #Los casteo a lista porque no es iterable
         for error in errores:
-            error = str(error)
-            error = error.replace('<ul class="errorlist"><li>', '')
-            error = error.replace('</li></ul>', '')
-            print(error)
-            messages.error(request,error)
+            error = str(error) #Casteo el error a str (solo para eliminar el PUNTITO del <li>)
+            error = error.replace('<ul class="errorlist"><li>', '') #Borro la parte esta jaja
+            error = error.replace('</li></ul>', '') # y la parte esta jiji
+            messages.error(request,error) # PAAAaaaaa un mensajito de error to lindo
+
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username = username, password = raw_password)
-            return redirect('accounts/signup/')
+            messages.success(request, 'El usuario se agregó correctamente')
+            return redirect('/accounts/signup/')
     else:
         form = UserCreationForm()
     return render(request, 'signup.html', {'form':form, 'usuarios':usuarios})
@@ -62,3 +63,11 @@ def logoutUsuario(request):
 
 def VerPerfil(request):
     return render(request, 'usuario/ver_perfil.html')
+
+def EliminarUsuario(request,id):
+    usuario = customuser.objects.get(id=id)
+    usuario.is_active = False
+    usuario.save()
+
+    messages.error(request,'Se dió de baja el usuario' + usuario.username)
+    return redirect('/accounts/signup/')

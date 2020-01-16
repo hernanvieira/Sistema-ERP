@@ -93,6 +93,7 @@ Gestionar Usuarios
             <th>Id</th>
             <th>Nombre de Usuario</th>
             <th>Tipo de Usuario</th>
+            <th>Opciones</th>
           </tr>
       </thead>
       <tbody>
@@ -101,6 +102,34 @@ Gestionar Usuarios
             <td>{{usuario.pk}}</td>
             <td>{{usuario.username}}</td>
             <td>{{usuario.rol}}</td>
+            <td>
+              <!-- Modal Eliminar -->
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".{{usuario.pk}}">
+                <i class="fas fa-trash"></i>
+              </button>
+              <div class="modal fade {{usuario.pk}}" id="{{usuario.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel{{usuario.pk}}">Confirmar Eliminacion</h4>
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                              <a>¿Está seguro de <strong>dar de baja</strong> el usuario {{usuario.username}}?</a>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="alineado-derecha">
+                              <a href="{% url 'usuario:eliminar_usuario' usuario.pk %}">
+                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                              </a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End Modal -->
+            </td>
 
           </tr>
         {% endfor %}

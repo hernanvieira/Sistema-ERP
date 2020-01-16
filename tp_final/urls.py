@@ -21,6 +21,8 @@ urlpatterns = [
     path('pedido/',include(('apps.pedido.urls','pedido'))),
     path('prenda/',include(('apps.prenda.urls','prenda')),name='prenda'),
     path('estado/',include(('apps.estado.urls','estado')),name='estado'),
+    path('usuario/',include(('apps.usuario.urls','usuario')),name='usuario'),
+
     path('home/',login_required(Home), name = 'index'),
     path('estadistica/', login_required(Estadistica), name = 'estadistica'),
     path('accounts/login/', Login.as_view(), name='login'),
