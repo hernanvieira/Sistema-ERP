@@ -8,8 +8,6 @@ Listado de pedidos
 
 {% block content%}
 
-{% if pedidos %}
-
 <!-- Filtros -->
 
 <!-- DATA TABLE -->
@@ -179,9 +177,6 @@ Listado de pedidos
 {% endif %}
 
 
-{% else %}
-  <h1>No existen pedidos registradas</h1>
-{% endif %}
 <script>
 		window.onload=function() {
 			$('#modal_numero_pedido').modal('show');

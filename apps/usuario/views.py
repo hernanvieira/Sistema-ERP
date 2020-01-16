@@ -4,12 +4,38 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.edit import FormView
-from .forms import FormularioLogin
+from .forms import FormularioLogin, UserCreationForm
 from django.contrib.auth import login as dj_login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
+from .models import customuser
+
+#from django.contrib.auth.forms import UserCreationForm
+
 # Create your views here.
+def SignUp(request):
+    usuarios = customuser.objects.all()
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+
+        errores = form.errors.values()
+        errores = list(errores)
+        for error in errores:
+            error = str(error)
+            error = error.replace('<ul class="errorlist"><li>', '')
+            error = error.replace('</li></ul>', '')
+            print(error)
+            messages.error(request,error)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username = username, password = raw_password)
+            return redirect('accounts/signup/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'signup.html', {'form':form, 'usuarios':usuarios})
 
 class Login(FormView):
     template_name = 'login.html'

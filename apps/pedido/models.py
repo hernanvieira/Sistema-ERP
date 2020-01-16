@@ -4,10 +4,10 @@ from apps.prenda.models import Prenda
 from apps.material.models import Material, Tipo_material
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from django.contrib.auth.models import User
+#from apps.usuario.models import CustomUser
 
 from simple_history.models import HistoricalRecords
-# Create your models here.
+
 #Se crean las clases de acuerdo al diagrama de clases
 
 class Pedido (models.Model):
@@ -39,7 +39,7 @@ class Entregas (models.Model):
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT)
     fecha_entrega = models.DateField(auto_now=True)
     saldo = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0, validators=[MinValueValidator(0.00)])
-    usuario = models.ForeignKey(User, on_delete = models.PROTECT, null = True)
+    #usuario = models.ForeignKey(CustomUser, on_delete = models.PROTECT, null = True)
 
 class Faltante (models.Model):
     id_faltante = models.AutoField(primary_key=True)

@@ -5,7 +5,7 @@ from django.urls import path, include
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login,logout
 from apps.cliente.views import Home, Auditoria, Estadistica
-from apps.usuario.views import Login, logoutUsuario, VerPerfil
+from apps.usuario.views import Login, logoutUsuario, VerPerfil, SignUp
 from config.views import configuracion, configuracionMensaje
 
 from django.conf import settings
@@ -25,6 +25,7 @@ urlpatterns = [
     path('estadistica/', login_required(Estadistica), name = 'estadistica'),
     path('accounts/login/', Login.as_view(), name='login'),
     path('accounts/logout/', login_required(logoutUsuario), name='logout'),
+    path('accounts/signup/', login_required(SignUp), name='signup'),
     path('config/configuracion/', login_required(configuracion), name='configuracion'),
     path('config/configuracion_mensaje/', login_required(configuracionMensaje), name='configuracion_mensaje'),
     path('usuario/ver_perfil/', login_required(VerPerfil), name='ver_perfil')

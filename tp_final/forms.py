@@ -5,6 +5,7 @@ from apps.estado.models import *
 from apps.material.models import *
 from apps.pedido.models import *
 from apps.prenda.models import *
+from django.contrib.auth.models import User
 
 class ClienteForm (forms.ModelForm):
     class Meta:
@@ -174,3 +175,11 @@ class ConfiguracionMensajeForm (forms.ModelForm):
     class Meta:
         model = ConfiguracionMensaje
         fields = ['en_espera', 'en_produccion', 'cancelado','finalizado','entregado', 'entrega']
+        widgets = {
+        'en_espera' : forms.Textarea(attrs={"rows":2, "cols":40}),
+        'en_produccion' : forms.Textarea(attrs={"rows":2, "cols":40}),
+        'cancelado' : forms.Textarea(attrs={"rows":2, "cols":40}),
+        'finalizado' : forms.Textarea(attrs={"rows":2, "cols":40}),
+        'entregado' : forms.Textarea(attrs={"rows":2, "cols":40}),
+        'entrega' : forms.Textarea(attrs={"rows":2, "cols":40}),
+        }

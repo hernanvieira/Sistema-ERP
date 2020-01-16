@@ -1,0 +1,120 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Gestionar Usuarios
+{% endblock titulo%}
+
+{% block content%}
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Gestionar Usuarios</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            {% if message.tags == 'success'%}
+              <div class="alert alert-success">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+            {% endif %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+            {% if message.tags == 'warning' %}
+            <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="row">
+        <div class="col-md-3">
+          Nombre de Usuario
+            {{form.username}}
+        </div>
+        <div class="col-md-3">
+          Contraseña
+            {{form.password1}}
+        </div>
+        <div class="col-md-3">
+          Confirmar Contraseña
+            {{form.password2}}
+        </div>
+        <div class="col-md-3">
+          Tipo de usuario
+            {{form.rol}}
+        </div>
+      </div>
+      <br>
+      <div class="alert alert-warning">
+          Usuario
+          <li class="col-md-12"> 150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_</li>
+          Contraseña
+          <li class="col-md-12">La contraseña no puede asemejarse tanto a su otra información personal.</li>
+          <li class="col-md-12">La contraseña debe contener al menos 8 caracteres.</li>
+          <li class="col-md-12">La contraseña no puede ser una clave utilizada comunmente.</li>
+          <li class="col-md-12">La contraseña no puede ser completamente numérica.</li>
+
+
+      </div>
+
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" name="boton_guardar_listar">
+          <i class="fa fa-dot-circle-o"></i> Registrar
+        </button>
+        <button type="button" class="btn btn-danger" onclick="history.back()" >
+          <i class="fa fa-ban"></i> Cancelar
+        </button>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+{% if usuarios %}
+<!-- DATA TABLE-->
+<div class="table-responsive m-b-40">
+    <table class="table table-borderless table-data3">
+      <thead>
+          <tr>
+            <th>Id</th>
+            <th>Nombre de Usuario</th>
+            <th>Tipo de Usuario</th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+          <tr>
+            <td>{{usuario.pk}}</td>
+            <td>{{usuario.username}}</td>
+            <td>{{usuario.rol}}</td>
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="alineado-derecha">
+    <button type="button" class="btn btn-danger" onclick="history.back()" >
+      <i class="fa  fa-chevron-left"></i> Volver
+    </button>
+  </div>
+<!-- END DATA TABLE-->
+{% else %}
+  <h1>No existen usuarios registradas</h1>
+{% endif %}
+
+{% endblock content%}
