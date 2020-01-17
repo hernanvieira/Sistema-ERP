@@ -45,13 +45,18 @@ Gestionar Usuarios
           Nombre de Usuario
             {{form.username}}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 form-group">
           Contraseña
             {{form.password1}}
+            <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito1" name="button" onclick="myFunction1()"><i id="ojito1" class="fas fa-eye-slash"></i></button>
+
+
         </div>
         <div class="col-md-3">
           Confirmar Contraseña
             {{form.password2}}
+            <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito2" name="button" onclick="myFunction2()"><i id="ojito2" class="fas fa-eye-slash"></i></button>
+
         </div>
         <div class="col-md-3">
           Tipo de usuario
@@ -84,7 +89,6 @@ Gestionar Usuarios
 
   </div>
 </div>
-{% if usuarios %}
 <!-- DATA TABLE-->
 <div class="table-responsive m-b-40">
     <table class="table table-borderless table-data3">
@@ -142,8 +146,43 @@ Gestionar Usuarios
     </button>
   </div>
 <!-- END DATA TABLE-->
-{% else %}
-  <h1>No existen usuarios registradas</h1>
-{% endif %}
+
+<!-- Jquery JS-->
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+<script type="text/javascript">
+function myFunction1() {
+  var x = document.getElementById("myInput1");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+<script type="text/javascript">
+function myFunction2() {
+  var x = document.getElementById("myInput2");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+<script type="text/javascript">
+$('#button-ojito1').click(function() {
+  console.log("entrase")
+$('#ojito1').toggleClass('fa-eye-slash');
+$('#ojito1').toggleClass('fa-eye');
+});
+</script>
+<script type="text/javascript">
+$('#button-ojito2').click(function() {
+  console.log("entrase")
+$('#ojito2').toggleClass('fa-eye-slash');
+$('#ojito2').toggleClass('fa-eye');
+});
+</script>
 
 {% endblock content%}

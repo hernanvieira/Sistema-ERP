@@ -9,6 +9,8 @@ class FormularioLogin(AuthenticationForm):
 
        self.fields['password'].widget.attrs['class'] = 'au-input au-input--full'
        self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
+       self.fields['password'].widget.attrs['id'] = 'myInput'
+       self.fields['password'].widget.attrs['style'] = 'width:80%;'
 
 class UserCreationForm(UserCreationForm):
     class Meta:
@@ -22,8 +24,12 @@ class UserCreationForm(UserCreationForm):
 
        self.fields['password1'].widget.attrs['class'] = 'au-input au-input--full'
        self.fields['password1'].widget.attrs['placeholder'] = 'Contraseña'
+       self.fields['password1'].widget.attrs['id'] = 'myInput1'
+       self.fields['password1'].widget.attrs['style'] = 'width:80%;'
 
        self.fields['password2'].widget.attrs['class'] = 'au-input au-input--full'
        self.fields['password2'].widget.attrs['placeholder'] = 'Contraseña'
+       self.fields['password2'].widget.attrs['id'] = 'myInput2'
+       self.fields['password2'].widget.attrs['style'] = 'width:80%;'
 
        self.fields['rol'].widget.attrs['class'] = 'js-example-basic-single'

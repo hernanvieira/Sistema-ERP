@@ -251,6 +251,7 @@ left: 43px;
                                 <div class="form-group">
                                     <label>Contraseña</label>
                                     {{form.password}}
+                                    <button type="button" class="btn btn-secondary" id="button-ojito" name="button" onclick="myFunction()"><i id="ojito" class="fas fa-eye-slash"></i></button>
                                 </div>
                                     <label>
                                         <a href="#">Olvidaste la contraseña?</a>
@@ -334,6 +335,23 @@ left: 43px;
           events: events
         });
       });
+    </script>
+
+    <script type="text/javascript">
+    function myFunction() {
+      var x = document.getElementById("myInput");
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    </script>
+    <script type="text/javascript">
+    $('#button-ojito').click(function() {
+    $('#ojito').toggleClass('fa-eye-slash');
+    $('#ojito').toggleClass('fa-eye');
+    });
     </script>
 
 
