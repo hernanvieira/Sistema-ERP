@@ -8,7 +8,7 @@ urlpatterns = [
             #URL Medida
             path ('crear_medida/',login_required(CrearMedida),name='crear_medida'),
             path ('listar_medida/',login_required(ListarMedida),name='listar_medida'),
-            path ('editar_medida/<int:id_medida>',login_required()EditarMedida),name='editar_medida'),
+            path ('editar_medida/<int:id_medida>',login_required(EditarMedida),name='editar_medida'),
             path ('eliminar_medida/<int:id_medida>',login_required(EliminarMedida),name='eliminar_medida'),
 
             #URL Tipo_prenda
