@@ -55,6 +55,8 @@ def Estadistica(request):
 def CrearCliente (request):
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
+        print("ALTO ERROR WACHO")
+        print(cliente_form.errors)
         if cliente_form.is_valid():
             cliente_form.save()
             messages.success(request, 'Sea agregó correctamente el cliente')
@@ -121,13 +123,20 @@ def ClienteHome(request):
     reporte = Configuracion.objects.all().last()
     if request.method == 'POST':
         cliente_form = ClienteForm(request.POST)
+
         if cliente_form.is_valid():
             cliente_form.save()
             messages.success(request, 'Sea agregó correctamente el cliente')
             return render (request, 'cliente/index_cliente.html',{'clientes':clientes})
         else:
-            messages.error(request, 'Ocurrió un error al tratar de agregar el cliente')
-            cliente_form = ClienteForm()
+            errores = cliente_form.errors.values() #Obtengo los valores devueltos en el diccionario
+            errores = list(errores) #Los casteo a lista porque no es iterable
+            for error in errores:
+                error = str(error) #Casteo el error a str (solo para eliminar el PUNTITO del <li>)
+                error = error.replace('<ul class="errorlist"><li>', '') #Borro la parte esta jaja
+                error = error.replace('</li></ul>', '') # y la parte esta jiji
+                messages.error(request,error) # PAAAaaaaa un mensajito de error to lindo
+            cliente_form = ClienteForm(request.POST)
     else:
         cliente_form = ClienteForm()
     return render (request, 'cliente/index_cliente.html',{'reporte':reporte,'clientes':clientes,'cliente_form':cliente_form})

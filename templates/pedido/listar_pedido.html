@@ -114,6 +114,7 @@ Listado de pedidos
                       <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.pedido.id_pedido %}'">
                         <i class="fas fa-eye"></i>
                       </button>
+                      {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
                       <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.pedido.id_pedido %}'">
                         <i class="fas fa-pencil-square-o"></i>
                       </button>
@@ -121,6 +122,7 @@ Listado de pedidos
                       <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido.pedido.id_pedido}}">
                         <i class="fas fa-trash"></i>
                       </button>
+                      {% endif %}
                       <div class="modal fade bs-example-modal-lg2{{pedido.pedido.id_pedido}}" id="myModal2{{pedido.pedido.id_pedido}}" tabindex="-1" role="dialog" aria-hidden="true">
                           <div class="modal-dialog modal-lg">
                               <div class="modal-content">

@@ -11,11 +11,14 @@ class ClienteForm (forms.ModelForm):
     class Meta:
         model = Cliente
         fields = ['dni', 'apellido', 'nombre', 'telefono', 'correo','domicilio']
-    def clean_apellido(self):
-        value = self.cleaned_data.get('apellido')
-        if not value.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
+        widgets = {
+        'dni' : forms.TextInput(attrs={'type' : 'number', 'class' : 'form-control', 'min':'1000000', 'onkeypress':'if(this.value.length==8) return false;'}),
+        'apellido' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'telefono' : forms.TextInput(attrs={'type' : 'number', 'class' : 'form-control','id':'phone','pattern':'^\+375(\s+)?\(?(17|25|29|33|44)\)?(\s+)?[0-9]{3}-?[0-9]{2}-?[0-9]{2}$"})', 'onkeypress':'if(this.value.length==15) return false;'}),
+        'correo' : forms.EmailInput(attrs={'type' : 'email', 'class' : 'form-control'}),
+        'domicilio' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ClienteForm, self).__init__(*args, **kwargs)

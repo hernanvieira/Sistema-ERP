@@ -500,41 +500,29 @@ left: 43px;
                 <div class="row">
                   <div class="col-md-4">
                     {{cliente_form.dni.label}}
-                    <div class="form-control">
                       {{cliente_form.dni}}
-                    </div>
                   </div>
                   <div class="col-md-8">
                   </div>
                   <div class="col-md-4">
                     {{cliente_form.apellido.label}}
-                    <div class="form-control">
                       {{cliente_form.apellido}}
-                    </div>
                   </div>
                   <div class="col-md-4">
                     {{cliente_form.nombre.label}}
-                    <div class="form-control">
                       {{cliente_form.nombre}}
-                    </div>
                   </div>
                   <div class="col-md-4">
                     {{cliente_form.telefono.label}}
-                    <div class="form-control">
                       {{cliente_form.telefono}}
-                    </div>
                   </div>
                   <div class="col-md-12">
                     {{cliente_form.domicilio.label}}
-                    <div class="form-control">
                       {{cliente_form.domicilio}}
-                    </div>
                   </div>
                   <div class="col-md-12">
                     {{cliente_form.correo.label}}
-                    <div class="form-control">
                       {{cliente_form.correo}}
-                    </div>
                   </div>
                 </div>
 
@@ -861,7 +849,16 @@ left: 43px;
         });
 
     </script>
-    
+    <script type="text/javascript">
+    function validateKeyStrokes(event) {
+      var charCode = (event.which) ? event.which : event.keyCode;
+      if (((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123)) || charCode == 32) {
+          return true;
+      }
+      return false;
+    }
+    </script>
+
 
 </body>
 {% endblock body %}
