@@ -735,18 +735,18 @@ left: 43px;
                                   <table class="table table-borderless table-data3">
                                       <thead>
                                           <tr>
-                                              <th>Material</th>
-                                              <th>Faltante</th>
-                                              <th></th>
+                                              <th style="width:50%">Material</th>
+                                              <th style="width:30%; text-align:right;">Faltante</th>
+                                              <th style="width:0%"></th>
                                           </tr>
                                       </thead>
 
                                       <tbody>
                                           {% for material in lista %}
                                               <tr class="tr-shadow">
-                                                <td style="text-align:left;">{{material.material}}</td>
-                                                <td style="text-align:right;">{{material.sum}} </td>
-                                                <td style="text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
+                                                <td style="width:20%; text-align:left;">{{material.material.nombre}}<input style="width:30%" type="color" name="" value="{{material.material.color}}" disabled></td>
+                                                <td style="width:20%; text-align:right;">{{material.sum}} </td>
+                                                <td style="width:20%; text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
                                               </tr>
                                           {% endfor %}
                                       </tbody>

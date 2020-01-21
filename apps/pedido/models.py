@@ -21,6 +21,7 @@ class Pedido (models.Model):
     cancelado = models.BooleanField(default = False)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
     puntaje = models.CharField(max_length=50, null = True, blank = True, default = 2)
+    confirmado = models.BooleanField(default = False)
     history = HistoricalRecords()
 
     def __str__(self):

@@ -140,6 +140,8 @@ def VolverPedido (request,id_pedido):
 
                 estado_pedido = Estado_pedido.objects.create(fecha=date.today(), estado = estado_enespera, pedido = pedido)
 
+                pedido.confirmado = True
+
                 from django.template.loader import render_to_string
                 from django.core.mail import EmailMultiAlternatives
                 #

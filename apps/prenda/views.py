@@ -183,13 +183,19 @@ def CrearPrenda (request,id_pedido):
             #Calcular fecha de entrega
             tiempo_prod_total = list(Detalle.objects.filter(pedido = pedido).aggregate(Sum('tiempo_prod_lote')).values())
             tiempo_prod_total = tiempo_prod_total[0]
+            print("TOTAL")
+            print(tiempo_prod_total)
             if tiempo_prod_total == None:
                 tiempo_prod_total = 0
-            pedidos = Pedido.objects.exclude(id_pedido=id_pedido).exclude(fecha_entrega = None).order_by('fecha_entrega')
+            pedidos = Pedido.objects.exclude(id_pedido=id_pedido).exclude(fecha_entrega = None).exclude(confirmado = False).order_by('fecha_entrega')
 
             if pedidos:
                 fechona  = pedidos.last()
+                print("ULTIMA")
+                print(fechona.fecha_entrega)
                 pedido.fecha_entrega = fechona.fecha_entrega + timedelta(days= tiempo_prod_total)
+                print("NUEVA")
+                print(pedido.fecha_entrega)
             else:
                 pedido.fecha_entrega = date.today() + timedelta(days= tiempo_prod_total)
             pedido.save()
