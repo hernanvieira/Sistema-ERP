@@ -14,7 +14,6 @@ Nueva Medida
     <form method="POST">
       {%csrf_token%}
       {% if messages %}
-      <div class="col-md-12">
         <ul class="messages">
           {% for message in messages %}
             {% if message.tags == 'success'%}
@@ -29,18 +28,19 @@ Nueva Medida
               <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             </div>
             {% endif %}
+            {% if message.tags == 'warning' %}
+            <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
           {% endfor %}
         </ul>
-      </div>
       {% endif %}
       {{medida_form.nombre_medida.label}}
-      <div class="form-control">
         {{medida_form.nombre_medida}}
-      </div>
       Unidad de medida
-      <div class="form-control">
         {{medida_form.unidad_medida}}
-      </div>
 
       <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success" name="boton_crear_agregar">

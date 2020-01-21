@@ -15,6 +15,9 @@ Crear pedido
 
     <form method="POST">
       {% csrf_token %}
+
+        <input type="hidden" name="" id="id_pedido" value="{{pedido.id_pedido}}">
+
       <div class="row">
         <input type="hidden" id="min" value="">
         <input type="hidden" id="max" value="">
@@ -100,7 +103,7 @@ Crear pedido
           </div>
 
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
 
           {{pedido_form.entrega.label}}
           <div class="input-group">
@@ -111,7 +114,7 @@ Crear pedido
               {{pedido_form.entrega}}
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="col-md-12">
     <hr class="line-seprate">
           {% if detalles %}
@@ -186,7 +189,5 @@ Crear pedido
 </div>
 
 <script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
-
-
 
 {% endblock content%}

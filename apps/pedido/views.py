@@ -8,10 +8,17 @@ from apps.material.models import Material
 from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
 import datetime
+
+from datetime import datetime, timedelta, date
+
 from django.contrib import messages
 from config.models import Configuracion, ConfiguracionMensaje
 from django.core.mail import EmailMessage
 from django.db.models import Sum
+
+import json
+from django.http import HttpResponse
+from django.http import JsonResponse
 
 def NuevoPedido (request):
     if request.method == 'POST':
@@ -26,32 +33,11 @@ def NuevoPedido (request):
             pedido_form = PedidoForm(request.POST)
             prenda_form = PrendaForm(request.POST) # lupy estubo aki peligro borre este mensaje para su comodidad
             if pedido_form.is_valid():
-                pedido = pedido_form.save(commit = False)
-                if pedido.fecha_entrega != None:
-                    fecha = datetime.datetime.strptime(str(pedido.fecha_entrega), '%Y-%m-%d')
-                    if fecha.date() > datetime.date.today():
-                        pedido = pedido_form.save()
-                        id_pedido = pedido.id_pedido
-                        return redirect('/prenda/crear_prenda/'+str(id_pedido))
-                    else:
-                        messages.error(request, 'La fecha debe ser posterior a la actual')
-                else:
-                    pedido = pedido_form.save()
-                    id_pedido = pedido.id_pedido
-                    return redirect('/prenda/crear_prenda/'+str(id_pedido))
+                pedido = pedido_form.save()
+                id_pedido = pedido.id_pedido
+                return redirect('/prenda/crear_prenda/'+str(id_pedido))
             else:
                 messages.error(request, 'No se puede introducir valores negativos')
-        if 'boton_finalizar' in request.POST:
-            pedido_form = PedidoForm(request.POST)
-            pedido = pedido_form.save(commit=False)
-            id_pedido = pedido.id_pedido
-            if pedido.seña != None:
-                pedido.save()
-                return redirect('pedido/listar_pedido/'+str(id_pedido))
-
-            else:
-                cliente_form = ClienteForm(request.POST)
-                messages.error(request, 'Debe agregar prendas')
     else:
         pedido_form = PedidoForm()
         cliente_form = ClienteForm()
@@ -150,16 +136,9 @@ def VolverPedido (request,id_pedido):
                 pedido_form = PedidoForm(request.POST, instance=pedido)
                 pedido = pedido_form.save(commit=False)
 
-
-                estado_pedido_form = Estado_pedidoForm()
-                estado_pedido = estado_pedido_form.save(commit = False)
-
                 estado_enespera = Estado.objects.get(id_estado = 6)
 
-                estado_pedido.estado = estado_enespera
-                estado_pedido.pedido = pedido
-                estado_pedido.fecha = datetime.date.today()
-
+                estado_pedido = Estado_pedido.objects.create(fecha=date.today(), estado = estado_enespera, pedido = pedido)
 
                 from django.template.loader import render_to_string
                 from django.core.mail import EmailMultiAlternatives
@@ -185,7 +164,7 @@ def VolverPedido (request,id_pedido):
                     cliente_form = ClienteForm(request.POST)
                     messages.error(request, 'Debe agregar prendas')
         cliente_form = ClienteForm(request.POST)
-        return render(request,'pedido/crear_pedido.html',{'pedido_form':pedido_form,'detalles':detalles,'cliente_form':cliente_form})
+        return render(request,'pedido/crear_pedido.html',{'pedido':pedido,'pedido_form':pedido_form,'detalles':detalles,'cliente_form':cliente_form})
 
 #Editar un pedido
 def EditarPedido (request,id_pedido):

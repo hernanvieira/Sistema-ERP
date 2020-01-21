@@ -14665,3 +14665,16 @@ section {
 .right-aligned-celltable td.numcol {
 text-align : right;
 }
+
+.colorPickSelector {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    width: 100px;
+    height: 36px;
+    cursor: pointer;
+    -webkit-transition: all linear .2s;
+    -moz-transition: all linear .2s;
+    -ms-transition: all linear .2s;
+    -o-transition: all linear .2s;
+    transition: all linear .2s;
+}

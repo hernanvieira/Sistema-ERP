@@ -32,21 +32,23 @@ Agregar Prenda
                 <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
               </div>
               {% endif %}
+              {% if message.tags == 'warning' %}
+              <div class="alert alert-warning">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+              {% endif %}
             {% endfor %}
           </ul>
         </div>
         {% endif %}
         <div class="col-md-3">
           {{prenda_form.tipo_prenda.label}}
-          <div class="form-control">
             {{prenda_form.tipo_prenda}}
-          </div>
         </div>
         <div class="col-md-2">
             {{prenda_form.talle.label}}
-            <div class="form-control">
               {{prenda_form.talle}}
-            </div>
         </div>
         <div class="col-md-1">
           <br>
@@ -65,17 +67,13 @@ Agregar Prenda
               <div class="input-group-addon">
                 <i class="fa fa-dollar"></i>
               </div>
-              <div class="form-control">
                 {{prenda_form.precio}}
-              </div>
             </div>
           </div>
           <div class="col-md-3">
             {{detalle_form.cantidad.label}}
             <div class="input-group">
-              <div class="form-control">
                 {{detalle_form.cantidad}}
-              </div>
               <div class="input-group-addon">
                 Unidad/es
               </div>
@@ -84,19 +82,17 @@ Agregar Prenda
           <div class="col-md-3">
             {{prenda_form.tiempo_prod_prenda.label}}
             <div class="input-group">
-              <div class="form-control">
                 {{prenda_form.tiempo_prod_prenda}}
-              </div>
               <div class="input-group-addon">
                 Días
               </div>
             </div>
           </div>
         </div>
-        <br>
+        <!-- <br>
         <button type="submit" class="btn btn-warning" name="boton_asignar_material">
           <i class="fa fa-archive"></i> Asignar Materiales
-        </button>
+        </button> -->
         <hr class="line-seprate">
         {% if ingredientes %}
         <!-- DATA TABLE-->

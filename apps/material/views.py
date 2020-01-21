@@ -5,6 +5,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from config.models import Configuracion
 
+import json
+from django.http import HttpResponse
+from django.http import JsonResponse
+
 #Crear un tipo de tipo_material
 def CrearTipo_material (request):
     tipo_materiales = Tipo_material.objects.all()
@@ -210,3 +214,16 @@ def EliminarCompra (request,id_compra):
         compra.delete()
         return redirect('material:listar_compra')
     return render(request,'material/eliminar_compra.html',{'compra':compra,})
+
+#Mostrar unidad de medida al asignar material
+def MostrarUnidad(request):
+    mt = request.GET.get('material',None)
+    print(mt)
+    tipo_material = Tipo_material.objects.get(id_tipo_material = mt)
+    print(tipo_material)
+    unidad = tipo_material.unidad_medida.nombre
+    result = {
+        'medida': unidad
+    }
+    print(result)
+    return JsonResponse(result)

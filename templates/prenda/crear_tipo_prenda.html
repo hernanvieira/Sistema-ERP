@@ -30,16 +30,26 @@ Nuevo Tipo de Prenda
               <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
             </div>
             {% endif %}
+            {% if message.tags == 'warning' %}
+            <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
           {% endfor %}
         </ul>
       {% endif %}
+      <div class="row">
+        <div class="col-3">
+          {{tipo_prenda_form.nombre.label}}
+            {{tipo_prenda_form.nombre}}
+        </div>
+        <div class="col-12">
+          {{tipo_prenda_form.medida.label}}
+            {{tipo_prenda_form.medida}}
+        </div>
 
-      {{tipo_prenda_form.nombre.label}}
-      <div class="form-control">
-        {{tipo_prenda_form.nombre}}
       </div>
-      {{tipo_prenda_form.medida.label}}
-        {{tipo_prenda_form.medida}}
 
       <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success" name="boton_crear_agregar">

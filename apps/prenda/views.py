@@ -9,14 +9,14 @@ from django.contrib import messages
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-
-#JSON
-# from rest_framework.renderers import JSONRenderer
-# from rest_framework.parsers import JSONParser
+from datetime import date
 
 import json
 from django.http import HttpResponse
 from django.http import JsonResponse
+
+from django.db.models import Sum
+
 
 class JSONResponse(HttpResponse):
     """
@@ -31,20 +31,23 @@ class JSONResponse(HttpResponse):
 #Crear un Medida
 def CrearMedida (request):
     medidas = Medida.objects.all()
-    if request.method == 'POST':
-        medida_form = MedidaForm(request.POST)
-        if medida_form.is_valid():
-            if "boton_crear_agregar" in request.POST:
+    try:
+        if request.method == 'POST':
+            medida_form = MedidaForm(request.POST)
+            if medida_form.is_valid():
+                if "boton_crear_agregar" in request.POST:
+                    medida = medida_form.save()
+                    medidas = Medida.objects.all()
+                    return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
                 medida = medida_form.save()
-                medidas = Medida.objects.all()
-                return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
-            medida = medida_form.save()
-            return ListarMedida(request)
+                return ListarMedida(request)
+            else:
+                messages.error(request, 'Ocurrió un error al tratar de crear la medida')
         else:
-            messages.error(request, 'Ocurrió un error al tratar de crear la medida')
-    else:
-        medida_form = MedidaForm()
-        medidas = Medida.objects.all()
+            medida_form = MedidaForm()
+            medidas = Medida.objects.all()
+    except Exception as e:
+        messages.error(request, 'Ya existe una medida con el mismo nombre')
     return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
 #Listar todos las medidas
 def ListarMedida (request):
@@ -71,27 +74,30 @@ def EliminarMedida (request,id_medida):
     medida = get_object_or_404(Medida, id_medida=id_medida)
     try:
         medida.delete()
-        messages.warning(request, 'Se eliminó la medida')
+        messages.warning(request, 'Se eliminó la medida '+ str(medida))
     except Exception as e:
-        messages.error(request, "Ocurrió un error al tratar de eliminar la medida " + str(id_pedido))
-    return ListarMedida(request)
+        messages.error(request, "Ocurrió un error al tratar de eliminar la medida " + medida)
+    return redirect('/prenda/crear_medida')
 
 #Crear un tipo de prenda
 def CrearTipo_prenda (request):
     tipo_prendas = Tipo_prenda.objects.all()
-    if request.method == 'POST':
-        tipo_prenda_form = Tipo_prendaForm(request.POST)
-        if tipo_prenda_form.is_valid():
-            if "boton_crear_agregar" in request.POST:
+    try:
+        if request.method == 'POST':
+            tipo_prenda_form = Tipo_prendaForm(request.POST)
+            if tipo_prenda_form.is_valid():
+                if "boton_crear_agregar" in request.POST:
+                    tipo_prenda_form.save()
+                    return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
                 tipo_prenda_form.save()
-                return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
-            tipo_prenda_form.save()
-            return ListarTipo_prenda(request)
-        else:
-            messages.error(request,"Ocurrió un error al crear el tipo de prenda")
+                return ListarTipo_prenda(request)
+            else:
+                messages.error(request,"Ocurrió un error al crear el tipo de prenda")
 
-    else:
-        tipo_prenda_form = Tipo_prendaForm()
+        else:
+            tipo_prenda_form = Tipo_prendaForm()
+    except Exception as e:
+        messages.error(request,"Ya existe una prenda con el mismo nombre")
     return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
 #Listar todos los tipos de prendas
 def ListarTipo_prenda (request):
@@ -137,8 +143,8 @@ def EliminarTipo_prenda (request,id_tipo_prenda):
         tipo_prenda.delete()
         messages.warning(request, 'Se eliminó el tipo de prenda')
     except Exception as e:
-        messages.error(request, 'Ocurrió un error al tratar de eliminar el estado')
-    return ListarTipo_prenda(request)
+        messages.error(request, 'Ocurrió un error al tratar de eliminar el tipo de prenda')
+    return redirect('/prenda/crear_tipo_prenda')
 #Registrar una prenda al detalle
 def CrearPrenda (request,id_pedido):
     if request.method == 'POST':
@@ -153,38 +159,41 @@ def CrearPrenda (request,id_pedido):
         if cliente.reputacion > 100:
             reputacion = 1
 
-        print("EKEKEKEKEKE")
-        print(cliente.reputacion)
-        print(reputacion)
-
         if prenda_form.is_valid() and detalle_form.is_valid():
             prenda = prenda_form.save(commit = False) #Guardo prenda
             prenda.imagen = request.FILES.get('txtImagen')
-            prenda.save()
 
-            detalle = detalle_form.save() #Guardo detalle
+
+            detalle = detalle_form.save(commit = False) #Guardo detalle
             detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
             tiempo = detalle.tiempo_prod_lote
-            detalle.save() #Actualizo el detalle
+
             pedido.precio_total += prenda.precio * detalle.cantidad #Calculo precio total
             pedido.seña = pedido.precio_total*Decimal(reputacion)
 
-            fecha = Pedido.objects.exclude(fecha_entrega=None).order_by('fecha_entrega')
-            fechona  = fecha.last()
-            print("LA ULTIMA FECHARDA")
-            print(fechona.fecha_entrega)
-            print("SE LE SUMA")
-            print(tiempo)
-            pedido.fecha_entrega = fechona.fecha_entrega + timedelta(days= tiempo)
-            print("Nueva fechona")
-            print(pedido.fecha_entrega)
-
+            prenda.save()
+            detalle.save() #Actualizo el detalle
             # Asocio datos de prenda y pedido a detalle
             detalle.prenda = prenda
             detalle.pedido = pedido
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
+
+            #Calcular fecha de entrega
+            tiempo_prod_total = list(Detalle.objects.filter(pedido = pedido).aggregate(Sum('tiempo_prod_lote')).values())
+            tiempo_prod_total = tiempo_prod_total[0]
+            if tiempo_prod_total == None:
+                tiempo_prod_total = 0
+            pedidos = Pedido.objects.exclude(id_pedido=id_pedido).exclude(fecha_entrega = None).order_by('fecha_entrega')
+
+            if pedidos:
+                fechona  = pedidos.last()
+                pedido.fecha_entrega = fechona.fecha_entrega + timedelta(days= tiempo_prod_total)
+            else:
+                pedido.fecha_entrega = date.today() + timedelta(days= tiempo_prod_total)
+            pedido.save()
+
             if 'boton_asignar_material' in request.POST:
                 prenda_form=PrendaForm(request.POST, instance=prenda)
                 if prenda_form.is_valid():

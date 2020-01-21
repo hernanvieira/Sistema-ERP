@@ -27,6 +27,9 @@
     <!-- select2 -->
     <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" media="all">
 
+    <!-- color picker -->
+    <link rel="stylesheet" href="{% static 'dist/bcp.min.css' %}" />
+
     <!-- Bootstrap CSS-->
     <link href="{% static 'vendor/bootstrap-4.1/bootstrap.min.css' %}" rel="stylesheet" media="all">
 
@@ -791,6 +794,29 @@ left: 43px;
     <!-- select2 -->
     <script src="{% static 'js/select2.min.js' %}"></script>
 
+    <!-- color picker -->
+    <script src="{% static 'dist/bcp.min.js' %}"></script>
+
+    <script src="{% static 'dist/bcp.en.js' %}"></script>
+
+    <script type="text/javascript">
+    $('.colorPicker').bcp();
+    </script>
+
+    <script type="text/javascript">
+    $('.colorPicker').on('pcb.refresh',function (e) {
+      let color = $(this).bcp('color');
+      console.log(color);
+      if (color.value) {
+        $(this).css({
+        backgroundColor: color.value,
+        color: color.dark ?'#fff' :'#000'
+        });
+        $("#color").val(color.value);
+      }
+    });
+    </script>
+
     <!-- Vendor JS       -->
     <!-- <script src="{% static 'vendor/slick/slick.min.js' %}"></script> -->
     <!-- <script src="{% static 'vendor/wow/wow.min.js' %}"></script> -->
@@ -829,10 +855,10 @@ left: 43px;
                 events: [
                     {% for event in pedidos %}
                         {
-                            title: "Pedido: {{ event.id_pedido}}",
-                            start: '{{ event.fecha_entrega|date:"Y-m-d" }}',
-                            id: '{{ event.id_pedido }}',
-                            url: '/pedido/ver_pedido/{{event.id_pedido}}'
+                            title: "Pedido: {{ event.pedido.id_pedido}}",
+                            start: '{{ event.pedido.fecha_entrega|date:"Y-m-d" }}',
+                            id: '{{ event.pedido.id_pedido }}',
+                            url: '/pedido/ver_pedido/{{event.pedido.id_pedido}}'
                         },
                     {% endfor %}
                 ],

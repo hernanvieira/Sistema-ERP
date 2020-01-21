@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CrearTipo_material, ListarTipo_material, EditarTipo_material, EliminarTipo_material, CrearMaterial, ListarMaterial, EditarMaterial, EliminarMaterial, CrearUnidad_medida, ListarUnidad_medida, EditarUnidad_medida, EliminarUnidad_medida
-from .views import CrearCompra, ListarCompra, EditarCompra, EliminarCompra
+from .views import CrearCompra, ListarCompra, EditarCompra, EliminarCompra, MostrarUnidad
 
 from django.contrib.auth.decorators import login_required
 
@@ -28,5 +28,8 @@ urlpatterns = [
             path ('listar_compra/',login_required(ListarCompra),name='listar_compra'),
             path ('editar_compra/<int:id_compra>',login_required(EditarCompra),name='editar_compra'),
             path ('eliminar_compra/<int:id_compra>',login_required(EliminarCompra),name='eliminar_compra'),
+
+            #URL Mostrar unidad de medida
+            path ('mostrar_unidad/',login_required(MostrarUnidad),name='mostrar_unidad'),
 
 ]

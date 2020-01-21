@@ -31,7 +31,32 @@ Listado de Tipos de Materiales
     {% endfor %}
   </ul>
 {% endif %}
+
 <!-- DATA TABLE-->
+
+<!-- Vas a tener que pasar un objects.all() de la tabla permisos
+      para comparar cada uno de los permisos con los que esten
+      en los permisos del rol que tiene el usuario actualmente -->
+
+{% for permiso in permisos %} <!-- Recorres TOOOOODOS los permisos de tu sistema-->
+<!-- Este for tiene que englobar casi todo tu html porque adentro de este se pinta o no las cosas -->
+  ...
+  HTML <!-- HTML de relleno -->
+  ...
+  {% if permiso in user.rol.permisos %} <!-- Preguntas si el permiso de la primer iteracion esta en los de tu usuario-->
+    {% if permiso.nombre == 'crear usuario' %}
+      pintá lo de crear usuario <!-- Si está entonces pinta lo que esté adentro del if -->
+    {% endif %}
+  {% endif %}
+  ...
+  HTML <!-- HTML de relleno -->
+  ...
+  {% if permiso in user.rol.permisos %} <!-- lo mismo hasta que termine el for-->
+    {% if permiso.nombre == 'crear lider' %}
+      pintá lo de crear lider y asi...
+    {% endif %}
+  {% endif %}
+{% endfor %}
 
 <div class="table-responsive m-b-40">
     <table class="table table-borderless table-data2" id="midatatable">
@@ -40,7 +65,7 @@ Listado de Tipos de Materiales
             <th>Id</th>
             <th>Tipo de Material</th>
             <th>Nombre</th>
-            <th>Color</th>
+            <th class="noExport">Color</th>
             <th>Stock</th>
             <th>Stock Mínimo</th>
             <th class ="noExport">Opciones</th>
@@ -52,7 +77,7 @@ Listado de Tipos de Materiales
             <td>{{material.id_material}}</td>
             <td>{{material.tipo_material}}</td>
             <td>{{material.nombre}}</td>
-            <td>{{material.color}}</td>
+            <td class="noExport"><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
             <td style="text-align: right;">{{material.stock}}</td>
             <td style="text-align: right;">{{material.stock_minimo}}</td>
             <td>

@@ -53,31 +53,31 @@ class Unidad_medidaForm (forms.ModelForm):
     class Meta:
         model = Unidad_medida
         fields = ['nombre','descripcion']
-    def clean_nombre(self):
-        value = self.cleaned_data.get('nombre')
-        if not value.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
+        widgets = {
+        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'descripcion' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        }
 
 class Tipo_materialForm (forms.ModelForm):
     class Meta:
         model = Tipo_material
         fields = ['nombre','unidad_medida']
-    def clean_nombre(self):
-        value = self.cleaned_data.get('nombre')
-        if not value.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
+        widgets = {
+        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'unidad_medida' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        }
 
 class MaterialForm (forms.ModelForm):
     class Meta:
         model = Material
         fields = ['nombre','color','tipo_material','stock','stock_minimo','tiempo_reposicion']
-    def clean_nombre(self):
-        value = self.cleaned_data.get('nombre')
-        if not value.isalpha():
-            raise forms.ValidationError("No puede introducir numeros")
-        return value
+        widgets = {
+        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'tipo_material' : forms.Select(attrs={'class' : 'js-example-basic-single', 'id':'combo'}),
+        'stock_minimo' : forms.TextInput(attrs={'class' : 'form-control'}),
+        'tiempo_reposicion' : forms.TextInput(attrs={'class' : 'form-control'}),
+        'color' : forms.TextInput(attrs={'class' : 'form-control', 'id':'color', 'type':'hidden'}),
+        }
 
 class CompraForm (forms.ModelForm):
     class Meta:
@@ -115,12 +115,16 @@ class DetalleForm (forms.ModelForm):
     class Meta:
         model = Detalle
         fields = ['cantidad', 'tiempo_prod_lote', 'pedido','prenda']
+        widgets = {
+        'cantidad' : forms.TextInput(attrs={'class' : 'form-control'}),
+        }
 
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda
         fields = ['nombre','medida']
         widgets = {
+        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
         'medida' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
         }
     def clean_nombre(self):
@@ -143,9 +147,10 @@ class PrendaForm (forms.ModelForm):
         model = Prenda
         fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio','imagen']
         widgets = {
-        'talle' : forms.Select(choices = CHOICES),
-        'tipo_prenda' : forms.Select(attrs={'id':'tipo_prenda', 'name':'tipo_prenda'}),
-        'tiempo_prod_prenda' : forms.TextInput(attrs={'id':'tiempo_prod_prenda'})
+        'talle' : forms.Select(choices = CHOICES, attrs={'class':'js-example-basic-single'}),
+        'tipo_prenda' : forms.Select(attrs={'id':'tipo_prenda', 'name':'tipo_prenda', 'class':'js-example-basic-single'}),
+        'tiempo_prod_prenda' : forms.TextInput(attrs={'id':'tiempo_prod_prenda','class':'form-control'}),
+        'precio' : forms.TextInput(attrs={'class':'form-control'})
         }
 
 class IngredienteForm (forms.ModelForm):
@@ -160,6 +165,10 @@ class MedidaForm (forms.ModelForm):
     class Meta:
         model = Medida
         fields = ['nombre_medida', 'unidad_medida']
+        widgets = {
+        'nombre_medida' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'unidad_medida' : forms.Select(attrs={'class':'js-example-basic-single'})
+        }
 
 class Medida_prendaForm (forms.ModelForm):
     class Meta:

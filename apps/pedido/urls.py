@@ -18,5 +18,5 @@ urlpatterns = [
             path ('entregar_pedido/<int:id_pedido>',login_required(EntregarPedido),name='entregar_pedido'),
             path ('materiales_utilizados/<int:id_pedido>',login_required(MaterialesUtilizados),name='materiales_utilizados'),
             path('auditoria/', login_required(Auditoria), name = 'auditoria'),
-            path ('lista_compras/',login_required(ListaCompras),name='lista_compras')
+            path ('lista_compras/',login_required(ListaCompras),name='lista_compras'),
 ]
