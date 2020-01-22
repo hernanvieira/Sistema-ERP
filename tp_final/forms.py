@@ -95,20 +95,16 @@ class PedidoForm (forms.ModelForm):
         ('1', 'Media'),
         ('0', 'Baja'),
         ]
-        CHOICES_PUNTAJE= [
-        ('0', 'Muy Mala'),
-        ('2', 'Mala'),
-        ('1', 'Regular'),
-        ('1', 'Buena'),
-        ('1', 'Muy Buena'),
-        ]
+
         model = Pedido
         fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
         widgets = {
         'fecha_entrega' : forms.DateInput(attrs={'type' :'', 'id':'fecha_entrega', 'name':'fecha_entrega'}),
-        'prioridad_entrega' : forms.Select(choices = CHOICES_PRIORIDAD),
-        'puntaje' : forms.Select(choices = CHOICES_PUNTAJE),
-        'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'})
+        'prioridad_entrega' : forms.Select(choices = CHOICES_PRIORIDAD, attrs={'class' : 'js-example-basic-single'}),
+        'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
+        'precio_total' : forms.TextInput(attrs={'class' : 'form-control'}),
+        'entrega' : forms.TextInput(attrs={'class' : 'form-control'}),
+        'seña' : forms.TextInput(attrs={'class' : 'form-control'}),
         }
 
 class DetalleForm (forms.ModelForm):

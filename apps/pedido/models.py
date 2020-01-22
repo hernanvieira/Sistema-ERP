@@ -4,7 +4,7 @@ from apps.prenda.models import Prenda
 from apps.material.models import Material, Tipo_material
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-#from apps.usuario.models import CustomUser
+from apps.usuario.models import customuser
 
 from simple_history.models import HistoricalRecords
 
@@ -20,7 +20,6 @@ class Pedido (models.Model):
     prioridad_entrega = models.CharField(max_length=50, null = True, blank=True, default = 2)
     cancelado = models.BooleanField(default = False)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
-    puntaje = models.CharField(max_length=50, null = True, blank = True, default = 2)
     confirmado = models.BooleanField(default = False)
     history = HistoricalRecords()
 
@@ -40,7 +39,7 @@ class Entregas (models.Model):
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT)
     fecha_entrega = models.DateField(auto_now=True)
     saldo = models.DecimalField(max_digits=10, decimal_places=2, null = True, blank=True, default = 0, validators=[MinValueValidator(0.00)])
-    #usuario = models.ForeignKey(CustomUser, on_delete = models.PROTECT, null = True)
+    usuario = models.ForeignKey(customuser, on_delete = models.PROTECT, null = True)
 
 class Faltante (models.Model):
     id_faltante = models.AutoField(primary_key=True)

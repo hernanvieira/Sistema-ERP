@@ -73,9 +73,7 @@ Crear pedido
         </div>
         <div class="col-md-4">
           {{pedido_form.prioridad_entrega.label}}
-          <div class="form-control">
             {{pedido_form.prioridad_entrega}}
-          </div>
         </div>
         <div class="col-md-4">
           {{pedido_form.precio_total.label}}
@@ -83,9 +81,7 @@ Crear pedido
             <div class="input-group-addon">
               <i class="fa fa-dollar"></i>
             </div>
-            <div class="form-control">
               {{pedido_form.precio_total}}
-            </div>
           </div>
 
         </div>
@@ -95,26 +91,12 @@ Crear pedido
             <div class="input-group-addon">
               <i class="fa fa-dollar"></i>
             </div>
-            <div class="form-control">
               {% if detalles %}
                 {{pedido_form.seña}}
               {% endif %}
-            </div>
           </div>
 
         </div>
-        <!-- <div class="col-md-4">
-
-          {{pedido_form.entrega.label}}
-          <div class="input-group">
-            <div class="input-group-addon">
-              <i class="fa fa-dollar"></i>
-            </div>
-            <div class="form-control">
-              {{pedido_form.entrega}}
-            </div>
-          </div>
-        </div> -->
         <div class="col-md-12">
     <hr class="line-seprate">
           {% if detalles %}
@@ -178,11 +160,32 @@ Crear pedido
 
       <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success" name="boton_finalizar">
-          <i class="fa fa-dot-circle-o"></i> Finalizar
+          <i class="fa fa-dot-circle-o"></i> Finalizar y confirmar
         </button>
-        <button type="button" class="btn btn-danger" onclick="history.back()">
-          <i class="fa fa-chevron-left"></i> Volver
+        <!-- Modal Eliminar -->
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".modal_cancelar">
+          <i class="fas fa-ban"></i> Cancelar
         </button>
+        <div class="modal fade modal_cancelar" id="modal_cancelar" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal_cancelar">Cancelar</h4>
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <a>¿Está seguro de <strong>cancelar</strong> la elaboración del pedido?</a>
+                    </div>
+                    <div class="modal-footer">
+                      <div class="alineado-derecha">
+                          <button type="submit" class="btn btn-danger" name="boton_cancelar" >Cancelar</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal -->
       </div>
     </form>
   </div>

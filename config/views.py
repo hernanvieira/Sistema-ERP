@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from tp_final.forms import ConfiguracionForm, ConfiguracionMensajeForm
 from config.models import Configuracion, ConfiguracionMensaje
+from django.contrib import messages
 
 def configuracion (request):
     if request.method == 'POST':
@@ -21,6 +22,7 @@ def configuracionMensaje (request):
         print(configuracion_mensaje_form.errors)
         if configuracion_mensaje_form.is_valid():
             configuracion = configuracion_mensaje_form.save()
+            messages.success(request, 'Se logró establecer la configuración correctamente')
         else:
             messages.error(request, 'Ocurrió un error al tratar de establecer la configuracion')
     else:

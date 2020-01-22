@@ -125,6 +125,11 @@ def VolverPedido (request,id_pedido):
         reporte = Configuracion.objects.all().last()
 
         if request.method=='GET':
+            if not detalles:
+                print("ENTRA")
+                return redirect('/pedido/nuevo_pedido')
+            print(detalles)
+            print("NOENTR")
             pedido_form=PedidoForm(instance=pedido)
         else:
             if 'boton_agregar' in request.POST:
@@ -132,6 +137,17 @@ def VolverPedido (request,id_pedido):
                 if pedido_form.is_valid():
                     pedido_form.save()
                 return redirect('/prenda/crear_prenda/'+str(id_pedido))
+
+            if 'boton_cancelar' in request.POST:
+                prendas = Detalle.objects.filter(pedido = pedido)
+                print("ALCANCLAER")
+                print(prendas)
+                for prenda in prendas:
+                    prenda.delete()
+                pedido.delete()
+                print("SE BORRARON LAS WEAS")
+                return redirect('/pedido/nuevo_pedido')
+
             if 'boton_finalizar' in request.POST:
                 pedido_form = PedidoForm(request.POST, instance=pedido)
                 pedido = pedido_form.save(commit=False)
@@ -166,6 +182,7 @@ def VolverPedido (request,id_pedido):
                     cliente_form = ClienteForm(request.POST)
                     messages.error(request, 'Debe agregar prendas')
         cliente_form = ClienteForm(request.POST)
+
         return render(request,'pedido/crear_pedido.html',{'pedido':pedido,'pedido_form':pedido_form,'detalles':detalles,'cliente_form':cliente_form})
 
 #Editar un pedido
@@ -280,7 +297,7 @@ def VerPedido (request,id_pedido):
 
                     estado_pedido.estado = estado_en_produccion #Asocio el estado "En produccion"
                     estado_pedido.pedido = pedido # Asocio el pedido actual
-                    estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+                    estado_pedido.fecha = date.today() #Establezco como fecha el dia de hoy
 
                     estado_pedido.save()#Guardo el estado
 

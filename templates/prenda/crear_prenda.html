@@ -156,7 +156,7 @@ Agregar Prenda
           <button type="submit" class="btn btn-success">
             <i class="fa fa-dot-circle-o"></i> Agregar Prenda
           </button>
-          <button type="button" class="btn btn-danger" onclick="history.back()">
+          <button type="button" class="btn btn-danger" onclick="location.href='{% url 'pedido:volver_pedido' pedido.id_pedido %}'">
             <i class="fa fa-ban"></i> Cancelar
           </button>
         </div>

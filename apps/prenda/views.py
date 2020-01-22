@@ -212,6 +212,7 @@ def CrearPrenda (request,id_pedido):
                     prenda_form.save() #Guardo prenda
                 medida_prenda_form = Medida_prendaForm()
                 return redirect('/prenda/asignar_medida/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'medida_prenda_form':medida_prenda_form})
+            
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
         else:
             messages.error(request, 'Ocurrió un error al tratar de agregar una prenda')
