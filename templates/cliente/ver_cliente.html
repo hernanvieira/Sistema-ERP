@@ -107,22 +107,23 @@ Ver Cliente
             <table class="table table-data3" id="midatatable2">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>ID</th>
-                        <th>DNI</th>
                         <th>Cliente</th>
                         <th>Fecha</th>
                         <th>Total</th>
                         <th>Entrega</th>
                         <th>Seña</th>
                         <th>Prioridad</th>
+                        <th>Estado</th>
                         <th class="noExport">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for pedido in pedidos %}
                     <tr class="tr-shadow">
+                      <td></td>
                       <td style="text-align: right;">{{pedido.id_pedido}}</td>
-                      <td style="text-align: center;">{{pedido.cliente.dni}}</td>
                       <td style="text-align: left;">{{pedido.cliente.apellido}}</td>
                       <td style="font-size: 12px;text-align: center;">{{pedido.fecha_entrega|date:'d-m-Y'}}</td>
                       <td style="text-align: right;">${{pedido.precio_total}}</td>
@@ -138,6 +139,13 @@ Ver Cliente
                         {% if pedido.prioridad_entrega == '0' %}
                           Baja
                         {% endif %}
+                      </td>
+                      <td>
+                        {% for estado in estados  %}
+                          {% if estado.pedido == pedido %}
+                            {{estado.estado}}
+                          {% endif %}
+                        {% endfor %}
                       </td>
                         <td>
                             <div class="table-data-feature">

@@ -307,7 +307,7 @@ def VerPedido (request,id_pedido):
 
         pedido_form=PedidoForm(instance=pedido)
         if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
-            estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
+            estado = Estado_pedido.objects.filter(pedido=pedido).order_by('-id_estado_pedido')[0]
         else:
             estado = None
     return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
@@ -407,7 +407,7 @@ def FinalizarPedido (request,id_pedido):
 
     estado_pedido.estado = estado_finalizado #Asocio el estado "En produccion"
     estado_pedido.pedido = pedido # Asocio el pedido actual
-    estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+    estado_pedido.fecha = date.today() #Establezco como fecha el dia de hoy
 
     estado_pedido.save()#Guardo el estado
     pedido.save()
@@ -432,7 +432,7 @@ def EntregarPedido (request,id_pedido):
 
     estado_pedido.estado = estado_entregado #Asocio el estado "En produccion"
     estado_pedido.pedido = pedido # Asocio el pedido actual
-    estado_pedido.fecha = datetime.date.today() #Establezco como fecha el dia de hoy
+    estado_pedido.fecha = date.today() #Establezco como fecha el dia de hoy
 
     estado_pedido.save()#Guardo el estado
     pedido.save()

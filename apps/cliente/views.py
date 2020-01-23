@@ -82,6 +82,14 @@ def VerCliente (request,dni):
         cliente_form=None
         cliente = Cliente.objects.get(dni=dni)
         pedidos = Pedido.objects.filter(cliente = cliente).exclude(confirmado = False)
+        estados=[]
+        for pedido in pedidos:
+            estado = Estado_pedido.objects.filter(pedido=pedido).order_by('-id_estado_pedido')[0]
+
+            print("ESTADUKI")
+            print(estado)
+            estados.append(estado)
+        print(estados)
         if request.method=='GET':
             cliente_form=ClienteForm(instance=cliente)
         else:
@@ -91,7 +99,7 @@ def VerCliente (request,dni):
             return redirect('cliente:cliente_home')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request, 'cliente/ver_cliente.html',{'pedidos':pedidos, 'cliente':cliente ,'cliente_form':cliente_form})
+    return render(request, 'cliente/ver_cliente.html',{'estados':estados,'pedidos':pedidos, 'cliente':cliente ,'cliente_form':cliente_form})
 
 #Listar todos los clientes
 def ListarCliente (request):
