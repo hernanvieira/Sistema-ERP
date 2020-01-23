@@ -81,7 +81,7 @@ def VerCliente (request,dni):
     try:
         cliente_form=None
         cliente = Cliente.objects.get(dni=dni)
-        pedidos = Pedido.objects.filter(cliente = cliente)
+        pedidos = Pedido.objects.filter(cliente = cliente).exclude(confirmado = False)
         if request.method=='GET':
             cliente_form=ClienteForm(instance=cliente)
         else:
@@ -95,7 +95,7 @@ def VerCliente (request,dni):
 
 #Listar todos los clientes
 def ListarCliente (request):
-    clientes = Cliente.objects.all()
+    clientes = Cliente.objects.all().exclude(activo = False)
     return render(request,'cliente/listar_cliente.html',{'clientes':clientes})
 #Editar un cliente
 def EditarCliente (request,dni):
@@ -117,17 +117,18 @@ def EditarCliente (request,dni):
 def EliminarCliente (request,dni):
     cliente = get_object_or_404(Cliente,dni=dni)
     try:
-        cliente.delete()
+        cliente.activo = False
+        cliente.save()
         messages.warning(request, 'Se eliminó el cliente')
-        clientes = Cliente.objects.all()
+        clientes = Cliente.objects.all().exclude(activo = False)
         return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el cliente')
-    clientes = Cliente.objects.all()
+    clientes = Cliente.objects.all().exclude(activo = False)
     return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
 
 def ClienteHome(request):
-    clientes = Cliente.objects.all()
+    clientes = Cliente.objects.all().exclude(activo = False)
     cliente_form = ClienteForm()
     reporte = Configuracion.objects.all().last()
     if request.method == 'POST':

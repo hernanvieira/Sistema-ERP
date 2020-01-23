@@ -15,50 +15,44 @@ Editar Cliente
       <div class="row">
         <div class="col-md-4">
           {{cliente_form.dni.label}}
-          <div class="form-control">
             {{cliente_form.dni}}
-          </div>
         </div>
         <div class="col-md-8">
         </div>
         <div class="col-md-4">
           {{cliente_form.apellido.label}}
-          <div class="form-control">
             {{cliente_form.apellido}}
-          </div>
         </div>
         <div class="col-md-4">
           {{cliente_form.nombre.label}}
-          <div class="form-control">
             {{cliente_form.nombre}}
-          </div>
         </div>
         <div class="col-md-4">
           {{cliente_form.telefono.label}}
-          <div class="form-control">
             {{cliente_form.telefono}}
-          </div>
         </div>
         <div class="col-md-12">
           {{cliente_form.domicilio.label}}
-          <div class="form-control">
             {{cliente_form.domicilio}}
-          </div>
         </div>
         <div class="col-md-12">
           {{cliente_form.correo.label}}
-          <div class="form-control">
             {{cliente_form.correo}}
-          </div>
         </div>
       </div>
 
-      <div class="card-footer">
+      <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success">
-          <i class="fa fa-dot-circle-o"></i> Crear
+          <i class="fa fa-dot-circle-o"></i> Actualizar
         </button>
-        <button type="reset" class="btn btn-danger">
-          <i class="fa fa-ban"></i> Limpiar
+        <button type="reset" class="btn btn-warning">
+          <i class="fa fa-ban"></i> Descartar Cambios
+        </button>
+        <div class="col-1">
+
+        </div>
+        <button type="button" class="btn btn-danger" onclick="history.back()">
+          <i class="fa fa-chevron-left"></i> Volver
         </button>
       </div>
     </form>

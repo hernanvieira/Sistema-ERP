@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CrearMedida, ListarMedida, EditarMedida, EliminarMedida , CrearTipo_prenda, ListarTipo_prenda, EditarTipo_prenda, EliminarTipo_prenda, VerTipo_prenda
-from .views import CrearPrenda, ListarPrenda, EditarPrenda, EliminarPrenda, AsignarMaterial, AsignarMedida, VolverPrenda, EditarIngrediente, EliminarIngrediente, MostrarUnidad, TiempoProdPrenda
+from .views import CrearPrenda, ListarPrenda, EditarPrenda, VerPrenda, EliminarPrenda, AsignarMaterial, AsignarMedida, VolverPrenda, EditarIngrediente, EliminarIngrediente, MostrarUnidad, TiempoProdPrenda
 
 from django.contrib.auth.decorators import login_required
 
@@ -22,6 +22,7 @@ urlpatterns = [
             path ('crear_prenda/<int:id_pedido>',login_required(CrearPrenda),name='crear_prenda'),
             path ('listar_prenda/',login_required(ListarPrenda),name='listar_prenda'),
             path ('editar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(EditarPrenda),name='editar_prenda'),
+            path ('ver_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(VerPrenda),name='ver_prenda'),
             path ('eliminar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(EliminarPrenda),name='eliminar_prenda'),
             path ('volver_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(VolverPrenda),name='volver_prenda'),
             path ('asignar_material/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(AsignarMaterial),name='asignar_material'),

@@ -155,6 +155,7 @@ class IngredienteForm (forms.ModelForm):
         fields = ['cantidad', 'prenda', 'material']
         widgets = {
         'material' : forms.Select(attrs={'id':'combito','class' : 'js-example-basic-single'}),
+        'cantidad' : forms.TextInput(attrs={'class':'form-control'})
         }
 
 class MedidaForm (forms.ModelForm):

@@ -73,6 +73,10 @@ Ver pedido
                         <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
                         <td>
                           {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
+                          
+                          <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'prenda:ver_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                            <i class="fas fa-eye"></i>
+                          </button>
                             <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
                               <i class="fas fa-pencil-square-o"></i>
                             </button>

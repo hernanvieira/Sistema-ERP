@@ -43,34 +43,35 @@ Editar Material
       <div class="row">
         <div class="col-md-3">
           {{material_form.tipo_material.label}}
-          <div class="form-control">
             {{material_form.tipo_material}}
-          </div>
         </div>
         <div class="col-md-4">
           {{material_form.nombre.label}}
-          <div class="form-control">
             {{material_form.nombre}}
-          </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-1">
           {{material_form.color.label}}
-          <div class="form-control">
             {{material_form.color}}
-          </div>
+            <div class="colorPickSelector colorPicker" style="background:{{material_form.color.value}}"></div>
+
         </div>
+        <div class="col-2">
+
+        </div>
+
         <div class="col-md-3">
           <p>Stock Mínimo</p>
-          <div class="form-control">
-            {{material_form.stock_minimo}}
+          <div class="input-group">
+              {{material_form.stock_minimo}}
+            <div class="input-group-addon">
+              <p  id="unidad_medida"></p>
+            </div>
           </div>
         </div>
         <div class="col-md-4">
           <p>Tiempo de resposición estimado</p>
           <div class="input-group">
-            <div class="form-control">
               {{material_form.tiempo_reposicion}}
-            </div>
             <div class="input-group-addon">
               <p>Día/s</p>
             </div>
@@ -114,7 +115,7 @@ Editar Material
             <td>{{material.id_material}}</td>
             <td>{{material.tipo_material}}</td>
             <td>{{material.nombre}}</td>
-            <td>{{material.color}}</td>
+            <td><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
             <td style="text-align: right;">{{material.stock}}</td>
             <td style="text-align: right;">{{material.stock_minimo}}</td>
             <td>{{material.tipo_material.unidad_medida.nombre}}</td>

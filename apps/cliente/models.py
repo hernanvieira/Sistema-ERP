@@ -12,6 +12,7 @@ class Cliente(models.Model):
     correo = models.EmailField('Correo')
     domicilio = models.CharField('Domicilio',blank = True, null = True, max_length=500)
     reputacion = models.IntegerField('reputacion',default = 50)
+    activo = models.BooleanField(default = True)
     history = HistoricalRecords()
 
     class Meta:

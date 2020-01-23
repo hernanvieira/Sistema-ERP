@@ -4,12 +4,12 @@
 <!DOCTYPE html>
 
 {% block titulo%}
-Editar Prenda
+Ver Prenda
 {% endblock titulo%}
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Editar Prenda</strong>
+  <div class="card-header bg-success"><strong class="card-title text-light">Ver Prenda</strong>
     <h class="card-title text-light"> | Cliente: {{pedido.cliente}}</h></div>
   <div class="card-body card-block">
     <form class="user" method="POST" enctype="multipart/form-data">
@@ -89,6 +89,12 @@ Editar Prenda
             <img src="{{prenda.imagen.url}}" width="200px" height="200px">
           {% endif %}
 
+        <br>
+        {% if pedido.cancelado != True %}
+        <button type="submit" class="btn btn-warning" name="boton_asignar_material">
+          <i class="fa fa-archive"></i> Asignar Materiales
+        </button>
+        {% endif %}
         <hr class="line-seprate">
         {% if ingredientes %}
         <!-- DATA TABLE-->
@@ -99,6 +105,8 @@ Editar Prenda
                         <th>Tipo de Prenda</th>
                         <th>Material</th>
                         <th>Cantidad</th>
+                        <th>Unidad de Medida</th>
+                        <th>Disponibilidad</th>
                         <th>Opciones</th>
                     </tr>
                 </thead>
@@ -106,13 +114,12 @@ Editar Prenda
                   {% for ingrediente in ingredientes %}
                     <tr>
                       <td style="text-align: left">{{prenda.tipo_prenda}}</td>
-                      <td style="text-align: center;">{{ingrediente.material}}</td>
+                      <td style="text-align: left;">{{ingrediente.material}}</td>
                       <td style="text-align: center;">{{ingrediente.cantidad}}</td>
-                      <td style="text-align: center;>
+                      <td style="text-align: right;">{{ingrediente.material.tipo_material.unidad_medida.nombre}}</td>
+                      <td>{{ingrediente.disponibilidad}}</td>
+                      <td style="text-align: center;">
                           <div class="table-data-feature">
-                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_ingrediente' ingrediente.id_ingrediente pedido.id_pedido detalle.id_detalle prenda.id_prenda %}'">
-                              <i class="fas fa-pencil-square-o"></i>
-                            </button>
                             <!-- Modal Eliminar -->
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{ingrediente.id_ingrediente}}">
                               <i class="fas fa-trash"></i>
@@ -147,11 +154,56 @@ Editar Prenda
         </div>
         <!-- END DATA TABLE-->
         {% endif %}
+        <!-- Modal medidas
 
+        <div class="modal fade show" id="modal_medida" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="card-header bg-success">
+                <strong class="card-title text-light" id="exampleModalLabel">Medidas</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="card-body">
+                    <div class="row">
+                    {% for medida in medidas_prenda %}
+                        <div class="col-md-3">
+                          {{medida.nombre_medida}}
+                          <br>
+                        </div>
+                        <div class="col-md-2">
+                           <input type="number" name="valor_medida" min="0" class="form-control" placeholder="Valor">
+                           <br>
+                        </div>
+                        <div class="col-md-1">
+
+                        </div>
+
+                    {% endfor %}
+                    </div>
+
+                    <div class="card-footer">
+                      <div class="alineado-derecha">
+                        <button type="submit" class="btn btn-success" name="boton_crear_cliente">
+                          <i class="fa fa-dot-circle-o"></i> Crear
+                        </button>
+                        <button type="reset" class="btn btn-danger">
+                          <i class="fa fa-ban"></i> Limpiar
+                        </button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            </div>
+          </div>
+          end modal -->
       <div class="card-footer">
         <div class="alineado-derecha">
           <button type="submit" class="btn btn-success">
-            <i class="fa fa-dot-circle-o"></i> Actualizar
+            <i class="fa fa-dot-circle-o"></i> Confirmar
           </button>
           <button type="button" class="btn btn-danger" onclick="history.back()">
             <i class="fa fa-ban"></i> Cancelar

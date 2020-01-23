@@ -139,13 +139,11 @@ def VolverPedido (request,id_pedido):
                 return redirect('/prenda/crear_prenda/'+str(id_pedido))
 
             if 'boton_cancelar' in request.POST:
-                prendas = Detalle.objects.filter(pedido = pedido)
-                print("ALCANCLAER")
-                print(prendas)
-                for prenda in prendas:
-                    prenda.delete()
+                detalles = Detalle.objects.filter(pedido = pedido)
+                for detalle in detalles:
+                    detalle.delete()
+                    detalle.prenda.delete()
                 pedido.delete()
-                print("SE BORRARON LAS WEAS")
                 return redirect('/pedido/nuevo_pedido')
 
             if 'boton_finalizar' in request.POST:
@@ -338,7 +336,7 @@ def CancelarPedido (request,id_pedido):
 
     estado_pedido.estado = estado_cancelado
     estado_pedido.pedido = pedido
-    estado_pedido.fecha = datetime.date.today()
+    estado_pedido.fecha = date.today()
 
     pedido.save()
     estado_pedido.save()

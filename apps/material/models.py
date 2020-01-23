@@ -1,5 +1,7 @@
 from django.db import models
 
+from apps.usuario.models import customuser
+
 
 # Create your models here.
 #Se crean las clases de acuerdo al diagrama de clases
@@ -54,7 +56,7 @@ class Material (models.Model):
         ordering = ['nombre']
 
     def __str__(self):
-        return self.nombre + ' ' + self.color
+        return self.nombre
 
     def save(self, *args, **kwargs):
         self.nombre = (self.nombre).upper()
@@ -67,3 +69,4 @@ class Compra (models.Model):
     fecha = models.DateField()
     cantidad = models.PositiveIntegerField()
     material = models.ForeignKey(Material, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(customuser, on_delete = models.PROTECT, null = True)

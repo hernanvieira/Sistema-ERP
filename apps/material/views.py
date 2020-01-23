@@ -175,12 +175,16 @@ def EliminarUnidad_medida (request,id_unidad):
 def CrearCompra (request):
     if request.method == 'POST':
         compra_form = CompraForm(request.POST)
+        usuario = request.user #Obtengo el usuario registrado actualmente
         if compra_form.is_valid():
-            compra_form.save() #Registro la compra
+            compra = compra_form.save(commit=False) #Registro la compra
+            compra.usuario = usuario
+            compra.save()
             id_material = request.POST['material'] #Obtengo el id del material involucrado
             cantidad = request.POST['cantidad'] #Obtengo la cantidad de la compra registrada
             material = Material.objects.get(id_material=id_material) #Obtengo el material
             material.stock=material.stock + int(cantidad) #Sumo la cantidad al stock actual
+
             material.save() #Se actualiza el stock del material
 
             return ListarMaterial(request)
@@ -189,8 +193,9 @@ def CrearCompra (request):
     return render(request, 'material/crear_compra.html',{'compra_form':compra_form})
 #Listar todos las compras
 def ListarCompra (request):
+    reporte = Configuracion.objects.all().last()
     compras = Compra.objects.all()
-    return render(request,'material/listar_compra.html',{'compras':compras})
+    return render(request,'material/listar_compra.html',{'compras':compras,'reporte':reporte})
 #Editar un compra
 def EditarCompra (request,id_compra):
     try:
@@ -210,17 +215,14 @@ def EditarCompra (request,id_compra):
 #Eliminar un compra
 def EliminarCompra (request,id_compra):
     compra = Compra.objects.get(id_compra=id_compra)
-    if request.method=='POST':
-        compra.delete()
-        return redirect('material:listar_compra')
-    return render(request,'material/eliminar_compra.html',{'compra':compra,})
+    compra.delete()
+    messages.warning(request, 'Se eliminó la compra correctamente')
+    return redirect('material:listar_compra')
 
 #Mostrar unidad de medida al asignar material
 def MostrarUnidad(request):
     mt = request.GET.get('material',None)
-    print(mt)
     tipo_material = Tipo_material.objects.get(id_tipo_material = mt)
-    print(tipo_material)
     unidad = tipo_material.unidad_medida.nombre
     result = {
         'medida': unidad

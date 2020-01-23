@@ -8,33 +8,121 @@ Listado de compras
 
 {% block content%}
 
-{% if compras %}
 <!-- DATA TABLE-->
+<input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Lista de compras">
+<input type="hidden" name="empresa" class="empresa_reporte" id="empresa" value="{{reporte.empresa}}">
+<input type="hidden" name="direccion" class="direccion_reporte" id="direccion" value="{{reporte.direccion}}">
+<input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
+<input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
+
+<strong class="card-title">Filtrar</strong>
+<div class="card">
+  <br>
+  <div class="table-data__tool">
+      <div class="table-data__tool-left">
+          <span>Entre:</span>
+          <div class="rs-select2--light rs-select2--sm">
+            <div class="form-control">
+              <input type="" name="" value="" id="min">
+            </div>
+          </div>
+          <h> y </h>
+          <div class="rs-select2--light rs-select2--sm">
+            <div class="form-control">
+              <input type="" name="" value="" id="max">
+            </div>
+          </div>
+    </div>
+      <div class="alineado-derecha">
+        <div class="table-data__tool-right">
+          <div class="form-control">
+            <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
+          </div>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+{% if messages %}
+<div class="col-md-12">
+  <ul class="messages">
+    {% for message in messages %}
+      {% if message.tags == 'success'%}
+        <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        </div>
+      {% endif %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
+      {% if message.tags == 'warning' %}
+      <div class="alert alert-warning">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
 <div class="table-responsive m-b-40">
-    <table class="table table-borderless table-data3">
+    <table class="table table-borderless table-data2"  id='midatatable'>
       <thead>
           <tr>
             <th>Id</th>
             <th>Fecha</th>
             <th>Material</th>
+            <th class="noExport">Color</th>
             <th>Cantidad</th>
-            <th>Opciones</th>
+            <th>Usuario</th>
+            <th class ="noExport">Opciones</th>
           </tr>
       </thead>
       <tbody>
         {% for compra in compras %}
           <tr>
             <td>{{compra.id_compra}}</td>
-            <td>{{compra.fecha}}</td>
+            <td>{{compra.fecha |date:'d-m-Y'}}</td>
             <td>{{compra.material}}</td>
+            <td class="noExport"><input type="color" name="favcolor" value="{{compra.material.color}}" disabled ></td>
             <td style="text-align: right;">{{compra.cantidad}}</td>
+            <td style="text-align: left;">{{compra.usuario}}</td>
             <td>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_compra' compra.id_compra %}'">
                 <i class="fas fa-pencil-square-o"></i>
               </button>
-              <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'material:eliminar_compra' compra.id_compra %}'">
+              <!-- Modal Eliminar -->
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{compra.id_compra}}">
                 <i class="fas fa-trash"></i>
               </button>
+              <div class="modal fade bs-example-modal-lg2{{compra.id_compra}}" id="myModal2{{compra.id_compra}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel{{compra.id_compra}}">Confirmar Eliminacion</h4>
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                          </div>
+                          <div class="modal-body">
+                              <a>¿Está seguro de <strong>eliminar</strong> la compra?</a>
+                          </div>
+                          <div class="modal-footer">
+                            <div class="alineado-derecha">
+                              <a href="{% url 'material:eliminar_compra' compra.id_compra %}">
+                                <button type="button" class="btn btn-danger" >Eliminar</button>
+                              </a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- End Modal -->
             </td>
           </tr>
         {% endfor %}
@@ -42,7 +130,4 @@ Listado de compras
     </table>
   </div
 <!-- END DATA TABLE-->
-{% else %}
-  <h1>No existen Compras registradas</h1>
-{% endif %}
 {% endblock content %}

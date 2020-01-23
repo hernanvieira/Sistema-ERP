@@ -419,6 +419,9 @@ left: 43px;
                                 <li>
                                     <a href="/pedido/auditoria">Pedidos</a>
                                 </li>
+                                <li>
+                                    <a href="/material/listar_compra">Compras</a>
+                                </li>
                             </ul>
                           {% endif %}
                           {% if user.rol.nombre == 'Administrador' or user.rol.nombre == 'Modista' %}
@@ -806,7 +809,6 @@ left: 43px;
     <script type="text/javascript">
     $('.colorPicker').on('pcb.refresh',function (e) {
       let color = $(this).bcp('color');
-      console.log(color);
       if (color.value) {
         $(this).css({
         backgroundColor: color.value,

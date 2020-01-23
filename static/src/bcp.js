@@ -39,10 +39,10 @@
         };
 
         /*
-         * DEFAULT OPTIONS 
+         * DEFAULT OPTIONS
          */
 
-        // Define default configuration. 
+        // Define default configuration.
         var defaults = {
             // Colors list.
             colors: [],

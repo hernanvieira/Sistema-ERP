@@ -212,7 +212,7 @@ def CrearPrenda (request,id_pedido):
                     prenda_form.save() #Guardo prenda
                 medida_prenda_form = Medida_prendaForm()
                 return redirect('/prenda/asignar_medida/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'medida_prenda_form':medida_prenda_form})
-            
+
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
         else:
             messages.error(request, 'Ocurrió un error al tratar de agregar una prenda')
@@ -326,6 +326,124 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
                 return redirect('/pedido/volver_pedido/'+str(id_pedido))
 
     return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
+
+#Ver una prenda
+def VerPrenda (request,id_prenda,id_detalle,id_pedido):
+    redireccionar = 0
+    prenda_form=None
+    detalle_form=None
+    prenda = Prenda.objects.get(id_prenda=id_prenda)
+    detalle = Detalle.objects.get(id_detalle=id_detalle)
+
+    cant_pre = detalle.cantidad
+
+    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
+    precio_pre = prenda.precio #Obtengo el precio previo a editar
+    tpp_pre = prenda.tiempo_prod_prenda #Obtengo el tiempo pp previo a editar
+    if request.method=='GET':
+        prenda_form=PrendaForm(instance=prenda)
+        detalle_form=DetalleForm(instance=detalle)
+        ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
+        lista = []
+        for ingrediente in ingredientes:
+            material = ingrediente.material
+            cantidad = ingrediente.cantidadxdetalle
+
+            cantidad = detalle.cantidad * ingrediente.cantidad
+
+            if cantidad <= material.stock:
+                ingrediente.disponibilidad = "Disponible"
+                cant_post = material.stock - cantidad
+                if cant_post >= material.stock_minimo:
+                    ingrediente.disponibilidad = "Disponible"
+                else:
+                    ingrediente.disponibilidad = "Stock Minimo"
+            else:
+                ingrediente.disponibilidad = "Faltante"
+            ingrediente.save()
+            lista.append(ingrediente)
+    else:
+        prenda_form=PrendaForm(request.POST, instance=prenda)
+        detalle_form=DetalleForm(request.POST, instance=detalle)
+        if prenda_form.is_valid() and detalle_form.is_valid():
+            prenda = prenda_form.save(commit = False) #Guardo prenda
+            if request.FILES:
+                prenda.imagen = request.FILES.get('txtImagen')
+            prenda.save()
+            detalle = detalle_form.save() #Guardo detalle
+
+            if prenda.precio != precio_pre or detalle.cantidad != cantidad_pre: #Si cambia la cantidad o el precio unitario
+                precio_total_pre = precio_pre * cantidad_pre #Obtengo el precio total anterior
+                precio_pos = prenda.precio * detalle.cantidad - precio_total_pre #Calculo el precio del lote actualizado
+                pedido.precio_total += precio_pos #Actualizo el precio total
+                pedido.seña = pedido.precio_total/2 #Actualizo la seña
+                detalle.tiempo_prod_lote = detalle.cantidad * prenda.tiempo_prod_prenda #Calculo el tiempo de produccion por lote
+
+            #Asocio datos de prenda y pedido a detalle
+            detalle.prenda = prenda
+            detalle.pedido = pedido
+
+            pedido.save() # Actualizo el pedido
+            detalle.save() # Actualizo el detalle
+
+            cant_post = detalle.cantidad
+            print("Cantidad prenda nueva: " + str(cant_post))
+            ingredientes = Ingrediente.objects.filter(prenda_id = prenda.id_prenda)
+            print(ingredientes)
+            for ingre in ingredientes:
+                mat_pre = cant_pre * ingre.cantidad
+                mat_post = cant_post * ingre.cantidad
+                print("Cantidad material previo: " + str(mat_pre))
+                print("Cantidad material nuevo: " + str(mat_post))
+                cant_dif = mat_post - mat_pre
+                print("Diferencia de cantidad: " + str(cant_dif))
+                material = Material.objects.get(id_material = ingre.material_id)
+                print(material.nombre)
+
+                if cant_dif <= material.stock:
+                    print("Hay stock disponible")
+                else:
+                    print("No hay stock disponible")
+                    redireccionar = 1
+                    messages.error(request, 'No hay stock disponible para el material ' + str(material)) # Informo que no hay stock para dicho material
+            print(redireccionar)
+
+            if redireccionar == 1:
+                detalle.cantidad = cantidad_pre
+                detalle.save()
+                return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+ str(id_detalle)+'/'+str(id_pedido))
+            id_detalle = detalle.id_detalle #Obtengo el id del detalle
+            if 'boton_asignar_material' in request.POST:
+                ingrediente_form = IngredienteForm()
+                return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
+            if 'boton_asignar_medida' in request.POST:
+                prenda_form=PrendaForm(request.POST, instance=prenda)
+                if prenda_form.is_valid():
+                    prenda_form.save() #Guardo prenda
+                medida_prenda_form = Medida_prendaForm()
+                return redirect('/prenda/asignar_medida/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'medida_prenda_form':medida_prenda_form})
+            if redireccionar == 0:
+
+                for ingre in ingredientes:
+                    mat_pre = cant_pre * ingre.cantidad
+                    mat_post = cant_post * ingre.cantidad
+                    print("Cantidad material previo: " + str(mat_pre))
+                    print("Cantidad material nuevo: " + str(mat_post))
+                    cant_dif = mat_post - mat_pre
+                    print("Diferencia de cantidad: " + str(cant_dif))
+                    material = Material.objects.get(id_material = ingre.material_id)
+                    print(material.nombre)
+
+                    #Actualizar stock
+                    material.stock -= cant_dif # Actualizo el stock
+                    material.save() # persisto
+
+                return redirect('/pedido/volver_pedido/'+str(id_pedido))
+
+    return render(request,'prenda/ver_prenda.html',{'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
+
+
 #Eliminar un cliente
 def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
     prenda = get_object_or_404(Prenda,id_prenda=id_prenda)
@@ -386,12 +504,12 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                 if material_post > material.stock_minimo:
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+                    return redirect('/prenda/ver_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
                 else:
                     messages.warning(request, 'La cantidad introducida supera el stock mínimo')
                     if 'boton_guardar_cargar' in request.POST:
                         return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+                    return redirect('/prenda/ver_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
             else:
                 material_post = material.stock - cantidad_material #Calculo cuanto material necesito a parte del stock que tengo
 
@@ -417,7 +535,7 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                 pedido.fecha_entrega += timedelta(days=material.tiempo_reposicion) #Sumo el tiempo de resposicion estimado del material faltante
                 pedido.save() # Actualizo el pedido
 
-                messages.error(request, 'La cantidad introducida es mayor al stock disponible xd')
+                messages.error(request, 'La cantidad introducida es mayor al stock disponible')
                 return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
     else:
         ingrediente_form = IngredienteForm()
@@ -614,8 +732,11 @@ def MostrarUnidad(request):
     mt = request.GET.get('material',None)
     material = Material.objects.get(id_material = mt)
     unidad = material.tipo_material.unidad_medida.nombre
+    color = material.color
+    print(color)
     result = {
-        'medida': unidad
+        'medida': unidad,
+        'color':color
     }
     print(result)
     return JsonResponse(result)
