@@ -71,7 +71,6 @@ class Ingrediente (models.Model):
     prenda = models.ForeignKey(Prenda, on_delete=models.PROTECT,null = True, blank = True)
     material =  models.ForeignKey(Material, on_delete=models.PROTECT)
     cantidadxdetalle = models.PositiveIntegerField(default=0)
-    disponibilidad = models.CharField(max_length=50, default="")
 
     class Meta:
         verbose_name = 'Ingrediente'
@@ -81,6 +80,4 @@ class Ingrediente (models.Model):
     def __str__(self):
         return str(self.id_ingrediente)
 
-    def save(self, *args, **kwargs):
-        self.disponibilidad = (self.disponibilidad).upper()
-        return super(Ingrediente, self).save(*args, **kwargs)
+    

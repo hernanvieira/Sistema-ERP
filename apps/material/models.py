@@ -49,6 +49,7 @@ class Material (models.Model):
     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
     stock_minimo = models.PositiveIntegerField(default=0)
     tiempo_reposicion = models.PositiveIntegerField(default=0)
+    disponibilidad = models.CharField(max_length=50, default="")
 
     class Meta:
         verbose_name = 'Material'
@@ -63,6 +64,9 @@ class Material (models.Model):
         self.color = (self.color).upper()
         return super(Material, self).save(*args, **kwargs)
 
+    def save(self, *args, **kwargs):
+        self.disponibilidad = (self.disponibilidad).upper()
+        return super(Material, self).save(*args, **kwargs)
 
 class Compra (models.Model):
     id_compra = models.AutoField(primary_key=True)

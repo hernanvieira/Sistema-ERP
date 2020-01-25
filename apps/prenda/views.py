@@ -357,14 +357,15 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
             cantidad = detalle.cantidad * ingrediente.cantidad
 
             if cantidad <= material.stock:
-                ingrediente.disponibilidad = "Disponible"
+                ingrediente.material.disponibilidad = "Disponible"
                 cant_post = material.stock - cantidad
                 if cant_post >= material.stock_minimo:
-                    ingrediente.disponibilidad = "Disponible"
+                    ingrediente.material.disponibilidad = "Disponible"
                 else:
-                    ingrediente.disponibilidad = "Stock Minimo"
+                    ingrediente.material.disponibilidad = "Stock Minimo"
             else:
-                ingrediente.disponibilidad = "Faltante"
+                ingrediente.material.disponibilidad = "Faltante"
+            ingrediente.material.save()
             ingrediente.save()
     else:
         prenda_form=PrendaForm(request.POST, instance=prenda)
@@ -482,14 +483,14 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
 
             #Definir disponibilidad
             if cantidad_material <= material.stock:
-                ingrediente.disponibilidad = "Disponible"
+                ingrediente.material.disponibilidad = "Disponible"
                 cant_post = material.stock - cantidad_material
                 if cant_post >= material.stock_minimo:
-                    ingrediente.disponibilidad = "Disponible"
+                    ingrediente.material.disponibilidad = "Disponible"
                 else:
-                    ingrediente.disponibilidad = "Stock Minimo"
+                    ingrediente.material.disponibilidad = "Stock Minimo"
             else:
-                ingrediente.disponibilidad = "Faltante"
+                ingrediente.material.disponibilidad = "Faltante"
 
             if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
                 material_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
@@ -513,15 +514,16 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
 
                     #Definir disponibilidad
                     if ingre.cantidadxdetalle <= material.stock:
-                        ingre.disponibilidad = "Disponible"
+                        ingre.material.disponibilidad = "Disponible"
                         cant_post = material.stock - cantidad_material
                         if cant_post >= material.stock_minimo:
-                            ingre.disponibilidad = "Disponible"
+                            ingre.material.disponibilidad = "Disponible"
                         else:
-                            ingre.disponibilidad = "Stock Minimo"
+                            ingre.material.disponibilidad = "Stock Minimo"
                     else:
-                        ingre.disponibilidad = "Faltante"
+                        ingre.material.disponibilidad = "Faltante"
 
+                    ingre.material.save()
                     ingre.save() # actualizo el ingrediente
                 else:
                     ingrediente.save() #persisto
@@ -552,15 +554,16 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
 
                     #Definir disponibilidad
                     if ingre.cantidadxdetalle <= material.stock:
-                        ingre.disponibilidad = "Disponible"
+                        ingre.material.disponibilidad = "Disponible"
                         cant_post = material.stock - cantidad_material
                         if cant_post >= material.stock_minimo:
-                            ingre.disponibilidad = "Disponible"
+                            ingre.material.disponibilidad = "Disponible"
                         else:
-                            ingre.disponibilidad = "Stock Minimo"
+                            ingre.material.disponibilidad = "Stock Minimo"
                     else:
-                        ingre.disponibilidad = "Faltante"
+                        ingre.material.disponibilidad = "Faltante"
 
+                    ingre.material.save()
                     ingre.save() # actualizo el ingrediente
                 else:
                     ingrediente.save() #persisto

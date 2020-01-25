@@ -369,14 +369,14 @@ def CancelarPedido (request,id_pedido):
     cliente.reputacion = reputacion
     cliente.save()
 
+
+
 def MaterialesUtilizados(request, id_pedido):
     pedido = Pedido.objects.get(id_pedido= id_pedido)
     if request.method=='POST':
         peticion = request.POST.copy() # OBtengo una copia del request
         peticion_sobrante = peticion.pop('input_sobrante') # Obtengo el valor de los sobrantes
         peticion_id_material = peticion.pop('input_id_material') # Obtengo los id de los materiales
-        print(peticion_sobrante)
-        # print(peticion_id_material)
         i=0
         for id_material in peticion_id_material:
             material = Material.objects.get(id_material= id_material)
