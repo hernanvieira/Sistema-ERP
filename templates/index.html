@@ -419,9 +419,6 @@ left: 43px;
                                 <li>
                                     <a href="/pedido/auditoria">Pedidos</a>
                                 </li>
-                                <li>
-                                    <a href="/material/listar_compra">Compras</a>
-                                </li>
                             </ul>
                           {% endif %}
                           {% if user.rol.nombre == 'Administrador' or user.rol.nombre == 'Modista' %}
@@ -452,6 +449,9 @@ left: 43px;
                                 {% if user.rol.nombre == 'Administrador' or user.rol.nombre == 'Modista' or user.rol.nombre == 'Encargado de Stock' %}
                                   <li>
                                       <a href="/material/crear_material/">Gestionar Material</a>
+                                  </li>
+                                  <li>
+                                      <a href="/material/listar_compra">Gestionar Compras</a>
                                   </li>
                                   <li>
                                       <a href="/material/crear_tipo_material/">Gestionar Tipos de Material</a>

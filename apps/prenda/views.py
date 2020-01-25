@@ -3,6 +3,7 @@ from tp_final.forms import MedidaForm, Tipo_prendaForm, PrendaForm, IngredienteF
 from .models import Tipo_prenda, Prenda, Ingrediente, Medida, Medida_prenda
 from apps.material.models import Material, Tipo_material
 from apps.pedido.models import Pedido, Detalle, Faltante
+from apps.estado.models import Estado_pedido
 # from apps.prenda.models import Faltante
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -337,7 +338,8 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
 
     cant_pre = detalle.cantidad
 
-    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    pedido = Pedido.objects.get(id_pedido=id_pedido) #Obtengo el pedido
+
     cantidad_pre = detalle.cantidad #Obtengo la cantidad previo a editar
     precio_pre = prenda.precio #Obtengo el precio previo a editar
     tpp_pre = prenda.tiempo_prod_prenda #Obtengo el tiempo pp previo a editar
@@ -345,7 +347,9 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
         prenda_form=PrendaForm(instance=prenda)
         detalle_form=DetalleForm(instance=detalle)
         ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
-        lista = []
+        if Estado_pedido.objects.filter(pedido_id=id_pedido).exists(): #Si existe una instancia del pedido en estados
+            estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0] #Obtengo el estado actual
+            print(estado)
         for ingrediente in ingredientes:
             material = ingrediente.material
             cantidad = ingrediente.cantidadxdetalle
@@ -362,7 +366,6 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
             else:
                 ingrediente.disponibilidad = "Faltante"
             ingrediente.save()
-            lista.append(ingrediente)
     else:
         prenda_form=PrendaForm(request.POST, instance=prenda)
         detalle_form=DetalleForm(request.POST, instance=detalle)
@@ -441,7 +444,7 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
 
                 return redirect('/pedido/volver_pedido/'+str(id_pedido))
 
-    return render(request,'prenda/ver_prenda.html',{'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
+    return render(request,'prenda/ver_prenda.html',{'estado':estado,'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
 
 
 #Eliminar un cliente

@@ -214,13 +214,13 @@ def EditarCompra (request,id_compra):
     return render(request,'material/crear_compra.html',{'compra_form':compra_form, 'error':error})
 #Eliminar un compra
 def EliminarCompra (request,id_compra):
-    compra = Compra.objects.get(id_compra=id_compra)
-    material = compra.material
-    material.stock -= compra.cantidad
-    material.save()
-    compra.delete()
-    messages.warning(request, 'Se eliminó la compra correctamente')
-    return redirect('material:listar_compra')
+    compra = Compra.objects.get(id_compra=id_compra) #Obtengo la compra
+    material = compra.material #Obtengo el material de la compra
+    material.stock -= compra.cantidad #Resto la cantidad comprada al stock del material
+    material.save() #Actualizo el stock
+    compra.delete() #Elimino la compra
+    messages.warning(request, 'Se eliminó la compra correctamente') #Informo que la transaccion fue exitosa
+    return redirect('material:listar_compra') #Redirecciono a la lista de materiales
 
 #Mostrar unidad de medida al asignar material
 def MostrarUnidad(request):
