@@ -127,6 +127,7 @@ def VolverPedido (request,id_pedido):
         if request.method=='GET':
             if not detalles:
                 print("ENTRA")
+                pedido.delete()
                 return redirect('/pedido/nuevo_pedido')
             print(detalles)
             print("NOENTR")
