@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import CrearMedida, ListarMedida, EditarMedida, EliminarMedida , CrearTipo_prenda, ListarTipo_prenda, EditarTipo_prenda, EliminarTipo_prenda, VerTipo_prenda
-from .views import CrearPrenda, ListarPrenda, EditarPrenda, VerPrenda, EliminarPrenda, AsignarMaterial, AsignarMedida, VolverPrenda, EditarIngrediente, EliminarIngrediente, MostrarUnidad, TiempoProdPrenda
+from .views import CrearPrenda, ListarPrenda, EditarPrenda, VerPrenda, EliminarPrenda, AsignarMaterial, CalcularDisponibilidad, AsignarMedida, VolverPrenda, EditarIngrediente, EliminarIngrediente, MostrarUnidad, TiempoProdPrenda
 
 from django.contrib.auth.decorators import login_required
 
@@ -26,6 +26,7 @@ urlpatterns = [
             path ('eliminar_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(EliminarPrenda),name='eliminar_prenda'),
             path ('volver_prenda/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(VolverPrenda),name='volver_prenda'),
             path ('asignar_material/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(AsignarMaterial),name='asignar_material'),
+            path ('calcular_disponibilidad/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(CalcularDisponibilidad),name='calcular_disponibilidad'),
             path ('asignar_medida/<int:id_prenda>/<int:id_detalle>/<int:id_pedido>',login_required(AsignarMedida),name='asignar_medida'),
             path ('editar_material/<int:id_ingrediente>/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',login_required(EditarIngrediente),name='editar_ingrediente'),
             path ('eliminar_material/<int:id_ingrediente>/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',login_required(EliminarIngrediente),name='eliminar_ingrediente'),

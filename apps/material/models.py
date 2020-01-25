@@ -45,7 +45,7 @@ class Material (models.Model):
     id_material = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     color = models.CharField(max_length=50, default='#ffffff')
-    stock = models.PositiveIntegerField(default=0)
+    stock = models.IntegerField(default=0)
     tipo_material = models.ForeignKey(Tipo_material, on_delete=models.PROTECT)
     stock_minimo = models.PositiveIntegerField(default=0)
     tiempo_reposicion = models.PositiveIntegerField(default=0)

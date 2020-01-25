@@ -387,32 +387,32 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
             pedido.save() # Actualizo el pedido
             detalle.save() # Actualizo el detalle
 
-            cant_post = detalle.cantidad
-            print("Cantidad prenda nueva: " + str(cant_post))
-            ingredientes = Ingrediente.objects.filter(prenda_id = prenda.id_prenda)
-            print(ingredientes)
-            for ingre in ingredientes:
-                mat_pre = cant_pre * ingre.cantidad
-                mat_post = cant_post * ingre.cantidad
-                print("Cantidad material previo: " + str(mat_pre))
-                print("Cantidad material nuevo: " + str(mat_post))
-                cant_dif = mat_post - mat_pre
-                print("Diferencia de cantidad: " + str(cant_dif))
-                material = Material.objects.get(id_material = ingre.material_id)
-                print(material.nombre)
-
-                if cant_dif <= material.stock:
-                    print("Hay stock disponible")
-                else:
-                    print("No hay stock disponible")
-                    redireccionar = 1
-                    messages.error(request, 'No hay stock disponible para el material ' + str(material)) # Informo que no hay stock para dicho material
-            print(redireccionar)
-
-            if redireccionar == 1:
-                detalle.cantidad = cantidad_pre
-                detalle.save()
-                return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+ str(id_detalle)+'/'+str(id_pedido))
+            # cant_post = detalle.cantidad
+            # print("Cantidad prenda nueva: " + str(cant_post))
+            # ingredientes = Ingrediente.objects.filter(prenda_id = prenda.id_prenda)
+            # print(ingredientes)
+            # for ingre in ingredientes:
+            #     mat_pre = cant_pre * ingre.cantidad
+            #     mat_post = cant_post * ingre.cantidad
+            #     print("Cantidad material previo: " + str(mat_pre))
+            #     print("Cantidad material nuevo: " + str(mat_post))
+            #     cant_dif = mat_post - mat_pre
+            #     print("Diferencia de cantidad: " + str(cant_dif))
+            #     material = Material.objects.get(id_material = ingre.material_id)
+            #     print(material.nombre)
+            #
+            #     if cant_dif <= material.stock:
+            #         print("Hay stock disponible")
+            #     else:
+            #         print("No hay stock disponible")
+            #         redireccionar = 1
+            #         messages.error(request, 'No hay stock disponible para el material ' + str(material)) # Informo que no hay stock para dicho material
+            # print(redireccionar)
+            #
+            # if redireccionar == 1:
+            #     detalle.cantidad = cantidad_pre
+            #     detalle.save()
+            #     return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+ str(id_detalle)+'/'+str(id_pedido))
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             if 'boton_asignar_material' in request.POST:
                 ingrediente_form = IngredienteForm()
@@ -461,15 +461,12 @@ def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
 
 #Asigna un material a la prenda
 def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
-    prenda = Prenda.objects.get(id_prenda=id_prenda)
-    pedido = Pedido.objects.get(id_pedido = id_pedido)
-    detalle = Detalle.objects.get(id_detalle = id_detalle)
+    prenda = Prenda.objects.get(id_prenda=id_prenda) #Obtengo la prenda a la que voy a asociar los ingredientes
+    pedido = Pedido.objects.get(id_pedido = id_pedido) #Obtengo el pedido al que corresponde la prenda
+    detalle = Detalle.objects.get(id_detalle = id_detalle) #Obtengo el detalle que asocia el pedido con la prenda y su cantidad
     if request.method == 'POST':
-        ingrediente_form = IngredienteForm(request.POST)
-        prenda = Prenda.objects.get(id_prenda=id_prenda)
-        detalle = Detalle.objects.get(id_detalle=id_detalle)
-
-        if ingrediente_form.is_valid():
+        ingrediente_form = IngredienteForm(request.POST) #Traigo los datos del template
+        if ingrediente_form.is_valid(): #Si el formulario es valido
             ingrediente = ingrediente_form.save(commit = False) #guardo el ingrediente
             material = ingrediente.material # obtengo el material
 
@@ -478,10 +475,61 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
             unidad_medida = tipo_material.unidad_medida
 
             cantidad_material = ingrediente.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
-            ingrediente.cantidadxdetalle = cantidad_material
+            ingrediente.cantidadxdetalle = cantidad_material #Cantidad de material a utilizar
+
+            #Definir disponibilidad
+            if cantidad_material <= material.stock:
+                ingrediente.disponibilidad = "Disponible"
+                cant_post = material.stock - cantidad_material
+                if cant_post >= material.stock_minimo:
+                    ingrediente.disponibilidad = "Disponible"
+                else:
+                    ingrediente.disponibilidad = "Stock Minimo"
+            else:
+                ingrediente.disponibilidad = "Faltante"
+
             if cantidad_material < material.stock: # Si la cantidad solicitada es menor al stock disponible
                 material_post = material.stock - cantidad_material # calculo con cuanto stock quedaría
 
+                #Actualizar stock
+                material.stock -= cantidad_material # Actualizo el stock
+                material.save() # persisto
+                #Guardo la asignación de material
+                ingrediente.prenda = prenda # asocio el material con la prenda
+
+                mat_prenda = Ingrediente.objects.filter(prenda = prenda, material = material).exists() #Existe ese material entre los ingredientes ingresados?
+                if mat_prenda:# si existe
+                    ingre = Ingrediente.objects.get(prenda = prenda, material = material)# Obtengo el ingrediente
+                    ingre.cantidad += ingrediente.cantidad #sumo la nueva cantidad a la actual
+                    print("INGREDIENTE")
+                    print(ingrediente.cantidad)
+                    print(ingre.cantidad)
+                    print(detalle.cantidad)
+                    cantidad_material = ingre.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
+                    ingre.cantidadxdetalle = cantidad_material #Cantidad de material a utilizar
+
+                    #Definir disponibilidad
+                    if ingre.cantidadxdetalle <= material.stock:
+                        ingre.disponibilidad = "Disponible"
+                        cant_post = material.stock - cantidad_material
+                        if cant_post >= material.stock_minimo:
+                            ingre.disponibilidad = "Disponible"
+                        else:
+                            ingre.disponibilidad = "Stock Minimo"
+                    else:
+                        ingre.disponibilidad = "Faltante"
+
+                    ingre.save() # actualizo el ingrediente
+                else:
+                    ingrediente.save() #persisto
+
+                #Actualizo el detalle
+                detalle.prenda = prenda # Asocio la prenda con el detalle
+                detalle.pedido = pedido # Asocio el pedido con el detalle
+                detalle.save() #Persisto
+                messages.success(request, 'Se asignó el material') # Informo que se asignó correctamente
+
+            else: #Si la cantidad de material supera el stock minimo
                 #Actualizar stock
                 material.stock -= cantidad_material # Actualizo el stock
                 material.save() # persisto
@@ -492,36 +540,24 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
                 if mat_prenda:# si existe
                     ingre = Ingrediente.objects.get(prenda = prenda, material = material)# Obtengo el ingrediente
                     ingre.cantidad += ingrediente.cantidad #sumo la nueva cantidad a la actual
-                    ingre.save() # actualizo el ingrediente
-                else:
-                    ingrediente.save() #persisto
+                    print("INGREDIENTE")
+                    print(ingrediente.cantidad)
+                    print(ingre.cantidad)
+                    print(detalle.cantidad)
+                    cantidad_material = ingre.cantidad * detalle.cantidad # obtengo la cant. material multiplicando el ingrediente por la cantidad de unidades solicitadas
+                    ingre.cantidadxdetalle = cantidad_material #Cantidad de material a utilizar
 
-                #Actualizo el detalle
-                detalle.prenda = prenda # Asocio la prenda con el detalle
-                detalle.pedido = pedido # Asocio el pedido con el detalle
-                detalle.save() #Persisto
-                messages.success(request, 'Se asignó el material') # Informo que se asignó correctamente
-                if material_post > material.stock_minimo:
-                    if 'boton_guardar_cargar' in request.POST:
-                        return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/ver_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
-                else:
-                    messages.warning(request, 'La cantidad introducida supera el stock mínimo')
-                    if 'boton_guardar_cargar' in request.POST:
-                        return redirect('/prenda/asignar_material/'+str(prenda.id_prenda)+'/'+str(detalle.id_detalle)+'/'+str(pedido.id_pedido),{'ingrediente_form':ingrediente_form})
-                    return redirect('/prenda/ver_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
-            else:
-                material_post = material.stock - cantidad_material #Calculo cuanto material necesito a parte del stock que tengo
+                    #Definir disponibilidad
+                    if ingre.cantidadxdetalle <= material.stock:
+                        ingre.disponibilidad = "Disponible"
+                        cant_post = material.stock - cantidad_material
+                        if cant_post >= material.stock_minimo:
+                            ingre.disponibilidad = "Disponible"
+                        else:
+                            ingre.disponibilidad = "Stock Minimo"
+                    else:
+                        ingre.disponibilidad = "Faltante"
 
-                faltante = Faltante.objects.create(tipo_material = material.tipo_material, material = material, faltante = abs(material_post), prenda = prenda, pedido = pedido) # Creo el objeto faltante
-
-                #Guardo la asignación de material
-                ingrediente.prenda = prenda # asocio el material con la prenda
-
-                mat_prenda = Ingrediente.objects.filter(prenda = prenda, material = material).exists()#Existe ese material entre los ingredientes ingresados?
-                if mat_prenda:# si existe
-                    ingre = Ingrediente.objects.get(prenda = prenda, material = material)# Obtengo el ingrediente
-                    ingre.cantidad += ingrediente.cantidad #sumo la nueva cantidad a la actual
                     ingre.save() # actualizo el ingrediente
                 else:
                     ingrediente.save() #persisto
@@ -540,25 +576,44 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
     else:
         ingrediente_form = IngredienteForm()
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
-    lista = []
-    for ingrediente in ingredientes:
-        material = ingrediente.material
-        cantidad = ingrediente.cantidadxdetalle
 
-        cantidad = detalle.cantidad * ingrediente.cantidad
+    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
 
-        if cantidad <= material.stock:
-            ingrediente.disponibilidad = "Disponible"
-            cant_post = material.stock - cantidad
-            if cant_post >= material.stock_minimo:
-                ingrediente.disponibilidad = "Disponible"
-            else:
-                ingrediente.disponibilidad = "Stock Minimo"
-        else:
-            ingrediente.disponibilidad = "Faltante"
-        ingrediente.save()
-        lista.append(ingrediente)
-    return render(request,'prenda/asignar_material.html',{'lista':lista,'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
+
+#Calcular Disponibilidad
+def CalcularDisponibilidad(request,id_prenda,id_detalle,id_pedido):
+    prenda = Prenda.objects.get(id_prenda=id_prenda) #Obtengo la prenda a la que voy a asociar los ingredientes
+    pedido = Pedido.objects.get(id_pedido = id_pedido) #Obtengo el pedido al que corresponde la prenda
+    detalle = Detalle.objects.get(id_detalle = id_detalle) #Obtengo el detalle que asocia el pedido con la prenda y su cantidad
+    if request.method == 'GET':
+        ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
+        print("INGREDIENTES")
+        print(ingredientes)
+
+        for ingrediente in ingredientes:
+            material = ingrediente.material
+            cantidad = ingrediente.cantidadxdetalle
+
+            cantidad = detalle.cantidad * ingrediente.cantidad
+            if cantidad > material.stock:
+
+                 mat_faltante = Faltante.objects.filter(material = material, prenda = prenda ).exists()#Existe ese material entre los faltantes?
+
+                 if mat_faltante:# si existe
+                     print("EXISTE")
+                     print(ingrediente.cantidad)
+                     faltante = Faltante.objects.get(material = material, prenda = prenda)# Obtengo el faltante de ese material
+                     faltante.faltante = abs(material.stock) #sumo la nueva cantidad a la actual
+                     print("FALTANTE")
+                     print(faltante.faltante)
+                     faltante.save() # actualizo el ingrediente
+                 else:
+                     print("NOTEXISTE")
+                     print(material_post)
+                     faltante = Faltante.objects.create(tipo_material = material.tipo_material, material = material, faltante = abs(material.stock), prenda = prenda, pedido = pedido) # Creo el objeto faltante
+                 ingrediente.save()
+                 return redirect('/prenda/ver_prenda/'+ str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+
 
 #Asignar medidas a la prenda
 def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
