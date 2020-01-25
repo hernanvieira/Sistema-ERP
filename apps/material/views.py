@@ -215,6 +215,9 @@ def EditarCompra (request,id_compra):
 #Eliminar un compra
 def EliminarCompra (request,id_compra):
     compra = Compra.objects.get(id_compra=id_compra)
+    material = compra.material
+    material.stock -= compra.cantidad
+    material.save()
     compra.delete()
     messages.warning(request, 'Se eliminó la compra correctamente')
     return redirect('material:listar_compra')
