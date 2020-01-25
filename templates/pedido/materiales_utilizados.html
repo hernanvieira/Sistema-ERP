@@ -72,7 +72,8 @@ Asignar Medidas
                               {% if ingrediente.prenda.id_prenda == prenda.prenda_id %}
                                 <tr class="tr-shadow">
                                   <td>{{ingrediente.material.tipo_material}}</td>
-                                  <td><input type="hidden" name="input_id_material" value="{{ingrediente.material.id_material}}">{{ingrediente.material}}</td>
+
+                                  <td><input type="hidden" name="input_id_ingrediente" value="{{ingrediente.id_ingrediente}}">{{ingrediente.material}}</td>
                                   <td><input style="width:100px; text-align:right;" type="number" class="form-control" name="" value="{{ingrediente.cantidadxdetalle}}" readonly></td>
                                   <td><input style="width:100px; text-align:right;" type="number" min=0 class="form-control" name="input_sobrante" value="0"></td>
                                   <td>{{ingrediente.material.tipo_material.unidad_medida}}</td>

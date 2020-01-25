@@ -376,14 +376,24 @@ def MaterialesUtilizados(request, id_pedido):
     if request.method=='POST':
         peticion = request.POST.copy() # OBtengo una copia del request
         peticion_sobrante = peticion.pop('input_sobrante') # Obtengo el valor de los sobrantes
-        peticion_id_material = peticion.pop('input_id_material') # Obtengo los id de los materiales
-        i=0
-        for id_material in peticion_id_material:
-            material = Material.objects.get(id_material= id_material)
-            sobrante = peticion_sobrante[i]
-            i+=1
-            material.stock += int(sobrante)
-            material.save()
+        peticion_id_ingrediente = peticion.pop('input_id_ingrediente') # Obtengo los id de los materiales
+        i=0 #Inicializo i en 0
+        for id_ingrediente in peticion_id_ingrediente: #Por cada ingrediente recibido
+            ingrediente = Ingrediente.objects.get(id_ingrediente= id_ingrediente) #Obtengo el ingrediente
+            sobrante = peticion_sobrante[i] #Obtengo el sobrante
+            i+=1 #Incremento i en 1
+            if ingrediente.disponibilidad == "DISPONIBLE" or ingrediente.disponibilidad == "STOCK MÍNIMO": #Si esta disponible el stock del ingrediente
+                ingrediente.material.stock += int(sobrante) #Sumo el material sobrante al stock del material
+                ingrediente.material.save() #Actualizo el material
+            if ingrediente.disponibilidad == "FALTANTE": #Si tiene faltante
+                ingrediente.material.stock += int(sobrante) #Sumo el sobrante que recibo
+                ingrediente.material.save() #Actualizo el stock
+
+                prenda = ingrediente.prenda #Obtengo la prenda del ingrediente
+                material = ingrediente.material #Obtengo el material del ingrediente
+                faltante = Faltante.objects.get(prenda = prenda, material = material) #Obtengo el faltante
+                faltante.delete() #Elimino el faltante
+
     else:
         prendas = Detalle.objects.filter(pedido = pedido)
         a=[]
