@@ -22,14 +22,24 @@ Listado de Tipos de Materiales
 <input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
 
 {% if messages %}
+<div class="col-md-12">
   <ul class="messages">
     {% for message in messages %}
-    <div class="alert alert-danger">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }} {{cliente.apellido}} {{cliente.nombre}}</p>
-    </div>
+      {% if message.tags == 'success'%}
+        <div class="alert alert-success">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+        </div>
+      {% endif %}
+      {% if message.tags == 'error' %}
+      <div class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+      </div>
+      {% endif %}
     {% endfor %}
   </ul>
+</div>
 {% endif %}
 
 <!-- DATA TABLE-->

@@ -422,7 +422,7 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
             #         material.stock -= cant_dif # Actualizo el stock
             #         material.save() # persisto
 
-            return redirect('/pedido/volver_pedido/'+str(id_pedido))
+            return redirect('/pedido/ver_pedido/'+str(id_pedido))
 
     return render(request,'prenda/ver_prenda.html',{'estado':estado,'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
 
@@ -594,6 +594,7 @@ def CalcularDisponibilidad(request,id_prenda,id_detalle,id_pedido):
                      faltante = Faltante.objects.create(tipo_material = material.tipo_material, material = material, faltante = abs(material.stock), prenda = prenda, pedido = pedido) # Creo el objeto faltante
                  ingrediente.save()
                  return redirect('/prenda/ver_prenda/'+ str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
+    return redirect('/prenda/ver_prenda/'+ str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
 
 
 #Asignar medidas a la prenda

@@ -29,7 +29,6 @@ def Home(request):
             a = Estado_pedido.objects.filter(pedido = p).order_by('-id_estado_pedido')[0]
             aux.append(a)
     pedidos = aux
-    print(pedidos[0].pedido)
 
     lista = Faltante.objects.values('material').order_by('material').annotate(sum=Sum('faltante')) #Obtengo un queryset con la suma de faltante agrupado por cada material, solo me trae el id
 

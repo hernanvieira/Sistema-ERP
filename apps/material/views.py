@@ -5,6 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from config.models import Configuracion
 
+from apps.prenda.models import Ingrediente
+from apps.pedido.models import Faltante
+
 import json
 from django.http import HttpResponse
 from django.http import JsonResponse
@@ -121,8 +124,9 @@ def EliminarMaterial (request,id_material):
         material.delete()
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el material')
+    messages.warning(request, 'Se eliminó el material correctamente')
     materiales = Material.objects.all()
-    return render(request,'material/listar_material.html',{'materiales':materiales})
+    return redirect('/material/listar_material')
 
 #Crear una unidad de medida
 def CrearUnidad_medida (request):
@@ -184,7 +188,34 @@ def CrearCompra (request):
             cantidad = request.POST['cantidad'] #Obtengo la cantidad de la compra registrada
             material = Material.objects.get(id_material=id_material) #Obtengo el material
             material.stock=material.stock + int(cantidad) #Sumo la cantidad al stock actual
+            cantidad = int(cantidad)
 
+            faltantes = Faltante.objects.filter(material = material)
+            if faltantes:
+                ingredientes_faltante = Ingrediente.objects.filter(material = material, disponibilidad = "FALTANTE")
+                for ingrediente in ingredientes_faltante:
+                    print("DI")
+                    print(ingrediente.pk)
+                    faltante = Faltante.objects.get(material = material, prenda = ingrediente.prenda)
+                    print("COMPRA")
+                    print(cantidad)
+                    print('Faltante cantidad')
+                    print(faltante.faltante)
+                    if cantidad != 0: #Si la cantidad es distinta de 0
+                        if cantidad < faltante.faltante: #Si la cantidad es menor al faltante a solventar
+                            faltante.faltante -= cantidad #Resto al faltante la cantidad introducida
+                            cantidad = 0 #Establesco la cantidad en 0 porque la ocupé por completo
+                            faltante.save() #actualizo el faltante
+                        if cantidad >= faltante.faltante: #Si la cantidad es mayor o igual al faltante
+                            cantidad -= faltante.faltante #Resto a la cantidad lo que voy a utilizar para solventar el faltante
+                            faltante.delete() #Elimino el faltante al solventarlo por completo
+
+                            #Calcular disponibilidad
+                            if ingrediente.cantidadxdetalle > ingrediente.material.stock_minimo:#Si el ingrediente es mayor al stock minimo del material actualizado
+                                ingrediente.disponibilidad = "DISPONIBLE" #Establezco la disponibilidad
+                            else: #Si el ingrediente es menor o igual al stock minimo
+                                ingrediente.disponibilidad = "STOCK MÍNIMO" #Establezco la disponibilidad
+                            ingrediente.save() #Actualizo el ingrediente
             material.save() #Se actualiza el stock del material
 
             return ListarMaterial(request)
