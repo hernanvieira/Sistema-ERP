@@ -39,9 +39,7 @@ Nueva Compra
         <div class="col-md-3">
           {{compra_form.cantidad.label}}
           <div class="input-group">
-            <div class="form-control">
               {{compra_form.cantidad}}
-            </div>
             <div class="input-group-addon">
               <p  id="unidad_medida"></p>
             </div>
@@ -62,8 +60,138 @@ Nueva Compra
       </div>
     {% endif %}
     </form>
-
-
+  {% if materiales %}
+  <strong>Lista de Materiales</strong>
+  <!-- DATA TABLE-->
+  <div class="table-responsive m-b-40">
+      <table class="table table-borderless table-data3">
+        <thead>
+            <tr>
+              <th>Id</th>
+              <th>Tipo de Material</th>
+              <th>Nombre</th>
+              <th class="noExport">Color</th>
+              <th>Stock</th>
+              <th>Stock Mínimo</th>
+              <th>U. de Medida</th>
+              <th class ="noExport">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for material in materiales %}
+            <tr>
+              <td>{{material.id_material}}</td>
+              <td>{{material.tipo_material}}</td>
+              <td>{{material.nombre}}</td>
+              <td class="noExport"><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
+              <td style="text-align: right;">{{material.stock}}</td>
+              <td style="text-align: right;">{{material.stock_minimo}}</td>
+              <td style="text-align: left;">{{material.tipo_material.unidad_medida}}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
+                  <i class="fas fa-pencil-square-o"></i>
+                </button>
+                <!-- Modal Eliminar -->
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <div class="modal fade bs-example-modal-lg2{{material.id_material}}" id="myModal2{{material.id_material}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel{{material.id_material}}">Confirmar Eliminacion</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <a>¿Está seguro de <strong>eliminar</strong> el material?</a>
+                            </div>
+                            <div class="modal-footer">
+                              <div class="alineado-derecha">
+                                <a href="{% url 'material:eliminar_material' material.id_material %}">
+                                  <button type="button" class="btn btn-danger" >Eliminar</button>
+                                </a>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  <!-- END DATA TABLE-->
+  {% endif %}
+  {% if compras %}
+  <strong>Lista de Compras</strong>
+  <div class="table-responsive m-b-40">
+      <table class="table table-borderless table-data3">
+        <thead>
+            <tr>
+              <th>Id</th>
+              <th>Fecha</th>
+              <th>Material</th>
+              <th class="noExport">Color</th>
+              <th>Cantidad</th>
+              <th>Usuario</th>
+              <th class ="noExport">Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for compra in compras %}
+            <tr>
+              <td>{{compra.id_compra}}</td>
+              <td>{{compra.fecha |date:'d-m-Y'}}</td>
+              <td>{{compra.material}}</td>
+              <td class="noExport"><input type="color" name="favcolor" value="{{compra.material.color}}" disabled ></td>
+              <td style="text-align: right;">{{compra.cantidad}}</td>
+              <td style="text-align: left;">{{compra.usuario}}</td>
+              <td>
+                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_compra' compra.id_compra %}'">
+                  <i class="fas fa-pencil-square-o"></i>
+                </button>
+                <!-- Modal Eliminar -->
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{compra.id_compra}}">
+                  <i class="fas fa-trash"></i>
+                </button>
+                <div class="modal fade bs-example-modal-lg2{{compra.id_compra}}" id="myModal2{{compra.id_compra}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="myModalLabel{{compra.id_compra}}">Confirmar Eliminacion</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                                <a>¿Está seguro de <strong>eliminar</strong> la compra?</a>
+                            </div>
+                            <div class="modal-footer">
+                              <div class="alineado-derecha">
+                                <a href="{% url 'material:eliminar_compra' compra.id_compra %}">
+                                  <button type="button" class="btn btn-danger" >Eliminar</button>
+                                </a>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div
+  <!-- END DATA TABLE-->
+  {% endif %}
+  <div class="alineado-derecha">
+    <button type="button" class="btn btn-danger" onclick="location.href='{% url 'pedido:listar_pedido' %}'" >
+      <i class="fa fa-chevron-left"></i> Volver
+    </button>
+  </div>
   </div>
 </div>
 <script>

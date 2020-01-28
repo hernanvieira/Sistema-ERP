@@ -60,6 +60,7 @@ Ver pedido
                           <th>Precio Unitario</th>
                           <th>Cantidad</th>
                           <th>Tiempo Prod. Lote</th>
+                          <th>M. Asignados</th>
                           <th>Opciones</th>
                       </tr>
                   </thead>
@@ -72,17 +73,48 @@ Ver pedido
                         <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
                         <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
                         <td>
+                        {% if detalle.prenda.pk in ingredientes %}
+                          SI
+                        {% else %}
+                          NO
+                        {% endif %}
+                        </td>
+                        <td>
                           {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
-                          
+
                           <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'prenda:ver_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
                             <i class="fas fa-eye"></i>
                           </button>
                             <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                            <!-- Modal Eliminar -->
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".eliminar_prenda{{detalle.prenda.pk}}">
                               <i class="fas fa-trash"></i>
                             </button>
+                            <div class="modal fade eliminar_prenda{{detalle.prenda.pk}}" id="myModal2{{prenda.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel{{detalle.prenda.pk}}">Confirmar Eliminacion</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <a>¿Está seguro de <strong>eliminar</strong> la prenda?</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <div class="alineado-derecha">
+                                            <a href="{% url 'prenda:eliminar_prenda' detalle.prenda.pk detalle.pk detalle.pedido.pk %}">
+                                              <button type="button" class="btn btn-danger" >Eliminar</button>
+                                            </a>
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                          </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Modal -->
                           {% endif %}
                         </td>
                       </tr>

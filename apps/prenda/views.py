@@ -427,20 +427,33 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
     return render(request,'prenda/ver_prenda.html',{'estado':estado,'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
 
 
-#Eliminar un cliente
+#Eliminar una prenda
 def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
     prenda = get_object_or_404(Prenda,id_prenda=id_prenda)
     detalle = get_object_or_404(Detalle, id_detalle=id_detalle)
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-    # try:
-    pedido.precio_total = (pedido.precio_total) - (prenda.precio * detalle.cantidad) #Actualizo el precio total
-    pedido.seña = pedido.precio_total/2 #Actualizo la seña minima
-    pedido.save() # Actualizo el pedido
-    detalle.delete() #Elimino el detalle
-    prenda.delete() #Elimino la prenda
-    # except Exception as e:
-        # messages.error(request, 'Ocurrió un error al tratar de eliminar el clientela prenda')
-    return redirect('/pedido/volver_pedido/'+str(id_pedido))
+    try:
+        pedido.precio_total = (pedido.precio_total) - (prenda.precio * detalle.cantidad) #Actualizo el precio total
+        pedido.seña = pedido.precio_total/2 #Actualizo la seña minima
+
+        #Actualizar stock
+        #Actualización de stock
+        ingredientes = Ingrediente.objects.filter(prenda = prenda) #Obtengo los ingredientes de la prenda actual
+
+        for ingrediente in ingredientes:
+            ingrediente.material.stock += ingrediente.cantidadxdetalle
+            ingrediente.material.save()
+            if ingrediente.disponibilidad == "FALTANTE":
+                faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
+                if faltante:
+                    faltante.delete()
+
+        pedido.save() # Actualizo el pedido
+        detalle.delete() #Elimino el detalle
+        prenda.delete() #Elimino la prenda
+    except Exception as e:
+        messages.error(request, 'Ocurrió un error al tratar de eliminar la prenda')
+    return redirect('/pedido/ver_pedido/'+str(id_pedido))
 
 #Asigna un material a la prenda
 def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
@@ -758,10 +771,40 @@ def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prend
     ingrediente = Ingrediente.objects.get(id_ingrediente=id_ingrediente)
     detalle = Detalle.objects.get(id_detalle = id_detalle)
     material = Material.objects.get(id_material = str(ingrediente.material.id_material))
-    cantidad_material = ingrediente.cantidad * detalle.cantidad
-    material.stock += cantidad_material
-    material.save()
-    ingrediente.delete()
+    cantidad = ingrediente.cantidadxdetalle
+    material.stock += cantidad
+
+    if ingrediente.disponibilidad == "FALTANTE":
+        faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
+        if faltante:
+            faltante.delete()
+    else:
+        #Solventar Faltantes
+        faltantes = Faltante.objects.filter(material = material)
+        if faltantes:
+            ingredientes_faltante = Ingrediente.objects.filter(material = material, disponibilidad = "FALTANTE")
+            for ingrediente in ingredientes_faltante:
+
+                faltante = Faltante.objects.get(material = material, prenda = ingrediente.prenda)
+
+                if cantidad != 0: #Si la cantidad es distinta de 0
+                    if cantidad < faltante.faltante: #Si la cantidad es menor al faltante a solventar
+                        faltante.faltante -= cantidad #Resto al faltante la cantidad introducida
+                        cantidad = 0 #Establesco la cantidad en 0 porque la ocupé por completo
+                        faltante.save() #actualizo el faltante
+                    if cantidad >= faltante.faltante: #Si la cantidad es mayor o igual al faltante
+                        cantidad -= faltante.faltante #Resto a la cantidad lo que voy a utilizar para solventar el faltante
+                        faltante.delete() #Elimino el faltante al solventarlo por completo
+
+                        #Calcular disponibilidad
+                        if ingrediente.cantidadxdetalle > ingrediente.material.stock_minimo:#Si el ingrediente es mayor al stock minimo del material actualizado
+                            ingrediente.disponibilidad = "DISPONIBLE" #Establezco la disponibilidad
+                        else: #Si el ingrediente es menor o igual al stock minimo
+                            ingrediente.disponibilidad = "STOCK MÍNIMO" #Establezco la disponibilidad
+                        ingrediente.save() #Actualizo el ingrediente
+        material.save()
+        ingrediente.delete()
+
     return redirect('/prenda/asignar_material/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
 
 #Mostrar unidad de medida al asignar material

@@ -43,9 +43,6 @@ Listado de Tipos de Materiales
 {% endif %}
 
 <!-- DATA TABLE-->
-
-
-
 <div class="table-responsive m-b-40">
     <table class="table table-borderless table-data2" id="midatatable">
       <thead>
@@ -56,6 +53,7 @@ Listado de Tipos de Materiales
             <th class="noExport">Color</th>
             <th>Stock</th>
             <th>Stock Mínimo</th>
+            <th>U. de Medida</th>
             <th class ="noExport">Opciones</th>
           </tr>
       </thead>
@@ -68,6 +66,7 @@ Listado de Tipos de Materiales
             <td class="noExport"><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
             <td style="text-align: right;">{{material.stock}}</td>
             <td style="text-align: right;">{{material.stock_minimo}}</td>
+            <td style="text-align: left;">{{material.tipo_material.unidad_medida}}</td>
             <td>
               <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
                 <i class="fas fa-pencil-square-o"></i>

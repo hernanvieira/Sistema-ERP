@@ -219,6 +219,10 @@ def VerPedido (request,id_pedido):
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
     estados = Estado_pedido.objects.filter(pedido_id=id_pedido)
     entregas = Entregas.objects.filter(pedido=pedido)
+
+    ingredientes = Ingrediente.objects.values_list('prenda', flat=True)
+    for ingrediente in ingredientes:
+        print(ingrediente)
     if Estado_pedido.objects.filter(pedido_id=id_pedido).exists():
         estado = Estado_pedido.objects.filter(pedido_id=id_pedido).order_by('-id_estado_pedido')[0]
     else:
@@ -311,7 +315,7 @@ def VerPedido (request,id_pedido):
             estado = Estado_pedido.objects.filter(pedido=pedido).order_by('-id_estado_pedido')[0]
         else:
             estado = None
-    return render(request,'pedido/ver_pedido.html',{'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
+    return render(request,'pedido/ver_pedido.html',{'ingredientes':ingredientes,'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
 
 
 #Eliminar un pedido
@@ -327,21 +331,21 @@ def EliminarPedido (request,id_pedido):
 
 #Cancelar un pedido
 def CancelarPedido (request,id_pedido):
-    pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-    pedido.cancelado = True
-    estado_pedido_form = Estado_pedidoForm()
-    estado_pedido = estado_pedido_form.save(commit = False)
-    mensaje = ConfiguracionMensaje.objects.all().last()
+    pedido = get_object_or_404(Pedido, id_pedido=id_pedido) #obtengo el pedido
+    pedido.cancelado = True #Cambio el estado de cancelado a True
+    estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario
+    estado_pedido = estado_pedido_form.save(commit = False) #Commit False de pedido con los valores recibidos
+    mensaje = ConfiguracionMensaje.objects.all().last() #Obtengo las ultimas configuraciones para enviar correo
 
-    estado_cancelado = Estado.objects.get(id_estado = 5)
+    estado_cancelado = Estado.objects.get(id_estado = 5) #Obtengo el estado cancelado
 
-    estado_pedido.estado = estado_cancelado
-    estado_pedido.pedido = pedido
-    estado_pedido.fecha = date.today()
+    estado_pedido.estado = estado_cancelado #Establezco el estado cancelado al estado del pedido
+    estado_pedido.pedido = pedido #Asocio el pedido al estado
+    estado_pedido.fecha = date.today() #Establezco la fecha actual al estado
 
-    pedido.save()
-    estado_pedido.save()
-    messages.warning(request, 'Se canceló el pedido')
+    pedido.save() #Actualizo el pedido
+    estado_pedido.save() #Guardo el estado
+    messages.warning(request, 'Se canceló el pedido') #Informo que el pedido se canceló
 
     # Envio de correo
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.cancelado, to=[pedido.cliente.correo])
@@ -353,7 +357,7 @@ def CancelarPedido (request,id_pedido):
     # Reputación
     cliente = pedido.cliente # Obtengo el cliente
 
-    reputacion = cliente.reputacion
+    reputacion = cliente.reputacion #Obtengo la reputación
 
     check = str(request.POST['optradio'])
     if check =='checkMM':
@@ -366,13 +370,53 @@ def CancelarPedido (request,id_pedido):
         reputacion += 10
     if check=='checkMB':
         reputacion += 20
-    cliente.reputacion = reputacion
-    cliente.save()
+    cliente.reputacion = reputacion #Asocio el valor de reputación actualizado
+    cliente.save() #Actualizo el cliente
+
+    #Actualización de stock
+    detalles = Detalle.objects.filter(pedido = pedido) #Obtengo las prendas
+    ingredientes_list = [] #Creo lista para obtener los ingredientes de todas las prendas
+    for detalle in detalles: #Por cada detalle (prenda)
+        ingredientes = Ingrediente.objects.filter(prenda = detalle.prenda) #Obtengo los ingredientes de la prenda actual
+        for ingrediente in ingredientes: #Por cada ingrediente
+            ingredientes_list.append(ingrediente) #Agrego el ingrediente a la lista
+
+    for ingrediente in ingrediente_list:
+        ingrediente.material.stock += ingrediente.cantidadxdetalle
+        ingrediente.material.save()
+        if ingrediente.disponibilidad == "FALTANTE":
+            faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
+            if faltante:
+                faltante.delete()
+        else:
+            #Solventar Faltantes
+            faltantes = Faltante.objects.filter(material = material)
+            if faltantes:
+                ingredientes_faltante = Ingrediente.objects.filter(material = material, disponibilidad = "FALTANTE")
+                for ingrediente in ingredientes_faltante:
+
+                    faltante = Faltante.objects.get(material = material, prenda = ingrediente.prenda)
+
+                    if cantidad != 0: #Si la cantidad es distinta de 0
+                        if cantidad < faltante.faltante: #Si la cantidad es menor al faltante a solventar
+                            faltante.faltante -= cantidad #Resto al faltante la cantidad introducida
+                            cantidad = 0 #Establesco la cantidad en 0 porque la ocupé por completo
+                            faltante.save() #actualizo el faltante
+                        if cantidad >= faltante.faltante: #Si la cantidad es mayor o igual al faltante
+                            cantidad -= faltante.faltante #Resto a la cantidad lo que voy a utilizar para solventar el faltante
+                            faltante.delete() #Elimino el faltante al solventarlo por completo
+
+                            #Calcular disponibilidad
+                            if ingrediente.cantidadxdetalle > ingrediente.material.stock_minimo:#Si el ingrediente es mayor al stock minimo del material actualizado
+                                ingrediente.disponibilidad = "DISPONIBLE" #Establezco la disponibilidad
+                            else: #Si el ingrediente es menor o igual al stock minimo
+                                ingrediente.disponibilidad = "STOCK MÍNIMO" #Establezco la disponibilidad
+                            ingrediente.save() #Actualizo el ingrediente
 
 
 
 def MaterialesUtilizados(request, id_pedido):
-    pedido = Pedido.objects.get(id_pedido= id_pedido)
+    pedido = Pedido.objects.get(id_pedido= id_pedido) #
     if request.method=='POST':
         peticion = request.POST.copy() # OBtengo una copia del request
         peticion_sobrante = peticion.pop('input_sobrante') # Obtengo el valor de los sobrantes

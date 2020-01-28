@@ -177,6 +177,8 @@ def EliminarUnidad_medida (request,id_unidad):
 
 #Registrar una compra
 def CrearCompra (request):
+    materiales = Material.objects.all()
+    compras = Compra.objects.all()
     if request.method == 'POST':
         compra_form = CompraForm(request.POST)
         usuario = request.user #Obtengo el usuario registrado actualmente
@@ -194,13 +196,9 @@ def CrearCompra (request):
             if faltantes:
                 ingredientes_faltante = Ingrediente.objects.filter(material = material, disponibilidad = "FALTANTE")
                 for ingrediente in ingredientes_faltante:
-                    print("DI")
-                    print(ingrediente.pk)
+
                     faltante = Faltante.objects.get(material = material, prenda = ingrediente.prenda)
-                    print("COMPRA")
-                    print(cantidad)
-                    print('Faltante cantidad')
-                    print(faltante.faltante)
+
                     if cantidad != 0: #Si la cantidad es distinta de 0
                         if cantidad < faltante.faltante: #Si la cantidad es menor al faltante a solventar
                             faltante.faltante -= cantidad #Resto al faltante la cantidad introducida
@@ -218,10 +216,10 @@ def CrearCompra (request):
                             ingrediente.save() #Actualizo el ingrediente
             material.save() #Se actualiza el stock del material
 
-            return ListarMaterial(request)
+            return redirect('/material/crear_compra')
     else:
         compra_form = CompraForm()
-    return render(request, 'material/crear_compra.html',{'compra_form':compra_form})
+    return render(request, 'material/crear_compra.html',{'compras':compras,'materiales':materiales,'compra_form':compra_form})
 #Listar todos las compras
 def ListarCompra (request):
     reporte = Configuracion.objects.all().last()
