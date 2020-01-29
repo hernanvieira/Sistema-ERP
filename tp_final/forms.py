@@ -90,6 +90,10 @@ class CompraForm (forms.ModelForm):
         }
 
 class PedidoForm (forms.ModelForm):
+
+    def __init__(self,*args, **kwargs):
+            super(PedidoForm, self).__init__(*args, **kwargs)
+            self.fields['cliente'].queryset = Cliente.objects.filter(activo=True)
     class Meta:
         CHOICES_PRIORIDAD= [
         ('2', 'Alta'),

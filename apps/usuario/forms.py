@@ -15,12 +15,15 @@ class FormularioLogin(AuthenticationForm):
 class UserCreationForm(UserCreationForm):
     class Meta:
         model = customuser
-        fields = ('username', 'rol', 'password1', 'password2')
+        fields = ('username', 'rol', 'password1', 'password2', 'email')
 
     def __init__(self, *args, **kwargs):
        super(UserCreationForm, self).__init__(*args, **kwargs)
        self.fields['username'].widget.attrs['class'] = 'au-input au-input--full'
        self.fields['username'].widget.attrs['placeholder'] = 'Usuario'
+
+       self.fields['email'].widget.attrs['class'] = 'au-input au-input--full'
+       self.fields['email'].widget.attrs['placeholder'] = 'Correo@email.com'
 
        self.fields['password1'].widget.attrs['class'] = 'au-input au-input--full'
        self.fields['password1'].widget.attrs['placeholder'] = 'Contraseña'

@@ -1,0 +1,128 @@
+{% extends 'index.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+
+{% block titulo%}
+Editar Perfil
+{% endblock titulo%}
+
+{% block content%}
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Editar Perfil</strong></div>
+  <div class="card-body card-block">
+    <form method="POST">
+      {%csrf_token%}
+
+      {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+            {% if message.tags == 'success'%}
+              <div class="alert alert-success">
+              <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+              </div>
+            {% endif %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+            {% if message.tags == 'warning' %}
+            <div class="alert alert-warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+              <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            </div>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="row">
+        <div class="col-md-3">
+          Nombre de Usuario
+            {{form.username}}
+        </div>
+        <div class="col-md-6">
+          Correo
+            {{form.email}}
+        </div>
+        {% if user.rol.nombre == 'Administrador' %}
+        <div class="col-md-3">
+          Tipo de usuario
+            {{form.rol}}
+        </div>
+        {% endif %}
+        {% if user.rol.nombre != 'Administrador' %}
+        <div class="col-md-3">
+        </div>
+        {% endif %}
+        <div class="col-md-3 form-group">
+          Nueva Contraseña
+            {{form.password1}}
+            <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito1" name="button" onclick="myFunction1()"><i id="ojito1" class="fas fa-eye-slash"></i></button>
+        </div>
+        <div class="col-md-3">
+          Confirmar Contraseña
+            {{form.password2}}
+            <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito2" name="button" onclick="myFunction2()"><i id="ojito2" class="fas fa-eye-slash"></i></button>
+
+        </div>
+      </div>
+      
+
+      <div class="card-footer alineado-derecha">
+        <button type="submit" class="btn btn-success" name="boton_guardar_listar">
+          <i class="fa fa-dot-circle-o"></i> Registrar
+        </button>
+        <button type="button" class="btn btn-danger" onclick="history.back()" >
+          <i class="fa fa-ban"></i> Cancelar
+        </button>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+
+<!-- Jquery JS-->
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+<script type="text/javascript">
+function myFunction1() {
+  var x = document.getElementById("myInput1");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+<script type="text/javascript">
+function myFunction2() {
+  var x = document.getElementById("myInput2");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+</script>
+<script type="text/javascript">
+$('#button-ojito1').click(function() {
+  console.log("entrase")
+$('#ojito1').toggleClass('fa-eye-slash');
+$('#ojito1').toggleClass('fa-eye');
+});
+</script>
+<script type="text/javascript">
+$('#button-ojito2').click(function() {
+  console.log("entrase")
+$('#ojito2').toggleClass('fa-eye-slash');
+$('#ojito2').toggleClass('fa-eye');
+});
+</script>
+
+{% endblock content%}

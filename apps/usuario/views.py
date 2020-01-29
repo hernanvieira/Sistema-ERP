@@ -9,7 +9,7 @@ from django.contrib.auth import login as dj_login, logout, authenticate
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
-from .models import customuser
+from .models import customuser, Rol
 
 #from django.contrib.auth.forms import UserCreationForm
 
@@ -62,7 +62,38 @@ def logoutUsuario(request):
     return HttpResponseRedirect('/accounts/login')
 
 def VerPerfil(request):
-    return render(request, 'usuario/ver_perfil.html')
+    usuario = request.user #Obtengo el usuario registrado actualmente
+    form = UserCreationForm(instance = usuario)
+    return render(request, 'usuario/ver_perfil.html',{'form':form})
+
+def EditarPerfil(request,id):
+    usuario = customuser.objects.get(id = id) #Obtengo el usuario registrado actualmente
+    form = UserCreationForm(instance = usuario)
+    if request.method == 'POST':
+            usernam = request.user.username
+            username = request.POST.get('username', None)
+            email = request.POST.get('email', None)
+            rol = request.POST.get('rol', None)
+            if rol != None:
+                rol = Rol.objects.get(id_rol = rol)
+            nuevapass1 = request.POST.get('password1', None)
+            nuevapass2 = request.POST.get('password2', None)
+
+            if nuevapass1 == nuevapass2 and nuevapass1 != None:
+                # A backend authenticated the credentials
+                u = customuser.objects.get(id=id)
+                u.username = username
+                u.email = email
+                if rol != None:
+                    u.rol = rol
+                u.set_password(nuevapass1)
+                u.save()
+                messages.success(request, "Se actualizó correctamente el usuario")
+                return redirect ('/usuario/editar_perfil/'+str(id))
+            else:
+                messages.error(request, "No se pudo actualizar el usuario")
+                # No backend authenticated the credentials
+    return render(request, 'usuario/editar_perfil.html',{'form':form})
 
 def EliminarUsuario(request,id):
     usuario = customuser.objects.get(id=id)

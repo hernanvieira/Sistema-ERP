@@ -35,19 +35,30 @@ Ver Perfil
                 <img class="rounded-circle mx-auto d-block" width="100px" src="{% static 'images/icon/logo_avatar.png' %}" alt="Card image cap">
                 <h5 class="text-sm-center mt-2 mb-1">{{user.username}}</h5>
                 <div class="location text-sm-center">
-                    <i class="fa  fa-envelope"></i> {{user.email}}</div>
+                    <i class="fa fa-envelope"></i> {{user.email}}
+                    <div class="">
+                      <i class="fa fa-bookmark"></i> {{user.rol}}
+                    </div>
+
+                </div>
+                    </div>
             </div>
 
         </div>
+        <div class="card-footer alineado-derecha">
+          <a href="{% url 'usuario:editar_perfil' user.pk %}">
+          <button type="button" class="btn btn-warning">
+            <i class="fa  fa-pencil-square-o"></i> Editar Perfil
+          </button>
+          </a>
+          <button type="button" class="btn btn-danger" onclick="history.back()" >
+            <i class="fa fa-chevron-left"></i> Volver
+          </button>
+
+        </div>
       </div>
+
     </form>
   </div>
-</div>
-
-<br>
-<div class="alineado-derecha">
-  <button type="button" class="btn btn-danger" onclick="history.back()" >
-    <i class="fa fa-chevron-left"></i> Volver
-  </button>
 </div>
 {% endblock content%}
