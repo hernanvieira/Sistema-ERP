@@ -42,6 +42,7 @@ class Prenda (models.Model):
     id_prenda = models.AutoField(primary_key = True)
     talle = models.PositiveIntegerField()
     tiempo_prod_prenda = models.PositiveIntegerField()
+    descripcion = models.CharField(max_length=1000, blank=True, null=True )
     tipo_prenda = models.ForeignKey(Tipo_prenda, on_delete=models.PROTECT)
     precio = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)])
     imagen = models.ImageField(upload_to = "prendas", null = True, blank = True)

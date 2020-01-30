@@ -157,11 +157,12 @@ class PrendaForm (forms.ModelForm):
         ('5', 'XXL'),
         ]
         model = Prenda
-        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio','imagen']
+        fields = ['talle', 'tiempo_prod_prenda','tipo_prenda','precio','imagen','descripcion']
         widgets = {
         'talle' : forms.Select(choices = CHOICES, attrs={'class':'js-example-basic-single'}),
         'tipo_prenda' : forms.Select(attrs={'id':'tipo_prenda', 'name':'tipo_prenda', 'class':'js-example-basic-single'}),
         'tiempo_prod_prenda' : forms.TextInput(attrs={'id':'tiempo_prod_prenda','class':'form-control'}),
+        'descripcion' : forms.TextInput(attrs={'id':'descripcion','class':'form-control'}),
         'precio' : forms.TextInput(attrs={'class':'form-control'})
         }
 
