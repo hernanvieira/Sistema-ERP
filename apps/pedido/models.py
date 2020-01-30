@@ -33,6 +33,26 @@ class Detalle (models.Model):
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT,null = True, blank = True)
     prenda = models.ForeignKey(Prenda, on_delete = models.PROTECT,null = True, blank = True)
 
+class Detalle_envio (models.Model):
+    DIAS=[
+    ('Lunes','Lunes'),
+    ('Martes','Martes'),
+    ('Miercoles','Miercoles'),
+    ('Jueves','Jueves'),
+    ('Viernes','Viernes'),
+    ('Sabado','Sabado'),
+    ('Domingo','Domingo')
+    ]
+    id_detalle_envio = models.AutoField(primary_key=True)
+    fecha_pedido = models.DateField(auto_now=True)
+    domicilio = models.CharField(max_length=500)
+    desde = models.TimeField()
+    hasta = models.TimeField()
+    dia = models.CharField(choices = DIAS, max_length=50)
+    pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT)
+    cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
+
+
 class Entregas (models.Model):
     id_entrega = models.AutoField(primary_key=True)
     monto = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.00)], default=0)

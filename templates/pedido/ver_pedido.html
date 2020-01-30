@@ -230,6 +230,34 @@ Ver pedido
         </div>
 
       </div>
+      {% if envio and envio_dias %}
+      <hr class="line-seprate">
+      <br>
+        Detalles de envio
+        <div class="task-progress col-6" style="padding-top:20px;padding-bottom:20px">
+          <strong>Domicilio:</strong>
+          <div class="">
+              {{envio.domicilio}}
+          </div>
+          <br>
+          <strong>Horarios disponibles:</strong>
+          <div class="">
+               {{envio.desde}} - {{envio.hasta}}
+          </div>
+          <br>
+          <strong>Días disponibles:</strong>
+          <div class="">
+            {% for dia in envio_dias %}
+            <div class="">
+              {{dia}}
+            </div>
+            {% endfor %}
+          </div>
+
+
+        {% endif %}
+        </div>
+
 <br>
       <div class="card-footer">
         <div class="row">

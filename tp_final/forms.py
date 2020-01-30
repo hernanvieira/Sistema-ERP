@@ -120,6 +120,17 @@ class DetalleForm (forms.ModelForm):
         'cantidad' : forms.TextInput(attrs={'class' : 'form-control'}),
         }
 
+class Detalle_envioForm (forms.ModelForm):
+    class Meta:
+        model = Detalle_envio
+        fields = ['domicilio', 'desde', 'hasta','dia']
+        widgets = {
+        'domicilio' : forms.TextInput(attrs={'class' : 'form-control'}),
+        'desde' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Desde', 'readonly':'','id':'timepkr','style':'float:left;width: 80%;'}),
+        'hasta' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Hasta', 'readonly':'','id':'timepkr2','style':'float:left;width: 80%;'}),
+        'dia' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple', 'name':'dias[]'}),
+        }
+
 class Tipo_prendaForm (forms.ModelForm):
     class Meta:
         model = Tipo_prenda

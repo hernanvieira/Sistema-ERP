@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import CrearPedido, MaterialesUtilizados, ListarPedido, ListaCompras, ListarPedido2, EditarPedido,VerPedido, EliminarPedido, CancelarPedido, VolverPedido, Auditoria, FinalizarPedido, EntregarPedido, NuevoPedido
+from .views import CrearPedido, MaterialesUtilizados,ConfirmarEntrega, ListarPedido, ListaCompras, ListarPedido2, EditarPedido,VerPedido, EliminarPedido, CancelarPedido, VolverPedido, Auditoria, FinalizarPedido, EntregarPedido, NuevoPedido
 
 from django.contrib.auth.decorators import login_required
 
@@ -19,4 +19,5 @@ urlpatterns = [
             path ('materiales_utilizados/<int:id_pedido>',login_required(MaterialesUtilizados),name='materiales_utilizados'),
             path('auditoria/', login_required(Auditoria), name = 'auditoria'),
             path ('lista_compras/',login_required(ListaCompras),name='lista_compras'),
+            path ('confirmar_entrega/<int:id_pedido>/<int:id_cliente>',ConfirmarEntrega,name='confirmar_entrega'),
 ]

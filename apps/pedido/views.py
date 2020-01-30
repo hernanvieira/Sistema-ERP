@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm, ClienteForm, Estado_pedidoForm
-from .models import Pedido, Detalle, Entregas, Faltante
+from tp_final.forms import PedidoForm, DetalleForm, PrendaForm, IngredienteForm, DetalleForm,Detalle_envioForm, ClienteForm, Estado_pedidoForm
+from .models import Pedido, Detalle, Entregas, Faltante, Detalle_envio
 from apps.prenda.models import Prenda, Tipo_prenda, Ingrediente
 from apps.estado.models import Estado_pedido, Estado
 from apps.prenda.views import CrearPrenda
 from apps.material.models import Material
+from apps.cliente.models import Cliente
 from django.core.exceptions import ObjectDoesNotExist
 from tp_final import urls
 import datetime
@@ -43,6 +44,37 @@ def NuevoPedido (request):
         cliente_form = ClienteForm()
     pedido_form = PedidoForm()
     return render(request, 'pedido/nuevo_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
+
+def ConfirmarEntrega (request,id_pedido,id_cliente):
+    form = Detalle_envioForm()
+    pedido = Pedido.objects.get(id_pedido = id_pedido)
+    cliente = Cliente.objects.get(dni = id_cliente)
+    try:
+        if request.method == 'POST':
+            lista = request.POST.getlist('dia')
+            domicilio = request.POST.get('domicilio')
+            desde = request.POST.get('desde')
+            hasta = request.POST.get('hasta')
+            dia = request.POST.get('dia')
+            if desde != '' and hasta != '' :
+                envio_datos = Detalle_envio.objects.filter(pedido=pedido, cliente=cliente)
+                if envio_datos:
+                    for envio in envio_datos:
+                        envio.delete()
+                for dia in lista:
+                    Detalle_envio.objects.create(domicilio = domicilio, desde = desde, hasta = hasta, dia = dia, cliente = cliente, pedido = pedido)
+                messages.success(request,'Gracias')
+            else:
+                messages.error(request, 'Introduzcas horarios disponibles')
+                form = Detalle_envioForm(request.POST)
+                return render(request, 'pedido/confirmar_entrega.html',{'form':form})
+    except Exception as e:
+        messages.error(request, 'Ocurrió un error al enviar los datos')
+        form = Detalle_envioForm(request.POST)
+        return render(request, 'pedido/confirmar_entrega.html',{'form':form})
+    else:
+        form = Detalle_envioForm()
+    return render(request, 'pedido/confirmar_entrega.html',{'form':form})
 
 #Crear un pedido
 def CrearPedido (request):
@@ -219,6 +251,13 @@ def VerPedido (request,id_pedido):
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
     estados = Estado_pedido.objects.filter(pedido_id=id_pedido)
     entregas = Entregas.objects.filter(pedido=pedido)
+    envio = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente).first()
+    envio_dias = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente).values_list('dia', flat=True)
+
+    print("---------")
+    print(envio)
+    print("----------")
+    print(envio_dias)
 
     ingredientes = Ingrediente.objects.values_list('prenda', flat=True)
     for ingrediente in ingredientes:
@@ -315,7 +354,7 @@ def VerPedido (request,id_pedido):
             estado = Estado_pedido.objects.filter(pedido=pedido).order_by('-id_estado_pedido')[0]
         else:
             estado = None
-    return render(request,'pedido/ver_pedido.html',{'ingredientes':ingredientes,'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
+    return render(request,'pedido/ver_pedido.html',{'envio':envio,'envio_dias':envio_dias,'ingredientes':ingredientes,'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
 
 
 #Eliminar un pedido
@@ -469,7 +508,7 @@ def FinalizarPedido (request,id_pedido):
     estado_pedido.save()
     messages.success(request, 'Se finalizó el pedido')
 
-    email = EmailMessage('PROYECTO SOFTWARE', mensaje.finalizado, to=[pedido.cliente.correo])
+    email = EmailMessage('PROYECTO SOFTWARE', mensaje.finalizado + 'http://localhost:8000/pedido/confirmar_entrega/'+str(pedido.pk)+'/'+str(pedido.cliente.pk), to=[pedido.cliente.correo])
     try:
         email.send()
     except Exception as e:
