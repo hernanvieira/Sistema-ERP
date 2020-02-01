@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% load static %}
+<!DOCTYPE html>
+{% block titulo%}
+Notificaciones
+{% endblock titulo%}
+
+{% block content%}
+
+
+<div class="card">
+  <div class="card-header bg-success"><strong class="card-title text-light">Notificaciones</strong></div>
+  <div class="card-body card-block">
+
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="row">
+      {% if envios_noti %}
+        {% for envio in envios_noti %}
+        <div class="col-12">
+          <a href="{% url 'pedido:ver_pedido' envio.pedido.pk %}">
+          <div class="notifi__item">
+              <div class="bg-c1 img-cir img-40">
+                  <i class="zmdi zmdi-email-open"></i>
+              </div>
+              <div class="content">
+                  <p>Tiene los datos de envios para el pedido {{envio.pedido}} del cliente {{envio.cliente.apellido}} {{envio.cliente.nombre}}</p>
+                  <span class="date">{{envio.fecha_pedido}}</span>
+              </div>
+          </div>
+          </a>
+        </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+      <div class="card-footer alineado-derecha">
+        <button type="button" class="btn btn-danger" onclick="history.back()">
+          <i class="fa fa-chevron-left"></i> Volver
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+{% endblock content%}

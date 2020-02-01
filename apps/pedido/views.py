@@ -17,11 +17,29 @@ from config.models import Configuracion, ConfiguracionMensaje
 from django.core.mail import EmailMessage
 from django.db.models import Sum
 
+from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from .Serializers import *
+
 import json
 from django.http import HttpResponse
 from django.http import JsonResponse
 
+
+
 def NuevoPedido (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     if request.method == 'POST':
         if 'boton_crear_cliente' in request.POST:
             cliente_form = ClienteForm(request.POST)
@@ -43,9 +61,19 @@ def NuevoPedido (request):
         pedido_form = PedidoForm()
         cliente_form = ClienteForm()
     pedido_form = PedidoForm()
-    return render(request, 'pedido/nuevo_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
+    return render(request, 'pedido/nuevo_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'pedido_form':pedido_form, 'cliente_form':cliente_form})
 
 def ConfirmarEntrega (request,id_pedido,id_cliente):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     form = Detalle_envioForm()
     pedido = Pedido.objects.get(id_pedido = id_pedido)
     cliente = Cliente.objects.get(dni = id_cliente)
@@ -78,6 +106,16 @@ def ConfirmarEntrega (request,id_pedido,id_cliente):
 
 #Crear un pedido
 def CrearPedido (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     if request.method == 'POST':
         if 'boton_crear_cliente' in request.POST:
             cliente_form = ClienteForm(request.POST)
@@ -121,10 +159,20 @@ def CrearPedido (request):
         pedido_form = PedidoForm()
         cliente_form = ClienteForm()
     pedido_form = PedidoForm()
-    return render(request, 'pedido/crear_pedido.html',{'pedido_form':pedido_form, 'cliente_form':cliente_form})
+    return render(request, 'pedido/crear_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'pedido_form':pedido_form, 'cliente_form':cliente_form})
 
 #Listar todos los pedidos
 def ListarPedido (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedidos = Pedido.objects.all()
     reporte = Configuracion.objects.all().last()
     aux = []
@@ -133,9 +181,19 @@ def ListarPedido (request):
             a = Estado_pedido.objects.filter(pedido = p).order_by('-id_estado_pedido')[0]
             aux.append(a)
     pedidos = aux
-    return render(request,'pedido/listar_pedido.html',{'reporte':reporte,'pedidos':pedidos})
+    return render(request,'pedido/listar_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'reporte':reporte,'pedidos':pedidos})
 
 def ListarPedido2 (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedidos = Pedido.objects.all()
     reporte = Configuracion.objects.all().last()
     aux = []
@@ -144,10 +202,20 @@ def ListarPedido2 (request,id_pedido):
             a = Estado_pedido.objects.filter(pedido = p).order_by('-id_estado_pedido')[0]
             aux.append(a)
     pedidos = aux
-    return render(request,'pedido/listar_pedido.html',{'id_pedido':id_pedido,'reporte':reporte,'pedidos':pedidos})
+    return render(request,'pedido/listar_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'id_pedido':id_pedido,'reporte':reporte,'pedidos':pedidos})
 
 #Volver al pedido
 def VolverPedido (request,id_pedido):
+        #Notificaciones
+        pedidos = Pedido.objects.all().exclude(confirmado=False)
+        envios_noti = []
+        for pedido in pedidos:
+            envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+            if envio_temp:
+                envios_noti.append(envio_temp)
+        envios_not = envios_noti[:3]
+        envio_count = len(envios_noti)
+
         detalles = None
         pedido_form=None
         pedido = Pedido.objects.get(id_pedido=id_pedido)
@@ -214,10 +282,20 @@ def VolverPedido (request,id_pedido):
                     messages.error(request, 'Debe agregar prendas')
         cliente_form = ClienteForm(request.POST)
 
-        return render(request,'pedido/crear_pedido.html',{'pedido':pedido,'pedido_form':pedido_form,'detalles':detalles,'cliente_form':cliente_form})
+        return render(request,'pedido/crear_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'pedido':pedido,'pedido_form':pedido_form,'detalles':detalles,'cliente_form':cliente_form})
 
 #Editar un pedido
 def EditarPedido (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido_form=None
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     pedidos = Pedido.objects.all()
@@ -239,25 +317,36 @@ def EditarPedido (request,id_pedido):
             else:
                 cliente_form = ClienteForm(request.POST)
                 messages.error(request, 'Debe agregar prendas')
-    return render(request,'pedido/editar_pedido.html',{'pedido_form':pedido_form,'detalles':detalles})
+    return render(request,'pedido/editar_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'pedido_form':pedido_form,'detalles':detalles})
 
 #Editar un pedido
 def VerPedido (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido_form=None
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-    pedidos = Pedido.objects.all()
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
     mensaje = ConfiguracionMensaje.objects.all().last()
     cliente = pedido.cliente
     detalles = Detalle.objects.filter(pedido_id=id_pedido).select_related('prenda')
     estados = Estado_pedido.objects.filter(pedido_id=id_pedido)
     entregas = Entregas.objects.filter(pedido=pedido)
-    envio = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente).first()
-    envio_dias = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente).values_list('dia', flat=True)
 
-    print("---------")
-    print(envio)
-    print("----------")
-    print(envio_dias)
+    envio = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente).first()
+    envios = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente)
+    envio_dias = Detalle_envio.objects.filter(pedido=pedido,cliente=pedido.cliente).values_list('dia', flat=True)
+    if envio:
+        for envio in envios:
+            envio.visto = True
+            envio.save()
 
     ingredientes = Ingrediente.objects.values_list('prenda', flat=True)
     for ingrediente in ingredientes:
@@ -268,6 +357,13 @@ def VerPedido (request,id_pedido):
         estado = None
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
+        envios_noti = []
+        for pedido in pedidos:
+            envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+            if envio_temp:
+                envios_noti.append(envio_temp)
+        envios_not = envios_noti[:3]
+        envio_count = len(envios_noti)
     else:
         if 'boton_cancelar' in request.POST:
             CancelarPedido(request,id_pedido)
@@ -354,11 +450,21 @@ def VerPedido (request,id_pedido):
             estado = Estado_pedido.objects.filter(pedido=pedido).order_by('-id_estado_pedido')[0]
         else:
             estado = None
-    return render(request,'pedido/ver_pedido.html',{'envio':envio,'envio_dias':envio_dias,'ingredientes':ingredientes,'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
+    return render(request,'pedido/ver_pedido.html',{'envio_count':envio_count,'envios_noti':envios_noti,'envio':envio,'envio_dias':envio_dias,'ingredientes':ingredientes,'cliente':cliente,'pedido_form':pedido_form,'detalles':detalles, 'estado':estado,'pedido':pedido,'estados':estados,'entregas':entregas})
 
 
 #Eliminar un pedido
 def EliminarPedido (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     try:
         pedido.delete()
@@ -370,6 +476,16 @@ def EliminarPedido (request,id_pedido):
 
 #Cancelar un pedido
 def CancelarPedido (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido) #obtengo el pedido
     pedido.cancelado = True #Cambio el estado de cancelado a True
     estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario
@@ -455,6 +571,16 @@ def CancelarPedido (request,id_pedido):
 
 
 def MaterialesUtilizados(request, id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido = Pedido.objects.get(id_pedido= id_pedido) #
     if request.method=='POST':
         peticion = request.POST.copy() # OBtengo una copia del request
@@ -486,12 +612,22 @@ def MaterialesUtilizados(request, id_pedido):
             for ingrediente in ingredientes:
                 a.append(ingrediente)
         ingredientes = a
-        return render(request,'pedido/materiales_utilizados.html',{'pedido':pedido,'ingredientes':ingredientes,'prendas':prendas})
+        return render(request,'pedido/materiales_utilizados.html',{'envios_not':envios_not,'envio_count':envio_count,'pedido':pedido,'ingredientes':ingredientes,'prendas':prendas})
     return redirect('/pedido/ver_pedido/' + str(id_pedido))
 
 
 #Finalizar un pedido
 def FinalizarPedido (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
     estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
@@ -506,7 +642,6 @@ def FinalizarPedido (request,id_pedido):
     estado_pedido.save()#Guardo el estado
     pedido.save()
     estado_pedido.save()
-    messages.success(request, 'Se finalizó el pedido')
 
     email = EmailMessage('PROYECTO SOFTWARE', mensaje.finalizado + 'http://localhost:8000/pedido/confirmar_entrega/'+str(pedido.pk)+'/'+str(pedido.cliente.pk), to=[pedido.cliente.correo])
     try:
@@ -518,6 +653,16 @@ def FinalizarPedido (request,id_pedido):
 
 #Entregar un pedido
 def EntregarPedido (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
     estado_pedido_form = Estado_pedidoForm() #Creo una instancia de formulario para crear el estado
     estado_pedido = estado_pedido_form.save(commit = False) #Guardo con Commit = False para asociar el pedido
@@ -564,10 +709,30 @@ def EntregarPedido (request,id_pedido):
 
 #Pagina de auditoria
 def Auditoria(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     auditoria =  Pedido.history.all()
-    return render(request, 'auditoria_pedido.html',{'auditoria':auditoria})
+    return render(request, 'auditoria_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'auditoria':auditoria})
 
 def ListaCompras (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     reporte = Configuracion.objects.all().last()
     print(reporte)
     if request.method=='GET':
@@ -584,4 +749,51 @@ def ListaCompras (request):
         for i in range(len(materiales)):
             lista[i]['material'] = materiales[i]
 
-        return render(request,'prenda/lista_compras.html',{'reporte':reporte,'lista':lista, 'lista2':lista2})
+        return render(request,'prenda/lista_compras.html',{'envios_not':envios_not,'envio_count':envio_count,'reporte':reporte,'lista':lista, 'lista2':lista2})
+
+def Notificaciones(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    if request.method == 'GET':
+        return render(request,'pedido/notificaciones.html',{'envios_not':envios_not,'envio_count':envio_count,'envios_noti':envios_noti})
+
+#Notificaciones
+# class JSONResponse(HttpResponse):
+#     """
+#     An HttpResponse that renders its content into JSON.
+#     """
+#     def _init_(self, data, **kwargs):
+#         content = JSONRenderer().render(data)
+#         kwargs['content_type'] = 'application/json'
+#         super(JSONResponse, self)._init_(content, **kwargs)
+#
+#
+# @csrf_exempt
+# def Notificaciones(request):
+#     print("TAENTRa")
+#     pedidos = Pedido.objects.all().exclude(confirmado=False)
+#     envios_noti = []
+#     for pedido in pedidos:
+#         envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+#         if envio_temp:
+#             envios_noti.append(envio_temp)
+#     envio_count = len(envios_noti)
+#
+#     serializer=Detalle_envioSerializer(envios_noti,many=True)
+#     result=dict()
+#     result = serializer.data
+#
+#     import json
+#     output_dict = json.loads(json.dumps(serializer.data))
+#
+#     print(type(output_dict))
+#
+#     return JSONResponse(output_dict[0]['pedido'].values())

@@ -51,6 +51,7 @@ class Detalle_envio (models.Model):
     dia = models.CharField(choices = DIAS, max_length=50)
     pedido = models.ForeignKey(Pedido, on_delete = models.PROTECT)
     cliente = models.ForeignKey(Cliente, on_delete = models.PROTECT)
+    visto = models.BooleanField(default = False)
 
 
 class Entregas (models.Model):

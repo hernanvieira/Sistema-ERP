@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import MedidaForm, Tipo_prendaForm, PrendaForm, IngredienteForm, DetalleForm, Medida_prendaForm
 from .models import Tipo_prenda, Prenda, Ingrediente, Medida, Medida_prenda
 from apps.material.models import Material, Tipo_material
-from apps.pedido.models import Pedido, Detalle, Faltante
+from apps.pedido.models import Pedido, Detalle, Faltante, Detalle_envio
 from apps.estado.models import Estado_pedido
 # from apps.prenda.models import Faltante
 from django.core.exceptions import ObjectDoesNotExist
@@ -31,6 +31,16 @@ class JSONResponse(HttpResponse):
 
 #Crear un Medida
 def CrearMedida (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     medidas = Medida.objects.all()
     try:
         if request.method == 'POST':
@@ -39,7 +49,7 @@ def CrearMedida (request):
                 if "boton_crear_agregar" in request.POST:
                     medida = medida_form.save()
                     medidas = Medida.objects.all()
-                    return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
+                    return render(request, 'prenda/crear_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'medidas':medidas, 'medida_form':medida_form})
                 medida = medida_form.save()
                 return ListarMedida(request)
             else:
@@ -49,13 +59,33 @@ def CrearMedida (request):
             medidas = Medida.objects.all()
     except Exception as e:
         messages.error(request, 'Ya existe una medida con el mismo nombre')
-    return render(request, 'prenda/crear_medida.html',{'medidas':medidas, 'medida_form':medida_form})
+    return render(request, 'prenda/crear_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'medidas':medidas, 'medida_form':medida_form})
 #Listar todos las medidas
 def ListarMedida (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     medidas = Medida.objects.all()
-    return render(request,'prenda/listar_medida.html',{'medidas':medidas})
+    return render(request,'prenda/listar_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'medidas':medidas})
 #Editar una medida
 def EditarMedida (request,id_medida):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     try:
         error = None
         medida_form=None
@@ -69,9 +99,19 @@ def EditarMedida (request,id_medida):
             return ListarMedida(request)
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/editar_medida.html',{'medida_form':medida_form, 'error':error})
+    return render(request,'prenda/editar_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'medida_form':medida_form, 'error':error})
 #Eliminar una medida
 def EliminarMedida (request,id_medida):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     medida = get_object_or_404(Medida, id_medida=id_medida)
     try:
         medida.delete()
@@ -82,6 +122,16 @@ def EliminarMedida (request,id_medida):
 
 #Crear un tipo de prenda
 def CrearTipo_prenda (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     tipo_prendas = Tipo_prenda.objects.all()
     try:
         if request.method == 'POST':
@@ -89,7 +139,7 @@ def CrearTipo_prenda (request):
             if tipo_prenda_form.is_valid():
                 if "boton_crear_agregar" in request.POST:
                     tipo_prenda_form.save()
-                    return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
+                    return render(request, 'prenda/crear_tipo_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
                 tipo_prenda_form.save()
                 return ListarTipo_prenda(request)
             else:
@@ -99,13 +149,33 @@ def CrearTipo_prenda (request):
             tipo_prenda_form = Tipo_prendaForm()
     except Exception as e:
         messages.error(request,"Ya existe una prenda con el mismo nombre")
-    return render(request, 'prenda/crear_tipo_prenda.html',{'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
+    return render(request, 'prenda/crear_tipo_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'tipo_prendas': tipo_prendas, 'tipo_prenda_form':tipo_prenda_form})
 #Listar todos los tipos de prendas
 def ListarTipo_prenda (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     tipo_prendas = Tipo_prenda.objects.all()
-    return render(request,'prenda/listar_tipo_prenda.html',{'tipo_prendas':tipo_prendas})
+    return render(request,'prenda/listar_tipo_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'tipo_prendas':tipo_prendas})
 #Editar un tipo de prenda
 def EditarTipo_prenda (request,id_tipo_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     tipo_prendas = Tipo_prenda.objects.all()
     try:
         tipo_prenda_form=None
@@ -119,9 +189,19 @@ def EditarTipo_prenda (request,id_tipo_prenda):
             return ListarTipo_prenda(request)
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/editar_tipo_prenda.html',{'tipo_prendas':tipo_prendas,'tipo_prenda_form':tipo_prenda_form})
+    return render(request,'prenda/editar_tipo_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'tipo_prendas':tipo_prendas,'tipo_prenda_form':tipo_prenda_form})
 #Ver tipo de prenda
 def VerTipo_prenda (request,id_tipo_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     try:
         error = None
         tipo_prenda_form=None
@@ -136,9 +216,19 @@ def VerTipo_prenda (request,id_tipo_prenda):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'prenda/ver_tipo_prenda.html',{'tipo_prenda_form':tipo_prenda_form, 'medidas':medidas, 'error':error})
+    return render(request,'prenda/ver_tipo_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'tipo_prenda_form':tipo_prenda_form, 'medidas':medidas, 'error':error})
 #Eliminar un tipo de prenda
 def EliminarTipo_prenda (request,id_tipo_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     tipo_prenda = get_object_or_404(Tipo_prenda, id_tipo_prenda=id_tipo_prenda)
     try:
         tipo_prenda.delete()
@@ -148,6 +238,16 @@ def EliminarTipo_prenda (request,id_tipo_prenda):
     return redirect('/prenda/crear_tipo_prenda')
 #Registrar una prenda al detalle
 def CrearPrenda (request,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     if request.method == 'POST':
         prenda_form = PrendaForm(request.POST)
         detalle_form = DetalleForm(request.POST)
@@ -225,13 +325,33 @@ def CrearPrenda (request,id_pedido):
         medidas_prenda = Medida.objects.all()
     medidas_prenda = Medida.objects.all()
     medida_prenda_form = Medida_prendaForm()
-    return render(request, 'prenda/crear_prenda.html',{'medidas_prenda':medidas_prenda,'prenda_form':prenda_form,'detalle_form':detalle_form,'pedido':pedido, 'medida_prenda_form':medida_prenda_form})
+    return render(request, 'prenda/crear_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'medidas_prenda':medidas_prenda,'prenda_form':prenda_form,'detalle_form':detalle_form,'pedido':pedido, 'medida_prenda_form':medida_prenda_form})
 #Listar todos las prendas
 def ListarPrenda (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     prendas = Prenda.objects.all()
     return redirect('index')
 #Editar una prenda
 def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     redireccionar = 0
     prenda_form=None
     detalle_form=None
@@ -326,10 +446,20 @@ def EditarPrenda (request,id_prenda,id_detalle,id_pedido):
 
                 return redirect('/pedido/volver_pedido/'+str(id_pedido))
 
-    return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
+    return render(request,'prenda/editar_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda})
 
 #Ver una prenda
 def VerPrenda (request,id_prenda,id_detalle,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     redireccionar = 0
     prenda_form=None
     detalle_form=None
@@ -424,11 +554,21 @@ def VerPrenda (request,id_prenda,id_detalle,id_pedido):
 
             return redirect('/pedido/ver_pedido/'+str(id_pedido))
 
-    return render(request,'prenda/ver_prenda.html',{'estado':estado,'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
+    return render(request,'prenda/ver_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'estado':estado,'ingredientes':ingredientes,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda,'detalle':detalle})
 
 
 #Eliminar una prenda
 def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     prenda = get_object_or_404(Prenda,id_prenda=id_prenda)
     detalle = get_object_or_404(Detalle, id_detalle=id_detalle)
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
@@ -457,6 +597,16 @@ def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
 
 #Asigna un material a la prenda
 def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     prenda = Prenda.objects.get(id_prenda=id_prenda) #Obtengo la prenda a la que voy a asociar los ingredientes
     pedido = Pedido.objects.get(id_pedido = id_pedido) #Obtengo el pedido al que corresponde la prenda
     detalle = Detalle.objects.get(id_detalle = id_detalle) #Obtengo el detalle que asocia el pedido con la prenda y su cantidad
@@ -572,11 +722,21 @@ def AsignarMaterial(request,id_prenda,id_detalle,id_pedido):
         ingrediente_form = IngredienteForm()
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
 
-    return render(request,'prenda/asignar_material.html',{'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
+    return render(request,'prenda/asignar_material.html',{'envios_not':envios_not,'envio_count':envio_count,'ingrediente_form':ingrediente_form,'prenda':prenda,'pedido':pedido,'ingredientes':ingredientes, 'detalle':detalle})
 
 
 #Calcular Disponibilidad
 def CalcularDisponibilidad(request,id_prenda,id_detalle,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     prenda = Prenda.objects.get(id_prenda=id_prenda) #Obtengo la prenda a la que voy a asociar los ingredientes
     pedido = Pedido.objects.get(id_pedido = id_pedido) #Obtengo el pedido al que corresponde la prenda
     detalle = Detalle.objects.get(id_detalle = id_detalle) #Obtengo el detalle que asocia el pedido con la prenda y su cantidad
@@ -612,6 +772,16 @@ def CalcularDisponibilidad(request,id_prenda,id_detalle,id_pedido):
 
 #Asignar medidas a la prenda
 def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     pedido = Pedido.objects.get(id_pedido = id_pedido)
     detalle = Detalle.objects.get(id_detalle = id_detalle)
     prenda = Prenda.objects.get(id_prenda=id_prenda) # Obtengo la prenda a la que voy a asociar las medida
@@ -670,9 +840,19 @@ def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
                 return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
     if c == False:
         medidas_prenda_u = []
-    return render(request,'prenda/asignar_medida.html',{'prenda':prenda, 'pedido':pedido, 'detalle':detalle,'medidas_prenda_u':medidas_prenda_u,'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
+    return render(request,'prenda/asignar_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'prenda':prenda, 'pedido':pedido, 'detalle':detalle,'medidas_prenda_u':medidas_prenda_u,'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
 
 def EditarMedidaPrenda(request,id_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     prenda = Prenda.objects.get(id_prenda=id_prenda)
     medidas_prenda = Medida_prenda.objects.filter(prenda_id = id_prenda)
     medida_prenda_form = Medida_prendaForm()
@@ -697,11 +877,21 @@ def EditarMedidaPrenda(request,id_prenda):
             messages.success(request, 'Medidas agregadas correctamente')
         else:
             print(medida_prenda_form.errors)
-        return render(request,'prenda/asignar_medida.html',{'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
+        return render(request,'prenda/asignar_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
 
-    return render(request,'prenda/asignar_medida.html',{'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
+    return render(request,'prenda/asignar_medida.html',{'envios_not':envios_not,'envio_count':envio_count,'medidas_prenda':medidas_prenda,'medida_prenda_form':medida_prenda_form})
 
 def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     prenda_form=None
     detalle_form=None
     prenda = Prenda.objects.get(id_prenda=id_prenda)
@@ -744,14 +934,34 @@ def VolverPrenda(request,id_pedido,id_detalle,id_prenda):
             id_detalle = detalle.id_detalle #Obtengo el id del detalle
             return redirect('/pedido/volver_pedido/'+str(id_pedido))
     ingredientes = Ingrediente.objects.filter(prenda_id = id_prenda)
-    return render(request,'prenda/editar_prenda.html',{'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes, 'detalle':detalle})
+    return render(request,'prenda/editar_prenda.html',{'envios_not':envios_not,'envio_count':envio_count,'prenda_form':prenda_form,'detalle_form':detalle_form, 'pedido':pedido, 'prenda':prenda, 'ingredientes':ingredientes, 'detalle':detalle})
 
 #Listar todos las ingredientes
 def ListarIngrediente (request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     ingredientes = Ingrediente.objects.all()
     return redirect('index')
 #Editar un ingrediente
 def EditarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     try:
         error = None
         ingrediente_form=None
@@ -765,9 +975,19 @@ def EditarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prenda)
             return redirect('/prenda/editar_material/'+str(ingrediente.id_ingrediente),{'ingrediente_form':ingrediente_form})
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'material/crear_ingrediente.html',{'ingrediente_form':ingrediente_form, 'error':error})
+    return render(request,'material/crear_ingrediente.html',{'envios_not':envios_not,'envio_count':envio_count,'ingrediente_form':ingrediente_form, 'error':error})
 #Eliminar un ingrediente
 def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prenda):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     ingrediente = Ingrediente.objects.get(id_ingrediente=id_ingrediente)
     detalle = Detalle.objects.get(id_detalle = id_detalle)
     material = Material.objects.get(id_material = str(ingrediente.material.id_material))
@@ -809,6 +1029,16 @@ def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prend
 
 #Mostrar unidad de medida al asignar material
 def MostrarUnidad(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     mt = request.GET.get('material',None)
     material = Material.objects.get(id_material = mt)
     unidad = material.tipo_material.unidad_medida.nombre

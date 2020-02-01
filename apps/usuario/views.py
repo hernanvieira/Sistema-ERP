@@ -11,10 +11,22 @@ from django.contrib import messages
 
 from .models import customuser, Rol
 
+from apps.pedido.models import Pedido, Detalle_envio
+
 #from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 def SignUp(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     usuarios = customuser.objects.filter(is_active = True)
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -36,7 +48,7 @@ def SignUp(request):
             return redirect('/accounts/signup/')
     else:
         form = UserCreationForm()
-    return render(request, 'signup.html', {'form':form, 'usuarios':usuarios})
+    return render(request, 'signup.html', {'envios_not':envios_not,'envio_count':envio_count,'form':form, 'usuarios':usuarios})
 
 class Login(FormView):
     template_name = 'login.html'
@@ -62,11 +74,31 @@ def logoutUsuario(request):
     return HttpResponseRedirect('/accounts/login')
 
 def VerPerfil(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     usuario = request.user #Obtengo el usuario registrado actualmente
     form = UserCreationForm(instance = usuario)
-    return render(request, 'usuario/ver_perfil.html',{'form':form})
+    return render(request, 'usuario/ver_perfil.html',{'envios_not':envios_not,'envio_count':envio_count,'form':form})
 
 def EditarPerfil(request,id):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     usuario = customuser.objects.get(id = id) #Obtengo el usuario registrado actualmente
     form = UserCreationForm(instance = usuario)
     if request.method == 'POST':
@@ -93,7 +125,7 @@ def EditarPerfil(request,id):
             else:
                 messages.error(request, "No se pudo actualizar el usuario")
                 # No backend authenticated the credentials
-    return render(request, 'usuario/editar_perfil.html',{'form':form})
+    return render(request, 'usuario/editar_perfil.html',{'envios_not':envios_not,'envio_count':envio_count,'form':form})
 
 def EliminarUsuario(request,id):
     usuario = customuser.objects.get(id=id)

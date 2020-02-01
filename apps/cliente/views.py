@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from tp_final.forms import ClienteForm
 from .models import Cliente
-from apps.pedido.models import Pedido
 from django.core.exceptions import *
 from django.contrib import messages
 from config.models import Configuracion
-from apps.pedido.models import Faltante
+from apps.pedido.models import Faltante, Detalle_envio, Pedido
 from apps.material.models import Material
+from apps.pedido.views import FinalizarPedido
 
 from django.db.models import Sum
 
@@ -15,13 +15,22 @@ import poplib # Recibir correos
 from apps.prenda.models import Tipo_prenda, Prenda
 from apps.estado.models import Estado_pedido
 
+from datetime import datetime, timedelta, date
+
+from django.db.models import Count
 
 # Create your views here.
 
 #Pagina de inicio
 def Home(request):
-    pedidos = Pedido.objects.all()
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
     reporte = Configuracion.objects.all().last()
+
+    if request.method == 'POST':
+        if 'button-actualizar' in request.POST:
+            for pedido in pedidos:
+                if pedido.fecha_entrega <= date.today():
+                    FinalizarPedido(request,pedido.pk)
 
     aux = []
     for p in pedidos:
@@ -43,7 +52,17 @@ def Home(request):
     for i in range(len(materiales)):
         lista[i]['material'] = materiales[i]
 
-    return render(request, 'index.html',{'reporte':reporte,'pedidos':pedidos, 'lista':lista})
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    return render(request, 'index.html',{'envio_count':envio_count,'envios_not':envios_not,'reporte':reporte,'pedidos':pedidos, 'lista':lista})
 
 #Pagina de estadisticas
 def Estadistica(request):
@@ -56,8 +75,18 @@ def Estadistica(request):
         'valor':Prenda.objects.filter(tipo_prenda = tipo_prenda).count()
         }
         lista_chart.append(diccionario)
-    print(lista_chart)
-    return render(request, 'estadistica.html',{'lista_chart':lista_chart})
+
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    return render(request, 'estadistica.html',{'envios_not':envios_not,'envio_count':envio_count,'lista_chart':lista_chart})
 
 #Crear un cliente
 def CrearCliente (request):
@@ -73,7 +102,18 @@ def CrearCliente (request):
             messages.error(request, 'Ocurrió un error al tratar de agregar el cliente')
     else:
         cliente_form = ClienteForm()
-    return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form})
+
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    return render(request, 'cliente/crear_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'cliente_form':cliente_form})
 
 #Editar un cliente
 def VerCliente (request,dni):
@@ -98,12 +138,34 @@ def VerCliente (request,dni):
             return redirect('cliente:cliente_home')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request, 'cliente/ver_cliente.html',{'estados':estados,'pedidos':pedidos, 'cliente':cliente ,'cliente_form':cliente_form})
+
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    return render(request, 'cliente/ver_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'estados':estados,'pedidos':pedidos, 'cliente':cliente ,'cliente_form':cliente_form})
 
 #Listar todos los clientes
 def ListarCliente (request):
     clientes = Cliente.objects.all().exclude(activo = False)
-    return render(request,'cliente/listar_cliente.html',{'clientes':clientes})
+
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    return render(request,'cliente/listar_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'clientes':clientes})
 #Editar un cliente
 def EditarCliente (request,dni):
     try:
@@ -118,23 +180,54 @@ def EditarCliente (request,dni):
             return redirect('cliente:cliente_home')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request, 'cliente/crear_cliente.html',{'cliente_form':cliente_form})
+
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
+    return render(request, 'cliente/crear_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'cliente_form':cliente_form})
 
 #Eliminar un cliente
 def EliminarCliente (request,dni):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     cliente = get_object_or_404(Cliente,dni=dni)
     try:
         cliente.activo = False
         cliente.save()
         messages.warning(request, 'Se eliminó el cliente')
         clientes = Cliente.objects.all().exclude(activo = False)
-        return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
+        return render(request,'cliente/index_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'cliente':cliente,'clientes':clientes})
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el cliente')
     clientes = Cliente.objects.all().exclude(activo = False)
-    return render(request,'cliente/index_cliente.html',{'cliente':cliente,'clientes':clientes})
+    return render(request,'cliente/index_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'cliente':cliente,'clientes':clientes})
 
 def ClienteHome(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     clientes = Cliente.objects.all().exclude(activo = False)
     cliente_form = ClienteForm()
     reporte = Configuracion.objects.all().last()
@@ -156,9 +249,19 @@ def ClienteHome(request):
             cliente_form = ClienteForm(request.POST)
     else:
         cliente_form = ClienteForm()
-    return render (request, 'cliente/index_cliente.html',{'reporte':reporte,'clientes':clientes,'cliente_form':cliente_form})
+    return render (request, 'cliente/index_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'reporte':reporte,'clientes':clientes,'cliente_form':cliente_form})
 
 #Pagina de auditoria
 def Auditoria(request):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     auditoria =  Cliente.history.all()
-    return render(request, 'auditoria_cliente.html',{'auditoria':auditoria})
+    return render(request, 'auditoria_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'auditoria':auditoria})

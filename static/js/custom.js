@@ -437,3 +437,17 @@ $('#combo').change(function() {
         }
     })
 });
+//
+// $(document).ready(function() {
+//   console.log("ENTRA?");
+//   $.ajax({
+//       url: '/pedido/notificaciones',
+//       dataType: 'json',
+//       success:function(result) {
+//             console.log(result)
+//       },
+//       error:function(){
+//           alert("cricri")
+//       }
+// });
+// });
