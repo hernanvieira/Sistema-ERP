@@ -158,6 +158,21 @@ Estadisticas
     var to = new Date();
     for (var day = from; day <= to; day.setFullYear(day.getFullYear() + 1)) {
         if (day <= to) {
+            $("#year2").append("<option selected value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+        else {
+          $("#year2").append("<option value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    var from = new Date(2000,1,1);
+    var to = new Date();
+    for (var day = from; day <= to; day.setFullYear(day.getFullYear() + 1)) {
+        if (day <= to) {
             $("#year_torta").append("<option selected value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
         }
         else {
@@ -369,6 +384,7 @@ $(document).ready(function(){
     // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
     $("#select_tipo_prenda").change(function(){
           tipo_prenda = $(this).val(); //Obtengo el tipo de prenda seleccionado
+          tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
           año = $('#año').val(); //Obtengo la temporada seleccionada
           console.log(año);
           console.log(tipo_prenda);
@@ -386,7 +402,7 @@ $(document).ready(function(){
               labels: ["XS", "S", "M", "L", "XL", "XXL"],
               datasets: [
                 {
-                  label: "Population (millions)",
+                  label: "Cantidad (Unidades)",
                   backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
                   data: data['valor']
                 }
@@ -396,7 +412,7 @@ $(document).ready(function(){
               legend: { display: false },
               title: {
                 display: true,
-                text: 'Predicted world population (millions) in 2050'
+                text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
               }
             }
         });
@@ -407,6 +423,7 @@ $(document).ready(function(){
       $("#año").change(function(){
             año = $(this).val(); //Obtengo el tipo de prenda seleccionado
             tipo_prenda = $('#select_tipo_prenda').val(); //Obtengo la temporada seleccionada
+            tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
             console.log(año);
             console.log(tipo_prenda);
             var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
@@ -423,7 +440,7 @@ $(document).ready(function(){
                 labels: ["XS", "S", "M", "L", "XL", "XXL"],
                 datasets: [
                   {
-                    label: "Population (millions)",
+                    label: "Cantidad (Unidades)",
                     backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
                     data: data['valor']
                   }
@@ -433,7 +450,7 @@ $(document).ready(function(){
                 legend: { display: false },
                 title: {
                   display: true,
-                  text: 'Predicted world population (millions) in 2050'
+                  text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
                 }
               }
           });
@@ -451,6 +468,7 @@ $(document).ready(function(){
     $("#select_temporada2").change(function(){
           temporada = $(this).val(); //Obtengo la temporada seleccionada
           año = $('#year2').val(); //Obtengo la temporada seleccionada
+          temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo el tipo de prenda seleccionado
           console.log(año)
           temporada = String(temporada) //CAsteo a string para mostrar en el titulo
           var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
@@ -478,7 +496,7 @@ $(document).ready(function(){
            options: {
              title: {
                display: true,
-               text: 'Predicted world population (millions) in 2050'
+               text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
              }
            }
         });
@@ -489,6 +507,7 @@ $(document).ready(function(){
           $("#year2").change(function(){
                 temporada = $("#select_temporada2").val(); //Obtengo la temporada seleccionada
                 año = $(this).val(); //Obtengo la temporada seleccionada
+                temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo la temporada seleccionado
                 console.log(año)
                 temporada = String(temporada) //CAsteo a string para mostrar en el titulo
                 var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
@@ -516,7 +535,7 @@ $(document).ready(function(){
                  options: {
                    title: {
                      display: true,
-                     text: 'Predicted world population (millions) in 2050'
+                     text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
                    }
                  }
               });
