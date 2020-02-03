@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import CrearMedida, ListarMedida, EditarMedida, EliminarMedida , CrearTipo_prenda, ListarTipo_prenda, EditarTipo_prenda, EliminarTipo_prenda, VerTipo_prenda
 from .views import CrearPrenda, ListarPrenda, EditarPrenda, VerPrenda, EliminarPrenda, AsignarMaterial, CalcularDisponibilidad, AsignarMedida, VolverPrenda, EditarIngrediente, EliminarIngrediente, MostrarUnidad, TiempoProdPrenda
-
+from .views import EstadisticaTemporada,EstadisticaTemporada2, EstadisticaTorta, SelectTipoPrenda, EstadisticaTalle
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -31,5 +31,12 @@ urlpatterns = [
             path ('editar_material/<int:id_ingrediente>/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',login_required(EditarIngrediente),name='editar_ingrediente'),
             path ('eliminar_material/<int:id_ingrediente>/<int:id_pedido>/<int:id_detalle>/<int:id_prenda>',login_required(EliminarIngrediente),name='eliminar_ingrediente'),
             path ('mostrar_unidad/',login_required(MostrarUnidad),name='mostrar_unidad'),
-            path ('tiempo_prod/',login_required(TiempoProdPrenda),name='tiempo_prod')
+            path ('tiempo_prod/',login_required(TiempoProdPrenda),name='tiempo_prod'),
+
+            #URL Estadisticas
+            path('estadistica_temporada/',login_required(EstadisticaTemporada), name = 'estadistica_temporada'),
+            path('estadistica_temporada2/',login_required(EstadisticaTemporada2), name = 'estadistica_temporada2'),
+            path('estadistica_torta/',login_required(EstadisticaTorta), name = 'estadistica_torta'),
+            path('select_tipo_prenda/',login_required(SelectTipoPrenda), name = 'select_tipo_prenda'),
+            path('estadistica_talle/',login_required(EstadisticaTalle), name = 'select_tipo_prenda'),
             ]

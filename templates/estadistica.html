@@ -7,34 +7,196 @@ Estadisticas
 {% endblock titulo%}
 {% block content%}
 <div class="row">
+  <!-- Cantidad de prendas por tipo de prenda -->
   <div class="col-lg-6">
       <div class="au-card m-b-30">
+        <div class="row">
+          <div class="col-1">
+            Año:
+          </div>
+          <div class="col-3">
+            <select id="year_torta" class="js-example-basic-single"></select>
+          </div>
+        </div>
+
           <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-              <p> </p>
-              <canvas id="pieChart2" height="260" width="390" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
+                <canvas id="pieChart2" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
           </div>
       </div>
       <div class="au-card m-b-30">
-          <p>Se muestran la cantidad de pedidos clasificandolos por <strong>tipo de prenda.</strong></p>
+          <p>Se muestran la cantidad de prendas solicitadas clasificandolos por <strong>tipo de prenda.</strong></p>
       </div>
   </div>
-  <!-- <div class="col-lg-6">
+
+  <!-- Demanda de tipo de prenda por temporada -->
+  <div class="col-lg-6">
       <div class="au-card m-b-30">
+        <div class="row">
+          <div class="col-1">
+            Año:
+          </div>
+          <div class="col-3">
+            <select id="year" class="js-example-basic-single select_temporada_year"></select>
+          </div>
+          <div class="col-3">
+            Temporada:
+          </div>
+          <div class="col-5">
+            <select id='select_temporada' class="js-example-basic-single">
+              <option value="Verano" selected>Verano</option>
+              <option value="Otoño">Otoño</option>
+              <option value="Invierno">Invierno</option>
+              <option value="Primavera">Primavera</option>
+            </select>
+          </div>
+        </div>
+
           <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-              <h3 class="title-2 m-b-40">Tipos de prendas por epocas del año</h3>
-              <canvas id="barChart" height="260" width="390" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
+              <canvas id="bar-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
           </div>
       </div>
-  </div> -->
+      <div class="au-card m-b-30">
+          <p>Se muestran la demanda de los distintos tipos de prendas clasificandolas por <strong>temporada.</strong></p>
+      </div>
+  </div>
+
+<hr class="col-12 line-separate">
+
+  <!-- Demanda de tipo de prenda por temporada -->
+  <div class="col-lg-6">
+      <div class="au-card m-b-30">
+        <div class="row">
+          <div class="col-1">
+            Año:
+          </div>
+          <div class="col-3">
+            <select id="año" class="js-example-basic-single select_año"></select>
+          </div>
+          <div class="col-4">
+            <p style="text-align:right;">Tipo de prenda:</p>
+          </div>
+          <div class="col-4">
+            <select id='select_tipo_prenda' class="js-example-basic-single">
+            </select>
+          </div>
+        </div>
+
+          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+              <canvas id="bar-chart-horizontal" width="800" height="450"></canvas>
+          </div>
+      </div>
+      <div class="au-card m-b-30">
+          <p>Se muestran la cantidad de prendas solicitadas clasificandolas por <strong>talles.</strong></p>
+      </div>
+  </div>
+
+  <!-- Demanda de tipo de prenda por temporada -->
+  <div class="col-lg-6">
+      <div class="au-card m-b-30">
+        <div class="row">
+          <div class="col-1">
+            Año:
+          </div>
+          <div class="col-3">
+            <select id="year2" class="js-example-basic-single select_temporada_year"></select>
+          </div>
+          <div class="col-3">
+            Temporada:
+          </div>
+          <div class="col-5">
+            <select id='select_temporada2' class="js-example-basic-single">
+              <option value="Verano" selected>Verano</option>
+              <option value="Otoño">Otoño</option>
+              <option value="Invierno">Invierno</option>
+              <option value="Primavera">Primavera</option>
+            </select>
+          </div>
+        </div>
+
+          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+              <canvas id="doughnut-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
+          </div>
+      </div>
+      <div class="au-card m-b-30">
+          <p>Se muestran la demanda de los distintos colores utilizados clasificandolos por <strong>temporada.</strong></p>
+      </div>
+  </div>
+
+
+
 </div>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js" integrity="sha256-arMsf+3JJK2LoTGqxfnuJPFTU4hAK57MtIPdFpiHXOU=" crossorigin="anonymous"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script> -->
+
+
 
 <!-- Chart Torta -->
 <script src="{% static 'js/Chart_torta.js' %}"></script>
 
 <!-- Chart Torta -->
 <script src="{% static 'js/jspdf.min.js' %}"></script>
+
+<!-- Jquery JS-->
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+<script type="text/javascript">
+  $(function() {
+    var from = new Date(2000,1,1);
+    var to = new Date();
+    for (var day = from; day <= to; day.setFullYear(day.getFullYear() + 1)) {
+        if (day <= to) {
+            $("#year").append("<option selected value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+        else {
+          $("#year").append("<option value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    var from = new Date(2000,1,1);
+    var to = new Date();
+    for (var day = from; day <= to; day.setFullYear(day.getFullYear() + 1)) {
+        if (day <= to) {
+            $("#year_torta").append("<option selected value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+        else {
+          $("#year_torta").append("<option value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    var from = new Date(2000,1,1);
+    var to = new Date();
+    for (var day = from; day <= to; day.setFullYear(day.getFullYear() + 1)) {
+        if (day <= to) {
+            $("#año").append("<option selected value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+        else {
+          $("#año").append("<option value='" + day.getFullYear() + "'>" + day.getFullYear() + "</option>");
+        }
+    }
+  });
+</script>
+<script type="text/javascript">
+$(function() {
+	    $.ajax({
+	    	url: '/prenda/select_tipo_prenda/',
+	    	dataType: "json",
+	    	success: function(result){
+        for (var i = 0; i < result.length; i++) {
+			    $("#select_tipo_prenda").append('<option value='+result[i]['valor']+'>'+result[i]['tipo_prenda']+'</option>');
+        }
+      },
+	    	error: function(result) {
+	    		alert('error');
+	    	}
+	    });
+    });
+</script>
 
 <script>
     var tipo_prenda = [];
@@ -49,34 +211,319 @@ Estadisticas
 {%endfor%}
 
 <script>
-    var ctx = document.getElementById('pieChart2').getContext("2d");
-    var chart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: tipo_prenda,
-        datasets: [{
-          data: cantidad,
-          backgroundColor: [
-            "rgba(0, 123, 255,0.9)",
-            "rgba(0, 123, 255,0.7)",
-            "rgba(0, 123, 255,0.5)",
-            "rgba(0,0,0,0.07)"
-          ]
+$(document).ready(function(){
+  año = $("#year_torta").val(); //Por defecto esta seleccionada la opcion 'verano'
+  // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+  $("#year_torta").change(function(){
+        año = $(this).val(); //Obtengo la temporada seleccionada
+        console.log(año)
+        var ctx = document.getElementById('pieChart2').getContext("2d"); //Obtengo el canvas
 
-        }]
+        //Ejecuto el ajax
+        $.ajax({
+          data: {'año':año},
+          url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
+          type: 'get',
+          success: function (data) {
+              console.log(data['tipo_prenda']);
+              console.log(data['valor']);
+              var chart1 = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                  labels:  data['tipo_prenda'],
+                  datasets: [{
+                    data:  data['valor'],
+                    backgroundColor: [
+                      "rgba(0, 123, 255,0.9)",
+                      "rgba(0, 123, 255,0.7)",
+                      "rgba(0, 123, 255,0.5)",
+                      "rgba(0,0,0,0.07)"
+                    ]
 
-      },
-      options: {
-        legend: {
-          position: 'top',
-          labels: {
-            fontFamily: 'Poppins'
-          }
+                  }]
 
-        },
-        responsive: true
-      }
+                },
+                options: {
+                  legend: {
+                    position: 'top',
+                    labels: {
+                      fontFamily: 'Poppins'
+                    }
+
+                  },
+                  responsive: true
+                }
+              });
+        }
+      });
     });
-
+});
 </script>
+
+<!-- Script para filtrar chart de demanda de prendas por temporadas -->
+<script type="text/javascript">
+// Al cargar la pagina configuro un chart con la temporada de verano de forma predeterminada
+  $(document).ready(function(){
+    temporada = $("#select_temporada").val(); //Por defecto esta seleccionada la opcion 'verano'
+    temporada = String(temporada) //Casteo a String
+    // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+    $("#select_temporada").change(function(){
+          temporada = $(this).val(); //Obtengo la temporada seleccionada
+          año = $('#year').val(); //Obtengo la temporada seleccionada
+          console.log(año)
+          temporada = String(temporada) //CAsteo a string para mostrar en el titulo
+          var ctx = document.getElementById('bar-chart'); //Obtengo el canvas
+
+          //Ejecuto el ajax
+          $.ajax({
+            data: { 'temporada': temporada, 'año':año },
+            url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
+            type: 'get',
+            success: function (data) {
+                console.log(data['tipo_prenda']);
+                console.log(data['valor']);
+
+          var chart2 = new Chart(ctx, { //Comienzo a configurarlo
+            type: 'bar',
+            data: {
+              labels: data['tipo_prenda'],
+              datasets: [
+                {
+                  label: "Cantidad (Unidades)",
+                  backgroundColor: [
+                    "rgba(0, 123, 255,0.9)",
+                    "rgba(0, 123, 255,0.7)",
+                    "rgba(0, 123, 255,0.5)",
+                    "rgba(0,0,0,0.07)"
+                  ],
+                  data: data['valor'],
+                }
+              ]
+            },
+            options: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: temporada
+              }
+            }
+
+          });
+          }
+        });
+      });
+          // Al momento de cambiar el año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+          $("#year").change(function(){
+                año = $(this).val(); //Obtengo la temporada seleccionada
+                temporada = $('#select_temporada').val(); //Obtengo la temporada seleccionada
+                console.log(año)
+                console.log(temporada)
+                temporada = String(temporada) //CAsteo a string para mostrar en el titulo
+                var ctx = document.getElementById('bar-chart'); //Obtengo el canvas
+
+                //Ejecuto el ajax
+                $.ajax({
+                  data: { 'temporada': temporada, 'año':año },
+                  url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
+                  type: 'get',
+                  success: function (data) {
+                      console.log(data['tipo_prenda']);
+                      console.log(data['valor']);
+
+                var chart2 = new Chart(ctx, { //Comienzo a configurarlo
+                  type: 'bar',
+                  data: {
+                    labels: data['tipo_prenda'],
+                    datasets: [
+                      {
+                        label: "Cantidad (Unidades)",
+                        backgroundColor: [
+                          "rgba(0, 123, 255,0.9)",
+                          "rgba(0, 123, 255,0.7)",
+                          "rgba(0, 123, 255,0.5)",
+                          "rgba(0,0,0,0.07)"
+                        ],
+                        data: data['valor'],
+                      }
+                    ]
+                  },
+                  options: {
+                    legend: { display: false },
+                    title: {
+                      display: true,
+                      text: temporada
+                    }
+                  }
+
+                });
+                }
+              });
+            });
+    });
+</script>
+<script type="text/javascript">
+// Al cargar la pagina configuro un chart con el primer tipo de prenda de forma predeterminada
+  $(document).ready(function(){
+    tipo_prenda = $("#select_tipo_prenda").val(); //Por defecto esta seleccionada la primer opcion
+    console.log(tipo_prenda);
+    // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+    $("#select_tipo_prenda").change(function(){
+          tipo_prenda = $(this).val(); //Obtengo el tipo de prenda seleccionado
+          año = $('#año').val(); //Obtengo la temporada seleccionada
+          console.log(año);
+          console.log(tipo_prenda);
+          var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
+          //Ejecuto el ajax
+          $.ajax({
+            data: { 'tipo_prenda': tipo_prenda, 'año':año },
+            url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
+            type: 'get',
+            success: function (data) {
+                console.log(data['valor']);
+          var chart3 = new Chart(ctx, { //Comienzo a configurarlo
+            type: 'horizontalBar',
+            data: {
+              labels: ["XS", "S", "M", "L", "XL", "XXL"],
+              datasets: [
+                {
+                  label: "Population (millions)",
+                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                  data: data['valor']
+                }
+              ]
+            },
+            options: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: 'Predicted world population (millions) in 2050'
+              }
+            }
+        });
+          }
+        });
+      });
+      // Al momento de cambiar de año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+      $("#año").change(function(){
+            año = $(this).val(); //Obtengo el tipo de prenda seleccionado
+            tipo_prenda = $('#select_tipo_prenda').val(); //Obtengo la temporada seleccionada
+            console.log(año);
+            console.log(tipo_prenda);
+            var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
+            //Ejecuto el ajax
+            $.ajax({
+              data: { 'tipo_prenda': tipo_prenda, 'año':año },
+              url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
+              type: 'get',
+              success: function (data) {
+                  console.log(data['valor']);
+            var chart3 = new Chart(ctx, { //Comienzo a configurarlo
+              type: 'horizontalBar',
+              data: {
+                labels: ["XS", "S", "M", "L", "XL", "XXL"],
+                datasets: [
+                  {
+                    label: "Population (millions)",
+                    backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+                    data: data['valor']
+                  }
+                ]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: 'Predicted world population (millions) in 2050'
+                }
+              }
+          });
+            }
+          });
+        });
+    });
+</script>
+
+<!-- Script para filtrar chart de demanda colores por temporadas -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    temporada = $("#select_temporada2").val(); //Por defecto esta seleccionada la opcion 'verano'
+    // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+    $("#select_temporada2").change(function(){
+          temporada = $(this).val(); //Obtengo la temporada seleccionada
+          año = $('#year2').val(); //Obtengo la temporada seleccionada
+          console.log(año)
+          temporada = String(temporada) //CAsteo a string para mostrar en el titulo
+          var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
+
+          //Ejecuto el ajax
+          $.ajax({
+            data: { 'temporada': temporada, 'año':año },
+            url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
+            type: 'get',
+            success: function (data) {
+                console.log(data['colores']);
+                console.log(data['valor']);
+
+          var chart4 = new Chart(ctx, { //Comienzo a configurarlo
+            type: 'doughnut',
+            data: {
+              labels: data['label'],
+              datasets: [
+                {
+                 backgroundColor: data['colores'],
+                 data: data['valor']
+               }
+             ]
+           },
+           options: {
+             title: {
+               display: true,
+               text: 'Predicted world population (millions) in 2050'
+             }
+           }
+        });
+          }
+        });
+      });
+          // Al momento de cambiar el año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+          $("#year2").change(function(){
+                temporada = $("#select_temporada2").val(); //Obtengo la temporada seleccionada
+                año = $(this).val(); //Obtengo la temporada seleccionada
+                console.log(año)
+                temporada = String(temporada) //CAsteo a string para mostrar en el titulo
+                var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
+
+                //Ejecuto el ajax
+                $.ajax({
+                  data: { 'temporada': temporada, 'año':año },
+                  url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
+                  type: 'get',
+                  success: function (data) {
+                      console.log(data['colores']);
+                      console.log(data['valor']);
+
+                var chart4 = new Chart(ctx, { //Comienzo a configurarlo
+                  type: 'doughnut',
+                  data: {
+                    labels: [],
+                    datasets: [
+                     {
+                       backgroundColor: data['colores'],
+                       data: data['valor']
+                     }
+                   ]
+                 },
+                 options: {
+                   title: {
+                     display: true,
+                     text: 'Predicted world population (millions) in 2050'
+                   }
+                 }
+              });
+                }
+              });
+            });
+    });
+</script>
+
 {% endblock content%}

@@ -4,7 +4,7 @@ from .models import Cliente
 from django.core.exceptions import *
 from django.contrib import messages
 from config.models import Configuracion
-from apps.pedido.models import Faltante, Detalle_envio, Pedido
+from apps.pedido.models import Faltante, Detalle_envio, Pedido, Detalle
 from apps.material.models import Material
 from apps.pedido.views import FinalizarPedido
 
@@ -23,7 +23,16 @@ from django.db.models import Count
 
 #Pagina de inicio
 def Home(request):
+    #Notificaciones
     pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+
     reporte = Configuracion.objects.all().last()
 
     if request.method == 'POST':
@@ -52,27 +61,30 @@ def Home(request):
     for i in range(len(materiales)):
         lista[i]['material'] = materiales[i]
 
-    #Notificaciones
-    pedidos = Pedido.objects.all().exclude(confirmado=False)
-    envios_noti = []
-    for pedido in pedidos:
-        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
-        if envio_temp:
-            envios_noti.append(envio_temp)
-    envios_not = envios_noti[:3]
-    envio_count = len(envios_noti)
+
 
     return render(request, 'index.html',{'envio_count':envio_count,'envios_not':envios_not,'reporte':reporte,'pedidos':pedidos, 'lista':lista})
 
 #Pagina de estadisticas
 def Estadistica(request):
-    lista_chart = []
+    #Estadistica Bar
+    # lista_bar = []
+    # tipo_prendas_list = Tipo_prenda.objects.all()
+    # for tipo_prenda in tipo_prendas_list:
+    #     diccionario = {
+    #     'tipo_prenda':tipo_prenda.nombre,
+    #     'valor':Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda).aggregate(Sum('cantidad'))['cantidad__sum']
+    #
+    #     }
+    #     lista_bar.append(diccionario)
 
+    #Estadistica Chart
+    lista_chart = []
     tipo_prendas_list = Tipo_prenda.objects.all()
     for tipo_prenda in tipo_prendas_list:
         diccionario = {
         'prenda':tipo_prenda.nombre,
-        'valor':Prenda.objects.filter(tipo_prenda = tipo_prenda).count()
+        'valor':Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda).aggregate(Sum('cantidad'))['cantidad__sum']
         }
         lista_chart.append(diccionario)
 

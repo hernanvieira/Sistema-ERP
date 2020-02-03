@@ -17,6 +17,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 
 from django.db.models import Sum
+from django.db.models import Count
 
 
 class JSONResponse(HttpResponse):
@@ -1066,3 +1067,152 @@ def TiempoProdPrenda(request):
         'promedio': int(promedio)
     }
     return JsonResponse(result)
+
+#Filtro de estadistica por temporadas
+def EstadisticaTemporada(request):
+    data = {}
+    temporada = request.GET.get('temporada',None)
+    año = request.GET.get('año',None)
+
+    if temporada == 'Verano':
+        desde =str(int(año)-1)+'-12-21'
+        hasta =año+'-03-20'
+    if temporada == 'Otoño':
+        desde =año+'-03-21'
+        hasta =año+'-06-20'
+    if temporada == 'Invierno':
+        desde =año+'-06-21'
+        hasta =año+'-09-20'
+    if temporada == 'Primavera':
+        desde =año+'-09-21'
+        hasta =año+'-12-20'
+
+    lista_tipo_prenda = []
+    lista_valor = []
+    tipo_prendas_list = Tipo_prenda.objects.all()
+
+    for tipo_prenda in tipo_prendas_list:
+
+        valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+
+        lista_tipo_prenda.append(str(tipo_prenda.nombre))
+        lista_valor.append(valor)
+
+    data['tipo_prenda'] = lista_tipo_prenda
+    data['valor'] = lista_valor
+    return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+#Filtro de estadistica por temporadas
+def EstadisticaTemporada2(request):
+    data = {}
+    temporada = request.GET.get('temporada',None)
+    año = request.GET.get('año',None)
+
+    if temporada == 'Verano':
+        desde =str(int(año)-1)+'-12-21'
+        hasta =año+'-03-20'
+    if temporada == 'Otoño':
+        desde =año+'-03-21'
+        hasta =año+'-06-20'
+    if temporada == 'Invierno':
+        desde =año+'-06-21'
+        hasta =año+'-09-20'
+    if temporada == 'Primavera':
+        desde =año+'-09-21'
+        hasta =año+'-12-20'
+
+    lista_colores = []
+    lista_valor = []
+    lista_label = []
+
+    valor = Ingrediente.objects.values('material__color').annotate(num_color=Count('material__color')).order_by('-num_color')
+
+    for i in range(len(valor)):
+        label = ""
+        lista_label.append(label)
+        color = valor[i]['material__color']
+        lista_colores.append(color)
+    for i in range(len(valor)):
+        cantidad = valor[i]['num_color']
+        lista_valor.append(cantidad)
+
+    data['colores'] = lista_colores
+    data['valor'] = lista_valor
+    data['label'] = lista_label
+    return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+#Filtro de estadistica por cantidad de prendas solicitadas por tipo de prenda
+def EstadisticaTorta(request):
+    data = {}
+    año = request.GET.get('año',None)
+
+    desde = año+'-01-01'
+    hasta = año+'-12-31'
+
+    lista_tipo_prenda = []
+    lista_valor = []
+    tipo_prendas_list = Tipo_prenda.objects.all()
+
+    for tipo_prenda in tipo_prendas_list:
+
+        valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+
+        lista_tipo_prenda.append(str(tipo_prenda.nombre))
+        lista_valor.append(valor)
+
+    data['tipo_prenda'] = lista_tipo_prenda
+    data['valor'] = lista_valor
+    return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+#Filtro de tipo de prenda por cantidad de talels solicitadas
+def EstadisticaTalle(request):
+    data = {}
+    tipo_prenda = request.GET.get('tipo_prenda',None)
+    año = request.GET.get('año',None)
+    desde = año+'-01-01'
+    hasta = año+'-12-31'
+
+    lista_valor = []
+    tipo_prendas_list = Tipo_prenda.objects.all()
+
+    valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, prenda__talle = 0, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+    lista_valor.append(valor)
+    valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, prenda__talle = 1, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+    lista_valor.append(valor)
+    valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, prenda__talle = 2, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+    lista_valor.append(valor)
+    valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, prenda__talle = 3, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+    lista_valor.append(valor)
+    valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, prenda__talle = 4, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+    lista_valor.append(valor)
+    valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, prenda__talle = 5, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
+    lista_valor.append(valor)
+
+    data['valor'] = lista_valor
+    print(data)
+    return HttpResponse(
+                json.dumps(data),
+                content_type="application/json")
+
+#Rellenar select tipo_prenda
+def SelectTipoPrenda(request):
+    lista = []
+    tipo_prendas_list = Tipo_prenda.objects.all()
+
+    for tipo_prenda in tipo_prendas_list:
+        diccionario = {
+        'tipo_prenda': tipo_prenda.nombre,
+        'valor': tipo_prenda.pk
+        }
+        lista.append(diccionario)
+        print(lista)
+    result = lista
+    return HttpResponse(
+                json.dumps(result),
+                content_type="application/json")
