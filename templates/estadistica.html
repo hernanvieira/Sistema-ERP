@@ -6,6 +6,7 @@
 Estadisticas
 {% endblock titulo%}
 {% block content%}
+
 <div class="row">
   <!-- Cantidad de prendas por tipo de prenda -->
   <div class="col-lg-6">
@@ -39,7 +40,7 @@ Estadisticas
             <select id="year" class="js-example-basic-single select_temporada_year"></select>
           </div>
           <div class="col-3">
-            Temporada:
+            <p style="text-align:right;">Temporada:</p> 
           </div>
           <div class="col-5">
             <select id='select_temporada' class="js-example-basic-single">
@@ -101,7 +102,7 @@ Estadisticas
             <select id="year2" class="js-example-basic-single select_temporada_year"></select>
           </div>
           <div class="col-3">
-            Temporada:
+            <p style="text-align:right;">Temporada:</p>
           </div>
           <div class="col-5">
             <select id='select_temporada2' class="js-example-basic-single">
@@ -122,10 +123,12 @@ Estadisticas
       </div>
   </div>
 
-
-
+</div>
+<div class="alineado-centro col-12 d-print-none">
+<a href="javascript:window.print()" ><button type="button" class="btn btn-primary" name="button" > Imprimir </button></a>
 </div>
 
+</div>
 
 
 <!-- Chart Torta -->
@@ -136,6 +139,18 @@ Estadisticas
 
 <!-- Jquery JS-->
 <script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+<script language="Javascript">
+
+  function imprSelec(nombre){
+  var ficha = document.getElementById(nombre);
+  var ventimp = window.open(' ', 'popimpr');
+  ventimp.document.write( ficha.innerHTML );
+  ventimp.document.close();
+  ventimp.print( );
+  ventimp.close();
+  }
+</script>
 
 <script type="text/javascript">
   $(function() {
