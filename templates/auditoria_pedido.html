@@ -70,7 +70,6 @@ Auditoria Pedidos
               <td style="text-align: center;">{{audi.history_date}}</td>
               <td style="text-align: left;">{{audi.history_user}}</td>
               <td>
-                {{audi.pk}}
                 {% if audi.history_type == '~' %}
                 <!-- Modal ver cambios -->
                 <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.id_pedido}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria">
@@ -120,8 +119,6 @@ Auditoria Pedidos
                 <!-- End Modal -->
                 {% endif %}
               </td>
-
-
             </tr>
 
             {% endfor %}

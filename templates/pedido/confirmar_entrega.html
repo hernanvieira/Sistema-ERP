@@ -249,7 +249,7 @@ left: 43px;
                             </ul>
                           </div>
                           {% endif %}
-                            <form method="POST">
+                            <form id="form" method="POST">
                               {% csrf_token %}
                               <div class="login-logo">
                                       <img src="{% static 'images/icon/logo2.png' %}" width="150px" alt="CoolAdmin">
@@ -333,7 +333,7 @@ left: 43px;
                                 </div>
                                 <br>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Ingresar</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" id="button_hasta" type="button">Ingresar</button>
 
                               {% endif %}
                               {% if messages %}
@@ -462,7 +462,37 @@ left: 43px;
        }
      }
     </script>
-
+    <script type="text/javascript">
+      $('#button_hasta').click(function() {
+        desde = $("#timepkr").val();
+        hasta = $("#timepkr2").val();
+        domicilio = $("#domicilio" ).val();
+        dias = $("#dias" ).val();
+        if (domicilio == '' || dias=='' || (desde >= hasta)){
+          if (domicilio == '') {
+            $('#domicilio').css({"border-color": "red"});
+          }else {
+            $('#domicilio').css({"border-color": "black"});
+          }
+          if (dias == ''){
+            $('.select2-selection').css({"border": "1px solid #f00"});
+          }else {
+            $('.select2-selection').css({"border": "1px solid rgb(0, 0, 0)"});
+          }
+          if (desde >= hasta) {
+            $("#timepkr").css({"border-color": "red"});
+            $("#timepkr2").css({"border-color": "red"});
+          }
+        }else{
+            if (domicilio != '' && dias != '' && (desde < hasta)) {
+              $( "#form" ).submit();
+            }else {
+              $("#timepkr").css({"border-color": "black"});
+              $("#timepkr2").css({"border-color": "black"});
+            }
+          }
+      });
+    </script>
 </body>
 {% endblock body %}
 </html>
