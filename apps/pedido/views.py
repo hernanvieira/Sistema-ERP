@@ -765,6 +765,20 @@ def Notificaciones(request):
     if request.method == 'GET':
         return render(request,'pedido/notificaciones.html',{'envios_not':envios_not,'envio_count':envio_count,'envios_noti':envios_noti})
 
+#Ver Cambios
+def VerAuditoria(request,pk,id_history):
+    historial = Pedido.history.filter(id_pedido=pk)
+    for i in range(len(historial)):
+        if historial[i].pk == id_history:
+            audit_regsolo = historial[i]
+            delta = audit_regsolo.diff_against(historial[i+1])
+            data = []
+            for change in delta.changes:
+                dic = {'change':change.field,'old':change.old, 'new':change.new}
+                data.append(dic)
+            break
+    return JsonResponse(data,safe=False)
+
 #Notificaciones
 # class JSONResponse(HttpResponse):
 #     """

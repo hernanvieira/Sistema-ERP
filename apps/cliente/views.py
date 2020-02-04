@@ -19,10 +19,13 @@ from datetime import datetime, timedelta, date
 
 from django.db.models import Count
 
+from django.http import JsonResponse
+
 # Create your views here.
 
 #Pagina de inicio
 def Home(request):
+
     #Notificaciones
     pedidos = Pedido.objects.all().exclude(confirmado=False)
     envios_noti = []
@@ -277,3 +280,17 @@ def Auditoria(request):
 
     auditoria =  Cliente.history.all()
     return render(request, 'auditoria_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'auditoria':auditoria})
+
+#Ver Cambios
+def VerAuditoria(request,pk,id_history):
+    historial = Cliente.history.filter(dni=pk)
+    for i in range(len(historial)):
+        if historial[i].pk == id_history:
+            audit_regsolo = historial[i]
+            delta = audit_regsolo.diff_against(historial[i+1])
+            data = []
+            for change in delta.changes:
+                dic = {'change':change.field,'old':change.old, 'new':change.new}
+                data.append(dic)
+            break
+    return JsonResponse(data,safe=False)

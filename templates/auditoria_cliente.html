@@ -12,7 +12,7 @@ Auditoria Clientes
   <br>
   <div class="table-data__tool">
       <div class="table-data__tool-left">
-        
+
           <span>Entre:</span>
           <div class="rs-select2--light rs-select2--sm">
             <div class="form-control">
@@ -47,6 +47,7 @@ Auditoria Clientes
                 <th>Nombre y apellido</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
+                <th>Opciones</th>
             </tr>
         </thead>
         <tbody>
@@ -69,6 +70,56 @@ Auditoria Clientes
               <td>{{audi.nombre}}</td>
               <td>{{audi.history_date}}</td>
               <td>{{audi.history_user}}</td>
+              <td>
+                {% if audi.history_type == '~' %}
+                <!-- Modal ver cambios -->
+                <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.dni}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <div class="modal fade ver_auditoria" id="ver_auditoria{{audi.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="ver_auditoria{{audi.pk}}">Ver Cambios</h4>
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-6">
+                                  <div class="col-12 alineado-centro">
+                                    <strong>Estado Previo</strong>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="alert alert-danger" id="detail_modal_old" role="alert">
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <div class="col-6">
+                                  <div class="col-12 alineado-centro">
+                                    <strong>Estado Posterior</strong>
+                                  </div>
+                                  <div class="col-12">
+                                    <div class="alert alert-success" id="detail_modal_new" role="alert">
+                                    </div>
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+                            <div class="modal-footer">
+                              <div class="alineado-derecha">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Volver</button>
+                              </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Modal -->
+                {% endif %}
+              </td>
             </tr>
 
             {% endfor %}
@@ -76,4 +127,23 @@ Auditoria Clientes
     </table>
 </div>
 <!-- END DATA TABLE -->
+<script type="text/javascript">
+function f1(pk, id_history){
+       // $('modalDetail').modal('toogle');
+       $.ajax({
+         url:'/cliente/ver_auditoria/'+pk+'/'+id_history,
+         dataType: 'json',
+         success: function(data){
+           var html = "";
+           var html2 = "";
+           for (var i = 0; i < data.length; i++) {
+             html+= '<p><strong>'+String(data[i].change).replace(/\b[a-z]/g,c=>c.toUpperCase())+': </strong>'+data[i].old+'</p>'
+             html2+= '<p><strong>'+String(data[i].change).replace(/\b[a-z]/g,c=>c.toUpperCase())+': </strong>'+data[i].new+'</p>'
+           }
+        $('#detail_modal_old').html(html);
+        $('#detail_modal_new').html(html2);
+         }
+       })
+}
+</script>
 {% endblock content%}
