@@ -7,7 +7,15 @@ Listado de Tipos de Materiales
 {% endblock titulo%}
 
 {% block content%}
-<input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Material..." id="midtbusqueda"/>
+<div class="alineado-derecha">
+  <div class="fa-hover">
+    <a href="JavaScript:Void(0);">
+      <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+    </a>
+  </div>
+</div>
+<br>
+<input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Material..." id="midtbusqueda" data-step="1" data-intro='Puede realizar busquedas sobre la lista'/>
 <div class="">
   <br>
 </div>
@@ -43,7 +51,7 @@ Listado de Tipos de Materiales
 {% endif %}
 
 <!-- DATA TABLE-->
-<div class="table-responsive m-b-40">
+<div class="table-responsive m-b-40" data-step="2" data-intro='Se muestra una lista con todos los materiales registrados en el sistemas'>
     <table class="table table-borderless table-data2" id="midatatable">
       <thead>
           <tr>
@@ -60,19 +68,25 @@ Listado de Tipos de Materiales
       <tbody>
         {% for material in materiales %}
           <tr>
-            <td>{{material.id_material}}</td>
-            <td>{{material.tipo_material}}</td>
-            <td>{{material.nombre}}</td>
-            <td class="noExport"><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
-            <td style="text-align: right;">{{material.stock}}</td>
-            <td style="text-align: right;">{{material.stock_minimo}}</td>
-            <td style="text-align: left;">{{material.tipo_material.unidad_medida}}</td>
+            <td>{{material.material_id}}</td>
+            <td data-step="2" data-intro='Se muestra el tipo de material'>{{material.tipo_material}}</td>
+            <td data-step="3" data-intro='El nombre'>{{material.nombre}}</td>
+            <td class="noExport" data-step="4" data-intro='El color'><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
+            <td style="text-align: right;" data-step="5" data-intro='El stock disponible actualmente'>
+              {% if material.stock >= 0 %}
+                {{material.stock}}
+              {% else %}
+                0
+              {% endif %}
+            </td>
+            <td style="text-align: right;" data-step="6" data-intro='El stock mínimo establecido'>{{material.stock_minimo}}</td>
+            <td style="text-align: left;" data-step="7" data-intro='La unidad de medida asociada'>{{material.tipo_material.unidad_medida}}</td>
             <td>
-              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'" data-step="8" data-intro='Si selecciona la opción "Editar material" lo redirige a una pagina para editar el material'>
                 <i class="fas fa-pencil-square-o"></i>
               </button>
               <!-- Modal Eliminar -->
-              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}" data-step="9" data-intro='Si selecciona la opción "Eliminar material" se muestra una ventana para confirmar la eliminación'>
                 <i class="fas fa-trash"></i>
               </button>
               <div class="modal fade bs-example-modal-lg2{{material.id_material}}" id="myModal2{{material.id_material}}" tabindex="-1" role="dialog" aria-hidden="true">

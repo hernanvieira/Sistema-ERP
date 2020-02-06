@@ -6,8 +6,16 @@
 Estadisticas
 {% endblock titulo%}
 {% block content%}
-
+<div class="alineado-derecha">
+  <div class="fa-hover">
+    <a href="JavaScript:Void(0);">
+      <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+    </a>
+  </div>
+</div>
+<br>
 <div class="row">
+
   <!-- Cantidad de prendas por tipo de prenda -->
   <div class="col-lg-6">
       <div class="au-card m-b-30">
@@ -30,9 +38,9 @@ Estadisticas
   </div>
 
   <!-- Demanda de tipo de prenda por temporada -->
-  <div class="col-lg-6">
-      <div class="au-card m-b-30">
-        <div class="row">
+  <div class="col-lg-6" data-step="1" data-intro='Se muestrán apartados con estadisticas brindadas por el sistema'>
+      <div class="au-card m-b-30" data-step="2" data-intro='En esta sección se mostrará el grafico con los datos correspondientes a los filtros seleccionados'>
+        <div class="row" data-step="3" data-intro='Los filtros se muestran en la parte superior'>
           <div class="col-1">
             Año:
           </div>
@@ -40,7 +48,7 @@ Estadisticas
             <select id="year" class="js-example-basic-single select_temporada_year"></select>
           </div>
           <div class="col-3">
-            <p style="text-align:right;">Temporada:</p> 
+            <p style="text-align:right;">Temporada:</p>
           </div>
           <div class="col-5">
             <select id='select_temporada' class="js-example-basic-single">
@@ -56,12 +64,10 @@ Estadisticas
               <canvas id="bar-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
           </div>
       </div>
-      <div class="au-card m-b-30">
+      <div class="au-card m-b-30" data-step="4" data-intro='Este sector presenta una leyenda que describe la estadistica que se muestra'>
           <p>Se muestran la demanda de los distintos tipos de prendas clasificandolas por <strong>temporada.</strong></p>
       </div>
   </div>
-
-<hr class="col-12 line-separate">
 
   <!-- Demanda de tipo de prenda por temporada -->
   <div class="col-lg-6">
@@ -122,12 +128,9 @@ Estadisticas
           <p>Se muestran la demanda de los distintos colores utilizados clasificandolos por <strong>temporada.</strong></p>
       </div>
   </div>
-
 </div>
 <div class="alineado-centro col-12 d-print-none">
 <a href="javascript:window.print()" ><button type="button" class="btn btn-primary" name="button" > Imprimir </button></a>
-</div>
-
 </div>
 
 

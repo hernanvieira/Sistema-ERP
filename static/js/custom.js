@@ -132,7 +132,6 @@
                 var titulo = $('.titulo_reporte').val();
 
                 if (titulo == 'Listado de faltante de materiales') {
-
                   doc.content[1].table.widths = [120,120,100,110];
                   var table = $("#midatatable").DataTable();//Obtengo la tabla
                   var pageInfo = table.page.info(); //Obtiene el objeto page.info()
@@ -193,7 +192,7 @@
                 }
                 if (titulo == 'Listado de materiales') {
                   // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
-                  doc.content[1].table.widths = [150,150,80,80];
+                  doc.content[1].table.widths = [150,140,60,60,50];
                   var table = $("#midatatable").DataTable();//Obtengo la tabla
                   var pageInfo = table.page.info(); //Obtiene el objeto page.info()
                   for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
@@ -201,6 +200,7 @@
                     doc.content[1].table.body[i][1].alignment = 'left';
                     doc.content[1].table.body[i][2].alignment = 'right';
                     doc.content[1].table.body[i][3].alignment = 'right';
+                    doc.content[1].table.body[i][4].alignment = 'left';
                   }; // Arnold deja de copiarme
                 }
 

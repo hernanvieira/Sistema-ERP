@@ -6,15 +6,19 @@ Ver pedido
 {% endblock titulo%}
 {% block content%}
 
-
-
 <div class="card">
   <div class="card-header bg-success"><strong class="card-title text-light">Ver pedido</strong></div>
   <div class="card-body card-block">
 
-
     <form method="POST">
       {% csrf_token %}
+      <div class="alineado-derecha">
+        <div class="fa-hover">
+          <a href="JavaScript:Void(0);">
+            <i class="fa fa-question-circle" onclick="javascript:introJs().start().oncomplete(function(){window.location.href = '/prenda/ver_prenda/0/0/0'});;"></i>
+          </a>
+        </div>
+      </div>
       <div class="row">
         <input type="hidden" id="min" value="">
         <input type="hidden" id="max" value="">
@@ -41,9 +45,9 @@ Ver pedido
         <!-- cliente -->
 
         <!-- end cliente -->
-        <div class="col-md-12">
+        <div class="col-md-12" >
           {{pedido_form.cliente.label}}
-          <div class="form-control">
+          <div class="form-control" data-step="1" data-intro='En esta página verá información del pedido como ser el cliente al cual se encuentra asociado'>
               {{cliente}}
           </div>
           <br>
@@ -51,8 +55,8 @@ Ver pedido
           <a>Prenda/s</a>
           {% if detalles %}
           <!-- DATA TABLE-->
-          <div class="table-responsive m-b-40">
-              <table class="table table-borderless table-data3">
+          <div class="table-responsive m-b-40" data-step="2" data-intro='Las prendas agregadas al pedido'>
+              <table class="table table-borderless table-data3" data-step="15" data-intro='En cuanto a las prendas agregadas al pedido podemos ver información sobre:'>
                   <thead>
                       <tr>
                           <th>Tipo de Prenda</th>
@@ -67,12 +71,12 @@ Ver pedido
                   <tbody>
                     {% for detalle in detalles %}
                       <tr>
-                        <td>{{detalle.prenda.tipo_prenda}}</td>
-                        <td style="text-align: center;">{{detalle.prenda.talle}}</td>
-                        <td style="text-align: right;">${{detalle.prenda.precio}}</td>
-                        <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
-                        <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
-                        <td>
+                        <td data-step="16" data-intro='El tipo de prenda'>{{detalle.prenda.tipo_prenda}}</td>
+                        <td data-step="17" data-intro='El talle' style="text-align: center;">{{detalle.prenda.talle}}</td>
+                        <td data-step="18" data-intro='El precio unitario' style="text-align: right;">${{detalle.prenda.precio}}</td>
+                        <td data-step="19" data-intro='La cantidad solicitada' style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
+                        <td data-step="20" data-intro='El tiempo de produccion total' style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
+                        <td data-step="21" data-intro='información sobre ,si fueron asignados o no, los materiales para la prenda'>
                         {% if detalle.prenda.pk in ingredientes %}
                           SI
                         {% else %}
@@ -82,14 +86,14 @@ Ver pedido
                         <td>
                           {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
 
-                          <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'prenda:ver_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                          <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'prenda:ver_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="24" data-intro='Al seleccionar la opción "Ver prenda" lo redirige a otra página en la cual podrá tener información acerca de la prenda y asignar materiales"'>
                             <i class="fas fa-eye"></i>
                           </button>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="22" data-intro='Al seleccionar la opción "Editar prenda lo redirigirá a una página donde podrá editar la prenda"'>
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
                             <!-- Modal Eliminar -->
-                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".eliminar_prenda{{detalle.prenda.pk}}">
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".eliminar_prenda{{detalle.prenda.pk}}" data-step="23" data-intro='Al seleccionar la opción "Eliminar prenda" se mostrará una ventana para confirmar la eliminación de la misma'>
                               <i class="fas fa-trash"></i>
                             </button>
                             <div class="modal fade eliminar_prenda{{detalle.prenda.pk}}" id="myModal2{{prenda.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -127,13 +131,13 @@ Ver pedido
         </div>
 
         <hr class="line-seprate">
-        <div class="col-md-4">
+        <div class="col-md-4" data-step="3" data-intro='La fecha de entrega del pedido'>
           {{pedido_form.fecha_entrega.label}}
           <div disable class="form-control">
             <input readonly="readonly" value="{{pedido_form.fecha_entrega.value}}">
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-step="4" data-intro='La prioridad establecida'>
           {{pedido_form.prioridad_entrega.label}}
           <div class="form-control">
             {% if pedido_form.prioridad_entrega.value == "0" %}
@@ -147,7 +151,7 @@ Ver pedido
             {% endif %}
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-step="5" data-intro='El precio total'>
           {{pedido_form.precio_total.label}}
           <div class="input-group">
             <div class="input-group-addon">
@@ -159,7 +163,7 @@ Ver pedido
           </div>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-step="6" data-intro='La seña mínima solicitada para comenzar la producción'>
           <a>Seña minima</a>
           <div class="input-group">
             <div class="input-group-addon">
@@ -171,10 +175,10 @@ Ver pedido
           </div>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" data-step="7" data-intro='El monto entregado hasta el momento'>
 
           Entregado
-          <div class="input-group">
+          <div class="input-group" >
             <div class="input-group-addon">
               <i class="fa fa-dollar"></i>
             </div>
@@ -185,12 +189,12 @@ Ver pedido
         </div>
         <div class="col-md-1">
           <br>
-          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target=".bs-example-modal-lg7">
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target=".bs-example-modal-lg7" data-step="8" data-intro='Haciendo click sobre el botón, verá información acerca de las entregas registradas para el pedido'>
                     <i class="fas fa-clock-o"></i>
                     <i class="fas fa-list-ul"></i>
           </button>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-step="9" data-intro='Se muestra el estado en que se encuentra el pedido actualmente'>
           {% if estado %}
           Estado
           <div class="input-group">
@@ -220,7 +224,7 @@ Ver pedido
             </div>
             {% endif %}
             <div class="col-md-3">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg4">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg4" data-step="10" data-intro='Haciendo click sobre el botón podrá ver información acerca de los estados por los que pasó el pedido'>
                         <i class="fas fa-clock-o"></i>
               </button>
             </div>
@@ -234,7 +238,7 @@ Ver pedido
       <hr class="line-seprate">
       <br>
         Detalles de envio
-        <div class="task-progress col-6" style="padding-top:20px;padding-bottom:20px">
+        <div class="task-progress col-6" style="padding-top:20px;padding-bottom:20px" data-step="14" data-intro='En caso de que el usuario brinde los datos de envío se mostrarán en este apartado'>
           <strong>Domicilio:</strong>
           <div class="">
               {{envio.domicilio}}
@@ -262,17 +266,18 @@ Ver pedido
       <div class="card-footer">
         <div class="row">
             {% if estado.estado_id == 6 or estado.estado_id == 2 %}  <!-- 6 = en espera, 2 en produccion -->
-              <div class="col-md-2">
+              <div class="col-md-2" data-step="11" data-intro='En esta sección se muetran diferentes opciones dependiendo del estado del pedido, por ejemplo "Cancelar Pedido", el cual abre una ventana en la cual debe confirmar la cancelación del mismo ademas de puntuar al cliente'>
                 <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
                   Cancelar Pedido
                 </button>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-2" data-step="12" data-intro='La opción "Finalizar pedido" dará por finalizado la producción del pedido y notificará al usuario ademas de solicitarle datos para el envío,
+              una vez el pedido se encuentre en estado "Finalizado" se habilita una nueva opción que será de "Pedido entregado" para establecer que el pedido fue entregado al cliente'>
                 <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target=".bs-example-modal-lg5{{pedido_form.id_pedido}}">
                   Finalizar Pedido
                 </button>
               </div>
-              <div class="col-md-2">
+              <div class="col-md-2" data-step="13" data-intro='La opción "Registrar entrega" permite registrar una nueva entregas recibida'>
                 {% if pedido.entrega != pedido.precio_total %}
                 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg3{{pedido_form.id_pedido}}">
                   Registrar entrega

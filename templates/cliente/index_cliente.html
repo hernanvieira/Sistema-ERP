@@ -8,12 +8,20 @@ Gestionar Clientes
 {% block content %}
 <input type="hidden" name="" value="" id="min">
 <input type="hidden" name="" value="" id="max">
-<div>
+
+<div class="alineado-derecha">
+  <div class="fa-hover">
+    <a href="JavaScript:Void(0);">
+      <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+    </a>
+  </div>
+</div>
+<br>
 <div class="row">
   <div class="col-md-12">
   <form class="form-header" action="" method="POST">
-      <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Cliente..." id="midtbusqueda"/>
-      <button class="btn btn-success" style="margin-left: 10px" type="button" data-toggle="modal" data-target="#largeModal"">
+      <input class="au-input au-input--xl" type="text" name="search" placeholder="Buscar Cliente..." id="midtbusqueda" data-step="1" data-intro='Puede filtrar la tabla por medio de un valor de busqueda'/>
+      <button class="btn btn-success" style="margin-left: 10px" type="button" data-toggle="modal" data-target="#largeModal" data-step="2" data-intro='Si desea agregar un cliente puede hacerlo haciendo click en el botón'>
           <i class="fas fa-plus"></i>
       </button>
   </form>
@@ -57,7 +65,7 @@ Gestionar Clientes
   <!-- DATA TABLE-->
 
   <div class="table-responsive table-responsive-data2">
-      <table class="table table-data2" id="midatatable">
+      <table class="table table-data2" id="midatatable" data-step="3" data-intro='Se muestra una tabla con todos los clientes activos registrados en el sistema'>
         <thead>
             <tr>
               <th></th>
@@ -73,21 +81,21 @@ Gestionar Clientes
           {% for cliente in clientes %}
             <tr>
               <td></td>
-              <td>{{cliente.dni}}</td>
-              <td>{{cliente.apellido}}</td>
-              <td>{{cliente.nombre}}</td>
-              <td>{{cliente.telefono}}</td>
-              <td>{{cliente.correo}}</td>
+              <td data-step="4" data-intro='Se puede observar el DNI del cliente'>{{cliente.dni}}</td>
+              <td data-step="5" data-intro='El apellido'>{{cliente.apellido}}</td>
+              <td data-step="6" data-intro='El nombre'>{{cliente.nombre}}</td>
+              <td data-step="7" data-intro='El teléfono'>{{cliente.telefono}}</td>
+              <td data-step="8" data-intro='Y el correo electrónico'>{{cliente.correo}}</td>
               <td>
 
-                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'cliente:ver_cliente' cliente.dni %}'">
+                <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'cliente:ver_cliente' cliente.dni %}'" data-step="9" data-intro='Si selecciona la opción "Ver cliente" lo redirige a una pagina donde podrá tener información mas detallada acerca del cliente'>
                   <i class="fas fa-eye"></i>
                 </button>
-                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'cliente:editar_cliente' cliente.dni %}'">
+                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'cliente:editar_cliente' cliente.dni %}'" data-step="10" data-intro='Si selecciona la opción "Editar cliente" lo redirige a otra pagina donde podrá editar el cliente'>
                   <i class="fas fa-pencil-square-o"></i>
                 </button>
                 <!-- Modal Eliminar -->
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{cliente.dni}}">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{cliente.dni}}" data-step="11" data-intro='Si selecciona la opción "Eliminar cliente" se muestra una ventana para confirmar la eliminación'>
                   <i class="fas fa-trash"></i>
                 </button>
                 <div class="modal fade bs-example-modal-lg2{{cliente.dni}}" id="myModal2{{cliente.dni}}" tabindex="-1" role="dialog" aria-hidden="true">

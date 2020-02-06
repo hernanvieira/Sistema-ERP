@@ -30,6 +30,11 @@
     <!-- timepicker -->
     <link href="{% static 'css/tpicker.css' %}" rel="stylesheet" media="all">
 
+    <!-- Introjs -->
+    <link href="{% static 'css/introjs.min.css' %}" rel="stylesheet" media="all">
+    <!-- Introjs tema modern -->
+    <link href="{% static 'css/introjs-modern.css' %}" rel="stylesheet" media="all">
+
     <!-- color picker -->
     <link rel="stylesheet" href="{% static 'dist/bcp.min.css' %}" />
 
@@ -561,8 +566,8 @@ left: 43px;
             <header class="header-desktop">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
-                        <div class="alineado-derecha">
-                            <div class="header-button d-print-none">
+                        <div class="alineado-derecha" >
+                            <div class="header-button d-print-none" >
                                 <div class="noti-wrap">
 
                                     <div class="noti__item js-item-menu">
@@ -591,9 +596,11 @@ left: 43px;
                                             </div>
                                             </a>
                                             {% endfor %}
+                                            {% if envio_count > 0 %}
                                             <div class="notifi__footer">
                                                 <a href="{% url 'pedido:notificaciones'%}">Ver todas las notificaciones</a>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -651,14 +658,27 @@ left: 43px;
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="row">
-
-                            <div class="col-md-7">
+                            <div class="col-12 alineado-derecha">
+                              <div class="fa-hover">
+                                <a href="JavaScript:Void(0);">
+                                  <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+                                </a>
+                              </div>
+                            </div>
+                            <div class="col-md-7"
+                            data-step="1"
+                            data-intro='Se muestra un calendario donde puede visualizar todos
+                            los pedidos en sus respectivas fecha de entrega, puede ver mas información del pedido
+                            haciendo click sobre uno de ellos'>
                               <p>Calendario con fechas de <strong>entrega</strong> de pedidos </p>
                               <div class="au-card">
                                 <div id="calendar"></div>
                               </div>
                             </div>
-                            <div class="col-md-5">
+
+                            <div class="col-md-5"
+                              data-step="2"
+                              data-intro='Se puede observar una lista con información acerca del material faltante para la producción de prendas'>
                               <p>Lista de <strong>Faltante</strong> de materiales </p>
                               <div class="au-card">
                                 <div class="table-responsive table-responsive-data3">
@@ -674,9 +694,15 @@ left: 43px;
                                       <tbody>
                                           {% for material in lista %}
                                               <tr class="tr-shadow">
-                                                <td style="width:20%; text-align:left;">{{material.material.nombre}}<input style="width:30%" type="color" name="" value="{{material.material.color}}" disabled></td>
-                                                <td style="width:20%; text-align:right;">{{material.sum}} </td>
-                                                <td style="width:20%; text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
+                                                <td style="width:20%; text-align:left;"
+                                                data-step="3"
+                                                data-intro='Se visualiza el nombre del material y su color'>{{material.material.nombre}}<input style="width:30%" type="color" name="" value="{{material.material.color}}" disabled></td>
+                                                <td style="width:20%; text-align:right;"
+                                                data-step="4"
+                                                data-intro='El faltante de dicho material'>{{material.sum}} </td>
+                                                <td style="width:20%; text-align:left;"
+                                                data-step="5"
+                                                data-intro='Y su unidad de medida'>{{material.material.tipo_material.unidad_medida}}</td>
                                               </tr>
                                           {% endfor %}
                                       </tbody>
@@ -771,6 +797,9 @@ left: 43px;
 
     <!-- timepicker -->
     <script src="{% static 'js/tpicker.js' %}"></script>
+
+    <!-- introjs -->
+    <script src="{% static 'js/intro.min.js' %}"></script>
 
     <script src="{% static 'js/custom.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>

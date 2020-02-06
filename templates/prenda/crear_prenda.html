@@ -16,6 +16,13 @@ Agregar Prenda
       {%csrf_token%}
 
       <div class="row">
+        <div class="col-12 alineado-derecha">
+          <div class="fa-hover">
+            <a href="JavaScript:Void(0);">
+              <i class="fa fa-question-circle" onclick="javascript:introJs().start().oncomplete(function(){window.location.href = '/pedido/volver_pedido/0'});;"></i>
+            </a>
+          </div>
+        </div>
         {% if messages %}
         <div class="col-md-12">
           <ul class="messages">
@@ -42,26 +49,26 @@ Agregar Prenda
           </ul>
         </div>
         {% endif %}
-        <div class="col-md-3">
+        <div class="col-md-3" data-step="1" data-intro='Seleccionar el tipo de prenda'>
           {{prenda_form.tipo_prenda.label}}
             {{prenda_form.tipo_prenda}}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" data-step="2" data-intro='Seleccione el talle entre las opciones'>
             {{prenda_form.talle.label}}
               {{prenda_form.talle}}
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1" data-step="3" data-intro='Puede establecer las medidas de una manera mas específica, de acuerdo al tipo de prenda seleccionado'>
           <br>
           <button type="submit" class="btn btn-secondary" name="boton_asignar_medida">
               <i class="fa fa-bars"></i>
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-step="4" data-intro='Puede incluir una imagen del modelo de la prenda a producir'>
           {{prenda_form.imagen.label}}
           <input type="file" class="form-control mb-2" name="txtImagen" id="txtImagen">
         </div>
 
-          <div class="col-md-3">
+          <div class="col-md-3" data-step="5" data-intro='Establezca el precio de la prenda. Tener en cuenta que el precio debe ser por unidad'>
             {{prenda_form.precio.label}}
             <div class="input-group">
               <div class="input-group-addon">
@@ -70,7 +77,7 @@ Agregar Prenda
                 {{prenda_form.precio}}
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3" data-step="6" data-intro='Introduzca la cantidad de prendas, del mismo tipo, que solicite el cliente'>
             {{detalle_form.cantidad.label}}
             <div class="input-group">
                 {{detalle_form.cantidad}}
@@ -79,7 +86,7 @@ Agregar Prenda
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3" data-step="7" data-intro='Introduzca el tiempo promedio que le llevará producir la prenda, por defecto se tiene una recomendacion por historial de tiempos declarados anteriormente, esto define la fecha de entrega del pedido'>
             {{prenda_form.tiempo_prod_prenda.label}}
             <div class="input-group">
                 {{prenda_form.tiempo_prod_prenda}}
@@ -92,7 +99,7 @@ Agregar Prenda
 
           </div>
 
-          <div class="col-12">
+          <div class="col-12" data-step="8" data-intro='Opcionalmente puede agregar una descripción para la prenda a desarrollar'>
             <br>
             Descripción
             {{prenda_form.descripcion}}
@@ -158,7 +165,7 @@ Agregar Prenda
         {% endif %}
       <div class="card-footer">
         <div class="alineado-derecha">
-          <button type="submit" class="btn btn-success">
+          <button type="submit" class="btn btn-success" data-step="9" data-intro='Haga click sobre el boton "Agregar Prenda", esto lo redirige nuevamente a la pagina de creación de pedido'>
             <i class="fa fa-dot-circle-o"></i> Agregar Prenda
           </button>
           <button type="button" class="btn btn-danger" onclick="location.href='{% url 'pedido:volver_pedido' pedido.id_pedido %}'">

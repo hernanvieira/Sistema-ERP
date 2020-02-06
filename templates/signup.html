@@ -39,36 +39,43 @@ Gestionar Usuarios
           {% endfor %}
         </ul>
       {% endif %}
+      <div class="alineado-derecha">
+        <div class="fa-hover">
+          <a href="JavaScript:Void(0);">
+            <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+          </a>
+        </div>
+      </div>
 
-      <div class="row">
-        <div class="col-md-3">
+      <div class="row" data-step="1" data-intro='Apartado para crear un nuevo usuario'>
+        <div class="col-md-3" data-step="2" data-intro='Escriba el nombre de usuario'>
           Nombre de Usuario
             {{form.username}}
         </div>
-        <div class="col-md-3 form-group">
+        <div class="col-md-3 form-group" data-step="3" data-intro='Establezca la contraseña'>
           Contraseña
             {{form.password1}}
-            <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito1" name="button" onclick="myFunction1()"><i id="ojito1" class="fas fa-eye-slash"></i></button>
+            <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito1" name="button" onclick="myFunction1()" data-step="4" data-intro='Puede mostrar la contraseña haciendo click sobre este botón'><i id="ojito1" class="fas fa-eye-slash"></i></button>
 
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" data-step="5" data-intro='Escriba nuevamente la contraseña para confirmarla'>
           Confirmar Contraseña
             {{form.password2}}
             <button type="button" style="width:17%;" class="btn btn-secondary" id="button-ojito2" name="button" onclick="myFunction2()"><i id="ojito2" class="fas fa-eye-slash"></i></button>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" data-step="6" data-intro='Seleccione el tipo de usuario'>
           Tipo de usuario
             {{form.rol}}
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-step="7" data-intro='Escriba el correo electrónico'>
           Correo
             {{form.email}}
         </div>
       </div>
       <br>
-      <div class="alert alert-warning">
+      <div class="alert alert-warning" data-step="8" data-intro='Tenga en cuenta los siguientes items al crear el usuario'>
           Usuario
           <li class="col-md-12"> 150 carácteres como máximo. Únicamente letras, dígitos y @/./+/-/_</li>
           Contraseña
@@ -76,12 +83,10 @@ Gestionar Usuarios
           <li class="col-md-12">La contraseña debe contener al menos 8 caracteres.</li>
           <li class="col-md-12">La contraseña no puede ser una clave utilizada comunmente.</li>
           <li class="col-md-12">La contraseña no puede ser completamente numérica.</li>
-
-
       </div>
 
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success" name="boton_guardar_listar">
+        <button type="submit" class="btn btn-success" name="boton_guardar_listar" data-step="9" data-intro='Presione el botón para registrar el nuevo usuario'>
           <i class="fa fa-dot-circle-o"></i> Registrar
         </button>
         <button type="button" class="btn btn-danger" onclick="history.back()" >
@@ -94,7 +99,7 @@ Gestionar Usuarios
   </div>
 </div>
 <!-- DATA TABLE-->
-<div class="table-responsive m-b-40">
+<div class="table-responsive m-b-40" data-step="10" data-intro='Se muestra una lista con todos los usuarios registrados en el sistema'>
     <table class="table table-borderless table-data3">
       <thead>
           <tr>
@@ -107,15 +112,15 @@ Gestionar Usuarios
       <tbody>
         {% for usuario in usuarios %}
           <tr>
-            <td>{{usuario.pk}}</td>
-            <td>{{usuario.username}}</td>
-            <td>{{usuario.rol}}</td>
+            <td data-step="11" data-intro='Se puede visualizar el identificador del usuario'>{{usuario.pk}}</td>
+            <td data-step="12" data-intro='El nombre'>{{usuario.username}}</td>
+            <td data-step="13" data-intro='Y el rol otorgado'>{{usuario.rol}}</td>
             <td>
-              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'usuario:editar_perfil' usuario.pk %}'">
+              <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'usuario:editar_perfil' usuario.pk %}'" data-step="14" data-intro='Si selecciona la opción "Editar Usuario" lo redirige a una nueva pagina para editar el usuario'>
                 <i class="fas fa-pencil-square-o"></i>
               </button>
               <!-- Modal Eliminar -->
-              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".{{usuario.pk}}">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".{{usuario.pk}}" data-step="15" data-intro='Si selecciona la opción "Eliminar" muestra una ventana para confirmar la eliminación'>
                 <i class="fas fa-trash"></i>
               </button>
               <div class="modal fade {{usuario.pk}}" id="{{usuario.pk}}" tabindex="-1" role="dialog" aria-hidden="true">

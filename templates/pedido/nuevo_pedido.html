@@ -16,6 +16,13 @@ Crear pedido
     <form method="POST">
       {% csrf_token %}
       <div class="row">
+        <div class="col-12 alineado-derecha">
+          <div class="fa-hover">
+            <a href="JavaScript:Void(0);">
+              <i class="fa fa-question-circle" onclick="javascript:introJs().start().oncomplete(function(){window.location.href = '/prenda/crear_prenda/0'});"></i>
+            </a>
+          </div>
+        </div>
         <input type="hidden" id="min" value="">
         <input type="hidden" id="max" value="">
         {% if messages %}
@@ -39,19 +46,19 @@ Crear pedido
         </div>
         {% endif %}
         <!-- cliente -->
-        <div class="col-md-11">
+        <div class="col-md-11" data-step="1" data-intro='Seleccione el cliente'>
           {{pedido_form.cliente.label}}
           <div class="">
             {{pedido_form.cliente}}
           </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1" data-step="2" data-intro='Si el cliente no se encuentra registrado, puede darlo de alta al sistema haciendo click sobre este botón'>
           <br>
           <button class="btn btn-success btn-sm" type="button" data-toggle="modal" data-target="#largeModal">
             <i class="fas fa-plus"></i>
           </button>
         </div>
-        <div class="col-md-12">
+        <div class="col-3" data-step="3" data-intro='Una vez seleccionado el cliente, puedes comenzar a agregar las prendas al pedido, esto lo redirige a una pagina para la carga de una prenda'>
           <br>
           <p>Prenda/s</p>
           <div>

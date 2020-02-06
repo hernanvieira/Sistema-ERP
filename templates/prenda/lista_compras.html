@@ -9,6 +9,15 @@ Lista de Faltantes
 {% block content%}
     <form method="POST">
       {%csrf_token%}
+
+      <div class="alineado-derecha">
+        <div class="fa-hover">
+          <a href="JavaScript:Void(0);">
+            <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+          </a>
+        </div>
+      </div>
+
       <div class="row">
         {% if messages %}
         <div class="col-md-12">
@@ -58,9 +67,9 @@ Lista de Faltantes
 
 
           <div class="row">
-            <div class="col-md-12">
-              <div class="table-responsive table-responsive-data2">
-                <table class="table table-borderless table-data2" id='midatatable'>
+            <div class="col-md-12" >
+              <div class="table-responsive table-responsive-data2" >
+                <table class="table table-borderless table-data2" id='midatatable' data-step="1" data-intro='Se muestra una lista con información sobre el faltante de los materiales para realizar compras'>
                     <thead>
                         <tr>
                             <th></th>
@@ -75,12 +84,12 @@ Lista de Faltantes
                         {% for material in lista %}
                             <tr class="tr-shadow">
                               <td></td>
-                              <td>{{material.material.tipo_material}}</td>
-                              <td>{{material.material}}</td>
-                              <td style="text-align:center;">{{material.sum}}</td>
-                              <td style="text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
+                              <td data-step="2" data-intro='Se puede visualizar el tipo de material'>{{material.material.tipo_material}}</td>
+                              <td data-step="3" data-intro='El nombre'>{{material.material}}</td>
+                              <td data-step="4" data-intro='El faltante' style="text-align:center;">{{material.sum}}</td>
+                              <td data-step="5" data-intro='La unidad de medida asociada' style="text-align:left;">{{material.material.tipo_material.unidad_medida}}</td>
                               <td>
-                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".modal_ver_prendas{{material.material.id_material}}">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target=".modal_ver_prendas{{material.material.id_material}}" data-step="6" data-intro='Y si selecciona la opción "Ver Faltante" se abre una ventana donde se muestra las prendas que necesitan del material para la producción'>
                                   <i class="fas fa-eye"></i>
                                 </button>
                                 <!-- modal ver prendas asociadas -->

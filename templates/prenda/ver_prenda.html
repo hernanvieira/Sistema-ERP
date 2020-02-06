@@ -15,6 +15,14 @@ Ver Prenda
     <form class="user" method="POST" enctype="multipart/form-data">
       {%csrf_token%}
 
+      <div class="alineado-derecha">
+        <div class="fa-hover">
+          <a href="JavaScript:Void(0);">
+            <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+          </a>
+        </div>
+      </div>
+
       <div class="row">
         {% if messages %}
         <div class="col-md-12">
@@ -36,26 +44,26 @@ Ver Prenda
           </ul>
         </div>
         {% endif %}
-        <div class="col-md-3">
+        <div class="col-md-3" data-step="1" data-intro='En esta página podrá modificar y ver información acerca de la prenda, como el tipo de prenda'>
           {{prenda_form.tipo_prenda.label}}
             {{prenda_form.tipo_prenda}}
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" data-step="2" data-intro='El talle'>
             {{prenda_form.talle.label}}
               {{prenda_form.talle}}
         </div>
         <div class="col-md-1">
           <br>
-          <button type="submit" class="btn btn-secondary" name="boton_asignar_medida">
+          <button type="submit" class="btn btn-secondary" name="boton_asignar_medida" data-step="3" data-intro='Si tiene medidas asignadas, las podrá ver haciendo click sobre el botón'>
               <i class="fa fa-bars"></i>
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" data-step="4" data-intro='podrá cargar una imagén para la prenda o reemplazarla si ya existe'>
           {{prenda_form.imagen.label}}
           <input type="file" class="form-control mb-2" name="txtImagen" id="txtImagen">
         </div>
 
-          <div class="col-md-3">
+          <div class="col-md-3" data-step="5" data-intro='Se visualiza el precio'>
             {{prenda_form.precio.label}}
             <div class="input-group">
               <div class="input-group-addon">
@@ -64,7 +72,7 @@ Ver Prenda
                 {{prenda_form.precio}}
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3" data-step="6" data-intro='La cantidad establecida'>
             {{detalle_form.cantidad.label}}
             <div class="input-group">
                 {{detalle_form.cantidad}}
@@ -73,7 +81,7 @@ Ver Prenda
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-3" data-step="7" data-intro='El tiempo de produccion unitario'>
             {{prenda_form.tiempo_prod_prenda.label}}
             <div class="input-group">
                 {{prenda_form.tiempo_prod_prenda}}
@@ -86,7 +94,7 @@ Ver Prenda
 
           </div>
 
-          <div class="col-12">
+          <div class="col-12" data-step="8" data-intro='Y la descripción.'>
             <br>
             Descripción
             {{prenda_form.descripcion}}
@@ -95,12 +103,12 @@ Ver Prenda
         <br>
 
           {% if prenda.imagen %}
-            <img src="{{prenda.imagen.url}}" width="200px" height="200px">
+            <img src="{{prenda.imagen.url}}" width="200px" height="200px" data-step="9" data-intro='En caso de que tenga una imagen cargada se mostrará en esta sección'>
           {% endif %}
 
         <br>
         {% if estado.estado.pk != 5 and estado.estado.pk != 4 %}
-        <button type="submit" class="btn btn-warning" name="boton_asignar_material">
+        <button type="submit" class="btn btn-warning" name="boton_asignar_material" data-step="10" data-intro='Para asignar materiales debe hacer click sobre el botón "Asignar Materiales", esto lo redirige a otra página para hacerlo.'>
           <i class="fa fa-archive"></i> Asignar Materiales
         </button>
         {% endif %}
@@ -163,55 +171,10 @@ Ver Prenda
         </div>
         <!-- END DATA TABLE-->
         {% endif %}
-        <!-- Modal medidas
 
-        <div class="modal fade show" id="modal_medida" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-              <div class="card-header bg-success">
-                <strong class="card-title text-light" id="exampleModalLabel">Medidas</strong>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="card-body">
-                    <div class="row">
-                    {% for medida in medidas_prenda %}
-                        <div class="col-md-3">
-                          {{medida.nombre_medida}}
-                          <br>
-                        </div>
-                        <div class="col-md-2">
-                           <input type="number" name="valor_medida" min="0" class="form-control" placeholder="Valor">
-                           <br>
-                        </div>
-                        <div class="col-md-1">
-
-                        </div>
-
-                    {% endfor %}
-                    </div>
-
-                    <div class="card-footer">
-                      <div class="alineado-derecha">
-                        <button type="submit" class="btn btn-success" name="boton_crear_cliente">
-                          <i class="fa fa-dot-circle-o"></i> Crear
-                        </button>
-                        <button type="reset" class="btn btn-danger">
-                          <i class="fa fa-ban"></i> Limpiar
-                        </button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
-          end modal -->
       <div class="card-footer">
         <div class="alineado-derecha">
-          <button type="submit" class="btn btn-success">
+          <button type="submit" class="btn btn-success" data-step="11" data-intro='Para finalizar debe hacer click en "Confirmar"'>
             <i class="fa fa-dot-circle-o"></i> Confirmar
           </button>
           <button type="button" class="btn btn-danger" onclick="history.back()">

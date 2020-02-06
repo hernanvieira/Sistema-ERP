@@ -14,18 +14,21 @@ Nueva Compra
   <div class="card-body card-block">
     <form method="POST">
       {%csrf_token%}
-      {% if error %}
-        <h2>{{ error }}</h2>
-      {% else %}
-
-      <div class="row">
-        <div class="col-md-3">
+      <div class="alineado-derecha">
+        <div class="fa-hover">
+          <a href="JavaScript:Void(0);">
+            <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+          </a>
+        </div>
+      </div>
+      <div class="row" data-step="1" data-intro='Para registrar una compra, siga los siguientes pasos en este apartado'>
+        <div class="col-md-3" data-step="2" data-intro='Introduzca la fecha de la compra, por defecto tiene la fecha actual'>
           {{compra_form.fecha.label}}
           <div class="form-control">
             {{compra_form.fecha}}
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" data-step="3" data-intro='Seleccione el material del cual se hizo la compra'>
           {{compra_form.material.label}}
             {{compra_form.material}}
         </div>
@@ -36,7 +39,7 @@ Nueva Compra
         <div class="col-1">
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" data-step="4" data-intro='Teniendo en cuenta la unidad de medida definida por el material seleccionado, introduzca la cantidad de la compra del material'>
           {{compra_form.cantidad.label}}
           <div class="input-group">
               {{compra_form.cantidad}}
@@ -46,10 +49,6 @@ Nueva Compra
           </div>
         </div>
       </div>
-
-
-
-
       <div class="card-footer alineado-derecha">
         <button type="submit" class="btn btn-success">
           <i class="fa fa-dot-circle-o"></i> Registrar
@@ -58,19 +57,17 @@ Nueva Compra
           <i class="fa fa-chevron-left"></i> Volver
         </button>
       </div>
-    {% endif %}
     </form>
   {% if materiales %}
   <strong>Lista de Materiales</strong>
   <!-- DATA TABLE-->
-  <div class="table-responsive m-b-40">
+  <div class="table-responsive m-b-40" data-step="5" data-intro='Se muestra una lista con todos los materiales registrados en el sistemas'>
       <table class="table table-borderless table-data3">
         <thead>
             <tr>
-              <th>Id</th>
               <th>Tipo de Material</th>
               <th>Nombre</th>
-              <th class="noExport">Color</th>
+              <th>Color</th>
               <th>Stock</th>
               <th>Stock Mínimo</th>
               <th>U. de Medida</th>
@@ -80,19 +77,24 @@ Nueva Compra
         <tbody>
           {% for material in materiales %}
             <tr>
-              <td>{{material.id_material}}</td>
-              <td>{{material.tipo_material}}</td>
-              <td>{{material.nombre}}</td>
-              <td class="noExport"><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
-              <td style="text-align: right;">{{material.stock}}</td>
-              <td style="text-align: right;">{{material.stock_minimo}}</td>
-              <td style="text-align: left;">{{material.tipo_material.unidad_medida}}</td>
+              <td data-step="6" data-intro='Se visualiza el tipo de material'>{{material.tipo_material}}</td>
+              <td  data-step="7" data-intro='El nombre'>{{material.nombre}}</td>
+              <td class="noExport"  class="noExport" data-step="8" data-intro='El color'><input type="color" name="favcolor" value="{{material.color}}" disabled ></td>
+              <td style="text-align: right;"  data-step="9" data-intro='El stock disponible actualmente'>
+                {% if material.stock >= 0 %}
+                  {{material.stock}}
+                {% else %}
+                  0
+                {% endif %}
+              </td>
+              <td style="text-align: right;"  data-step="10" data-intro='El stock mínimo establecido'>{{material.stock_minimo}}</td>
+              <td style="text-align: left;"  data-step="11" data-intro='La unidad de medida asociada'>{{material.tipo_material.unidad_medida}}</td>
               <td>
-                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'">
+                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_material' material.id_material %}'" data-step="12" data-intro='Si selecciona la opción "Editar material" lo redirige a una pagina donde puede editar el material'>
                   <i class="fas fa-pencil-square-o"></i>
                 </button>
                 <!-- Modal Eliminar -->
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{material.id_material}}" data-step="13" data-intro='Si selecciona la opción "Eliminar material" se muestra una ventana para confirmar la eliminación del material'>
                   <i class="fas fa-trash"></i>
                 </button>
                 <div class="modal fade bs-example-modal-lg2{{material.id_material}}" id="myModal2{{material.id_material}}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -127,7 +129,7 @@ Nueva Compra
   {% endif %}
   {% if compras %}
   <strong>Lista de Compras</strong>
-  <div class="table-responsive m-b-40">
+  <div class="table-responsive m-b-40" data-step="14" data-intro='Se muestra una lista con todas las compras de materiales hasta la fecha'>
       <table class="table table-borderless table-data3">
         <thead>
             <tr>
@@ -143,18 +145,18 @@ Nueva Compra
         <tbody>
           {% for compra in compras %}
             <tr>
-              <td>{{compra.id_compra}}</td>
-              <td>{{compra.fecha |date:'d-m-Y'}}</td>
-              <td>{{compra.material}}</td>
-              <td class="noExport"><input type="color" name="favcolor" value="{{compra.material.color}}" disabled ></td>
-              <td style="text-align: right;">{{compra.cantidad}}</td>
-              <td style="text-align: left;">{{compra.usuario}}</td>
+              <td data-step="15" data-intro='Se puede visualizar el número de la compra'>{{compra.id_compra}}</td>
+              <td data-step="16" data-intro='La fecha de la compra'>{{compra.fecha |date:'d-m-Y'}}</td>
+              <td data-step="17" data-intro='El material'>{{compra.material}}</td>
+              <td class="noExport" data-step="18" data-intro='El color del material'><input type="color" name="favcolor" value="{{compra.material.color}}" disabled ></td>
+              <td style="text-align: right;" data-step="19" data-intro='La cantidad registrada'>{{compra.cantidad}}</td>
+              <td style="text-align: left;" data-step="20" data-intro='Y el usuario que registró la compra'>{{compra.usuario}}</td>
               <td>
-                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_compra' compra.id_compra %}'">
+                <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'material:editar_compra' compra.id_compra %}'" data-step="21" data-intro='Al seleccionar el boton "Editar compra" lo redirige a otra pagina donde podrá editar la compra'>
                   <i class="fas fa-pencil-square-o"></i>
                 </button>
                 <!-- Modal Eliminar -->
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{compra.id_compra}}">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{compra.id_compra}}" data-step="22" data-intro='Al seleccionar el boton "Eliminar compra" se muestra una ventana para confirmar la eliminación de la compra'>
                   <i class="fas fa-trash"></i>
                 </button>
                 <div class="modal fade bs-example-modal-lg2{{compra.id_compra}}" id="myModal2{{compra.id_compra}}" tabindex="-1" role="dialog" aria-hidden="true">

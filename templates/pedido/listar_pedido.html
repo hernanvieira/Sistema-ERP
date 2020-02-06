@@ -17,11 +17,19 @@ Listado de pedidos
 <input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
 <input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
 
+<div class="alineado-derecha">
+  <div class="fa-hover">
+    <a href="JavaScript:Void(0);">
+      <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+    </a>
+  </div>
+</div>
+<div class="" data-step="1" data-intro='Apartado para filtrar los datos mostrados en la tabla'>
 <strong class="card-title">Filtrar</strong>
 <div class="card">
   <br>
   <div class="table-data__tool">
-      <div class="table-data__tool-left">
+      <div class="table-data__tool-left" data-step="2" data-intro='Puede filtrar entre diferentes fechas'>
           <span>Entre:</span>
           <div class="rs-select2--light rs-select2--sm">
             <div class="form-control">
@@ -36,7 +44,7 @@ Listado de pedidos
           </div>
     </div>
       <div class="alineado-derecha">
-        <div class="table-data__tool-right">
+        <div class="table-data__tool-right" data-step="3" data-intro='Puede filtrar la tabla por busquedas'>
           <div class="form-control">
             <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
           </div>
@@ -44,6 +52,7 @@ Listado de pedidos
       </div>
 
   </div>
+</div>
 </div>
 {% if messages %}
 <div class="col-md-12">
@@ -71,7 +80,7 @@ Listado de pedidos
   </ul>
 </div>
 {% endif %}
-<div class="table-responsive table-responsive-data2">
+<div class="table-responsive table-responsive-data2" data-step="4" data-intro='Tabla de pedidos'>
     <table class="table table-data2" id="midatatable">
         <thead>
             <tr>
@@ -91,14 +100,14 @@ Listado de pedidos
             {% for pedido in pedidos %}
             <tr class="tr-shadow">
               <td></td>
-              <td style="text-align: right;">{{pedido.pedido.id_pedido}}</td>
-              <td style="text-align: center;">{{pedido.pedido.cliente.dni}}</td>
-              <td style="text-align: left;">{{pedido.pedido.cliente.apellido}}</td>
-              <td style="font-size: 12px;text-align: center;">{{pedido.pedido.fecha_entrega|date:'d-m-Y'}}</td>
-              <td style="text-align: right;">${{pedido.pedido.precio_total}}</td>
-              <td style="text-align: right;">${{pedido.pedido.entrega}}</td>
-              <td style="text-align: right;">{{pedido.estado}}</td>
-              <td style="text-align: center;">
+              <td style="text-align: right;" data-step="5" data-intro='Se vizualiza el número del pedido'>{{pedido.pedido.id_pedido}}</td>
+              <td style="text-align: center;" data-step="6" data-intro='DNI del cliente asociado al pedido'>{{pedido.pedido.cliente.dni}}</td>
+              <td style="text-align: left;" data-step="7" data-intro='Apellido del cliente'>{{pedido.pedido.cliente.apellido}}</td>
+              <td style="font-size: 12px;text-align: center;" data-step="8" data-intro='Fecha de entrega establecido'>{{pedido.pedido.fecha_entrega|date:'d-m-Y'}}</td>
+              <td style="text-align: right;" data-step="9" data-intro='Precio total del pedido'>${{pedido.pedido.precio_total}}</td>
+              <td style="text-align: right;" data-step="10" data-intro='Entrega realizada hasta el momento'>${{pedido.pedido.entrega}}</td>
+              <td style="text-align: right;" data-step="11" data-intro='El estado en el que se encuentra el pedido actualmente'>{{pedido.estado}}</td>
+              <td style="text-align: center;" data-step="12" data-intro='Y la prioridad establecida'>
                 {% if pedido.pedido.prioridad_entrega == '2' %}
                   Alta
                 {% endif %}
@@ -111,15 +120,15 @@ Listado de pedidos
               </td>
                 <td>
                     <div class="table-data-feature">
-                      <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.pedido.id_pedido %}'">
+                      <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.pedido.id_pedido %}'" data-step="13" data-intro='Si selecciona la opción "Ver pedido" lo redirige a otra pagina donde se puede ver información del pedido y realizar diferentes acciones'>
                         <i class="fas fa-eye"></i>
                       </button>
                       {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
-                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.pedido.id_pedido %}'">
+                      <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.pedido.id_pedido %}'" data-step="14" data-intro='Si selecciona la opción "Editar pedido" lo redirige a otra pagina donde podrá editar el pedido'>
                         <i class="fas fa-pencil-square-o"></i>
                       </button>
                       <!-- Modal Eliminar -->
-                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido.pedido.id_pedido}}">
+                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido.pedido.id_pedido}}" data-step="15" data-intro='Si selecciona la opción "Eliminar pedido" se mostrará una ventana de confirmación para confirmar la eliminación del pedido'>
                         <i class="fas fa-trash"></i>
                       </button>
                       {% endif %}

@@ -6,12 +6,21 @@ Auditoria Pedidos
 {% endblock titulo%}
 {% block content%}
 
+<div class="col-12 alineado-derecha">
+  <div class="fa-hover">
+    <a href="JavaScript:Void(0);">
+      <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+    </a>
+  </div>
+</div>
+
 <!-- DATA TABLE -->
+<div class="" data-step="1" data-intro='Apartado para filtrar los datos mostrados en la tabla'>
 <strong class="card-title">Filtrar</strong>
 <div class="card">
   <br>
   <div class="table-data__tool">
-      <div class="table-data__tool-left">
+      <div class="table-data__tool-left" data-step="2" data-intro='Puede filtrar entre diferentes fechas'>
 
           <span>Entre:</span>
           <div class="rs-select2--light rs-select2--sm">
@@ -27,18 +36,18 @@ Auditoria Pedidos
           </div>
     </div>
       <div class="alineado-derecha">
-        <div class="table-data__tool-right">
+        <div class="table-data__tool-right" data-step="3" data-intro='Puede filtrar la tabla por busquedas'>
           <div class="form-control">
             <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
           </div>
         </div>
       </div>
-
   </div>
+</div>
 </div>
 
 <div class="table-responsive table-responsive-data2">
-    <table class="table table-data2" id="midatatable">
+    <table class="table table-data2" id="midatatable" data-step="4" data-intro='Tabla de auditoria'>
         <thead>
             <tr>
                 <th>id</th>
@@ -54,7 +63,7 @@ Auditoria Pedidos
             {% for audi in auditoria %}
             <tr class="tr-shadow">
               <td>{{audi.history_id}}</td>
-              <td style="text-align: center;">
+              <td style="text-align: center;" data-step="5" data-intro='Se muestra la acción realizada sobre el pedido'>
                 {% if audi.history_type == '-' %}
                   Baja
                 {% endif %}
@@ -65,14 +74,14 @@ Auditoria Pedidos
                   Alta
                 {% endif %}
               </td>
-              <td style="text-align: right;">{{audi.id_pedido}}</td>
-              <td style="text-align: right;">{{audi.cliente_id}}</td>
-              <td style="text-align: center;">{{audi.history_date}}</td>
-              <td style="text-align: left;">{{audi.history_user}}</td>
+              <td data-step="6" data-intro='El número del pedido' style="text-align: right;">{{audi.id_pedido}}</td>
+              <td data-step="7" data-intro='El DNI cliente' style="text-align: right;">{{audi.cliente_id}}</td>
+              <td data-step="8" data-intro='Cuando se realizó la acción' style="text-align: center;">{{audi.history_date}}</td>
+              <td data-step="9" data-intro='Y el usuario que la realizó' style="text-align: left;">{{audi.history_user}}</td>
               <td>
                 {% if audi.history_type == '~' %}
                 <!-- Modal ver cambios -->
-                <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.id_pedido}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria">
+                <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.id_pedido}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria" data-step="10" data-intro='Si selecciona la opción "Ver Cambios" se mostrará una ventana donde se observarán los cambios al elemento'>
                   <i class="fas fa-eye"></i>
                 </button>
                 <div class="modal fade ver_auditoria" id="ver_auditoria{{audi.pk}}" tabindex="-1" role="dialog" aria-hidden="true">

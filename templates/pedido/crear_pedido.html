@@ -7,7 +7,6 @@ Crear pedido
 
 {% block content%}
 
-
 <div class="card">
   <div class="card-header bg-success"><strong class="card-title text-light">Agregar pedido</strong></div>
   <div class="card-body card-block">
@@ -41,6 +40,13 @@ Crear pedido
           </ul>
         </div>
         {% endif %}
+        <div class="col-12 alineado-derecha">
+          <div class="fa-hover">
+            <a href="JavaScript:Void(0);">
+              <i class="fa fa-question-circle" onclick="javascript:introJs().start().oncomplete(function(){window.location.href = '/pedido/ver_pedido/0'});"></i>
+            </a>
+          </div>
+        </div>
         <!-- cliente -->
         <div class="col-md-11">
           {{pedido_form.cliente.label}}
@@ -54,11 +60,11 @@ Crear pedido
             <i class="fas fa-plus"></i>
           </button>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12" >
           <br>
           <p>Prenda/s</p>
           <div>
-            <button type="submit" class="btn btn-success" name="boton_agregar">
+            <button type="submit" class="btn btn-success" name="boton_agregar" data-step="9" data-intro='Puede agregar nuevas prendas al pedido'>
               <i class="fa fa-dot-circle-o"></i> Agregar Prenda
             </button>
           </div>
@@ -101,7 +107,7 @@ Crear pedido
     <hr class="line-seprate">
           {% if detalles %}
           <!-- DATA TABLE-->
-          <div class="table-responsive m-b-40">
+          <div class="table-responsive m-b-40" data-step="1" data-intro='Se mostrará una lista con la prenda que agregó al pedido'>
               <table class="table table-borderless table-data3">
                   <thead>
                       <tr>
@@ -116,8 +122,8 @@ Crear pedido
                   <tbody>
                     {% for detalle in detalles %}
                       <tr>
-                        <td>{{detalle.prenda.tipo_prenda}}</td>
-                        <td style="text-align: center;">
+                        <td data-step="2" data-intro='En la misma se puede ver el tipo de prenda'>{{detalle.prenda.tipo_prenda}}</td>
+                        <td style="text-align: center;" data-step="3" data-intro='El talle seleccionado'>
                           {% if detalle.prenda.talle == 0 %}
                             XS
                           {% endif %}
@@ -137,14 +143,14 @@ Crear pedido
                             XXL
                           {% endif %}
                         </td>
-                        <td style="text-align: right;">${{detalle.prenda.precio}}</td>
-                        <td style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
-                        <td style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
+                        <td data-step="4" data-intro='El precio por unidad de la misma' style="text-align: right;">${{detalle.prenda.precio}}</td>
+                        <td data-step="5" data-intro='La cantidad solicitada' style="text-align: center;">{{detalle.cantidad}} Unidad/es</td>
+                        <td data-step="6" data-intro='y el tiempo de producción total' style="text-align: center;">{{detalle.tiempo_prod_lote}} Día/s</td>
                         <td>
-                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                            <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="7" data-intro='Al presionar la opción "Editar prenda" lo redirige a otra pagina donde podrá editar la prenda'>
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="8" data-intro='Al presionar la opción "Eliminar prenda" se eliminará la prenda del pedido'>
                               <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -159,7 +165,7 @@ Crear pedido
       </div>
 
       <div class="card-footer alineado-derecha">
-        <button type="submit" class="btn btn-success" name="boton_finalizar">
+        <button type="submit" class="btn btn-success" name="boton_finalizar" data-step="10" data-intro='O bien finalizar con la confección del pedido haga click en el botón "Finalizar y confirmar", esto lo redirige a una pagina donde podrá ver el pedido'>
           <i class="fa fa-dot-circle-o"></i> Finalizar y confirmar
         </button>
         <!-- Modal Eliminar -->
