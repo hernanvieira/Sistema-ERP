@@ -266,6 +266,7 @@ Ver pedido
       <div class="card-footer">
         <div class="row">
             {% if estado.estado_id == 6 or estado.estado_id == 2 %}  <!-- 6 = en espera, 2 en produccion -->
+              {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
               <div class="col-md-2" data-step="11" data-intro='En esta sección se muetran diferentes opciones dependiendo del estado del pedido, por ejemplo "Cancelar Pedido", el cual abre una ventana en la cual debe confirmar la cancelación del mismo ademas de puntuar al cliente'>
                 <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target=".bs-example-modal-lg2{{pedido_form.id_pedido}}">
                   Cancelar Pedido
@@ -277,6 +278,8 @@ Ver pedido
                   Finalizar Pedido
                 </button>
               </div>
+            {% endif %}
+
               <div class="col-md-2" data-step="13" data-intro='La opción "Registrar entrega" permite registrar una nueva entregas recibida'>
                 {% if pedido.entrega != pedido.precio_total %}
                 <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg3{{pedido_form.id_pedido}}">
@@ -284,9 +287,16 @@ Ver pedido
                 </button>
                 {% endif %}
               </div>
+
+              {% if user.rol.nombre == 'Registrador' or user.rol.nombre == 'Encargado de Stock' %}
+                <div class="col-4">
+
+                </div>
+              {% endif %}
+
            {% endif %}
 
-           {% if estado.estado_id == 3 %}  <!-- 3 = Finalizado -->
+           {% if estado.estado_id == 3 and user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}  <!-- 3 = Finalizado -->
              <div class="col-md-2">
                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg6{{pedido_form.id_pedido}}">
                  Pedido Entregado
@@ -310,6 +320,11 @@ Ver pedido
             <div class="col-md-2">
 
             </div>
+         {% endif %}
+         {% if estado.estado_id == 3 and user.rol.nombre == 'Registrador' or user.rol.nombre == 'Encargado de Stock' %}
+         <div class="col-md-6">
+
+         </div>
          {% endif %}
 
             <div class="col-md-5">

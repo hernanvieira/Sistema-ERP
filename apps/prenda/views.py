@@ -1130,7 +1130,7 @@ def EstadisticaTemporada2(request):
     valor = Ingrediente.objects.filter(prenda__detalle__pedido__fecha_pedido__range=[desde, hasta]).values('material__color').annotate(num_color=Count('material__color')).order_by('-num_color')
 
     for i in range(len(valor)):
-        label = ""
+        label = ''
         lista_label.append(label)
         color = valor[i]['material__color']
         lista_colores.append(color)

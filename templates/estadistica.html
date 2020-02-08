@@ -6,7 +6,7 @@
 Estadisticas
 {% endblock titulo%}
 {% block content%}
-<div class="alineado-derecha">
+<div class="alineado-derecha d-none">
   <div class="fa-hover">
     <a href="JavaScript:Void(0);">
       <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
@@ -83,7 +83,7 @@ Estadisticas
             <p style="text-align:right;">Tipo de prenda:</p>
           </div>
           <div class="col-4">
-            <select id='select_tipo_prenda' class="js-example-basic-single">
+            <select id='tipo_prenda' class="js-example-basic-single">
             </select>
           </div>
         </div>
@@ -215,13 +215,13 @@ Estadisticas
   });
 </script>
 <script type="text/javascript">
-$(function() {
+$(function(){
 	    $.ajax({
 	    	url: '/prenda/select_tipo_prenda/',
 	    	dataType: "json",
 	    	success: function(result){
         for (var i = 0; i < result.length; i++) {
-			    $("#select_tipo_prenda").append('<option value='+result[i]['valor']+'>'+result[i]['tipo_prenda']+'</option>');
+            $("#tipo_prenda").append('<option selected value='+result[i]['valor']+'>'+result[i]['tipo_prenda']+'</option>');
         }
       },
 	    	error: function(result) {
@@ -245,22 +245,55 @@ $(function() {
 
 <script>
 $(document).ready(function(){
-  año = $("#year_torta").val(); //Por defecto esta seleccionada la opcion 'verano'
+  año = $("#year_torta").val(); //Por defecto esta seleccionado el año 2020
+  var ctx = document.getElementById('pieChart2').getContext("2d"); //Obtengo el canvas
+
+  //Ejecuto el ajax
+  $.ajax({
+    data: {'año':año},
+    url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
+    type: 'get',
+    success: function (data) {
+        chart1 = new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels:  data['tipo_prenda'],
+            datasets: [{
+              data:  data['valor'],
+              backgroundColor: [
+                "rgba(0, 123, 255,0.9)",
+                "rgba(0, 123, 255,0.7)",
+                "rgba(0, 123, 255,0.5)",
+                "rgba(0,0,0,0.07)"
+              ]
+
+            }]
+
+          },
+          options: {
+            legend: {
+              position: 'top',
+              labels: {
+                fontFamily: 'Poppins'
+              }
+
+            },
+            responsive: true
+          }
+        });
+  }
+});
   // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
   $("#year_torta").change(function(){
         año = $(this).val(); //Obtengo la temporada seleccionada
-        console.log(año)
-        var ctx = document.getElementById('pieChart2').getContext("2d"); //Obtengo el canvas
-
+        chart1.destroy();
         //Ejecuto el ajax
         $.ajax({
           data: {'año':año},
           url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
           type: 'get',
           success: function (data) {
-              console.log(data['tipo_prenda']);
-              console.log(data['valor']);
-              var chart1 = new Chart(ctx, {
+              chart1 = new Chart(ctx, {
                 type: 'pie',
                 data: {
                   labels:  data['tipo_prenda'],
@@ -298,25 +331,63 @@ $(document).ready(function(){
 // Al cargar la pagina configuro un chart con la temporada de verano de forma predeterminada
   $(document).ready(function(){
     temporada = $("#select_temporada").val(); //Por defecto esta seleccionada la opcion 'verano'
+    año = $("#year").val(); //Por defecto esta seleccionada la opcion 'verano'
     temporada = String(temporada) //Casteo a String
+
+    var ctx = document.getElementById('bar-chart'); //Obtengo el canvas
+    //Ejecuto el ajax
+    $.ajax({
+      data: { 'temporada': temporada, 'año':año },
+      url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
+      type: 'get',
+      success: function (data) {
+
+
+      chart2 = new Chart(ctx, { //Comienzo a configurarlo
+      type: 'bar',
+      data: {
+        labels: data['tipo_prenda'],
+        datasets: [
+          {
+            label: "Cantidad (Unidades)",
+            backgroundColor: [
+              "rgba(0, 123, 255,0.9)",
+              "rgba(0, 123, 255,0.7)",
+              "rgba(0, 123, 255,0.5)",
+              "rgba(0,0,0,0.07)"
+            ],
+            data: data['valor'],
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: temporada
+        }
+      }
+
+    });
+
+    }
+  });
+
+
     // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
     $("#select_temporada").change(function(){
+          chart2.destroy();
           temporada = $(this).val(); //Obtengo la temporada seleccionada
           año = $('#year').val(); //Obtengo la temporada seleccionada
-          console.log(año)
-          temporada = String(temporada) //CAsteo a string para mostrar en el titulo
           var ctx = document.getElementById('bar-chart'); //Obtengo el canvas
-
           //Ejecuto el ajax
           $.ajax({
             data: { 'temporada': temporada, 'año':año },
             url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
             type: 'get',
             success: function (data) {
-                console.log(data['tipo_prenda']);
-                console.log(data['valor']);
 
-          var chart2 = new Chart(ctx, { //Comienzo a configurarlo
+            chart2 = new Chart(ctx, { //Comienzo a configurarlo
             type: 'bar',
             data: {
               labels: data['tipo_prenda'],
@@ -342,15 +413,15 @@ $(document).ready(function(){
             }
 
           });
+
           }
         });
+
       });
           // Al momento de cambiar el año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
           $("#year").change(function(){
                 año = $(this).val(); //Obtengo la temporada seleccionada
                 temporada = $('#select_temporada').val(); //Obtengo la temporada seleccionada
-                console.log(año)
-                console.log(temporada)
                 temporada = String(temporada) //CAsteo a string para mostrar en el titulo
                 var ctx = document.getElementById('bar-chart'); //Obtengo el canvas
 
@@ -360,10 +431,9 @@ $(document).ready(function(){
                   url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
                   type: 'get',
                   success: function (data) {
-                      console.log(data['tipo_prenda']);
-                      console.log(data['valor']);
+                  chart2.destroy();
 
-                var chart2 = new Chart(ctx, { //Comienzo a configurarlo
+                  chart2 = new Chart(ctx, { //Comienzo a configurarlo
                   type: 'bar',
                   data: {
                     labels: data['tipo_prenda'],
@@ -394,18 +464,166 @@ $(document).ready(function(){
             });
     });
 </script>
+
+
+<!-- Script para filtrar chart de demanda colores por temporadas -->
+<script type="text/javascript">
+  $(document).ready(function(){
+    temporada = $("#select_temporada2").val(); //Por defecto esta seleccionada la opcion 'verano'
+    temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo el tipo de prenda seleccionado
+    año = $('#year2').val();
+    var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
+
+    //Ejecuto el ajax
+    $.ajax({
+      data: { 'temporada': temporada, 'año':año },
+      url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
+      type: 'get',
+      success: function (data) {
+      chart4 = new Chart(ctx, { //Comienzo a configurarlo
+      type: 'doughnut',
+      data: {
+        labels: data['label'],
+        datasets: [
+          {
+           backgroundColor: data['colores'],
+           data: data['valor']
+         }
+       ]
+     },
+     options: {
+       title: {
+         display: true,
+         text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
+       }
+     }
+  });
+
+    }
+  });
+    // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+    $("#select_temporada2").change(function(){
+          chart4.destroy();
+          temporada = $(this).val(); //Obtengo la temporada seleccionada
+          año = $('#year2').val(); //Obtengo la temporada seleccionada
+          temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo el tipo de prenda seleccionado
+          temporada = String(temporada) //CAsteo a string para mostrar en el titulo
+          var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
+
+          //Ejecuto el ajax
+          $.ajax({
+            data: { 'temporada': temporada, 'año':año },
+            url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
+            type: 'get',
+            success: function (data) {
+            chart4 = new Chart(ctx, { //Comienzo a configurarlo
+            type: 'doughnut',
+            data: {
+              labels: data['label'],
+              datasets: [
+                {
+                 backgroundColor: data['colores'],
+                 data: data['valor']
+               }
+             ]
+           },
+           options: {
+             title: {
+               display: true,
+               text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
+             }
+           }
+        });
+
+          }
+        });
+      });
+          // Al momento de cambiar el año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
+          $("#year2").change(function(){
+                chart4.destroy();
+                temporada = $("#select_temporada2").val(); //Obtengo la temporada seleccionada
+                año = $(this).val(); //Obtengo la temporada seleccionada
+                temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo la temporada seleccionado
+                temporada = String(temporada) //CAsteo a string para mostrar en el titulo
+                var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
+
+                //Ejecuto el ajax
+                $.ajax({
+                  data: { 'temporada': temporada, 'año':año },
+                  url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
+                  type: 'get',
+                  success: function (data) {
+
+                  chart4 = new Chart(ctx, { //Comienzo a configurarlo
+                  type: 'doughnut',
+                  data: {
+                    labels: data['label'],
+                    datasets: [
+                     {
+                       backgroundColor: data['colores'],
+                       data: data['valor']
+                     }
+                   ]
+                 },
+                 options: {
+                   title: {
+                     display: true,
+                     text: 'Colores solicitados en el año '+String(año)+' para la temporada '+String(temporada2)
+                   }
+                 }
+              });
+
+                }
+              });
+            });
+    });
+</script>
+
 <script type="text/javascript">
 // Al cargar la pagina configuro un chart con el primer tipo de prenda de forma predeterminada
-  $(document).ready(function(){
-    tipo_prenda = $("#select_tipo_prenda").val(); //Por defecto esta seleccionada la primer opcion
-    console.log(tipo_prenda);
+setTimeout(function(){
+  var tipo_prenda = $("#tipo_prenda").val()
+  tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
+  año = $('#año').val(); //Obtengo la temporada seleccionada
+  var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
+
+  //Ejecuto el ajax
+  $.ajax({
+    data: { 'tipo_prenda': tipo_prenda, 'año':año },
+    url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
+    type: 'get',
+    success: function (data) {
+    chart3 = new Chart(ctx, { //Comienzo a configurarlo
+    type: 'horizontalBar',
+    data: {
+      labels: ["XS", "S", "M", "L", "XL", "XXL"],
+      datasets: [
+        {
+          label: "Cantidad (Unidades)",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: data['valor']
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+      }
+    }
+});
+
+  }
+});
+}, 6000);
+  $(function() {
     // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
-    $("#select_tipo_prenda").change(function(){
+    $("#tipo_prenda").change(function(){
+          chart3.destroy();
           tipo_prenda = $(this).val(); //Obtengo el tipo de prenda seleccionado
           tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
           año = $('#año').val(); //Obtengo la temporada seleccionada
-          console.log(año);
-          console.log(tipo_prenda);
           var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
           //Ejecuto el ajax
           $.ajax({
@@ -413,8 +631,7 @@ $(document).ready(function(){
             url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
             type: 'get',
             success: function (data) {
-                console.log(data['valor']);
-          var chart3 = new Chart(ctx, { //Comienzo a configurarlo
+            chart3 = new Chart(ctx, { //Comienzo a configurarlo
             type: 'horizontalBar',
             data: {
               labels: ["XS", "S", "M", "L", "XL", "XXL"],
@@ -434,16 +651,17 @@ $(document).ready(function(){
               }
             }
         });
+
           }
         });
       });
+
       // Al momento de cambiar de año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
-      $("#año").change(function(){
-            año = $(this).val(); //Obtengo el tipo de prenda seleccionado
-            tipo_prenda = $('#select_tipo_prenda').val(); //Obtengo la temporada seleccionada
-            tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
-            console.log(año);
-            console.log(tipo_prenda);
+      $('#año').change(function(){
+            chart3.destroy();
+            año = $('#año').val(); //Obtengo el tipo de prenda seleccionado
+            tipo_prenda = $('#tipo_prenda').val(); //Obtengo la temporada seleccionada
+            tipo_prenda2 = $('#tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
             var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
             //Ejecuto el ajax
             $.ajax({
@@ -451,8 +669,7 @@ $(document).ready(function(){
               url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
               type: 'get',
               success: function (data) {
-                  console.log(data['valor']);
-            var chart3 = new Chart(ctx, { //Comienzo a configurarlo
+              chart3 = new Chart(ctx, { //Comienzo a configurarlo
               type: 'horizontalBar',
               data: {
                 labels: ["XS", "S", "M", "L", "XL", "XXL"],
@@ -472,94 +689,10 @@ $(document).ready(function(){
                 }
               }
           });
+
             }
           });
         });
-    });
-</script>
-
-<!-- Script para filtrar chart de demanda colores por temporadas -->
-<script type="text/javascript">
-  $(document).ready(function(){
-    temporada = $("#select_temporada2").val(); //Por defecto esta seleccionada la opcion 'verano'
-    // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
-    $("#select_temporada2").change(function(){
-          temporada = $(this).val(); //Obtengo la temporada seleccionada
-          año = $('#year2').val(); //Obtengo la temporada seleccionada
-          temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo el tipo de prenda seleccionado
-          console.log(año)
-          temporada = String(temporada) //CAsteo a string para mostrar en el titulo
-          var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
-
-          //Ejecuto el ajax
-          $.ajax({
-            data: { 'temporada': temporada, 'año':año },
-            url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
-            type: 'get',
-            success: function (data) {
-                console.log(data['colores']);
-                console.log(data['valor']);
-
-          var chart4 = new Chart(ctx, { //Comienzo a configurarlo
-            type: 'doughnut',
-            data: {
-              labels: data['label'],
-              datasets: [
-                {
-                 backgroundColor: data['colores'],
-                 data: data['valor']
-               }
-             ]
-           },
-           options: {
-             title: {
-               display: true,
-               text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
-             }
-           }
-        });
-          }
-        });
-      });
-          // Al momento de cambiar el año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
-          $("#year2").change(function(){
-                temporada = $("#select_temporada2").val(); //Obtengo la temporada seleccionada
-                año = $(this).val(); //Obtengo la temporada seleccionada
-                temporada2 = $('#select_temporada2 option:selected').text(); //Obtengo la temporada seleccionado
-                console.log(año)
-                temporada = String(temporada) //CAsteo a string para mostrar en el titulo
-                var ctx = document.getElementById('doughnut-chart'); //Obtengo el canvas
-
-                //Ejecuto el ajax
-                $.ajax({
-                  data: { 'temporada': temporada, 'año':año },
-                  url: '/prenda/estadistica_temporada2/', //la temporada que estoy guardando en data se va a enviar en esa url
-                  type: 'get',
-                  success: function (data) {
-                      console.log(data['colores']);
-                      console.log(data['valor']);
-
-                var chart4 = new Chart(ctx, { //Comienzo a configurarlo
-                  type: 'doughnut',
-                  data: {
-                    labels: [],
-                    datasets: [
-                     {
-                       backgroundColor: data['colores'],
-                       data: data['valor']
-                     }
-                   ]
-                 },
-                 options: {
-                   title: {
-                     display: true,
-                     text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
-                   }
-                 }
-              });
-                }
-              });
-            });
     });
 </script>
 
