@@ -287,6 +287,13 @@ Ver pedido
                 </button>
                 {% endif %}
               </div>
+              {% if estado.estado_id == 6 or estado.estado_id == 2 %}  <!-- 6 = en espera, 2 en produccion -->
+                {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
+                <div class="col-5">
+
+                </div>
+                {% endif %}
+              {% endif %}
 
               {% if user.rol.nombre == 'Registrador' or user.rol.nombre == 'Encargado de Stock' %}
                 <div class="col-4">
@@ -295,13 +302,13 @@ Ver pedido
               {% endif %}
 
            {% endif %}
-
-           {% if estado.estado_id == 3 and user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}  <!-- 3 = Finalizado -->
+           {% if estado.estado_id == 3 and user.rol.nombre == 'Modista' or estado.estado_id == 3 and user.rol.nombre == 'Administrador' %}  <!-- 3 = Finalizado -->
              <div class="col-md-2">
                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target=".bs-example-modal-lg6{{pedido_form.id_pedido}}">
                  Pedido Entregado
                </button>
              </div>
+
              <div class="col-md-2">
 
              </div>
@@ -326,9 +333,10 @@ Ver pedido
 
          </div>
          {% endif %}
-
+        {% if user.rol.nombre == 'Registrador' or user.rol.nombre == 'Encargado de Stock' %}
             <div class="col-md-5">
             </div>
+        {% endif %}
               <button type="button" class="btn btn-danger" onclick="history.back()">
                 <i class="fa fa-chevron-left"></i> Volver
               </button>
