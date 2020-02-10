@@ -1,5 +1,5 @@
 {% extends 'index.html' %}
-
+{% load static %}
 <!DOCTYPE html>
 {% block titulo%}
 Editar pedido
@@ -55,6 +55,7 @@ Editar pedido
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
             {{pedido_form.fecha_entrega}}
+            <input class="form-control" type="hidden" name="" value="{{pedido_form.fecha_entrega.value|date:"Y-m-d"}}" id="fecharda">
         </div>
         <div class="col-md-4">
           {{pedido_form.prioridad_entrega.label}}
@@ -138,8 +139,22 @@ Editar pedido
         </button>
       </div>
 
+
     </form>
   </div>
 </div>
+
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  console.log("ENTRUKA");
+    var a = $('#fecharda').val();
+    var a = String(a);
+    // var f = new Date('02-02-2020').toJSON()split('T')[0];
+    console.log(a);
+    $('#fecha_entrega').prop('value',a);
+});
+</script>
+
 
 {% endblock content%}

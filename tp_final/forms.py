@@ -104,7 +104,7 @@ class PedidoForm (forms.ModelForm):
         model = Pedido
         fields = ['fecha_entrega', 'precio_total', 'entrega', 'seña', 'prioridad_entrega','cliente']
         widgets = {
-        'fecha_entrega' : forms.DateInput(attrs={'type' :'', 'id':'fecha_entrega', 'name':'fecha_entrega'}),
+        'fecha_entrega' : forms.DateInput(attrs={'type' :'date', 'class':'form-control', 'id':'fecha_entrega', 'name':'fecha_entrega'}),
         'prioridad_entrega' : forms.Select(choices = CHOICES_PRIORIDAD, attrs={'class' : 'js-example-basic-single'}),
         'cliente' : forms.Select(attrs={'class' : 'js-example-basic-single'}),
         'precio_total' : forms.TextInput(attrs={'class' : 'form-control'}),

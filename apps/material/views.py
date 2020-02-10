@@ -390,7 +390,7 @@ def EditarCompra (request,id_compra):
             return redirect('index')
     except ObjectDoesNotExist as e:
         error = e
-    return render(request,'material/crear_compra.html',{'envios_not':envios_not,'envio_count':envio_count,'compra_form':compra_form, 'error':error})
+    return render(request,'material/editar_compra.html',{'envios_not':envios_not,'envio_count':envio_count,'compra_form':compra_form, 'error':error})
 #Eliminar un compra
 def EliminarCompra (request,id_compra):
     #Notificaciones
