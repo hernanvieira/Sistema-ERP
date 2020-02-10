@@ -11,46 +11,57 @@ Ver Cliente
         <div class="card-body card-block">
           <form method="POST">
             {% csrf_token %}
-            <div class="row">
-              <div class="col-md-4">
+
+            <div class="alineado-derecha">
+              <div class="fa-hover">
+                <a href="JavaScript:Void(0);">
+                  <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
+                </a>
+              </div>
+            </div>
+
+            <div class="row" data-step="1" data-intro='En esta página se muestra información acerca del cliente'   >
+              <div class="col-md-4" data-step="3" data-intro='Encuanto a la información del cliente se puede observar el DNI'>
                 {{cliente_form.dni.label}}
                   {{cliente_form.dni}}
               </div>
               <div class="col-md-8">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" data-step="4" data-intro='El apellido'>
                 {{cliente_form.apellido.label}}
                 <div class="form-control">
                   {{cliente_form.apellido.value}}
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" data-step="5" data-intro='El nombre'>
                 {{cliente_form.nombre.label}}
                 <div class="form-control">
                   {{cliente_form.nombre.value}}
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4" data-step="6" data-intro='El telefono'>
                 {{cliente_form.telefono.label}}
                 <div class="form-control">
                   {{cliente_form.telefono.value}}
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12" data-step="7" data-intro='El domicilio registrado'>
                 {{cliente_form.domicilio.label}}
                 <div class="form-control">
                   {{cliente_form.domicilio.value}}
                 </div>
               </div>
-              <div class="col-md-12">
+              <div class="col-md-12" data-step="8" data-intro='El correo'>
                 {{cliente_form.correo.label}}
                 <div class="form-control">
                   {{cliente_form.correo.value}}
                 </div>
                 <br>
+              </div>
+
 
                 <!-- REPUTACION DE USUARIO -->
-
+                <div class="col-12" data-step="9" data-intro='Y la reputación actual acorde a los puntajes recibidos, por defecto se establece en regular.'>
                 Reputación:
                 {%if cliente.reputacion <= 0 %}
                   <strong>Muy Mala</strong>
@@ -103,7 +114,7 @@ Ver Cliente
 
         <div class="card-header bg-success"><strong class="card-title text-light" id="exampleModalLabel">Pedidos</strong>
         </div>
-        <div class="table-responsive table-responsive-data2">
+        <div class="table-responsive table-responsive-data2" data-step="2" data-intro='Como tambien un listado de los pedidos realizados por el mismo hasta el momento'   >
             <table class="table table-data3" id="midatatable2">
                 <thead>
                     <tr>
