@@ -27,7 +27,7 @@ def SignUp(request):
     envios_not = envios_noti[:3]
     envio_count = len(envios_noti)
 
-    usuarios = customuser.objects.filter(is_active = True)
+    usuarios = customuser.objects.filter(is_active = True).exclude(id = request.user.id)
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
 
