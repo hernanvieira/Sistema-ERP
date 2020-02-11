@@ -568,6 +568,7 @@ left: 43px;
                     <div class="container-fluid">
                         <div class="alineado-derecha" >
                             <div class="header-button d-print-none" >
+                              {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
                                 <div class="noti-wrap">
 
                                     <div class="noti__item js-item-menu">
@@ -604,6 +605,7 @@ left: 43px;
                                         </div>
                                     </div>
                                 </div>
+                                {% endif %}
 
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu d-print-none">
