@@ -260,12 +260,7 @@ $(document).ready(function(){
             labels:  data['tipo_prenda'],
             datasets: [{
               data:  data['valor'],
-              backgroundColor: [
-                "rgba(0, 123, 255,0.9)",
-                "rgba(0, 123, 255,0.7)",
-                "rgba(0, 123, 255,0.5)",
-                "rgba(0,0,0,0.07)"
-              ]
+              backgroundColor: data['colores']
 
             }]
 
@@ -300,12 +295,7 @@ $(document).ready(function(){
                   labels:  data['tipo_prenda'],
                   datasets: [{
                     data:  data['valor'],
-                    backgroundColor: [
-                      "rgba(0, 123, 255,0.9)",
-                      "rgba(0, 123, 255,0.7)",
-                      "rgba(0, 123, 255,0.5)",
-                      "rgba(0,0,0,0.07)"
-                    ]
+                    backgroundColor: data['colores']
 
                   }]
 
@@ -351,12 +341,7 @@ $(document).ready(function(){
         datasets: [
           {
             label: "Cantidad (Unidades)",
-            backgroundColor: [
-              "rgba(0, 123, 255,0.9)",
-              "rgba(0, 123, 255,0.7)",
-              "rgba(0, 123, 255,0.5)",
-              "rgba(0,0,0,0.07)"
-            ],
+            backgroundColor: data['colores'],
             data: data['valor'],
           }
         ]
@@ -403,12 +388,7 @@ $(document).ready(function(){
               datasets: [
                 {
                   label: "Cantidad (Unidades)",
-                  backgroundColor: [
-                    "rgba(0, 123, 255,0.9)",
-                    "rgba(0, 123, 255,0.7)",
-                    "rgba(0, 123, 255,0.5)",
-                    "rgba(0,0,0,0.07)"
-                  ],
+                  backgroundColor: data['colores'],
                   data: data['valor'],
                 }
               ]

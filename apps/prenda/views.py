@@ -1109,17 +1109,27 @@ def EstadisticaTemporada(request):
 
     lista_tipo_prenda = []
     lista_valor = []
+    colores = []
     tipo_prendas_list = Tipo_prenda.objects.all()
 
     for tipo_prenda in tipo_prendas_list:
 
         valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
 
+        #Colorete
+        import random
+        colorA = str(random.randrange(0,100))
+        colorB = str(random.randrange(0,255))
+        colorC = str(random.randrange(2,9))
+        rgb = "rgb(0," + colorA + "," + colorB + ",0."+colorC+")"
+        colores.append(rgb)
+
         lista_tipo_prenda.append(str(tipo_prenda.nombre))
         lista_valor.append(valor)
 
     data['tipo_prenda'] = lista_tipo_prenda
     data['valor'] = lista_valor
+    data['colores'] = colores
     return HttpResponse(
                 json.dumps(data),
                 content_type="application/json")
@@ -1175,17 +1185,26 @@ def EstadisticaTorta(request):
 
     lista_tipo_prenda = []
     lista_valor = []
+    colores = []
     tipo_prendas_list = Tipo_prenda.objects.all()
 
     for tipo_prenda in tipo_prendas_list:
 
         valor = Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda, pedido__fecha_pedido__range=[desde, hasta]).aggregate(Sum('cantidad'))['cantidad__sum']
 
+        #Colorete
+        import random
+        colorA = str(random.randrange(0,100))
+        colorB = str(random.randrange(0,255))
+        colorC = str(random.randrange(1,9))
+        rgb = "rgb(0," + colorA + "," + colorB + ",0."+colorC+")"
+        colores.append(rgb)
         lista_tipo_prenda.append(str(tipo_prenda.nombre))
         lista_valor.append(valor)
 
     data['tipo_prenda'] = lista_tipo_prenda
     data['valor'] = lista_valor
+    data['colores'] = colores
     return HttpResponse(
                 json.dumps(data),
                 content_type="application/json")
