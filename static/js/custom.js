@@ -204,6 +204,39 @@
                   }; // Arnold deja de copiarme
                 }
 
+                if (titulo == 'Auditoria de clientes') {
+                  var min = $('#min').val();
+                  var max = $('#max').val();
+                  // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
+                  doc.content[1].table.widths = [70,50,160,80,85];
+                  var table = $("#midatatable").DataTable();//Obtengo la tabla
+                  var pageInfo = table.page.info(); //Obtiene el objeto page.info()
+                  for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
+                    doc.content[1].table.body[i][0].alignment = 'left'; //El segundo [] es el numero de columna a alinear
+                    doc.content[1].table.body[i][1].alignment = 'right';
+                    doc.content[1].table.body[i][2].alignment = 'left';
+                    doc.content[1].table.body[i][3].alignment = 'center';
+                    doc.content[1].table.body[i][4].alignment = 'left';
+                  }; // Arnold deja de copiarme
+                }
+
+                if (titulo == 'Auditoria de pedidos') {
+                  var min = $('#min').val();
+                  var max = $('#max').val();
+
+                  // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
+                  doc.content[1].table.widths = [70,50,80,160,85];
+                  var table = $("#midatatable").DataTable();//Obtengo la tabla
+                  var pageInfo = table.page.info(); //Obtiene el objeto page.info()
+                  for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
+                    doc.content[1].table.body[i][0].alignment = 'left'; //El segundo [] es el numero de columna a alinear
+                    doc.content[1].table.body[i][1].alignment = 'right';
+                    doc.content[1].table.body[i][2].alignment = 'right';
+                    doc.content[1].table.body[i][3].alignment = 'center';
+                    doc.content[1].table.body[i][4].alignment = 'left';
+                  }; // Arnold deja de copiarme
+                }
+
                 //Es equivalente a: doc.content[0].table.widths = ['*', '*', '*', '*', '*', '*'];
 						// Change dataTable layout (Table styling)
 						// To use predefined layouts uncomment the line below and comment the custom lines below
@@ -267,6 +300,16 @@
                     console.log(aData[1]);
                   }
                   if (titulo == 'Lista de pedidos') {
+                  var iStartDateCol = 4;
+                  var iEndDateCol = 4;
+                  console.log(aData[4]);
+                  }
+                  if (titulo == 'Auditoria de pedidos') {
+                  var iStartDateCol = 4;
+                  var iEndDateCol = 4;
+                  console.log(aData[4]);
+                  }
+                  if (titulo == 'Auditoria de clientes') {
                   var iStartDateCol = 4;
                   var iEndDateCol = 4;
                   console.log(aData[4]);

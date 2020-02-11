@@ -698,7 +698,10 @@ left: 43px;
                                               <tr class="tr-shadow">
                                                 <td style="width:20%; text-align:left;"
                                                 data-step="3"
-                                                data-intro='Se visualiza el nombre del material y su color'>{{material.material.nombre}}<input style="width:30%" type="color" name="" value="{{material.material.color}}" disabled></td>
+                                                data-intro='Se visualiza el nombre del material y su color'>{{material.material.nombre}}
+                                                <div class="muestraColor" style="background:{{material.material.color}};">
+
+                                                </div>
                                                 <td style="width:20%; text-align:right;"
                                                 data-step="4"
                                                 data-intro='El faltante de dicho material'>{{material.sum}} </td>

@@ -716,8 +716,9 @@ def Auditoria(request):
     envios_not = envios_noti[:3]
     envio_count = len(envios_noti)
 
+    reporte = Configuracion.objects.all().last()
     auditoria =  Pedido.history.all()
-    return render(request, 'auditoria_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'auditoria':auditoria})
+    return render(request, 'auditoria_pedido.html',{'envios_not':envios_not,'envio_count':envio_count,'auditoria':auditoria,'reporte':reporte})
 
 def ListaCompras (request):
     #Notificaciones

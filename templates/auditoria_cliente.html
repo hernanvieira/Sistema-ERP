@@ -6,6 +6,13 @@ Auditoria Clientes
 {% endblock titulo%}
 {% block content%}
 
+<input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Auditoria de clientes">
+<input type="hidden" name="empresa" class="empresa_reporte" id="empresa" value="{{reporte.empresa}}">
+<input type="hidden" name="direccion" class="direccion_reporte" id="direccion" value="{{reporte.direccion}}">
+<input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
+<input type="hidden" name="usuario" class="usuario_reporte" id="usuario" value="{{user.username}}">
+
+
 <div class="col-12 alineado-derecha">
   <div class="fa-hover">
     <a href="JavaScript:Void(0);">
@@ -49,19 +56,19 @@ Auditoria Clientes
     <table class="table table-data2" id="midatatable" data-step="4" data-intro='Tabla de auditoría'>
         <thead>
             <tr>
-                <th>id</th>
+                <th class="noExport">id</th>
                 <th>Acción</th>
                 <th>DNI</th>
                 <th>Nombre y apellido</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
-                <th>Opciones</th>
+                <th class="noExport">Opciones</th>
             </tr>
         </thead>
         <tbody>
             {% for audi in auditoria %}
             <tr class="tr-shadow">
-              <td>{{audi.history_id}}</td>
+              <td class="noExport">{{audi.history_id}}</td>
               <td data-step="5" data-intro='Se muestra la acción realizada sobre el cliente'>
                 {% if audi.history_type == '-' %}
                   Baja
@@ -75,9 +82,9 @@ Auditoria Clientes
               </td>
               <td data-step="6" data-intro='El DNI'>{{audi.dni}}</td>
               <td data-step="7" data-intro='El nombre'>{{audi.nombre}}</td>
-              <td data-step="8" data-intro='Cuando se realizó la acción'>{{audi.history_date}}</td>
+              <td data-step="8" data-intro='Cuando se realizó la acción'>{{audi.history_date |date:'d-m-Y'}}</td>
               <td data-step="9" data-intro='Y el usuario que la realizó'>{{audi.history_user}}</td>
-              <td>
+              <td class="noExport">
                 {% if audi.history_type == '~' %}
                 <!-- Modal ver cambios -->
                 <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.dni}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria" data-step="10" data-intro='Si selecciona la opción "Ver cambios" se mostrará una ventana donde se observarán los cambios al elemento'>

@@ -14678,3 +14678,15 @@ text-align : right;
     -o-transition: all linear .2s;
     transition: all linear .2s;
 }
+.muestraColor {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    width: 50px;
+    height: 20px;
+    cursor: pointer;
+    -webkit-transition: all linear .2s;
+    -moz-transition: all linear .2s;
+    -ms-transition: all linear .2s;
+    -o-transition: all linear .2s;
+    transition: all linear .2s;
+}
