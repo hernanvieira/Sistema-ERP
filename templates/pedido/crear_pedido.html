@@ -30,6 +30,12 @@ Crear pedido
                   <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
                 </div>
               {% endif %}
+              {% if message.tags == 'warning'%}
+                <div class="alert alert-warning">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                </div>
+              {% endif %}
               {% if message.tags == 'error' %}
               <div class="alert alert-danger">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -73,9 +79,8 @@ Crear pedido
         <!-- end cliente -->
         <div class="col-md-4">
           {{pedido_form.fecha_entrega.label}}
-          <div class="form-control">
             {{pedido_form.fecha_entrega}}
-          </div>
+            <input class="form-control" type="hidden" name="" value="{{pedido_form.fecha_entrega.value|date:"Y-m-d"}}" id="fecharda">
         </div>
         <div class="col-md-4">
           {{pedido_form.prioridad_entrega.label}}
@@ -150,9 +155,33 @@ Crear pedido
                             <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="7" data-intro='Al presionar la opción "Editar prenda" lo redirige a otra pagina donde podrá editar la prenda'>
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="location.href='{% url 'prenda:eliminar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="8" data-intro='Al presionar la opción "Eliminar prenda" se eliminará la prenda del pedido'>
+                            <!-- Modal Eliminar -->
+                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".eliminar_prenda{{detalle.prenda.pk}}" data-step="23" data-intro='Al seleccionar la opción "Eliminar prenda" se mostrará una ventana para confirmar la eliminación de la misma'>
                               <i class="fas fa-trash"></i>
                             </button>
+                            <div class="modal fade eliminar_prenda{{detalle.prenda.pk}}" id="myModal2{{prenda.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="myModalLabel{{detalle.prenda.pk}}">Confirmar Eliminacion</h4>
+                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <a>¿Está seguro de <strong>eliminar</strong> la prenda?</a>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <div class="alineado-derecha">
+                                            <a href="{% url 'prenda:eliminar_prenda' detalle.prenda.pk detalle.pk detalle.pedido.pk %}">
+                                              <button type="button" class="btn btn-danger" >Eliminar</button>
+                                            </a>
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                          </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Modal -->
                         </td>
                       </tr>
                       {% endfor %}
@@ -198,5 +227,15 @@ Crear pedido
 </div>
 
 <script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  console.log("ENTRUKA");
+    var a = $('#fecharda').val();
+    var a = String(a);
+    // var f = new Date('02-02-2020').toJSON()split('T')[0];
+    console.log(a);
+    $('#fecha_entrega').prop('value',a);
+});
+</script>
 
 {% endblock content%}

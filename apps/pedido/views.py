@@ -173,7 +173,7 @@ def ListarPedido (request):
     envios_not = envios_noti[:3]
     envio_count = len(envios_noti)
 
-    pedidos = Pedido.objects.all()
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
     reporte = Configuracion.objects.all().last()
     aux = []
     for p in pedidos:
@@ -194,7 +194,7 @@ def ListarPedido2 (request,id_pedido):
     envios_not = envios_noti[:3]
     envio_count = len(envios_noti)
 
-    pedidos = Pedido.objects.all()
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
     reporte = Configuracion.objects.all().last()
     aux = []
     for p in pedidos:

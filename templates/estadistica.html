@@ -278,7 +278,8 @@ $(document).ready(function(){
               }
 
             },
-            responsive: true
+            responsive: true,
+
           }
         });
   }
@@ -365,6 +366,14 @@ $(document).ready(function(){
         title: {
           display: true,
           text: temporada
+        },
+        scales: {
+          yAxes: [{
+            ticks:{
+              suggestedMin: 0,
+              stepSize: 1
+            }
+          }]
         }
       }
 
@@ -409,6 +418,14 @@ $(document).ready(function(){
               title: {
                 display: true,
                 text: temporada
+              },
+              scales: {
+                yAxes: [{
+                  ticks:{
+                    suggestedMin: 0,
+                    stepSize: 1
+                  }
+                }]
               }
             }
 
@@ -455,6 +472,14 @@ $(document).ready(function(){
                     title: {
                       display: true,
                       text: temporada
+                    },
+                    scales: {
+                      yAxes: [{
+                        ticks:{
+                          suggestedMin: 0,
+                          stepSize: 1
+                        }
+                      }]
                     }
                   }
 
@@ -610,8 +635,17 @@ setTimeout(function(){
       title: {
         display: true,
         text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+      },
+      scales: {
+        xAxes: [{
+          ticks:{
+            suggestedMin: 0,
+            stepSize: 1
+          }
+        }]
       }
     }
+
 });
 
   }
@@ -648,6 +682,14 @@ setTimeout(function(){
               title: {
                 display: true,
                 text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+              },
+              scales: {
+                xAxes: [{
+                  ticks:{
+                    suggestedMin: 0,
+                    stepSize: 1
+                  }
+                }]
               }
             }
         });
@@ -686,6 +728,14 @@ setTimeout(function(){
                 title: {
                   display: true,
                   text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+                },
+                scales: {
+                  xAxes: [{
+                    ticks:{
+                      suggestedMin: 0,
+                      stepSize: 1
+                    }
+                  }]
                 }
               }
           });

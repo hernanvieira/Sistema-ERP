@@ -573,27 +573,40 @@ def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
     prenda = get_object_or_404(Prenda,id_prenda=id_prenda)
     detalle = get_object_or_404(Detalle, id_detalle=id_detalle)
     pedido = get_object_or_404(Pedido, id_pedido=id_pedido)
-    try:
-        pedido.precio_total = (pedido.precio_total) - (prenda.precio * detalle.cantidad) #Actualizo el precio total
+
+    precio = prenda.precio
+    cantidad = detalle.cantidad
+
+    ingrediente = Ingrediente.objects.filter(prenda = prenda).exists()
+    print("INGREDIENTE")
+    print(ingrediente)
+    if ingrediente:
+        print("TRUE")
+        messages.error(request, 'Ocurrió un error al tratar de eliminar la prenda, no se pueden eliminar prendas con materiales asignados')
+    else:
+        print("Falsee")
+        detalle.delete()
+        prenda.delete()
+        pedido.precio_total = (pedido.precio_total) - (precio * detalle.cantidad) #Actualizo el precio total
         pedido.seña = pedido.precio_total/2 #Actualizo la seña minima
-
-        #Actualizar stock
-        #Actualización de stock
-        ingredientes = Ingrediente.objects.filter(prenda = prenda) #Obtengo los ingredientes de la prenda actual
-
-        for ingrediente in ingredientes:
-            ingrediente.material.stock += ingrediente.cantidadxdetalle
-            ingrediente.material.save()
-            if ingrediente.disponibilidad == "FALTANTE":
-                faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
-                if faltante:
-                    faltante.delete()
-
         pedido.save() # Actualizo el pedido
-        detalle.delete() #Elimino el detalle
-        prenda.delete() #Elimino la prenda
-    except Exception as e:
-        messages.error(request, 'Ocurrió un error al tratar de eliminar la prenda')
+        messages.warning(request, 'Se eliminó la prenda')
+
+
+
+    #Actualizar stock
+    #Actualización de stock
+    # ingredientes = Ingrediente.objects.filter(prenda = prenda) #Obtengo los ingredientes de la prenda actual
+    #
+    # for ingrediente in ingredientes:
+    #     ingrediente.material.stock += ingrediente.cantidadxdetalle
+    #     ingrediente.material.save()
+    #     if ingrediente.disponibilidad == "FALTANTE":
+    #         faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
+    #         if faltante:
+    #             faltante.delete()
+
+
     return redirect('/pedido/ver_pedido/'+str(id_pedido))
 
 #Asigna un material a la prenda
