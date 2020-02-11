@@ -226,11 +226,8 @@ def VolverPedido (request,id_pedido):
 
         if request.method=='GET':
             if not detalles:
-                print("ENTRA")
                 pedido.delete()
                 return redirect('/pedido/nuevo_pedido')
-            print(detalles)
-            print("NOENTR")
             pedido_form=PedidoForm(instance=pedido)
         else:
             if 'boton_agregar' in request.POST:

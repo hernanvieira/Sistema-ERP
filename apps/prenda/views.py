@@ -584,13 +584,20 @@ def EliminarPrenda(request,id_prenda, id_detalle, id_pedido):
         print("TRUE")
         messages.error(request, 'Ocurrió un error al tratar de eliminar la prenda, no se pueden eliminar prendas con materiales asignados')
     else:
-        print("Falsee")
+        reputacion = abs((int(pedido.cliente.reputacion)/100)-1)
+        if pedido.cliente.reputacion < 0:
+            reputacion = 0
+        if pedido.cliente.reputacion > 100:
+            reputacion = 1
+
         detalle.delete()
         prenda.delete()
         pedido.precio_total = (pedido.precio_total) - (precio * detalle.cantidad) #Actualizo el precio total
-        pedido.seña = pedido.precio_total/2 #Actualizo la seña minima
+        pedido.seña = pedido.precio_total*Decimal(reputacion) #Actualizo la seña minima
+        pedido.fecha_entrega -= timedelta(days=detalle.tiempo_prod_lote)
         pedido.save() # Actualizo el pedido
         messages.warning(request, 'Se eliminó la prenda')
+        return redirect('/pedido/volver_pedido/'+str(id_pedido))
 
 
 
