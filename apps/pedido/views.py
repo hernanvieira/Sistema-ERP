@@ -393,7 +393,7 @@ def VerPedido (request,id_pedido):
                 pedido.save()
                 messages.success(request, 'Se registró la entrega y se completó el pago')
 
-                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: $0,00' , to=[pedido.cliente.correo])
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega +'. La entrega fue de $'+str(float(peticion_valor))+ ', el saldo es de: $0,00' , to=[pedido.cliente.correo])
                 try:
                     email.send()
                 except Exception as e:
@@ -404,7 +404,7 @@ def VerPedido (request,id_pedido):
                 pedido.save()
                 messages.success(request, 'Se registró la entrega, resta un saldo de: ' + str(saldo))
 
-                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: ' + str(saldo), to=[pedido.cliente.correo])
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega +'. La entrega fue de $'+str(format(float(peticion_valor), '.2f'))+ ', el saldo es de: $' + str(saldo), to=[pedido.cliente.correo])
                 try:
                     email.send()
                 except Exception as e:
@@ -415,7 +415,7 @@ def VerPedido (request,id_pedido):
                 pedido.save()
                 messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: ' + str(abs(saldo)))
 
-                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega + ' El saldo es de: $0,00' , to=[pedido.cliente.correo])
+                email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega +'. La entrega fue de $'+str(float(peticion_valor))+ ', el saldo es de: $0,00' , to=[pedido.cliente.correo])
                 try:
                     email.send()
                 except Exception as e:

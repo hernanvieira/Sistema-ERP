@@ -1016,8 +1016,9 @@ def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prend
     material.stock += cantidad
 
     if ingrediente.disponibilidad == "FALTANTE":
-        faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
+        faltante = Faltante.objects.filter(prenda = ingrediente.prenda, material = ingrediente.material).exists()
         if faltante:
+            faltante = Faltante.objects.get(prenda = ingrediente.prenda, material = ingrediente.material)
             faltante.delete()
     else:
         #Solventar Faltantes
@@ -1043,8 +1044,8 @@ def EliminarIngrediente (request,id_ingrediente, id_pedido, id_detalle, id_prend
                         else: #Si el ingrediente es menor o igual al stock minimo
                             ingrediente.disponibilidad = "STOCK MÍNIMO" #Establezco la disponibilidad
                         ingrediente.save() #Actualizo el ingrediente
-        material.save()
-        ingrediente.delete()
+    material.save()
+    ingrediente.delete()
 
     return redirect('/prenda/asignar_material/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
 
@@ -1064,7 +1065,6 @@ def MostrarUnidad(request):
     material = Material.objects.get(id_material = mt)
     unidad = material.tipo_material.unidad_medida.nombre
     color = material.color
-    print(color)
     result = {
         'medida': unidad,
         'color':color
