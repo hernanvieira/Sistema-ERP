@@ -344,6 +344,11 @@ Ver pedido
 
          </div>
          {% endif %}
+         {% if estado.estado_id == 3 and user.rol.nombre == 'Administrador' %}
+         <div class="col-md-5">
+
+         </div>
+         {% endif %}
         {% if user.rol.nombre == 'Registrador' or user.rol.nombre == 'Encargado de Stock' %}
             <div class="col-md-5">
             </div>
