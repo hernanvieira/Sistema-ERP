@@ -226,6 +226,13 @@ def EliminarCliente (request,dni):
         cliente.save()
         messages.warning(request, 'Se eliminó el cliente')
         clientes = Cliente.objects.all().exclude(activo = False)
+
+        #pedidos de cliente en False
+        pedidos = Pedido.objects.filter(cliente = cliente)
+        for pedido in pedidos:
+            pedido.confirmado = False
+            pedido.save()
+
         return render(request,'cliente/index_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'cliente':cliente,'clientes':clientes})
     except Exception as e:
         messages.error(request, 'Ocurrió un error al tratar de eliminar el cliente')
