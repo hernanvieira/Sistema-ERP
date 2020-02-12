@@ -288,7 +288,8 @@ def ClienteHome(request):
         if cliente_form.is_valid():
             cliente_form.save()
             messages.success(request, 'Sea agregó correctamente el cliente')
-            return render (request, 'cliente/index_cliente.html',{'clientes':clientes})
+            cliente_form = ClienteForm()
+            return render (request, 'cliente/index_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'clientes':clientes,'cliente_form':cliente_form})
         else:
             errores = cliente_form.errors.values() #Obtengo los valores devueltos en el diccionario
             errores = list(errores) #Los casteo a lista porque no es iterable
