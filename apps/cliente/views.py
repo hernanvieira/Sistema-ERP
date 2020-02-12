@@ -8,6 +8,9 @@ from apps.pedido.models import Faltante, Detalle_envio, Pedido, Detalle
 from apps.material.models import Material
 from apps.pedido.views import FinalizarPedido
 
+from config.models import Configuracion, ConfiguracionMensaje
+from django.core.mail import EmailMessage
+
 from django.db.models import Sum
 
 import poplib # Recibir correos
@@ -16,6 +19,9 @@ from apps.prenda.models import Tipo_prenda, Prenda
 from apps.estado.models import Estado_pedido
 
 from datetime import datetime, timedelta, date
+
+from dateutil.relativedelta import relativedelta
+import dateutil.parser
 
 from django.db.models import Count
 
@@ -43,6 +49,29 @@ def Home(request):
             for pedido in pedidos:
                 if pedido.fecha_entrega <= date.today():
                     FinalizarPedido(request,pedido.pk)
+            pedidos_finalizados = Pedido.objects.filter(estado_pedido__estado_id = 3).exclude(detalle_envio__isnull = False).exclude(estado_pedido__estado_id = 4)
+            for pedido in pedidos_finalizados:
+                diferencia = 0
+                estado = Estado_pedido.objects.filter(pedido = pedido).order_by('-id_estado_pedido')[0]
+
+                fecha = estado.fecha
+                fecha = fecha.strftime('%d/%m/%Y')
+                fecha = datetime.strptime(fecha,'%d/%m/%Y')
+                hoy = datetime.now()      # Tipo: datetime.datetime
+                #hoy = dateutil.parser.parse(hoy)
+                hoy = hoy.strftime('%d/%m/%Y')
+                hoy = datetime.strptime(hoy, '%d/%m/%Y')
+                diferencia = hoy - fecha  # Tipo resultante: datetime.timedelta
+                diferencia = diferencia.days
+                if diferencia > 5:
+                    mensaje = ConfiguracionMensaje.objects.all().last()
+                    email = EmailMessage('PROYECTO SOFTWARE', mensaje.finalizado + 'http://localhost:8000/pedido/confirmar_entrega/'+str(pedido.pk)+'/'+str(pedido.cliente.pk), to=[pedido.cliente.correo])
+                    try:
+                        email.send()
+                    except Exception as e:
+                        print(e)
+
+            print(pedidos_finalizados)
 
     aux = []
     for p in pedidos:
