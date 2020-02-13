@@ -161,6 +161,16 @@ def CrearCliente (request):
 
 #Editar un cliente
 def VerCliente (request,dni):
+    #Notificaciones
+    pedidos = Pedido.objects.all().exclude(confirmado=False)
+    envios_noti = []
+    for pedido in pedidos:
+        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        if envio_temp:
+            envios_noti.append(envio_temp)
+    envios_not = envios_noti[:3]
+    envio_count = len(envios_noti)
+    
     try:
         cliente_form=None
         cliente = Cliente.objects.get(dni=dni)
@@ -183,15 +193,7 @@ def VerCliente (request,dni):
     except ObjectDoesNotExist as e:
         error = e
 
-    #Notificaciones
-    pedidos = Pedido.objects.all().exclude(confirmado=False)
-    envios_noti = []
-    for pedido in pedidos:
-        envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
-        if envio_temp:
-            envios_noti.append(envio_temp)
-    envios_not = envios_noti[:3]
-    envio_count = len(envios_noti)
+
 
     return render(request, 'cliente/ver_cliente.html',{'envios_not':envios_not,'envio_count':envio_count,'estados':estados,'pedidos':pedidos, 'cliente':cliente ,'cliente_form':cliente_form})
 

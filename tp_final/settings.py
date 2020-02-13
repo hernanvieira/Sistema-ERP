@@ -13,7 +13,7 @@ SECRET_KEY = '&(jc_pp08uwi=@rlb1hyfvy+#t(xkkwlm4#s^u2eo&!t7jh*ec'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTH_USER_MODEL = 'usuario.customuser'
 

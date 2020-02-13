@@ -136,7 +136,7 @@ class Tipo_prendaForm (forms.ModelForm):
         model = Tipo_prenda
         fields = ['nombre','medida']
         widgets = {
-        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control', 'onkeypress':'return validateKeyStrokes(event)'}),
+        'nombre' : forms.TextInput(attrs={'type' : 'text', 'class' : 'form-control'}),
         'medida' : forms.SelectMultiple(attrs={'class' : 'js-example-basic-multiple', 'multiple':'multiple'}),
         }
     def clean_nombre(self):

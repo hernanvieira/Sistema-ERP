@@ -29,16 +29,22 @@ def CrearTipo_material (request):
         if 'boton_guardar_listar' in request.POST:
             tipo_material_form = Tipo_materialForm(request.POST)
             if tipo_material_form.is_valid():
-                tipo_material_form.save()
-                messages.success(request, 'Se creó un tipo de material')
+                try:
+                    tipo_material_form.save()
+                    messages.success(request, 'Se creó un tipo de material')
+                except Exception as e:
+                    messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')
             else:
                 messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')
             return ListarTipo_material(request)
         if 'boton_guardar_agregar' in request.POST:
             tipo_material_form = Tipo_materialForm(request.POST)
             if tipo_material_form.is_valid():
-                tipo_material_form.save()
-                messages.success(request, 'Se creó un tipo de material')
+                try:
+                    tipo_material_form.save()
+                    messages.success(request, 'Se creó un tipo de material')
+                except Exception as e:
+                    messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')        
             else:
                 messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')
             return redirect('/material/crear_tipo_material')
