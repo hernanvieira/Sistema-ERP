@@ -6,7 +6,7 @@
 Estadisticas
 {% endblock titulo%}
 {% block content%}
-<div class="alineado-derecha d-none">
+<div class="alineado-derecha d-print-none">
   <div class="fa-hover">
     <a href="JavaScript:Void(0);">
       <i class="fa fa-question-circle" onclick="javascript:introJs().start();"></i>
@@ -14,125 +14,258 @@ Estadisticas
   </div>
 </div>
 <br>
-<div class="row">
-
-  <!-- Cantidad de prendas por tipo de prenda -->
-  <div class="col-lg-6">
-      <div class="au-card m-b-30">
-        <div class="row">
-          <div class="col-1">
-            Año:
-          </div>
-          <div class="col-3">
-            <select id="year_torta" class="js-example-basic-single"></select>
-          </div>
-        </div>
-
-          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-                <canvas id="pieChart2" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
-          </div>
-      </div>
-      <div class="au-card m-b-30">
-          <p>Se muestran la cantidad de prendas solicitadas clasificandolos por <strong>tipo de prenda.</strong></p>
-      </div>
-  </div>
-
-  <!-- Demanda de tipo de prenda por temporada -->
-  <div class="col-lg-6" data-step="1" data-intro='Se muestrán apartados con estadisticas brindadas por el sistema'>
-      <div class="au-card m-b-30" data-step="2" data-intro='En esta sección se mostrará el grafico con los datos correspondientes a los filtros seleccionados'>
-        <div class="row" data-step="3" data-intro='Los filtros se muestran en la parte superior'>
-          <div class="col-1">
-            Año:
-          </div>
-          <div class="col-3">
-            <select id="year" class="js-example-basic-single select_temporada_year"></select>
-          </div>
-          <div class="col-3">
-            <p style="text-align:right;">Temporada:</p>
-          </div>
-          <div class="col-5">
-            <select id='select_temporada' class="js-example-basic-single">
-              <option value="Verano" selected>Verano</option>
-              <option value="Otoño">Otoño</option>
-              <option value="Invierno">Invierno</option>
-              <option value="Primavera">Primavera</option>
-            </select>
-          </div>
-        </div>
-
-          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-              <canvas id="bar-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
-          </div>
-      </div>
-      <div class="au-card m-b-30" data-step="4" data-intro='Este sector presenta una leyenda que describe la estadistica que se muestra'>
-          <p>Se muestran la demanda de los distintos tipos de prendas clasificandolas por <strong>temporada.</strong></p>
-      </div>
-  </div>
-
-  <!-- Demanda de tipo de prenda por temporada -->
-  <div class="col-lg-6">
-      <div class="au-card m-b-30">
-        <div class="row">
-          <div class="col-1">
-            Año:
-          </div>
-          <div class="col-3">
-            <select id="año" class="js-example-basic-single select_año"></select>
-          </div>
-          <div class="col-4">
-            <p style="text-align:right;">Tipo de prenda:</p>
-          </div>
-          <div class="col-4">
-            <select id='tipo_prenda' class="js-example-basic-single">
-            </select>
-          </div>
-        </div>
-
-          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-              <canvas id="bar-chart-horizontal" width="800" height="450"></canvas>
-          </div>
-      </div>
-      <div class="au-card m-b-30">
-          <p>Se muestran la cantidad de prendas solicitadas clasificandolas por <strong>talles.</strong></p>
-      </div>
-  </div>
-
-  <!-- Demanda de tipo de prenda por temporada -->
-  <div class="col-lg-6">
-      <div class="au-card m-b-30">
-        <div class="row">
-          <div class="col-1">
-            Año:
-          </div>
-          <div class="col-3">
-            <select id="year2" class="js-example-basic-single select_temporada_year"></select>
-          </div>
-          <div class="col-3">
-            <p style="text-align:right;">Temporada:</p>
-          </div>
-          <div class="col-5">
-            <select id='select_temporada2' class="js-example-basic-single">
-              <option value="Verano" selected>Verano</option>
-              <option value="Otoño">Otoño</option>
-              <option value="Invierno">Invierno</option>
-              <option value="Primavera">Primavera</option>
-            </select>
-          </div>
-        </div>
-
-          <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
-              <canvas id="doughnut-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
-          </div>
-      </div>
-      <div class="au-card m-b-30">
-          <p>Se muestran la demanda de los distintos colores utilizados clasificandolos por <strong>temporada.</strong></p>
-      </div>
-  </div>
+<!-- collapse -->
+<!-- card -->
+<div class="au-card m-b-30 d-print-none" id="collapsescroll1" style="padding: 20px;" data-step="1" data-intro='Cada apartado corresponde a una estadistica'>
+  <span style="vertical-align: sub;">
+    Cantidad de prendas solicitadas clasificandolos por <strong>tipo de prenda.</strong>
+  </span>
+  <button data-step="2" data-intro='Para visualizar haga click en el botón mostrar y se despliega una sección donde podra ver la información ademas de tener la opción de imprimir' style="float:right;" value="Mostruki" type="button" id="boton-card1" class="btn btn-primary" name="button" data-toggle="collapse" href="#collapse1" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Mostrar
+  </button>
 </div>
-<div class="alineado-centro col-12 d-print-none">
-<a href="javascript:window.print()" ><button type="button" class="btn btn-primary" name="button" > Imprimir </button></a>
+<!-- card -->
+<!-- body -->
+<div class="collapse" id="collapse1">
+  <div class="row">
+    <!-- Cantidad de prendas por tipo de prenda -->
+    <div class="col-6">
+        <div class="au-card m-b-30">
+          <div class="row d-print-none">
+            <div class="col-1">
+              Año:
+            </div>
+            <div class="col-3">
+              <select id="year_torta" class="js-example-basic-single"></select>
+            </div>
+          </div>
+
+            <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                  <canvas id="pieChart2" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="au-card m-b-30"style="height: 438px;">
+          <div class="table-responsive table--no-card m-b-30">
+              <table class="table table-borderless table-striped table-earning">
+                  <thead>
+                      <tr>
+                          <th style='text-align:left'>Tipo de prenda</th>
+                          <th style='text-align:right'>Cantidad</th>
+                      </tr>
+                  </thead>
+                  <tbody id="mi-tabla1">
+
+                  </tbody>
+              </table>
+          </div>
+        </div>
+    </div>
+    <div class="alineado-centro col-12 d-print-none">
+    <a href="javascript:window.print()" ><button type="button" class="btn btn-primary" style="margin-bottom:20px;" name="button" > Imprimir </button></a>
+    </div>
+  </div>
+<hr class="d-print-none">
+</div>
+<!-- body -->
+<!-- end collapse -->
+
+<!-- collapse -->
+<!-- card -->
+  <div class="au-card m-b-30 d-print-none" id="collapsescroll2" style="padding: 20px;">
+    <span style="vertical-align: sub;">
+      Demanda de los distintos tipos de prendas clasificandolas por <strong>temporada.</strong>
+    </span>
+    <button style="float:right;" type="button" id="boton-card2" class="btn btn-primary" name="button" data-toggle="collapse" href="#collapse2" role="button" aria-expanded="false" aria-controls="collapseExample">
+      Mostrar
+    </button>
+  </div>
+<!-- card -->
+<!-- body -->
+<div class="collapse" id="collapse2">
+  <div class="row">
+    <!-- Demanda de tipo de prenda por temporada -->
+    <div class="col-lg-6" >
+        <div class="au-card m-b-30" >
+          <div class="row d-print-none">
+            <div class="col-1">
+              Año:
+            </div>
+            <div class="col-3">
+              <select id="year" class="js-example-basic-single select_temporada_year"></select>
+            </div>
+            <div class="col-3">
+              <p style="text-align:right;">Temporada:</p>
+            </div>
+            <div class="col-5">
+              <select id='select_temporada' class="js-example-basic-single">
+                <option value="Verano" selected>Verano</option>
+                <option value="Otoño">Otoño</option>
+                <option value="Invierno">Invierno</option>
+                <option value="Primavera">Primavera</option>
+              </select>
+            </div>
+          </div>
+
+            <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                <canvas id="bar-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="au-card m-b-30"style="height: 438px;">
+          <div class="table-responsive table--no-card m-b-30">
+              <table class="table table-borderless table-striped table-earning">
+                  <thead>
+                      <tr>
+                          <th style='text-align:left'>Tipo de prenda</th>
+                          <th style='text-align:right'>Cantidad</th>
+                      </tr>
+                  </thead>
+                  <tbody id="mi-tabla2">
+
+                  </tbody>
+              </table>
+          </div>
+        </div>
+    </div>
+
+    <div class="alineado-centro col-12 d-print-none">
+    <a href="javascript:window.print()" ><button style="margin-bottom: 20px;" type="button" class="btn btn-primary" name="button" > Imprimir </button></a>
+    </div>
+  </div>
+<hr class="d-print-none">
+</div>
+<!-- body -->
+<!-- end collapse -->
+
+<!-- collapse -->
+<!-- card -->
+  <div class="au-card m-b-30 d-print-none" id="collapsescroll4" style="padding: 20px;" id="cardcollapse4">
+    <span style="vertical-align: sub;">
+      Demanda de los distintos colores utilizados clasificandolos por <strong>temporada.</strong>
+    </span>
+    <button style="float:right;" type="button" id="boton-card4" class="btn btn-primary" name="button" href="#collapse4" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseExample" >
+      Mostrar
+    </button>
+  </div>
+  <!-- CARD -->
+  <!-- body -->
+<div class="collapse" id="collapse4">
+  <div class="row">
+    <!-- Demanda de tipo de prenda por temporada -->
+    <div class="col-lg-12">
+        <div class="au-card m-b-30">
+          <div class="row d-print-none">
+            <div class="col-1">
+              Año:
+            </div>
+            <div class="col-3">
+              <select id="year2" class="js-example-basic-single select_temporada_year"></select>
+            </div>
+            <div class="col-3">
+              <p style="text-align:right;">Temporada:</p>
+            </div>
+            <div class="col-5">
+              <select id='select_temporada2' class="js-example-basic-single">
+                <option value="Verano" selected>Verano</option>
+                <option value="Otoño">Otoño</option>
+                <option value="Invierno">Invierno</option>
+                <option value="Primavera">Primavera</option>
+              </select>
+            </div>
+          </div>
+
+            <div class="au-card-inner alineado-centro"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+  <div class="col-6">
+    <canvas id="doughnut-chart" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;">></canvas>
+  </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="alineado-centro col-12 d-print-none">
+    <a href="javascript:window.print()" ><button style="margin-bottom: 20px;" type="button" class="btn btn-primary" name="button" > Imprimir </button></a>
+    </div>
+
+  </div>
+  <br>
+<hr class="d-print-none">
+
+</div>
+<!-- body -->
+<!-- end collapse -->
+
+<!-- collapse -->
+<!-- card -->
+<div class="">
+  <div class="au-card m-b-30 d-print-none" id="collapsescroll3" style="padding: 20px;">
+    <span style="vertical-align: sub;">
+      Cantidad de prendas solicitadas clasificandolas por <strong>talles.</strong>
+    </span>
+    <button style="float:right;" type="button" id="boton-card3" class="btn btn-primary" name="button" data-toggle="collapse" href="#collapse3" role="button" aria-expanded="false" aria-controls="collapseExample">
+      Mostrar
+    </button>
+  </div>
+  <!-- card -->
+  <!-- body -->
+<div class="collapse" id="collapse3">
+  <div class="row">
+    <!-- Demanda de tipo de prenda por temporada -->
+    <div class="col-lg-6">
+        <div class="au-card m-b-30">
+          <div class="row d-print-none">
+            <div class="col-1">
+              Año:
+            </div>
+            <div class="col-3">
+              <select id="año" class="js-example-basic-single select_año"></select>
+            </div>
+            <div class="col-4">
+              <p style="text-align:right;">Tipo de prenda:</p>
+            </div>
+            <div class="col-4">
+              <select id='tipo_prenda' class="js-example-basic-single">
+              </select>
+            </div>
+          </div>
+
+            <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+                <canvas id="bar-chart-horizontal" width="800" height="450"></canvas>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-6">
+        <div class="au-card m-b-30"style="height: 385px;">
+          <div class="table-responsive table--no-card m-b-30">
+              <table class="table table-borderless table-striped table-earning">
+                  <thead>
+                      <tr>
+                          <th style='text-align:left'>Talle</th>
+                          <th style='text-align:right'>Cantidad</th>
+                      </tr>
+                  </thead>
+                  <tbody id="mi-tabla4">
+
+                  </tbody>
+              </table>
+          </div>
+        </div>
+    </div>
+    <div class="alineado-centro col-12 d-print-none">
+    <a href="javascript:window.print()" ><button style="margin-bottom: 20px;" type="button" class="btn btn-primary" name="button" > Imprimir </button></a>
+    </div>
+  </div>
+  <hr class="d-print-none">
+  <br>
+  <br>
+</div>
 </div>
 
+<!-- body -->
+<!-- end collapse -->
 
 <!-- Chart Torta -->
 <script src="{% static 'js/Chart_torta.js' %}"></script>
@@ -142,6 +275,77 @@ Estadisticas
 
 <!-- Jquery JS-->
 <script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+
+<script>
+$(document).ready(function(){
+
+  var html = document.documentElement;
+
+  $("#collapse1").on('hide.bs.collapse', function(){
+  $("#boton-card1").html("Mostrar");
+  });
+
+  $("#collapse2").on('hide.bs.collapse', function(){
+  $("#boton-card2").html("Mostrar");
+  });
+
+  $("#collapse3").on('hide.bs.collapse', function(){
+  $("#boton-card3").html("Mostrar");
+  });
+
+  $("#collapse4").on('hide.bs.collapse', function(){
+  $("#boton-card4").html("Mostrar");
+  });
+
+  $("#collapse1").on('show.bs.collapse', function(){
+    $("#collapse2,#collapse3,#collapse4").collapse('hide');
+  });
+
+  $("#collapse2").on('show.bs.collapse', function(){
+    $("#collapse1,#collapse3,#collapse4").collapse('hide');
+  });
+
+  $("#collapse3").on('show.bs.collapse', function(){
+    $("#collapse1,#collapse2,#collapse4").collapse('hide');
+  });
+
+  $("#collapse4").on('show.bs.collapse', function(){
+    $("#collapse1,#collapse2,#collapse3").collapse('hide');
+  });
+
+  $("#collapse1").on('shown.bs.collapse', function(){
+  var card1 = document.getElementById('collapsescroll1');
+  var boton =  document.getElementById('boton-card1');
+  card1.scrollIntoView();
+  html.scrollTop -= 80;
+  $("#boton-card1").html("Ocultar");
+
+  });
+
+  $("#collapse2").on('shown.bs.collapse', function(){
+  var card2 = document.getElementById('collapsescroll2');
+  card2.scrollIntoView();
+  html.scrollTop -= 80;
+  $("#boton-card2").html("Ocultar");
+  });
+
+  $("#collapse3").on('shown.bs.collapse', function(){
+  var card3 = document.getElementById('collapsescroll3');
+  card3.scrollIntoView();
+  //html.scrollTop -= 60;
+  $("#boton-card3").html("Ocultar");
+  });
+
+  $("#collapse4").on('shown.bs.collapse', function(){
+    var card4 = document.getElementById('collapsescroll4');
+    card4.scrollIntoView();
+    html.scrollTop -= 90;
+    $("#boton-card4").html("Ocultar");
+  });
+
+});
+</script>
 
 <script language="Javascript">
 
@@ -254,6 +458,19 @@ $(document).ready(function(){
     url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
     type: 'get',
     success: function (data) {
+      var html = "";
+        for (var i = 0; i < data['tipo_prenda'].length; i++) {
+            html += "<tr>"
+            html += "<td>" + data['tipo_prenda'][i] + "</td>";
+            if (data['valor'][i] == null) {
+              html += "<td style='text-align:right'>" + 0 + "</td>";
+            }
+            else {
+                html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+            }
+            html += "</tr>"
+        }
+        $('#mi-tabla1').html(html);
         chart1 = new Chart(ctx, {
           type: 'pie',
           data: {
@@ -274,7 +491,10 @@ $(document).ready(function(){
 
             },
             responsive: true,
-
+            title: {
+              display: true,
+              text: 'Cantidad de prendas solicitadas en el año '+String(año)
+            }
           }
         });
   }
@@ -289,6 +509,19 @@ $(document).ready(function(){
           url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
           type: 'get',
           success: function (data) {
+            var html = "";
+              for (var i = 0; i < data['tipo_prenda'].length; i++) {
+                  html += "<tr>"
+                  html += "<td>" + data['tipo_prenda'][i] + "</td>";
+                  if (data['valor'][i] == null) {
+                    html += "<td style='text-align:right'>" + 0 + "</td>";
+                  }
+                  else {
+                      html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+                  }
+                  html += "</tr>"
+              }
+              $('#mi-tabla1').html(html);
               chart1 = new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -308,7 +541,11 @@ $(document).ready(function(){
                     }
 
                   },
-                  responsive: true
+                  responsive: true,
+                  title: {
+                    display: true,
+                    text: 'Cantidad de prendas solicitadas en el año '+String(año)
+                  }
                 }
               });
         }
@@ -332,7 +569,19 @@ $(document).ready(function(){
       url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
       type: 'get',
       success: function (data) {
-
+      var html = "";
+        for (var i = 0; i < data['tipo_prenda'].length; i++) {
+            html += "<tr>"
+            html += "<td>" + data['tipo_prenda'][i] + "</td>";
+            if (data['valor'][i] == null) {
+              html += "<td style='text-align:right'>" + 0 + "</td>";
+            }
+            else {
+                html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+            }
+            html += "</tr>"
+        }
+        $('#mi-tabla2').html(html);
 
       chart2 = new Chart(ctx, { //Comienzo a configurarlo
       type: 'bar',
@@ -359,6 +608,10 @@ $(document).ready(function(){
               stepSize: 1
             }
           }]
+        },
+        title: {
+          display: true,
+          text: 'Demanda de los distintos tipos de prendas en la temporada de '+String(temporada)+' del año '+String(año)
         }
       }
 
@@ -380,7 +633,19 @@ $(document).ready(function(){
             url: '/prenda/estadistica_temporada/', //la temporada que estoy guardando en data se va a enviar en esa url
             type: 'get',
             success: function (data) {
-
+            var html = "";
+              for (var i = 0; i < data['tipo_prenda'].length; i++) {
+                  html += "<tr>"
+                  html += "<td>" + data['tipo_prenda'][i] + "</td>";
+                  if (data['valor'][i] == null) {
+                    html += "<td style='text-align:right'>" + 0 + "</td>";
+                  }
+                  else {
+                      html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+                  }
+                  html += "</tr>"
+              }
+              $('#mi-tabla2').html(html);
             chart2 = new Chart(ctx, { //Comienzo a configurarlo
             type: 'bar',
             data: {
@@ -406,6 +671,10 @@ $(document).ready(function(){
                     stepSize: 1
                   }
                 }]
+              },
+              title: {
+                display: true,
+                text: 'Demanda de los distintos tipos de prendas en la temporada de '+String(temporada)+' del año '+String(año)
               }
             }
 
@@ -429,6 +698,19 @@ $(document).ready(function(){
                   type: 'get',
                   success: function (data) {
                   chart2.destroy();
+                  var html = "";
+                    for (var i = 0; i < data['tipo_prenda'].length; i++) {
+                        html += "<tr>"
+                        html += "<td>" + data['tipo_prenda'][i] + "</td>";
+                        if (data['valor'][i] == null) {
+                          html += "<td style='text-align:right'>" + 0 + "</td>";
+                        }
+                        else {
+                            html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+                        }
+                        html += "</tr>"
+                    }
+                    $('#mi-tabla2').html(html);
 
                   chart2 = new Chart(ctx, { //Comienzo a configurarlo
                   type: 'bar',
@@ -460,6 +742,10 @@ $(document).ready(function(){
                           stepSize: 1
                         }
                       }]
+                    },
+                    title: {
+                      display: true,
+                      text: 'Demanda de los distintos tipos de prendas en la temporada de '+String(temporada)+' del año '+String(año)
                     }
                   }
 
@@ -499,7 +785,7 @@ $(document).ready(function(){
      options: {
        title: {
          display: true,
-         text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
+         text: 'Colores solicitados en el año '+String(año)+' para el la temporada de '+String(temporada2)
        }
      }
   });
@@ -535,7 +821,7 @@ $(document).ready(function(){
            options: {
              title: {
                display: true,
-               text: 'Colores solicitados en el año '+String(año)+' para el tipo de prenda '+String(temporada2)
+               text: 'Colores solicitados en el año '+String(año)+' para la temporada '+String(temporada2)
              }
            }
         });
@@ -588,7 +874,8 @@ $(document).ready(function(){
 // Al cargar la pagina configuro un chart con el primer tipo de prenda de forma predeterminada
 setTimeout(function(){
   var tipo_prenda = $("#tipo_prenda").val()
-  tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
+  tipo_prenda2 = $('#tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
+
   año = $('#año').val(); //Obtengo la temporada seleccionada
   var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
 
@@ -598,6 +885,37 @@ setTimeout(function(){
     url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
     type: 'get',
     success: function (data) {
+    var html = "";
+      for (var i = 0; i < data['valor'].length; i++) {
+          html += "<tr>"
+          if (i == 0) {
+            html += "<td>XS</td>";
+          }
+          if (i == 1) {
+            html += "<td>S</td>";
+          }
+          if (i == 2) {
+            html += "<td>M</td>";
+          }
+          if (i == 3) {
+            html += "<td>L</td>";
+          }
+          if (i == 4) {
+            html += "<td>XL</td>";
+          }
+          if (i == 5) {
+            html += "<td>XXL</td>";
+          }
+          if (data['valor'][i] == null) {
+            html += "<td style='text-align:right'>" + 0 + "</td>";
+          }
+          else {
+            html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+          }
+
+          html += "</tr>"
+      }
+      $('#mi-tabla4').html(html);
     chart3 = new Chart(ctx, { //Comienzo a configurarlo
     type: 'horizontalBar',
     data: {
@@ -636,7 +954,7 @@ setTimeout(function(){
     $("#tipo_prenda").change(function(){
           chart3.destroy();
           tipo_prenda = $(this).val(); //Obtengo el tipo de prenda seleccionado
-          tipo_prenda2 = $('#select_tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
+          tipo_prenda2 = $('#tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
           año = $('#año').val(); //Obtengo la temporada seleccionada
           var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
           //Ejecuto el ajax
@@ -645,6 +963,37 @@ setTimeout(function(){
             url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
             type: 'get',
             success: function (data) {
+              var html = "";
+                for (var i = 0; i < data['valor'].length; i++) {
+                    html += "<tr>"
+                    if (i == 0) {
+                      html += "<td>XS</td>";
+                    }
+                    if (i == 1) {
+                      html += "<td>S</td>";
+                    }
+                    if (i == 2) {
+                      html += "<td>M</td>";
+                    }
+                    if (i == 3) {
+                      html += "<td>L</td>";
+                    }
+                    if (i == 4) {
+                      html += "<td>XL</td>";
+                    }
+                    if (i == 5) {
+                      html += "<td>XXL</td>";
+                    }
+                    if (data['valor'][i] == null) {
+                      html += "<td style='text-align:right'>" + 0 + "</td>";
+                    }
+                    else {
+                      html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+                    }
+
+                    html += "</tr>"
+                }
+                $('#mi-tabla4').html(html);
             chart3 = new Chart(ctx, { //Comienzo a configurarlo
             type: 'horizontalBar',
             data: {
@@ -691,6 +1040,37 @@ setTimeout(function(){
               url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
               type: 'get',
               success: function (data) {
+                var html = "";
+                  for (var i = 0; i < data['valor'].length; i++) {
+                      html += "<tr>"
+                      if (i == 0) {
+                        html += "<td>XS</td>";
+                      }
+                      if (i == 1) {
+                        html += "<td>S</td>";
+                      }
+                      if (i == 2) {
+                        html += "<td>M</td>";
+                      }
+                      if (i == 3) {
+                        html += "<td>L</td>";
+                      }
+                      if (i == 4) {
+                        html += "<td>XL</td>";
+                      }
+                      if (i == 5) {
+                        html += "<td>XXL</td>";
+                      }
+                      if (data['valor'][i] == null) {
+                        html += "<td style='text-align:right'>" + 0 + "</td>";
+                      }
+                      else {
+                        html += "<td style='text-align:right'>" + data['valor'][i] + "</td>";
+                      }
+
+                      html += "</tr>"
+                  }
+                  $('#mi-tabla4').html(html);
               chart3 = new Chart(ctx, { //Comienzo a configurarlo
               type: 'horizontalBar',
               data: {
