@@ -44,7 +44,7 @@ def CrearTipo_material (request):
                     tipo_material_form.save()
                     messages.success(request, 'Se creó un tipo de material')
                 except Exception as e:
-                    messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')        
+                    messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')
             else:
                 messages.error(request, 'Ocurrió un error al tratar de crear el tipo de material')
             return redirect('/material/crear_tipo_material')
@@ -383,20 +383,22 @@ def EditarCompra (request,id_compra):
     envios_not = envios_noti[:3]
     envio_count = len(envios_noti)
 
-    try:
-        error = None
-        compra_form=None
-        compra = Compra.objects.get(id_compra=id_compra)
-        if request.method=='GET':
-            compra_form=CompraForm(instance=compra)
-        else:
-            compra_form=CompraForm(request.POST, instance=compra)
-            if compra_form.is_valid():
-                compra_form.save()
-            return redirect('index')
-    except ObjectDoesNotExist as e:
-        error = e
-    return render(request,'material/editar_compra.html',{'envios_not':envios_not,'envio_count':envio_count,'compra_form':compra_form, 'error':error})
+    compra = Compra.objects.get(pk = id_compra)
+    if request.method=='POST':
+        compra_form=CompraForm(request.POST, instance=compra)
+        print("------")
+        print(request.POST)
+        if compra_form.is_valid():
+            compra = compra_form.save()
+            compra.usuario = request.user
+            compra.save()
+            print("ENTRAONOpost")
+            print(compra.cantidad)
+            return redirect('/material/crear_compra/')
+    else:
+        compra_form=CompraForm(instance=compra)
+
+    return render(request,'material/editar_compra.html',{'envios_not':envios_not,'envio_count':envio_count,'compra_form':compra_form})
 #Eliminar un compra
 def EliminarCompra (request,id_compra):
     #Notificaciones
@@ -415,7 +417,7 @@ def EliminarCompra (request,id_compra):
     material.save() #Actualizo el stock
     compra.delete() #Elimino la compra
     messages.warning(request, 'Se eliminó la compra correctamente') #Informo que la transaccion fue exitosa
-    return redirect('material:listar_compra') #Redirecciono a la lista de materiales
+    return redirect('material:crear_compra') #Redirecciono a la lista de materiales
 
 #Mostrar unidad de medida al asignar material
 def MostrarUnidad(request):

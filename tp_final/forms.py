@@ -84,7 +84,7 @@ class CompraForm (forms.ModelForm):
         model = Compra
         fields = ['fecha','cantidad','material']
         widgets = {
-        'fecha' : forms.DateInput(attrs={'type' : 'date', 'id' : 'datePicker'}),
+        'fecha' : forms.DateInput(attrs={'type' : 'date', 'id' : 'datePicker', 'readonly':'readonly', 'class':'form-control'}),
         'material' : forms.Select(attrs={'class' : 'js-example-basic-single', 'id':'combito'}),
         'cantidad' : forms.TextInput(attrs={'class' : 'form-control'}),
         }
