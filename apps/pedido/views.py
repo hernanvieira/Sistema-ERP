@@ -533,7 +533,7 @@ def CancelarPedido (request,id_pedido):
         for ingrediente in ingredientes: #Por cada ingrediente
             ingredientes_list.append(ingrediente) #Agrego el ingrediente a la lista
 
-    for ingrediente in ingrediente_list:
+    for ingrediente in ingredientes_list:
         ingrediente.material.stock += ingrediente.cantidadxdetalle
         ingrediente.material.save()
         if ingrediente.disponibilidad == "FALTANTE":

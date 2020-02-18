@@ -506,7 +506,7 @@ left: 43px;
           <div class="modal-body">
             <div class="card-body">
 
-              <form method="POST">
+              <form method="POST" id="form-cliente">
                 {% csrf_token %}
                 {% if error %}
                   <h2>{{ error }}</h2>
@@ -547,7 +547,7 @@ left: 43px;
                     <button type="submit" class="btn btn-success" name="boton_crear_cliente">
                       <i class="fa fa-dot-circle-o"></i> Crear
                     </button>
-                    <button type="reset" class="btn btn-danger">
+                    <button type="button" onclick="Reset()" class="btn btn-danger">
                       <i class="fa fa-ban"></i> Limpiar
                     </button>
                   </div>
@@ -769,8 +769,20 @@ left: 43px;
     <script src="{% static 'dist/bcp.en.js' %}"></script>
 
     <script type="text/javascript">
+    function Reset(){
+      console.log("jeje");
+      var formcliente = $('#form-cliente')
+      $(formcliente).find("input").each(function(){
+                $(this).val('');
+    });
+    };
+    </script>
+
+    <script type="text/javascript">
     $('.colorPicker').bcp();
     </script>
+
+
 
     <script type="text/javascript">
     $('.colorPicker').on('pcb.refresh',function (e) {
