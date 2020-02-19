@@ -64,14 +64,14 @@ Asignar Medidas
                   </div>
                    <br>
                 </div>
-                
+
 
                 <div class="col-md-1">
                 </div>
             {% endfor %}
           {% else %}
             {% for medida in medidas_prenda %}
-                <div class="col-md-2">
+                <div class="col-md-3">
                   {{medida.nombre_medida}}
                   <input type="hidden" name="medida" value="{{medida.id_medida}}" >
                   <br>
@@ -101,9 +101,6 @@ Asignar Medidas
         <div class="alineado-derecha">
           <button type="submit" class="btn btn-success" name="boton_guardar_cargar">
             <i class="fa fa-dot-circle-o"></i> Guardar
-          </button>
-          <button type="button" class="btn btn-danger" onclick="history.back()">
-            <i class="fa fa-ban"></i> Cancelar
           </button>
         </div>
       </div>

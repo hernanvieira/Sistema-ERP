@@ -833,7 +833,7 @@ def AsignarMedida(request,id_prenda,id_detalle,id_pedido):
                 m.valor = peticion_valor[i]
                 i+=1
                 m.save()
-            messages.success(request, 'Medidas actualizadas correctamente') # Informo al usuario que se creó correctamente
+            messages.success(request, 'Medidas agregadas correctamente') # Informo al usuario que se creó correctamente
             return redirect('/prenda/editar_prenda/'+str(id_prenda)+'/'+str(id_detalle)+'/'+str(id_pedido))
         else:
             if medidas_prenda_u:
@@ -1178,10 +1178,11 @@ def EstadisticaTemporada2(request):
 #Filtro de estadistica por cantidad de prendas solicitadas por tipo de prenda
 def EstadisticaTorta(request):
     data = {}
-    año = request.GET.get('año',None)
+    desde = request.GET.get('desde',None)
+    hasta = request.GET.get('hasta',None)
 
-    desde = año+'-01-01'
-    hasta = año+'-12-31'
+    desde = datetime.strptime(desde, "%d/%m/%Y").strftime('%Y-%m-%d')
+    hasta = datetime.strptime(hasta, "%d/%m/%Y").strftime('%Y-%m-%d')
 
     lista_tipo_prenda = []
     lista_valor = []
@@ -1213,9 +1214,11 @@ def EstadisticaTorta(request):
 def EstadisticaTalle(request):
     data = {}
     tipo_prenda = request.GET.get('tipo_prenda',None)
-    año = request.GET.get('año',None)
-    desde = año+'-01-01'
-    hasta = año+'-12-31'
+    desde = request.GET.get('desde',None)
+    hasta = request.GET.get('hasta',None)
+
+    desde = datetime.strptime(desde, "%d/%m/%Y").strftime('%Y-%m-%d')
+    hasta = datetime.strptime(hasta, "%d/%m/%Y").strftime('%Y-%m-%d')
 
     lista_valor = []
     tipo_prendas_list = Tipo_prenda.objects.all()

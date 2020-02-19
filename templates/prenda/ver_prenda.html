@@ -48,15 +48,14 @@ Ver Prenda
           {{prenda_form.tipo_prenda.label}}
             {{prenda_form.tipo_prenda}}
         </div>
-        <div class="col-md-2" data-step="2" data-intro='El talle'>
-            {{prenda_form.talle.label}}
-              {{prenda_form.talle}}
-        </div>
-        <div class="col-md-1">
-          <br>
-          <button type="submit" class="btn btn-secondary" name="boton_asignar_medida" data-step="3" data-intro='Si tiene medidas asignadas, las podrá ver haciendo click sobre el botón'>
-              <i class="fa fa-bars"></i>
-          </button>
+        <div class="col-md-3" data-step="6" data-intro='La cantidad establecida'>
+          {{detalle_form.cantidad.label}}
+          <div class="input-group">
+              {{detalle_form.cantidad}}
+            <div class="input-group-addon">
+              Unidad/es
+            </div>
+          </div>
         </div>
         <div class="col-md-6" data-step="4" data-intro='podrá cargar una imagén para la prenda o reemplazarla si ya existe'>
           {{prenda_form.imagen.label}}
@@ -72,15 +71,8 @@ Ver Prenda
                 {{prenda_form.precio}}
             </div>
           </div>
-          <div class="col-md-3" data-step="6" data-intro='La cantidad establecida'>
-            {{detalle_form.cantidad.label}}
-            <div class="input-group">
-                {{detalle_form.cantidad}}
-              <div class="input-group-addon">
-                Unidad/es
-              </div>
-            </div>
-          </div>
+
+
           <div class="col-md-3" data-step="7" data-intro='El tiempo de produccion unitario'>
             {{prenda_form.tiempo_prod_prenda.label}}
             <div class="input-group">
@@ -89,6 +81,16 @@ Ver Prenda
                 Días
               </div>
             </div>
+          </div>
+          <div class="col-md-1" data-step="2" data-intro='El talle'>
+              {{prenda_form.talle.label}}
+                {{prenda_form.talle}}
+          </div>
+          <div class="col-md-1">
+            <br>
+            <button title="Asignar Medidas" type="submit" class="btn btn-secondary" name="boton_asignar_medida" data-step="3" data-intro='Si tiene medidas asignadas, las podrá ver haciendo click sobre el botón'>
+                <i class="fa fa-bars"></i>
+            </button>
           </div>
           <div class="col-3">
 

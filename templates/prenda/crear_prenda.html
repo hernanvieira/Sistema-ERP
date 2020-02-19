@@ -53,15 +53,14 @@ Agregar Prenda
           {{prenda_form.tipo_prenda.label}}
             {{prenda_form.tipo_prenda}}
         </div>
-        <div class="col-md-2" data-step="2" data-intro='Seleccione el talle entre las opciones'>
-            {{prenda_form.talle.label}}
-              {{prenda_form.talle}}
-        </div>
-        <div class="col-md-1" data-step="3" data-intro='Puede establecer las medidas de una manera mas específica, de acuerdo al tipo de prenda seleccionado'>
-          <br>
-          <button type="submit" class="btn btn-secondary" name="boton_asignar_medida">
-              <i class="fa fa-bars"></i>
-          </button>
+        <div class="col-md-3" data-step="6" data-intro='Introduzca la cantidad de prendas, del mismo tipo, que solicite el cliente'>
+          {{detalle_form.cantidad.label}}
+          <div class="input-group">
+              {{detalle_form.cantidad}}
+            <div class="input-group-addon">
+              Unidad/es
+            </div>
+          </div>
         </div>
         <div class="col-md-6" data-step="4" data-intro='Puede incluir una imagen del modelo de la prenda a producir'>
           {{prenda_form.imagen.label}}
@@ -77,15 +76,7 @@ Agregar Prenda
                 {{prenda_form.precio}}
             </div>
           </div>
-          <div class="col-md-3" data-step="6" data-intro='Introduzca la cantidad de prendas, del mismo tipo, que solicite el cliente'>
-            {{detalle_form.cantidad.label}}
-            <div class="input-group">
-                {{detalle_form.cantidad}}
-              <div class="input-group-addon">
-                Unidad/es
-              </div>
-            </div>
-          </div>
+
           <div class="col-md-3" data-step="7" data-intro='Introduzca el tiempo promedio que le llevará producir la prenda, por defecto se tiene una recomendacion por historial de tiempos declarados anteriormente, esto define la fecha de entrega del pedido'>
             {{prenda_form.tiempo_prod_prenda.label}}
             <div class="input-group">
@@ -94,6 +85,16 @@ Agregar Prenda
                 Días
               </div>
             </div>
+          </div>
+          <div class="col-md-1" data-step="2" data-intro='Seleccione el talle entre las opciones'>
+              {{prenda_form.talle.label}}
+                {{prenda_form.talle}}
+          </div>
+          <div class="col-md-1" data-step="3" data-intro='Puede establecer las medidas de una manera mas específica, de acuerdo al tipo de prenda seleccionado'>
+            <br>
+            <button type="submit" title="Asignar Medidas" class="btn btn-secondary" name="boton_asignar_medida">
+                <i class="fa fa-bars"></i>
+            </button>
           </div>
           <div class="col-3">
 

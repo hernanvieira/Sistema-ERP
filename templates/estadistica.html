@@ -32,13 +32,21 @@ Estadisticas
     <div class="col-6">
         <div class="au-card m-b-30">
           <div class="row d-print-none">
-            <div class="col-1">
-              Año:
-            </div>
-            <div class="col-3">
-              <select id="year_torta" class="js-example-basic-single"></select>
+
+
+            <div class="">
+                <div class="" data-step="2" data-intro="Puede filtrar entre diferentes fechas">
+                    <span>Rango:</span>
+
+                    <div class="rs-select2--light">
+                      <div class="form-control">
+                        <input class="datepicker" type="" name="" value="" id="desde">
+                      </div>
+                    </div>
+              </div>
             </div>
           </div>
+
 
             <div class="au-card-inner"><div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
                   <canvas id="pieChart2" height="296" width="444" class="chartjs-render-monitor" style="display: block; width: 390px; height: 260px;"></canvas>
@@ -216,14 +224,25 @@ Estadisticas
     <div class="col-lg-6">
         <div class="au-card m-b-30">
           <div class="row d-print-none">
-            <div class="col-1">
-              Año:
+            <div class="">
+                <div class="" data-step="2" data-intro="Puede filtrar entre diferentes fechas">
+                    <span>Rango:</span>
+
+                    <div class="rs-select2--light">
+                      <div class="form-control">
+                        <input class="datepicker" type="" name="" value="" id="rango2">
+                      </div>
+                    </div>
+              </div>
             </div>
             <div class="col-3">
-              <select id="año" class="js-example-basic-single select_año"></select>
+
             </div>
-            <div class="col-4">
-              <p style="text-align:right;">Tipo de prenda:</p>
+            <div class="col-12">
+<br>
+            </div>
+            <div class="">
+              <p>Tipo de prenda:</p>
             </div>
             <div class="col-4">
               <select id='tipo_prenda' class="js-example-basic-single">
@@ -361,6 +380,39 @@ $(document).ready(function(){
 
 <script type="text/javascript">
   $(function() {
+    $('.datepicker').daterangepicker({
+
+        changeMonth: true,
+        changeYear: true,
+        singleDatePicker: false,
+        locale: {
+            format: 'DD/MM/YYYY',
+            applyLabel: 'Seleccionar',
+            cancelLabel: 'Limpiar',
+            fromLabel: 'Desde',
+            toLabel: 'Hasta',
+            customRangeLabel: 'Custom',
+            daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            firstDay: 1,
+        }
+  });
+
+  });
+  $(function() {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = dd + '/' + mm + '/' + yyyy;
+    var a = document.getElementById('desde').value = '01/01/'+yyyy+ ' - ' + today;
+    var a = document.getElementById('rango2').value = '01/01/'+yyyy+ ' - ' + today;
+  });
+</script>
+
+<script type="text/javascript">
+  $(function() {
     var from = new Date(2000,1,1);
     var to = new Date();
     for (var day = from; day <= to; day.setFullYear(day.getFullYear() + 1)) {
@@ -449,12 +501,18 @@ $(function(){
 
 <script>
 $(document).ready(function(){
-  año = $("#year_torta").val(); //Por defecto esta seleccionado el año 2020
+  a = document.getElementById('desde').value;
+  var d = a.split(" - ")
+  var desde = d[0];
+  var hasta = d[1];
   var ctx = document.getElementById('pieChart2').getContext("2d"); //Obtengo el canvas
 
   //Ejecuto el ajax
   $.ajax({
-    data: {'año':año},
+    data: {
+    'desde':desde,
+    'hasta':hasta,
+   },
     url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
     type: 'get',
     success: function (data) {
@@ -493,19 +551,25 @@ $(document).ready(function(){
             responsive: true,
             title: {
               display: true,
-              text: 'Cantidad de prendas solicitadas en el año '+String(año)
+              text: 'Cantidad de prendas solicitadas entre el '+String(desde)+' hasta el '+String(hasta)
             }
           }
         });
   }
 });
   // Al momento de cambiar de temporada en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
-  $("#year_torta").change(function(){
-        año = $(this).val(); //Obtengo la temporada seleccionada
+  $("#desde, #hasta").change(function(){
+    a = document.getElementById('desde').value;
+    var d = a.split(" - ")
+    var desde = d[0];
+    var hasta = d[1]; //Por defecto esta seleccionado el año 2020
         chart1.destroy();
         //Ejecuto el ajax
         $.ajax({
-          data: {'año':año},
+          data: {
+            'desde':desde,
+            'hasta':hasta
+          },
           url: '/prenda/estadistica_torta/', //la temporada que estoy guardando en data se va a enviar en esa url
           type: 'get',
           success: function (data) {
@@ -544,7 +608,7 @@ $(document).ready(function(){
                   responsive: true,
                   title: {
                     display: true,
-                    text: 'Cantidad de prendas solicitadas en el año '+String(año)
+                    text: 'Cantidad de prendas solicitadas entre el '+String(desde)+' hasta el '+String(hasta)
                   }
                 }
               });
@@ -876,12 +940,19 @@ setTimeout(function(){
   var tipo_prenda = $("#tipo_prenda").val()
   tipo_prenda2 = $('#tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
 
-  año = $('#año').val(); //Obtengo la temporada seleccionada
+  a = document.getElementById('rango2').value;
+  var d = a.split(" - ")
+  var desde = d[0];
+  var hasta = d[1];
   var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
 
   //Ejecuto el ajax
   $.ajax({
-    data: { 'tipo_prenda': tipo_prenda, 'año':año },
+    data: {
+      'tipo_prenda': tipo_prenda,
+      'desde':desde,
+      'hasta':hasta
+    },
     url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
     type: 'get',
     success: function (data) {
@@ -955,11 +1026,18 @@ setTimeout(function(){
           chart3.destroy();
           tipo_prenda = $(this).val(); //Obtengo el tipo de prenda seleccionado
           tipo_prenda2 = $('#tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
-          año = $('#año').val(); //Obtengo la temporada seleccionada
+          a = document.getElementById('rango2').value;
+          var d = a.split(" - ")
+          var desde = d[0];
+          var hasta = d[1];
           var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
           //Ejecuto el ajax
           $.ajax({
-            data: { 'tipo_prenda': tipo_prenda, 'año':año },
+            data: {
+              'tipo_prenda': tipo_prenda,
+              'desde':desde,
+              'hasta':hasta
+            },
             url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
             type: 'get',
             success: function (data) {
@@ -1028,15 +1106,22 @@ setTimeout(function(){
       });
 
       // Al momento de cambiar de año en el select, voy a ejecutar un ajax para obtener los datos y configurar el chart
-      $('#año').change(function(){
+      $('#rango2').change(function(){
             chart3.destroy();
-            año = $('#año').val(); //Obtengo el tipo de prenda seleccionado
+            a = document.getElementById('rango2').value;
+            var d = a.split(" - ")
+            var desde = d[0];
+            var hasta = d[1];
             tipo_prenda = $('#tipo_prenda').val(); //Obtengo la temporada seleccionada
             tipo_prenda2 = $('#tipo_prenda option:selected').text(); //Obtengo el tipo de prenda seleccionado
             var ctx = document.getElementById('bar-chart-horizontal'); //Obtengo el canvas
             //Ejecuto el ajax
             $.ajax({
-              data: { 'tipo_prenda': tipo_prenda, 'año':año },
+              data: {
+                'tipo_prenda': tipo_prenda,
+                'desde':desde,
+                'hasta':hasta
+              },
               url: '/prenda/estadistica_talle/', //la temporada que estoy guardando en data se va a enviar en esa url
               type: 'get',
               success: function (data) {
