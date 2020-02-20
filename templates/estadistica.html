@@ -1,4 +1,4 @@
-{% extends 'index.html' %}
+  {% extends 'index.html' %}
 
 <!DOCTYPE html>
 {% load static %}
@@ -257,7 +257,7 @@ Estadisticas
 
     </div>
     <div class="col-6">
-        <div class="au-card m-b-30"style="height: 385px;">
+        <div class="au-card m-b-30"style="height: 447px;">
           <div class="table-responsive table--no-card m-b-30">
               <table class="table table-borderless table-striped table-earning">
                   <thead>
@@ -352,7 +352,7 @@ $(document).ready(function(){
   $("#collapse3").on('shown.bs.collapse', function(){
   var card3 = document.getElementById('collapsescroll3');
   card3.scrollIntoView();
-  //html.scrollTop -= 60;
+  html.scrollTop -= 50;
   $("#boton-card3").html("Ocultar");
   });
 
@@ -1003,7 +1003,7 @@ setTimeout(function(){
       legend: { display: false },
       title: {
         display: true,
-        text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+        text: 'Talles solicitados entre las fechas '+String(desde)+' y '+String(hasta)+' para el tipo de prenda '+String(tipo_prenda2)
       },
       scales: {
         xAxes: [{
@@ -1088,7 +1088,7 @@ setTimeout(function(){
               legend: { display: false },
               title: {
                 display: true,
-                text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+                text: 'Talles solicitados entre las fechas '+String(desde)+' y '+String(hasta)+' para el tipo de prenda '+String(tipo_prenda2)
               },
               scales: {
                 xAxes: [{
@@ -1172,7 +1172,7 @@ setTimeout(function(){
                 legend: { display: false },
                 title: {
                   display: true,
-                  text: 'Talles solicitados en el año '+String(año)+' para el tipo de prenda '+String(tipo_prenda2)
+                  text: 'Talles solicitados entre las fechas '+String(desde)+' y '+String(hasta)+' para el tipo de prenda '+String(tipo_prenda2)
                 },
                 scales: {
                   xAxes: [{

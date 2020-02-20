@@ -371,8 +371,8 @@
               }
 
           });
-          // $('#min').val('');
-          // $('#max').val('');
+          $('#min').val('');
+          $('#max').val('');
           var table = $('#midatatable').DataTable();
 
           // Event listener to the two range filtering inputs to redraw on input
