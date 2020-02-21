@@ -41,7 +41,7 @@ Auditoria Clientes
             </div>
           </div>
       </div>
-      <div class="table-data__tool-left">
+      <div class="table-data__tool-left" data-step="3" data-intro='Por acción realizada'>
           <span>Acción: </span>
           <div class="rs-select2--light">
             <select class="form-control" name="" id="select-accion">
@@ -54,7 +54,7 @@ Auditoria Clientes
       </div>
 
       <div class="alineado-derecha">
-        <div class="table-data__tool-right"  data-step="3" data-intro='Puede filtrar la tabla por busquedas'>
+        <div class="table-data__tool-right"  data-step="4" data-intro='Puede filtrar la tabla por busquedas'>
           <div class="form-control">
             <input type="" name="" placeholder="Buscar" value="" id="midtbusqueda">
           </div>
@@ -66,7 +66,7 @@ Auditoria Clientes
 </div>
 
 <div class="table-responsive table-responsive-data2">
-    <table class="table table-data2 auditCliente" id="midatatable" data-step="4" data-intro='Tabla de auditoría'>
+    <table class="table table-data2 auditCliente" id="midatatable" data-step="5" data-intro='Tabla de auditoría'>
         <thead>
             <tr>
                 <th class="noExport">id</th>
@@ -82,7 +82,7 @@ Auditoria Clientes
             {% for audi in auditoria %}
             <tr class="tr-shadow">
               <td class="noExport">{{audi.history_id}}</td>
-              <td data-step="5" data-intro='Se muestra la acción realizada sobre el cliente'>
+              <td data-step="6" data-intro='Se muestra la acción realizada sobre el cliente'>
                 {% if audi.history_type == '-' %}
                   Baja
                 {% endif %}
@@ -93,14 +93,14 @@ Auditoria Clientes
                   Alta
                 {% endif %}
               </td>
-              <td data-step="6" data-intro='El DNI'>{{audi.dni}}</td>
-              <td data-step="7" data-intro='El nombre'>{{audi.nombre}}</td>
-              <td data-step="8" data-intro='Cuando se realizó la acción'>{{audi.history_date |date:'d-m-Y'}}</td>
-              <td data-step="9" data-intro='Y el usuario que la realizó'>{{audi.history_user}}</td>
+              <td data-step="7" data-intro='El DNI'>{{audi.dni}}</td>
+              <td data-step="8" data-intro='El nombre'>{{audi.nombre}}</td>
+              <td data-step="9" data-intro='Cuando se realizó la acción'>{{audi.history_date |date:'d-m-Y'}}</td>
+              <td data-step="10" data-intro='Y el usuario que la realizó'>{{audi.history_user}}</td>
               <td class="noExport">
                 {% if audi.history_type == '~' %}
                 <!-- Modal ver cambios -->
-                <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.dni}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria" data-step="10" data-intro='Si selecciona la opción "Ver cambios" se mostrará una ventana donde se observarán los cambios al elemento'>
+                <button type="button" class="btn btn-primary btn-sm" onclick="f1({{audi.dni}},{{audi.pk}})" data-toggle="modal" data-target=".ver_auditoria" data-step="11" data-intro='Si selecciona la opción "Ver cambios" se mostrará una ventana donde se observarán los cambios al elemento'>
                   <i class="fas fa-eye"></i>
                 </button>
                 <div class="modal fade ver_auditoria" id="ver_auditoria{{audi.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
