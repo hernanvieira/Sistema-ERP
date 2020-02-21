@@ -1,5 +1,7 @@
 {% extends 'index.html' %}
 
+{% load static %}
+
 <!DOCTYPE html>
 {% block titulo%}
 Auditoria Pedidos
@@ -42,6 +44,19 @@ Auditoria Pedidos
             </div>
           </div>
     </div>
+
+    <div class="table-data__tool-left">
+        <span>Acción: </span>
+        <div class="rs-select2--light">
+          <select class="form-control" name="" id="select-accion">
+            <option value=""></option>
+            <option value="">Alta</option>
+            <option value="">Baja</option>
+            <option value="">Modificación</option>
+          </select>
+        </div>
+    </div>
+
       <div class="alineado-derecha">
         <div class="table-data__tool-right" data-step="3" data-intro='Puede filtrar la tabla por busquedas'>
           <div class="form-control">
@@ -160,4 +175,75 @@ function f1(pk, id_history){
        })
 }
 </script>
+
+<!-- Jquery JS-->
+<script src="{% static 'vendor/jquery-3.2.1.min.js' %}"></script>
+
+<script type="text/javascript">
+//un boton con id filtrar
+
+     $('#select-accion').change(function () {
+
+       var table = $('#midatatable').DataTable();
+       //aca se obtienen los valores
+       var filtro = $('#select-accion option:selected').text();
+       //no olvidarme de volver a poner (pop) las filas
+       //esto es por si se realizo algun filtro asi se vuelve a cargar el datatable
+
+       $.fn.dataTable.ext.search.pop(
+         function (settings, data, dataIndex) {
+           if (1) {
+             return true;
+           }
+           return false;
+         }
+       );
+       table.draw();
+
+       if (filtro != "") {
+
+         var accion = String($('#select-accion option:selected').text());
+
+       if (filtro != "") {
+             var filtradoTabla = function FuncionFiltrado(settings, data, dataIndex) {
+               if (accion == String(data[1])) {
+                 return true;
+
+               } else {
+                 return false;
+               }
+             }
+             $.fn.dataTableExt.afnFiltering.push(
+                         function(oSettings, aData, iDataIndex) {
+                             var iFini = document.getElementById('min').value;
+                             var iFfin = document.getElementById('max').value;
+                             var iStartDateCol = 4;
+                             var iEndDateCol = 4;
+                             iFini = iFini.substring(6, 10) + iFini.substring(3, 5) + iFini.substring(0, 2);
+                             iFfin = iFfin.substring(6, 10) + iFfin.substring(3, 5) + iFfin.substring(0, 2);
+
+                             var datofini = aData[iStartDateCol].substring(6, 10) + aData[iStartDateCol].substring(3, 5) + aData[iStartDateCol].substring(0, 2);
+                             var datoffin = aData[iEndDateCol].substring(6, 10) + aData[iEndDateCol].substring(3, 5) + aData[iEndDateCol].substring(0, 2);
+
+                             if (iFini === "" && iFfin === "") {
+                                 return true;
+                             } else if (iFini <= datofini && iFfin === "") {
+                                 return true;
+                             } else if (iFfin >= datoffin && iFini === "") {
+                                 return true;
+                             } else if (iFini <= datofini && iFfin >= datoffin) {
+                                 return true;
+                             }
+                             return false;
+                         }
+                     );
+
+             $.fn.dataTable.ext.search.push(filtradoTabla)
+             table.draw();
+      }
+    }
+});
+</script>
+
+
 {% endblock content%}

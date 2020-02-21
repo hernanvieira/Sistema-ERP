@@ -3,7 +3,7 @@
   midatatable = $('#midatatable').DataTable({
         "lengthMenu": [
             [5, 25, 50, -1],
-            [5, 25, 50, "All"]
+            [5, 25, 50, "Todos"]
         ],
         dom: 'Brtlip',
         buttons: [
@@ -33,21 +33,27 @@
             var min = $('#min').val();
             var max = $('#max').val();
             var busqueda = $('#midtbusqueda').val();
+            var accion = $('#select-accion option:selected').text();
+            console.log(accion);
 
 						//Remove the title created by datatTables
 						// doc.content.splice(0,1);
             // if (min != '' && max != '' ) {
             var filtro1 = '';
             var filtro2 = '';
+            var filtro3 = '';
             if (min != '' && max != '') {
               var filtro1 = "Filtrado por fecha desde " + min + " hasta " + max
             }
             if (busqueda != '') {
               var filtro2 = "Filtrado por la siguiente busqueda: " + busqueda
             }
+            if (accion != '') {
+              var filtro3 = "Filtrado por acción de: " + accion
+            }
             // }
             doc.content[0] = [
-            {text: titulo + "\n", fontSize:15},{text:filtro1},{text:filtro2}]
+            {text: titulo + "\n", fontSize:15},{text:filtro1},{text:filtro2},{text:filtro3}]
 
 						//Create a date string that we use in the footer. Format is dd-mm-yyyy
 						var now = new Date();
@@ -387,7 +393,7 @@ $(document).ready(function(){
 midatatable2 = $('#midatatable2').DataTable({
     "lengthMenu": [
         [5, 25, 50, -1],
-        [5, 25, 50, "All"]
+        [5, 25, 50, "Todos"]
     ],
     dom: '',
     columnDefs: [
