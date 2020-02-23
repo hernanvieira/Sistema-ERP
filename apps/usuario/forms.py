@@ -10,7 +10,7 @@ class FormularioLogin(AuthenticationForm):
        self.fields['password'].widget.attrs['class'] = 'au-input au-input--full'
        self.fields['password'].widget.attrs['placeholder'] = 'Contraseña'
        self.fields['password'].widget.attrs['id'] = 'myInput'
-       self.fields['password'].widget.attrs['style'] = 'width:80%;'
+       self.fields['password'].widget.attrs['style'] = 'width: 89.5%'
 
 class UserCreationForm(UserCreationForm):
     class Meta:

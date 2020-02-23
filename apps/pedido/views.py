@@ -402,7 +402,7 @@ def VerPedido (request,id_pedido):
 
             if saldo > 0:
                 pedido.save()
-                messages.success(request, 'Se registró la entrega, resta un saldo de: ' + str(saldo))
+                messages.success(request, 'Se registró la entrega, resta un saldo de: $' + str(saldo))
 
                 email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega +'. La entrega fue de $'+str(format(float(peticion_valor), '.2f'))+ ', el saldo es de: $' + str(saldo), to=[pedido.cliente.correo])
                 try:
@@ -413,7 +413,7 @@ def VerPedido (request,id_pedido):
             if saldo < 0:
                 pedido.entrega = pedido.precio_total
                 pedido.save()
-                messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: ' + str(abs(saldo)))
+                messages.success(request, 'Se registró la entrega y se completó el pago. El cambio es de: $' + str(abs(saldo)))
 
                 email = EmailMessage('PROYECTO SOFTWARE', mensaje.entrega +'. La entrega fue de $'+str(format(float(peticion_valor), '.2f'))+ ', el saldo es de: $0,00' , to=[pedido.cliente.correo])
                 try:

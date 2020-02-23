@@ -7,7 +7,7 @@ Ver pedido
 {% block content%}
 
 <div class="card">
-  <div class="card-header bg-success"><strong class="card-title text-light">Ver pedido</strong></div>
+  <div class="card-header bg-success"><strong class="card-title text-light">Ver pedido</strong> <h class="card-title text-light"> | N° de Pedido: {{pedido.pk}}</h></div>
   <div class="card-body card-block">
 
     <form method="POST">
@@ -95,6 +95,7 @@ Ver pedido
                           <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'prenda:ver_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="24" data-intro='Al seleccionar la opción "Ver prenda" lo redirige a otra página en la cual podrá tener información acerca de la prenda y asignar materiales"'>
                             <i class="fas fa-eye"></i>
                           </button>
+                          {% if pedido.estado.estado_id == 3 or pedido.estado.estado_id == 4 or pedido.estado.estado_id == 5 %}
                             <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'prenda:editar_prenda' detalle.prenda.id_prenda detalle.id_detalle detalle.pedido.id_pedido %}'" data-step="22" data-intro='Al seleccionar la opción "Editar prenda lo redirigirá a una página donde podrá editar la prenda"'>
                               <i class="fas fa-pencil-square-o"></i>
                             </button>
@@ -102,6 +103,7 @@ Ver pedido
                             <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".eliminar_prenda{{detalle.prenda.pk}}" data-step="23" data-intro='Al seleccionar la opción "Eliminar prenda" se mostrará una ventana para confirmar la eliminación de la misma'>
                               <i class="fas fa-trash"></i>
                             </button>
+                          {% endif %}
                             <div class="modal fade eliminar_prenda{{detalle.prenda.pk}}" id="myModal2{{prenda.pk}}" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -170,7 +172,7 @@ Ver pedido
 
         </div>
         <div class="col-md-4" data-step="6" data-intro='La seña mínima solicitada para comenzar la producción'>
-          <a>Seña minima</a>
+          <a>Seña mínima</a>
           <div class="input-group">
             <div class="input-group-addon">
               <i class="fa fa-dollar"></i>
@@ -414,7 +416,7 @@ Ver pedido
                                 <i class="fa fa-dollar"></i>
                               </div>
                               <div class="form-control">
-                                <input type="number" name="registrar_entrega">
+                                <input type="number" min="1" name="registrar_entrega">
                               </div>
                             </div>
                         </div>

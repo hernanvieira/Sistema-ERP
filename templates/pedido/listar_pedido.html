@@ -124,13 +124,13 @@ Listado de pedidos
                       <button type="button" class="btn btn-primary btn-sm" onclick="location.href='{% url 'pedido:ver_pedido' pedido.pedido.id_pedido %}'" data-step="13" data-intro='Si selecciona la opción "Ver pedido" lo redirige a otra pagina donde se puede ver información del pedido y realizar diferentes acciones'>
                         <i class="fas fa-eye"></i>
                       </button>
-                      {% if pedido.estado.pk == 4 or pedido.estado.pk == 5 %}
+                      {% if pedido.estado.pk == 3 or pedido.estado.pk == 4 or pedido.estado.pk == 5 %}
                         <div class="" style="padding-right:68px;">
 
                         </div>
                       {% endif %}
 
-                      {% if pedido.estado.pk != 4 and pedido.estado.pk != 5 %}
+                      {% if pedido.estado.pk != 3 and pedido.estado.pk != 4 and pedido.estado.pk != 5 %}
                       {% if user.rol.nombre == 'Modista' or user.rol.nombre == 'Administrador' %}
                       <button type="button" class="btn btn-warning btn-sm" onclick="location.href='{% url 'pedido:editar_pedido' pedido.pedido.id_pedido %}'" data-step="14" data-intro='Si selecciona la opción "Editar pedido" lo redirige a otra pagina donde podrá editar el pedido'>
                         <i class="fas fa-pencil-square-o"></i>

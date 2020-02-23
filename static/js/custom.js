@@ -210,11 +210,11 @@
                   }; // Arnold deja de copiarme
                 }
 
-                if (titulo == 'Auditoria de clientes') {
+                if (titulo == 'Auditoría de clientes') {
                   var min = $('#min').val();
                   var max = $('#max').val();
                   // colCount.push('*'); //Le pongo uno mas porque tengo un td oculto (el id)
-                  doc.content[1].table.widths = [70,50,160,80,85];
+                  doc.content[1].table.widths = [70,50,120,120,85];
                   var table = $("#midatatable").DataTable();//Obtengo la tabla
                   var pageInfo = table.page.info(); //Obtiene el objeto page.info()
                   for (i = 1; i <= pageInfo.recordsDisplay; i++) { //recordsDisplay me devuelve la cantidad de registros mostrados
@@ -226,7 +226,7 @@
                   }; // Arnold deja de copiarme
                 }
 
-                if (titulo == 'Auditoria de pedidos') {
+                if (titulo == 'Auditoría de pedidos') {
                   var min = $('#min').val();
                   var max = $('#max').val();
 
@@ -300,31 +300,29 @@
                   var iFini = document.getElementById('min').value;
                   var iFfin = document.getElementById('max').value;
                   var titulo = $('.titulo_reporte').val();
+
                   if (titulo == 'Lista de compras') {
                     var iStartDateCol = 1;
                     var iEndDateCol = 1;
-                    console.log(aData[1]);
                   }
                   if (titulo == 'Lista de pedidos') {
                   var iStartDateCol = 4;
                   var iEndDateCol = 4;
-                  console.log(aData[4]);
                   }
-                  if (titulo == 'Auditoria de pedidos') {
+                  if (titulo == 'Auditoría de pedidos') {
                   var iStartDateCol = 4;
                   var iEndDateCol = 4;
-                  console.log(aData[4]);
                   }
-                  if (titulo == 'Auditoria de clientes') {
+                  if (titulo == 'Auditoría de clientes') {
                   var iStartDateCol = 4;
                   var iEndDateCol = 4;
-                  console.log(aData[4]);
                   }
                   iFini = iFini.substring(6, 10) + iFini.substring(3, 5) + iFini.substring(0, 2);
                   iFfin = iFfin.substring(6, 10) + iFfin.substring(3, 5) + iFfin.substring(0, 2);
-
-                  var datofini = aData[iStartDateCol].substring(6, 10) + aData[iStartDateCol].substring(3, 5) + aData[iStartDateCol].substring(0, 2);
-                  var datoffin = aData[iEndDateCol].substring(6, 10) + aData[iEndDateCol].substring(3, 5) + aData[iEndDateCol].substring(0, 2);
+                  if (titulo != 'Listado de clientes' && titulo != 'Listado de materiales') {
+                    var datofini = aData[iStartDateCol].substring(6, 10) + aData[iStartDateCol].substring(3, 5) + aData[iStartDateCol].substring(0, 2);
+                    var datoffin = aData[iEndDateCol].substring(6, 10) + aData[iEndDateCol].substring(3, 5) + aData[iEndDateCol].substring(0, 2);
+                  }
 
                   if (iFini === "" && iFfin === "") {
                       return true;
@@ -486,17 +484,3 @@ $('#combo').change(function() {
         }
     })
 });
-//
-// $(document).ready(function() {
-//   console.log("ENTRA?");
-//   $.ajax({
-//       url: '/pedido/notificaciones',
-//       dataType: 'json',
-//       success:function(result) {
-//             console.log(result)
-//       },
-//       error:function(){
-//           alert("cricri")
-//       }
-// });
-// });

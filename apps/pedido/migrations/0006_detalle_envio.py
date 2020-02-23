@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('domicilio', models.CharField(max_length=500)),
                 ('desde', models.TimeField()),
                 ('hasta', models.TimeField()),
-                ('dia', models.CharField(choices=[('Lunes', 'Lunes'), ('Martes', 'Martes'), ('Miercoles', 'Miercoles'), ('Jueves', 'Jueves'), ('Viernes', 'Viernes'), ('Sabado', 'Sabado'), ('Domingo', 'Domingo')], max_length=50)),
+                ('dia', models.CharField(choices=[('Lunes', 'Lunes'), ('Martes', 'Martes'), ('Miércoles', 'Miércoles'), ('Jueves', 'Jueves'), ('Viernes', 'Viernes'), ('Sábado', 'Sábado'), ('Domingo', 'Domingo')], max_length=50)),
                 ('cliente', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='cliente.Cliente')),
                 ('pedido', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='pedido.Pedido')),
             ],

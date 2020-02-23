@@ -331,25 +331,30 @@ def CrearCompra (request):
             faltantes = Faltante.objects.filter(material = material)
             if faltantes:
                 ingredientes_faltante = Ingrediente.objects.filter(material = material, disponibilidad = "FALTANTE")
+                print("INGRE")
+                print(ingredientes_faltante)
                 for ingrediente in ingredientes_faltante:
+                    print(ingrediente)
+                    try:
+                        faltante  = Faltante.objects.get(material = material, prenda = ingrediente.prenda)
 
-                    faltante = Faltante.objects.get(material = material, prenda = ingrediente.prenda)
+                        if cantidad != 0: #Si la cantidad es distinta de 0
+                            if cantidad < faltante.faltante: #Si la cantidad es menor al faltante a solventar
+                                faltante.faltante -= cantidad #Resto al faltante la cantidad introducida
+                                cantidad = 0 #Establesco la cantidad en 0 porque la ocupé por completo
+                                faltante.save() #actualizo el faltante
+                            if cantidad >= faltante.faltante: #Si la cantidad es mayor o igual al faltante
+                                cantidad -= faltante.faltante #Resto a la cantidad lo que voy a utilizar para solventar el faltante
+                                faltante.delete() #Elimino el faltante al solventarlo por completo
 
-                    if cantidad != 0: #Si la cantidad es distinta de 0
-                        if cantidad < faltante.faltante: #Si la cantidad es menor al faltante a solventar
-                            faltante.faltante -= cantidad #Resto al faltante la cantidad introducida
-                            cantidad = 0 #Establesco la cantidad en 0 porque la ocupé por completo
-                            faltante.save() #actualizo el faltante
-                        if cantidad >= faltante.faltante: #Si la cantidad es mayor o igual al faltante
-                            cantidad -= faltante.faltante #Resto a la cantidad lo que voy a utilizar para solventar el faltante
-                            faltante.delete() #Elimino el faltante al solventarlo por completo
-
-                            #Calcular disponibilidad
-                            if ingrediente.cantidadxdetalle > ingrediente.material.stock_minimo:#Si el ingrediente es mayor al stock minimo del material actualizado
-                                ingrediente.disponibilidad = "DISPONIBLE" #Establezco la disponibilidad
-                            else: #Si el ingrediente es menor o igual al stock minimo
-                                ingrediente.disponibilidad = "STOCK MÍNIMO" #Establezco la disponibilidad
-                            ingrediente.save() #Actualizo el ingrediente
+                                #Calcular disponibilidad
+                                if ingrediente.cantidadxdetalle > ingrediente.material.stock_minimo:#Si el ingrediente es mayor al stock minimo del material actualizado
+                                    ingrediente.disponibilidad = "DISPONIBLE" #Establezco la disponibilidad
+                                else: #Si el ingrediente es menor o igual al stock minimo
+                                    ingrediente.disponibilidad = "STOCK MÍNIMO" #Establezco la disponibilidad
+                                ingrediente.save() #Actualizo el ingrediente
+                    except Exception as e:
+                        print(e)
             material.save() #Se actualiza el stock del material
 
             return redirect('/material/crear_compra')

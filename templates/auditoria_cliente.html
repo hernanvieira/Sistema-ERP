@@ -3,11 +3,11 @@
 
 <!DOCTYPE html>
 {% block titulo%}
-Auditoria Clientes
+Auditoría Clientes
 {% endblock titulo%}
 {% block content%}
 
-<input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Auditoria de clientes">
+<input type="hidden" name="titulo" class="titulo_reporte"  id="titulo" value="Auditoría de clientes">
 <input type="hidden" name="empresa" class="empresa_reporte" id="empresa" value="{{reporte.empresa}}">
 <input type="hidden" name="direccion" class="direccion_reporte" id="direccion" value="{{reporte.direccion}}">
 <input type="hidden" name="telefono" class="telefono_reporte" id="telefono" value="{{reporte.telefono}}">
@@ -69,10 +69,10 @@ Auditoria Clientes
     <table class="table table-data2 auditCliente" id="midatatable" data-step="5" data-intro='Tabla de auditoría'>
         <thead>
             <tr>
-                <th class="noExport">id</th>
+                <th class="noExport">N°</th>
                 <th>Acción</th>
                 <th>DNI</th>
-                <th>Nombre y apellido</th>
+                <th>Apellido</th>
                 <th>Fecha y Hora</th>
                 <th>Usuario</th>
                 <th class="noExport">Opciones</th>
@@ -95,7 +95,7 @@ Auditoria Clientes
               </td>
               <td data-step="7" data-intro='El DNI'>{{audi.dni}}</td>
               <td data-step="8" data-intro='El nombre'>{{audi.nombre}}</td>
-              <td data-step="9" data-intro='Cuando se realizó la acción'>{{audi.history_date |date:'d-m-Y'}}</td>
+              <td data-step="9" data-intro='Cuando se realizó la acción'>{{audi.history_date |date:'d-m-Y h:i:s'}}</td>
               <td data-step="10" data-intro='Y el usuario que la realizó'>{{audi.history_user}}</td>
               <td class="noExport">
                 {% if audi.history_type == '~' %}

@@ -37,10 +37,10 @@ class Detalle_envio (models.Model):
     DIAS=[
     ('Lunes','Lunes'),
     ('Martes','Martes'),
-    ('Miercoles','Miercoles'),
+    ('Miércoles','Miércoles'),
     ('Jueves','Jueves'),
     ('Viernes','Viernes'),
-    ('Sabado','Sabado'),
+    ('Sábado','Sábado'),
     ('Domingo','Domingo')
     ]
     id_detalle_envio = models.AutoField(primary_key=True)

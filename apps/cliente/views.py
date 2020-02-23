@@ -99,17 +99,6 @@ def Home(request):
 
 #Pagina de estadisticas
 def Estadistica(request):
-    #Estadistica Bar
-    # lista_bar = []
-    # tipo_prendas_list = Tipo_prenda.objects.all()
-    # for tipo_prenda in tipo_prendas_list:
-    #     diccionario = {
-    #     'tipo_prenda':tipo_prenda.nombre,
-    #     'valor':Detalle.objects.filter(prenda__tipo_prenda = tipo_prenda).aggregate(Sum('cantidad'))['cantidad__sum']
-    #
-    #     }
-    #     lista_bar.append(diccionario)
-
     #Estadistica Chart
     lista_chart = []
     tipo_prendas_list = Tipo_prenda.objects.all()
@@ -170,7 +159,7 @@ def VerCliente (request,dni):
             envios_noti.append(envio_temp)
     envios_not = envios_noti[:3]
     envio_count = len(envios_noti)
-    
+
     try:
         cliente_form=None
         cliente = Cliente.objects.get(dni=dni)
@@ -179,10 +168,7 @@ def VerCliente (request,dni):
         for pedido in pedidos:
             estado = Estado_pedido.objects.filter(pedido=pedido).order_by('-id_estado_pedido')[0]
 
-            print("ESTADUKI")
-            print(estado)
             estados.append(estado)
-        print(estados)
         if request.method=='GET':
             cliente_form=ClienteForm(instance=cliente)
         else:

@@ -55,7 +55,7 @@ Asignar Medidas
                   <input type="hidden" name="medida" value="{{medida.medida.id_medida}}" >
                   <br>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <div class="input-group">
                     <input type="number" name="valor_medida" min="0" class="form-control" value="{{medida.valor}}">
                     <div class="input-group-addon">
@@ -66,12 +66,12 @@ Asignar Medidas
                 </div>
 
 
-                <div class="col-md-1">
+                <div class="col-md-2">
                 </div>
             {% endfor %}
           {% else %}
             {% for medida in medidas_prenda %}
-                <div class="col-md-3">
+                <div class="col-md-2">
                   {{medida.nombre_medida}}
                   <input type="hidden" name="medida" value="{{medida.id_medida}}" >
                   <br>
