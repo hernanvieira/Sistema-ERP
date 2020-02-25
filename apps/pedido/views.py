@@ -355,8 +355,8 @@ def VerPedido (request,id_pedido):
     if request.method=='GET':
         pedido_form=PedidoForm(instance=pedido)
         envios_noti = []
-        for pedido in pedidos:
-            envio_temp = Detalle_envio.objects.filter(pedido = pedido).exclude(visto=True).first()
+        for x in pedidos:
+            envio_temp = Detalle_envio.objects.filter(pedido = x).exclude(visto=True).first()
             if envio_temp:
                 envios_noti.append(envio_temp)
         envios_not = envios_noti[:3]
